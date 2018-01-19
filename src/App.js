@@ -9,12 +9,14 @@ import {
 	Button,
 	Dimmer,
 	Loader,
-	Radio
+	Radio,
+	Dropdown
 } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import logo from './logo.png';
 import TableFeed from './table_feed';
+import BCSearch from './bc_search';
 import './App.css';
 
 const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
@@ -49,7 +51,6 @@ class App extends Component {
 
 	componentWillMount() {
 		this.updateTracks(this.state.filters);
-
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -93,6 +94,9 @@ class App extends Component {
 			{ menuItem: 'Remix', value: 1 },
 			{ menuItem: 'Mix', value: 2 }
 		];
+
+
+
 		return (
 			<Container className="App">
 				{this.state.error ? (
@@ -113,6 +117,7 @@ class App extends Component {
 				>
 					<Segment className="App-logo-segment" basic>
 						<Image src={logo} alt="bc_logo" size="small" />
+						{/* <BCSearch /> */}
 					</Segment>
 					<Segment className="App-filters" basic>
 						<Tab
