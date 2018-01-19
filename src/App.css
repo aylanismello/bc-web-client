@@ -5,6 +5,7 @@
 .App-filters {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .App-error {

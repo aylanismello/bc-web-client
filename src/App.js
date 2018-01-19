@@ -8,7 +8,8 @@ import {
 	Message,
 	Button,
 	Dimmer,
-	Loader
+	Loader,
+	Radio
 } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -20,8 +21,14 @@ const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
 
 class App extends Component {
 	static formatFilters(filters) {
-		if (filters.date_range === -1) {
+		if (filters.date_range === -1 && filters.track_type === -1) {
+			const { date_range, track_type, ...newFilters } = filters;
+			return newFilters;
+		} else if (filters.date_range === -1) {
 			const { date_range, ...newFilters } = filters;
+			return newFilters;
+		} else if (filters.track_type === -1) {
+			const { track_type, ...newFilters } = filters;
 			return newFilters;
 		}
 
@@ -36,11 +43,13 @@ class App extends Component {
 		},
 		tracks: [],
 		error: null,
-		loading: false
+		loading: false,
+		unsplashPhoto: null
 	});
 
 	componentWillMount() {
 		this.updateTracks(this.state.filters);
+
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -80,9 +89,10 @@ class App extends Component {
 		];
 
 		const trackTypePanes = [
-			{ menuItem: 'Remix', value: '1' },
-			{ menuItem: 'Mix', value: '2' }
-		]
+			{ menuItem: 'Either', value: -1 },
+			{ menuItem: 'Remix', value: 1 },
+			{ menuItem: 'Mix', value: 2 }
+		];
 		return (
 			<Container className="App">
 				{this.state.error ? (
@@ -95,11 +105,16 @@ class App extends Component {
 					</Message>
 				) : null}
 
-				<Segment inverted className="App-top-nav">
-					<Segment className="App-logo-segment" inverted>
+				<Segment
+					className="App-top-nav"
+					style={{
+						backgroundImage: 'linear-gradient(black, gray)'
+					}}
+				>
+					<Segment className="App-logo-segment" basic>
 						<Image src={logo} alt="bc_logo" size="small" />
 					</Segment>
-					<Segment className="App-filters" inverted>
+					<Segment className="App-filters" basic>
 						<Tab
 							panes={sortingPanes}
 							defaultActiveIndex={0}
@@ -122,14 +137,16 @@ class App extends Component {
 						<Tab
 							panes={trackTypePanes}
 							defaultActiveIndex={0}
-							onTabChange={(e, data) =>
+							onTabChange={(e, data) => {
+								const { value } = data.panes[data.activeIndex];
 								this.setState({
 									filters: {
 										...this.state.filters,
-										track_type: data.panes[data.activeIndex].value,
+										track_type: value,
 										page: 1
 									}
-								})}
+								});
+							}}
 							menu={{
 								color: 'green',
 								inverted: true,
@@ -137,6 +154,17 @@ class App extends Component {
 								tabular: false
 							}}
 						/>
+
+						<Radio
+							onChange={(e, data) => {
+								this.setState({
+									filters: { ...this.state.filters, is_bc: data.checked }
+								});
+							}}
+							label="📻"
+							toggle
+						/>
+
 						<Select
 							onChange={(e, data) =>
 								this.setState({
