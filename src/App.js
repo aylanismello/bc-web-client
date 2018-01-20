@@ -114,7 +114,19 @@ class App extends Component {
 				>
 					<Segment className="App-logo-segment" basic>
 						<Image src={logo} alt="bc_logo" size="small" />
-						<BCSearch />
+						<BCSearch
+							setFilter={({ param, value }) => {
+								const { country, city, ...oldFilters } = this.state.filters;
+
+								if (value === 'reset') {
+									this.setState({ filters: oldFilters });
+								} else {
+									const newFilter = {};
+									newFilter[param] = value;
+									this.setState({ filters: { ...oldFilters, ...newFilter } });
+								}
+							}}
+						/>
 					</Segment>
 					<Segment className="App-filters" basic>
 						<Tab

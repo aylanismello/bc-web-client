@@ -169,7 +169,7 @@ const countries = [
 	{ name: 'Nigeria', countryCode: 'ng' },
 	{ name: 'Niue', countryCode: 'nu' },
 	{ name: 'Norfolk Island', countryCode: 'nf' },
-	{ name: 'North Korea', countryCode: 'kp' },
+	{ name: 'North Korea', countryCode: 'kp', alias: 'Korea (North)' },
 	{ name: 'Northern Mariana Islands', countryCode: 'mp' },
 	{ name: 'Norway', countryCode: 'no' },
 	{ name: 'Oman', countryCode: 'om' },
@@ -211,7 +211,7 @@ const countries = [
 	{ name: 'Solomon Islands', countryCode: 'sb' },
 	{ name: 'Somalia', countryCode: 'so' },
 	{ name: 'South Africa', countryCode: 'za' },
-	{ name: 'South Korea', countryCode: 'kr' },
+	{ name: 'South Korea', countryCode: 'kr', alias: 'Korea (South)' },
 	{ name: 'Spain', countryCode: 'es' },
 	{ name: 'Sri Lanka', countryCode: 'lk' },
 	{ name: 'Sudan', countryCode: 'sd' },
@@ -268,9 +268,24 @@ export default class BCSearch extends Component {
 		return <Flag name={name} />;
 	};
 
-	resetComponent = () => this.setState({ isLoading: false, results: [], value: '' });
+	resetComponent = () => {
+		this.props.setFilter({ value: 'reset' })
+		this.setState({ isLoading: false, results: [], value: '' });
+	}
 
-	handleResultSelect = (e, { result }) => this.setState({ value: result.title });
+	handleResultSelect = (e, { result }) => {
+		if (
+			countries.filter(country => {
+				return country.name === result.title || country.alias === result.title;
+			}).length
+		) {
+			this.props.setFilter({ param: 'country', value: result.title });
+		} else {
+			this.props.setFilter({ param: 'city', value: result.title });
+		}
+
+		this.setState({ value: result.title });
+	};
 
 	handleSearchChange = (e, { value }) => {
 		if (!value.trim()) {

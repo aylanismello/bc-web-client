@@ -13,16 +13,16 @@ const TableFeed = ({ tracks }) => {
 			</Table.Header>
 
 			<Table.Body>
-				{tracks.map((track) => {
+				{tracks.map(track => {
 					return (
-						<Table.Row className="TableFeed-row" onClick={() => window.open(track.track.permalink_url, '_blank')}>
+						<Table.Row
+							key={track.track.id}
+							className="TableFeed-row"
+							onClick={() => window.open(track.track.permalink_url, '_blank')}
+						>
 							<Table.Cell>
 								<Header as="h4" image>
-									<Image
-										src={track.track.artwork_url}
-										rounded
-										size="mini"
-									/>
+									<Image src={track.track.artwork_url} rounded size="mini" />
 									<Header.Content>
 										{track.track.name}
 										<Header.Subheader> {track.publisher[0].name}</Header.Subheader>
