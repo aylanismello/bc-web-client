@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "async": "^2.6.0",
     "axios": "^0.17.1",
     "faker": "^4.1.0",
     "lodash": "^4.17.4",

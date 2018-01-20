@@ -55,10 +55,7 @@ class App extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(
-				nextState.filters,
-				nextState.filters.page !== this.state.filters.page
-			);
+			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
 		}
 	}
 
@@ -78,7 +75,7 @@ class App extends Component {
 				}
 			})
 			.catch(error => {
-				this.setState({ error: 'something', loading: false });
+				this.setState({ error: error.message, loading: false });
 			});
 	}
 
@@ -95,18 +92,18 @@ class App extends Component {
 			{ menuItem: 'Mix', value: 2 }
 		];
 
-
-
 		return (
 			<Container className="App">
 				{this.state.error ? (
-					<Message negative className="App-error">
-						<Message.Header>Sorry, something went wrong!</Message.Header>
-						<Button onClick={() => this.setState({ error: null })} color="pink">
-							Got it!
-						</Button>
-						<p>right!</p>
-					</Message>
+					<Message
+						className="App-error"
+						negative
+						onDismiss={() => {
+							this.setState({ error: null });
+						}}
+						header="Sorry, something went wrong!"
+						content={this.state.error}
+					/>
 				) : null}
 
 				<Segment
@@ -117,7 +114,7 @@ class App extends Component {
 				>
 					<Segment className="App-logo-segment" basic>
 						<Image src={logo} alt="bc_logo" size="small" />
-						{/* <BCSearch /> */}
+						<BCSearch />
 					</Segment>
 					<Segment className="App-filters" basic>
 						<Tab

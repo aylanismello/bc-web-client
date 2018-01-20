@@ -8,12 +8,13 @@
   align-items: center;
 }
 
-.App-error {
+.ui.negative.message.App-error {
   position: absolute;
   z-index: 10;
+  top: 0;
   right: 40%;
 }
 
-.App-top-nav {
+.ui.segment.App-top-nav {
   position: relative;
 }
