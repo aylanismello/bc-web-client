@@ -17,9 +17,11 @@ import axios from 'axios';
 import logo from './logo.png';
 import TableFeed from './table_feed';
 import BCSearch from './bc_search';
+import { baseUrl } from './config';
 import './App.css';
 
-const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
+// const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
+const url = `${baseUrl}/tracks`;
 
 class App extends Component {
 	static formatFilters(filters) {
