@@ -1,5 +1,5 @@
-// const baseUrl = 'http://the-bc-api.herokuapp.com';
-const baseUrl = 'http://localhost:8000';
+const baseUrl = 'http://the-bc-api.herokuapp.com';
+// const baseUrl = 'http://localhost:8000';
 const countries = [
 	{ name: 'Afghanistan', countryCode: 'af' },
 	{ name: 'Aland Islands', countryCode: 'ax' },

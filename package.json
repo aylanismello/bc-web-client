@@ -1,25 +1,26 @@
 {
-  "name": "bc-web-client",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "async": "^2.6.0",
-    "axios": "^0.17.1",
-    "faker": "^4.1.0",
-    "lodash": "^4.17.4",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-scripts": "1.1.0",
-    "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.77.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  },
-  "devDependencies": {
-    "eslint-config-airbnb": "^16.1.0"
-  }
+	"name": "bc-web-client",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"async": "^2.6.0",
+		"axios": "^0.17.1",
+		"faker": "^4.1.0",
+		"lodash": "^4.17.4",
+		"react": "^16.2.0",
+		"react-dom": "^16.2.0",
+		"react-scripts": "1.1.0",
+		"semantic-ui-css": "^2.2.12",
+		"semantic-ui-react": "^0.77.2"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"deploy": "npm run build && aws s3 sync build s3://burncartel.com",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject"
+	},
+	"devDependencies": {
+		"eslint-config-airbnb": "^16.1.0"
+	}
 }
