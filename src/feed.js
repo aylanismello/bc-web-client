@@ -39,11 +39,11 @@ const Feed = ({ tracks }) => {
 				const { track, publisher, curators } = currentTrack;
 				return (
 					<Item key={track.id}>
-						<Item.Header>
+						{/* <Item.Header>
 							{' '}
 							<Header as="h1"> {idx + 1} </Header>{' '}
-						</Item.Header>
-						<Item.Image src={track.artwork_url} />
+						</Item.Header> */}
+						<Item.Image src={track.artwork_url} size="small" />
 						<Item.Content>
 							<Item.Header
 								as="a"
@@ -53,13 +53,13 @@ const Feed = ({ tracks }) => {
 							</Item.Header>
 							<Item.Meta>{publisher[0].name}</Item.Meta>
 
-							<Item.Description>
+							<Item.Header>
 								<Popup
 									trigger={
 										<Statistic className="Feed-selection-count" size="tiny">
 											<Statistic.Value>
 												<Icon name="soundcloud" />
-												{track.selection_count}
+												{curators.length}
 											</Statistic.Value>
 											<Statistic.Label>Selections</Statistic.Label>
 										</Statistic>
@@ -68,6 +68,9 @@ const Feed = ({ tracks }) => {
 								>
 									{curators.map(curator => curator.name).join(', ')}{' '}
 								</Popup>
+							</Item.Header>
+							<Item.Description>
+								Released {track.created_at_external}
 							</Item.Description>
 							<Item.Extra>
 								{makeBCBadge(track)}

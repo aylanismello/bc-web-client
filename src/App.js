@@ -15,10 +15,10 @@ import {
 import * as _ from 'lodash';
 import axios from 'axios';
 import logo from './logo.png';
-import TableFeed from './table_feed';
 import Feed from './feed';
 import BCSearch from './bc_search';
 import { baseUrl } from './config';
+import FiltersMenu from './filters_menu';
 import './App.css';
 
 // const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
@@ -43,9 +43,10 @@ class App extends Component {
 	state = Object.freeze({
 		filters: {
 			sort_type: 'hot',
-			date_range: 30,
+			date_range: 7,
 			page: 1
 		},
+		donePaginating: false,
 		tracks: [],
 		error: null,
 		loading: false,
@@ -58,7 +59,10 @@ class App extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
+			this.updateTracks(
+				nextState.filters,
+				nextState.filters.page !== this.state.filters.page
+			);
 		}
 	}
 
@@ -74,7 +78,28 @@ class App extends Component {
 						loading: false
 					});
 				} else {
-					this.setState({ tracks: results.data.data.tracks, loading: false });
+					// loading first page
+					this.setState({
+						tracks: results.data.data.tracks,
+						loading: false,
+						donePaginating: false
+					});
+				}
+				if (!this.state.donePaginating) {
+					this.checkForNextPagination(results.data.metadata.next_href);
+				}
+			})
+			.catch(error => {
+				this.setState({ error: error.message, loading: false });
+			});
+	}
+
+	checkForNextPagination(next_href) {
+		axios
+			.get(next_href)
+			.then(results => {
+				if (!results.data.data.tracks.length) {
+					this.setState({ donePaginating: true });
 				}
 			})
 			.catch(error => {
@@ -83,18 +108,6 @@ class App extends Component {
 	}
 
 	render() {
-		const sortingPanes = [
-			{ menuItem: 'Hot 🔥', value: 'hot' },
-			{ menuItem: 'Latest 🚀', value: 'latest' },
-			{ menuItem: 'Top 💯', value: 'top' }
-		];
-
-		const trackTypePanes = [
-			{ menuItem: 'Either', value: -1 },
-			{ menuItem: 'Remix', value: 1 },
-			{ menuItem: 'Mix', value: 2 }
-		];
-
 		return (
 			<Container className="App">
 				{this.state.error ? (
@@ -131,77 +144,40 @@ class App extends Component {
 							}}
 						/>
 					</Segment>
-					<Segment className="App-filters" basic>
-						<Tab
-							panes={sortingPanes}
-							defaultActiveIndex={0}
-							onTabChange={(e, data) =>
-								this.setState({
-									filters: {
-										...this.state.filters,
-										sort_type: data.panes[data.activeIndex].value,
-										page: 1
-									}
-								})}
-							menu={{
-								color: 'teal',
-								inverted: true,
-								attached: false,
-								tabular: false
-							}}
-						/>
 
-						<Tab
-							panes={trackTypePanes}
-							defaultActiveIndex={0}
-							onTabChange={(e, data) => {
-								const { value } = data.panes[data.activeIndex];
-								this.setState({
-									filters: {
-										...this.state.filters,
-										track_type: value,
-										page: 1
-									}
-								});
-							}}
-							menu={{
-								color: 'green',
-								inverted: true,
-								attached: false,
-								tabular: false
-							}}
-						/>
-
-						<Radio
-							onChange={(e, data) => {
-								this.setState({
-									filters: { ...this.state.filters, is_bc: data.checked }
-								});
-							}}
-							label="📻"
-							toggle
-						/>
-
-						<Select
-							onChange={(e, data) =>
-								this.setState({
-									filters: {
-										...this.state.filters,
-										date_range: data.value,
-										page: 1
-									}
-								})}
-							compact
-							placeholder="tracks from"
-							options={[
-								{ value: 2, text: 'Past day' },
-								{ value: 7, text: 'Past week' },
-								{ value: 30, text: 'Past month' },
-								{ value: 365, text: 'Past year' },
-								{ value: -1, text: 'All time' }
-							]}
-						/>
-					</Segment>
+					<FiltersMenu
+						onSortFilterChange={data =>
+							this.setState({
+								filters: {
+									...this.state.filters,
+									sort_type: data.panes[data.activeIndex].value,
+									page: 1
+								}
+							})}
+						onDateRangeFilterChange={data =>
+							this.setState({
+								filters: {
+									...this.state.filters,
+									date_range: data.value,
+									page: 1
+								}
+							})}
+						onIsBCFilterChange={data => {
+							this.setState({
+								filters: { ...this.state.filters, is_bc: data.checked }
+							});
+						}}
+						onTrackTypeFilterChange={data => {
+							const { value } = data.panes[data.activeIndex];
+							this.setState({
+								filters: {
+									...this.state.filters,
+									track_type: value,
+									page: 1
+								}
+							});
+						}}
+					/>
 				</Segment>
 
 				<Segment className="App-feed-container">
@@ -212,9 +188,9 @@ class App extends Component {
 					) : null}
 
 					<Feed tracks={this.state.tracks} />
-					{/* <TableFeed tracks={this.state.tracks} /> */}
 					<Button
 						loading={this.state.loading}
+						disabled={this.state.donePaginating}
 						onClick={() => {
 							this.setState({
 								filters: {
