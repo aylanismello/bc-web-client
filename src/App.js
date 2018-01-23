@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 import axios from 'axios';
 import logo from './logo.png';
 import TableFeed from './table_feed';
+import Feed from './feed';
 import BCSearch from './bc_search';
 import { baseUrl } from './config';
 import './App.css';
@@ -42,7 +43,7 @@ class App extends Component {
 	state = Object.freeze({
 		filters: {
 			sort_type: 'hot',
-			date_range: 7,
+			date_range: 30,
 			page: 1
 		},
 		tracks: [],
@@ -210,7 +211,8 @@ class App extends Component {
 						</Dimmer>
 					) : null}
 
-					<TableFeed tracks={this.state.tracks} />
+					<Feed tracks={this.state.tracks} />
+					{/* <TableFeed tracks={this.state.tracks} /> */}
 					<Button
 						loading={this.state.loading}
 						onClick={() => {
