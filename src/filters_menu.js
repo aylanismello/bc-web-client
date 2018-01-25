@@ -1,5 +1,6 @@
-import React from 'react';
 import { Segment, Tab, Radio, Select, Grid } from 'semantic-ui-react';
+import React from 'react';
+import './FiltersMenu.css';
 
 const sortingPanes = [
 	{ menuItem: 'Hot 🔥', value: 'hot' },
@@ -28,53 +29,52 @@ const FiltersMenu = ({
 	onDateRangeFilterChange
 }) => {
 	return (
-		<Segment className="App-filters" basic>
-			<Grid container columns={4}>
-				<Grid.Column>
-					<Tab
-						panes={sortingPanes}
-						defaultActiveIndex={0}
-						onTabChange={(e, data) => onSortFilterChange(data)}
-						menu={{
-							color: 'teal',
-							inverted: true,
-							attached: false,
-							tabular: false
-						}}
-					/>
-				</Grid.Column>
+		<Segment className="App-filters-container" basic>
+			<div
+				className="App-filters"
+				style={{ display: 'flex', justifyContent: 'space-between' }}
+			>
+				<Tab
+					panes={sortingPanes}
+					defaultActiveIndex={0}
+					onTabChange={(e, data) => onSortFilterChange(data)}
+					menu={{
+						color: 'teal',
+						inverted: true,
+						attached: false,
+						tabular: false,
+						borderless: true
+					}}
+				/>
+				<Tab
+					panes={trackTypePanes}
+					defaultActiveIndex={0}
+					onTabChange={(e, data) => onTrackTypeFilterChange(data)}
+					menu={{
+						color: 'blue',
+						inverted: true,
+						attached: false,
+						tabular: false,
+						borderless: true
+					}}
+				/>
+				<Select
+					onChange={(e, data) => onDateRangeFilterChange(data)}
+					compact
+					placeholder="Past week"
+					options={dateRangeOptions}
+				/>
+			</div>
 
-				<Grid.Column>
-					<Tab
-						panes={trackTypePanes}
-						defaultActiveIndex={0}
-						onTabChange={(e, data) => onTrackTypeFilterChange(data)}
-						menu={{
-							color: 'green',
-							inverted: true,
-							attached: false,
-							tabular: false
-						}}
-					/>
-				</Grid.Column>
+			{/*
 
-				<Grid.Column>
-					<Radio
-						onChange={(e, data) => onIsBCFilterChange(data)}
-						label="📻"
-						toggle
-					/>
-				</Grid.Column>
+			<Radio
+				onChange={(e, data) => onIsBCFilterChange(data)}
+				label="📻"
+				toggle
+			/>
 
-				<Grid.Column>
-					<Select
-						onChange={(e, data) => onDateRangeFilterChange(data)}
-						compact
-						placeholder="Past week"
-						options={dateRangeOptions}
-					/>
-				</Grid.Column>
-			</Grid>
+			*/}
 		</Segment>
 	);
 };

@@ -1,5 +1,17 @@
 import React from 'react';
-import { Item, Label, Popup, Header, Statistic, Icon } from 'semantic-ui-react';
+import {
+	Item,
+	Label,
+	Popup,
+	Button,
+	Dimmer,
+	Statistic,
+	Icon,
+	Loader,
+	Segment,
+	Header,
+	Divider
+} from 'semantic-ui-react';
 import './Feed.css';
 
 const publisherLocationsToString = publisher => {
@@ -33,76 +45,112 @@ const makeBCBadge = track => {
 };
 
 const Feed = ({
-	tracks, playing, togglePlay, playingTrackIdx, playingFiltersChanged
+	tracks,
+	playing,
+	togglePlay,
+	playingTrackIdx,
+	playingFiltersChanged,
+	loading,
+	donePaginating,
+	filters,
+	paginate,
+	columnWidth,
+	children
 }) => {
 	return (
-		<Item.Group divided>
-			{tracks.map((currentTrack, idx) => {
-				const { track, publisher, curators } = currentTrack;
+		<Segment className="App-feed-container">
+			{loading ? (
+				<Dimmer active inverted>
+					<Loader />
+				</Dimmer>
+			) : null}
 
-				if (idx === playingTrackIdx) {
-					debugger;
-				}
-				return (
-					<Item key={track.id}>
-						{/* <Item.Header>
-							{' '}
-							<Header as="h1"> {idx + 1} </Header>{' '}
-						</Item.Header> */}
-						{/* <Item.Image src={track.artwork_url} size="small" /> */}
+			<Header as="h1" textAlign="left">
+				BEST NEW SONGS
+			</Header>
 
-						<div
-							src={track.artwork_url}
-							className="Feed-artwork-play-pause-container"
-							className="ui small image"
-							style={{ position: 'relative' }}
-						>
-							<img src={track.artwork_url} />
-							<Icon
-								name={`${playing && idx === playingTrackIdx && !playingFiltersChanged
-									? 'pause circle'
-									: 'video play'} outline`}
-								className="Feed-play-pause-icon"
-								style={{ position: 'absolute' }}
-								onClick={() => togglePlay(idx)}
-							/>
-						</div>
+			<Divider />
+			{children}
 
-						<Item.Content>
-							<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
-								{track.name}{' '}
-							</Item.Header>
-							<Item.Meta>{publisher[0].name}</Item.Meta>
+			<Item.Group relaxed divided>
+				{tracks.map((currentTrack, idx) => {
+					const { track, publisher, curators } = currentTrack;
 
-							<Item.Header>
-								<Popup
-									trigger={
-										<Statistic className="Feed-selection-count" size="tiny">
-											<Statistic.Value>
-												<Icon name="soundcloud" />
-												{curators.length}
-											</Statistic.Value>
-											<Statistic.Label>Selections</Statistic.Label>
-										</Statistic>
-									}
-									position="top center"
+					return (
+						<Item key={track.id}>
+							<div
+								src={track.artwork_url}
+								className="Feed-artwork-play-pause-container"
+								className="ui small image"
+								style={{ position: 'relative' }}
+							>
+								<img src={track.artwork_url} />
+								<Icon
+									name={`${playing &&
+									idx === playingTrackIdx &&
+									!playingFiltersChanged
+										? 'pause circle'
+										: 'video play'} outline`}
+									className="Feed-play-pause-icon"
+									style={{ position: 'absolute' }}
+									onClick={() => togglePlay(idx)}
+								/>
+							</div>
+
+							<Item.Content>
+								<Item.Header
+									as="a"
+									onClick={() => window.open(track.permalink_url, '_blank')}
 								>
-									{curators.map(curator => curator.name).join(', ')}{' '}
-								</Popup>
-							</Item.Header>
-							<Item.Description>Released {track.created_at_external}</Item.Description>
-							<Item.Extra>
-								{makeBCBadge(track)}
-								{makeTrackTypeBadge(track)}
-								{publisherLocationsToString(publisher[0]) ? (
-									<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
-								) : null}
-							</Item.Extra>
-						</Item.Content>
-					</Item>
-				);
-			})}
-		</Item.Group>
+									{track.name}{' '}
+								</Item.Header>
+								<Item.Meta>{publisher[0].name}</Item.Meta>
+
+								<Item.Header>
+									<Popup
+										trigger={
+											<Statistic className="Feed-selection-count" size="tiny">
+												<Statistic.Value>
+													<Icon name="soundcloud" />
+													{curators.length}
+												</Statistic.Value>
+												<Statistic.Label>Selections</Statistic.Label>
+											</Statistic>
+										}
+										position="top center"
+									>
+										{curators.map(curator => curator.name).join(', ')}{' '}
+									</Popup>
+								</Item.Header>
+								<Item.Description>
+									Released {track.created_at_external}
+								</Item.Description>
+								<Item.Extra>
+									{makeBCBadge(track)}
+									{makeTrackTypeBadge(track)}
+									{publisherLocationsToString(publisher[0]) ? (
+										<Label
+											icon="globe"
+											content={publisherLocationsToString(publisher[0])}
+										/>
+									) : null}
+								</Item.Extra>
+							</Item.Content>
+						</Item>
+					);
+				})}
+			</Item.Group>
+			<Button
+				loading={loading}
+				disabled={donePaginating}
+				onClick={() => {
+					paginate();
+				}}
+			>
+				{' '}
+				More.{' '}
+			</Button>
+		</Segment>
 	);
 };
 

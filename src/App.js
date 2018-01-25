@@ -3,20 +3,17 @@ import {
 	Container,
 	Segment,
 	Image,
-	Tab,
-	Select,
+	Grid,
 	Message,
-	Button,
-	Dimmer,
-	Loader,
-	Radio,
-	Dropdown
+	Header,
+	Responsive
 } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
 import logo from './logo.png';
 import Feed from './feed';
+import RightSideMenu from './right_side_menu';
 import BCSearch from './bc_search';
 import { baseUrl } from './config';
 import FiltersMenu from './filters_menu';
@@ -58,14 +55,17 @@ class App extends Component {
 	});
 
 	componentWillMount() {
-		this.scAudio = new SoundCloudAudio('f17c1d67b83c86194fad2b1948061c9e');
-		this.setState({ playingFilters: this.state.filters })
+		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+		this.setState({ playingFilters: this.state.filters });
 		this.updateTracks(this.state.filters);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
+			this.updateTracks(
+				nextState.filters,
+				nextState.filters.page !== this.state.filters.page
+			);
 		}
 	}
 
@@ -110,44 +110,62 @@ class App extends Component {
 			});
 	}
 
-	render() {
+	renderFeed(columnWidth) {
 		return (
-			<Container className="App">
-				{this.state.error ? (
-					<Message
-						className="App-error"
-						negative
-						onDismiss={() => {
-							this.setState({ error: null });
-						}}
-						header="Sorry, something went wrong!"
-						content={this.state.error}
-					/>
-				) : null}
+			<Grid.Column width={columnWidth}>
+				<Feed
+					columnWidth={columnWidth}
+					tracks={this.state.tracks}
+					playing={this.state.playing}
+					loading={this.state.loading}
+					donePaginating={this.state.donePaginating}
+					paginate={() => {
+						this.setState({
+							filters: {
+								...this.state.filters,
+								page: this.state.filters.page + 1
+							}
+						});
+					}}
+					playingTrackIdx={this.state.playingTrackIdx}
+					playingFiltersChanged={
+						!_.isEqual(this.state.filters, this.state.playingFilters)
+					}
+					togglePlay={trackIdx => {
+						if (this.state.playing && this.state.playingTrackIdx === trackIdx) {
+							this.scAudio.pause();
+							this.setState({ playing: !this.state.playing });
+						} else if (
+							this.state.playing &&
+							this.state.playingTrackIdx !== trackIdx
+						) {
+							this.scAudio.pause();
+							this.scAudio.play({
+								streamUrl: this.state.tracks[trackIdx].track.stream_url,
+								playingFilters: this.state.filters
+							});
+						} else if (
+							!this.state.playing &&
+							this.state.playingTrackIdx === trackIdx
+						) {
+							this.scAudio.play({
+								streamUrl: this.state.tracks[trackIdx].track.stream_url
+							});
+							this.setState({ playing: !this.state.playing });
+						} else {
+							// !this.state.playing && this.state.playingTrackIdx !== trackIdx
+							this.scAudio.play({
+								streamUrl: this.state.tracks[trackIdx].track.stream_url,
+								playingFilters: this.state.filters
+							});
+							this.setState({ playing: !this.state.playing });
+						}
 
-				<Segment
-					className="App-top-nav"
-					style={{
-						backgroundImage: 'linear-gradient(black, gray)'
+						if (this.state.playingTrackIdx !== trackIdx) {
+							this.setState({ playingTrackIdx: trackIdx });
+						}
 					}}
 				>
-					<Segment className="App-logo-segment" basic>
-						<Image src={logo} alt="bc_logo" size="small" />
-						<BCSearch
-							setFilter={({ param, value }) => {
-								const { country, city, ...oldFilters } = this.state.filters;
-
-								if (value === 'reset') {
-									this.setState({ filters: oldFilters });
-								} else {
-									const newFilter = {};
-									newFilter[param] = value;
-									this.setState({ filters: { ...oldFilters, ...newFilter } });
-								}
-							}}
-						/>
-					</Segment>
-
 					<FiltersMenu
 						onSortFilterChange={data =>
 							this.setState({
@@ -181,58 +199,60 @@ class App extends Component {
 							});
 						}}
 					/>
-				</Segment>
+				</Feed>
+			</Grid.Column>
+		);
+	}
 
-				<Segment className="App-feed-container">
-					{this.state.loading ? (
-						<Dimmer active inverted>
-							<Loader />
-						</Dimmer>
-					) : null}
-
-					<Feed
-						tracks={this.state.tracks}
-						playing={this.state.playing}
-						playingTrackIdx={this.state.playingTrackIdx}
-						playingFiltersChanged={!_.isEqual(this.state.filters, this.state.playingFilters)}
-						togglePlay={trackIdx => {
-
-							if (this.state.playing && this.state.playingTrackIdx === trackIdx) {
-								this.scAudio.pause();
-								this.setState({ playing: !this.state.playing });
-							} else if (this.state.playing && this.state.playingTrackIdx !== trackIdx) {
-								this.scAudio.pause();
-								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url, playingFilters: this.state.filters });
-							} else if (!this.state.playing && this.state.playingTrackIdx === trackIdx) {
-								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url });
-								this.setState({ playing: !this.state.playing });
-							} else { // !this.state.playing && this.state.playingTrackIdx !== trackIdx
-								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url, playingFilters: this.state.filters });
-								this.setState({ playing: !this.state.playing });
-							}
-
-
-							if (this.state.playingTrackIdx !== trackIdx) {
-								this.setState({ playingTrackIdx: trackIdx });
-							}
+	render() {
+		return (
+			<Container className="App">
+				{this.state.error ? (
+					<Message
+						className="App-error"
+						negative
+						onDismiss={() => {
+							this.setState({ error: null });
 						}}
+						header="Sorry, something went wrong!"
+						content={this.state.error}
 					/>
-					<Button
-						loading={this.state.loading}
-						disabled={this.state.donePaginating}
-						onClick={() => {
-							this.setState({
-								filters: {
-									...this.state.filters,
-									page: this.state.filters.page + 1
+				) : null}
+
+				<Segment
+					className="App-top-nav"
+					style={{
+						backgroundImage: 'linear-gradient(black, gray)'
+					}}
+				>
+					<Segment className="App-logo-segment" basic>
+						<Image src={logo} alt="bc_logo" size="small" />
+						{/* <BCSearch
+							setFilter={({ param, value }) => {
+								const { country, city, ...oldFilters } = this.state.filters;
+
+								if (value === 'reset') {
+									this.setState({ filters: oldFilters });
+								} else {
+									const newFilter = {};
+									newFilter[param] = value;
+									this.setState({ filters: { ...oldFilters, ...newFilter } });
 								}
-							});
-						}}
-					>
-						{' '}
-						More.{' '}
-					</Button>
+							}}
+						/> */}
+					</Segment>
 				</Segment>
+
+				<Grid>
+					<Responsive minWidth={768}>{this.renderFeed(12)}</Responsive>
+					<Responsive maxWidth={767}>{this.renderFeed(16)}</Responsive>
+
+					<Responsive minWidth={768}>
+						<Grid.Column width={4}>
+							<RightSideMenu />
+						</Grid.Column>
+					</Responsive>
+				</Grid>
 			</Container>
 		);
 	}

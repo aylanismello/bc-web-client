@@ -1,12 +1,12 @@
 .App {
   text-align: center;
 }
-
+/*
 .App-filters {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-}
+} */
 
 .ui.negative.message.App-error {
   position: absolute;
