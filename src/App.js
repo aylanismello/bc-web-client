@@ -14,6 +14,7 @@ import {
 } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
+import SoundCloudAudio from 'soundcloud-audio';
 import logo from './logo.png';
 import Feed from './feed';
 import BCSearch from './bc_search';
@@ -46,6 +47,9 @@ class App extends Component {
 			date_range: 7,
 			page: 1
 		},
+		playingFilters: {},
+		playing: false,
+		playingTrackIdx: undefined,
 		donePaginating: false,
 		tracks: [],
 		error: null,
@@ -54,15 +58,14 @@ class App extends Component {
 	});
 
 	componentWillMount() {
+		this.scAudio = new SoundCloudAudio('f17c1d67b83c86194fad2b1948061c9e');
+		this.setState({ playingFilters: this.state.filters })
 		this.updateTracks(this.state.filters);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(
-				nextState.filters,
-				nextState.filters.page !== this.state.filters.page
-			);
+			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
 		}
 	}
 
@@ -187,7 +190,33 @@ class App extends Component {
 						</Dimmer>
 					) : null}
 
-					<Feed tracks={this.state.tracks} />
+					<Feed
+						tracks={this.state.tracks}
+						playing={this.state.playing}
+						playingTrackIdx={this.state.playingTrackIdx}
+						playingFiltersChanged={!_.isEqual(this.state.filters, this.state.playingFilters)}
+						togglePlay={trackIdx => {
+
+							if (this.state.playing && this.state.playingTrackIdx === trackIdx) {
+								this.scAudio.pause();
+								this.setState({ playing: !this.state.playing });
+							} else if (this.state.playing && this.state.playingTrackIdx !== trackIdx) {
+								this.scAudio.pause();
+								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url, playingFilters: this.state.filters });
+							} else if (!this.state.playing && this.state.playingTrackIdx === trackIdx) {
+								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url });
+								this.setState({ playing: !this.state.playing });
+							} else { // !this.state.playing && this.state.playingTrackIdx !== trackIdx
+								this.scAudio.play({ streamUrl: this.state.tracks[trackIdx].track.stream_url, playingFilters: this.state.filters });
+								this.setState({ playing: !this.state.playing });
+							}
+
+
+							if (this.state.playingTrackIdx !== trackIdx) {
+								this.setState({ playingTrackIdx: trackIdx });
+							}
+						}}
+					/>
 					<Button
 						loading={this.state.loading}
 						disabled={this.state.donePaginating}

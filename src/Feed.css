@@ -9,3 +9,28 @@
   background: whitesmoke;
   opacity: 50%;
 } */
+
+/* i.video.play.outline.icon.Feed-play-pause-icon {
+	color: white;
+	top: 40%;
+	right: 40%;
+	font-size: 40px;
+} */
+
+i.pause.circle.outline.icon.Feed-play-pause-icon {
+	color: white;
+	top: 40%;
+	right: 35%;
+	font-size: 40px;
+}
+
+i.video.play.outline.icon.Feed-play-pause-icon {
+	color: white;
+	top: 40%;
+	right: 35%;
+	font-size: 40px;
+}
+
+.Feed-play-pause-icon:hover {
+	cursor: pointer;
+}
