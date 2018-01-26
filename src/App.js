@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
-import {
-	Container,
-	Segment,
-	Image,
-	Grid,
-	Message,
-	Header,
-	Responsive
-} from 'semantic-ui-react';
+import { Container, Segment, Image, Grid, Message, Responsive } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
 import logo from './logo.png';
 import Feed from './feed';
 import RightSideMenu from './right_side_menu';
-import BCSearch from './bc_search';
 import { baseUrl } from './config';
 import FiltersMenu from './filters_menu';
 import './App.css';
@@ -38,15 +29,19 @@ class App extends Component {
 		return filters;
 	}
 
+	constructor(props) {
+		super(props);
+		this.getTrackById = this.getTrackById.bind(this);
+	}
+
 	state = Object.freeze({
 		filters: {
 			sort_type: 'hot',
 			date_range: 7,
 			page: 1
 		},
-		playingFilters: {},
 		playing: false,
-		playingTrackIdx: undefined,
+		playingTrackId: undefined,
 		donePaginating: false,
 		tracks: [],
 		error: null,
@@ -56,17 +51,19 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
-		this.setState({ playingFilters: this.state.filters });
 		this.updateTracks(this.state.filters);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(
-				nextState.filters,
-				nextState.filters.page !== this.state.filters.page
-			);
+			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
 		}
+	}
+
+	getTrackById(trackId) {
+		return this.state.tracks.filter(({ track }) => {
+			return track.id === trackId;
+		})[0].track;
 	}
 
 	updateTracks(filters, paginate = false) {
@@ -114,7 +111,6 @@ class App extends Component {
 		return (
 			<Grid.Column width={columnWidth}>
 				<Feed
-					columnWidth={columnWidth}
 					tracks={this.state.tracks}
 					playing={this.state.playing}
 					loading={this.state.loading}
@@ -127,42 +123,31 @@ class App extends Component {
 							}
 						});
 					}}
-					playingTrackIdx={this.state.playingTrackIdx}
-					playingFiltersChanged={
-						!_.isEqual(this.state.filters, this.state.playingFilters)
-					}
-					togglePlay={trackIdx => {
-						if (this.state.playing && this.state.playingTrackIdx === trackIdx) {
+					playingTrackId={this.state.playingTrackId}
+					togglePlay={trackId => {
+						if (this.state.playing && this.state.playingTrackId === trackId) {
 							this.scAudio.pause();
 							this.setState({ playing: !this.state.playing });
-						} else if (
-							this.state.playing &&
-							this.state.playingTrackIdx !== trackIdx
-						) {
+						} else if (this.state.playing && this.state.playingTrackId !== trackId) {
 							this.scAudio.pause();
 							this.scAudio.play({
-								streamUrl: this.state.tracks[trackIdx].track.stream_url,
-								playingFilters: this.state.filters
+								streamUrl: this.getTrackById(trackId).stream_url
 							});
-						} else if (
-							!this.state.playing &&
-							this.state.playingTrackIdx === trackIdx
-						) {
+						} else if (!this.state.playing && this.state.playingTrackId === trackId) {
 							this.scAudio.play({
-								streamUrl: this.state.tracks[trackIdx].track.stream_url
+								streamUrl: this.getTrackById(trackId).stream_url
 							});
 							this.setState({ playing: !this.state.playing });
 						} else {
-							// !this.state.playing && this.state.playingTrackIdx !== trackIdx
+							// !this.state.playing && this.state.playingTrackId !== trackId
 							this.scAudio.play({
-								streamUrl: this.state.tracks[trackIdx].track.stream_url,
-								playingFilters: this.state.filters
+								streamUrl: this.getTrackById(trackId).stream_url
 							});
 							this.setState({ playing: !this.state.playing });
 						}
 
-						if (this.state.playingTrackIdx !== trackIdx) {
-							this.setState({ playingTrackIdx: trackIdx });
+						if (this.state.playingTrackId !== trackId) {
+							this.setState({ playingTrackId: trackId });
 						}
 					}}
 				>

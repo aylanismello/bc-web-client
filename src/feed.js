@@ -48,13 +48,11 @@ const Feed = ({
 	tracks,
 	playing,
 	togglePlay,
-	playingTrackIdx,
-	playingFiltersChanged,
+	playingTrackId,
 	loading,
 	donePaginating,
 	filters,
 	paginate,
-	columnWidth,
 	children
 }) => {
 	return (
@@ -73,35 +71,29 @@ const Feed = ({
 			{children}
 
 			<Item.Group relaxed divided>
-				{tracks.map((currentTrack, idx) => {
+				{tracks.map((currentTrack) => {
 					const { track, publisher, curators } = currentTrack;
 
 					return (
 						<Item key={track.id}>
 							<div
 								src={track.artwork_url}
-								className="Feed-artwork-play-pause-container"
-								className="ui small image"
+								className="Feed-artwork-play-pause-container ui small image"
 								style={{ position: 'relative' }}
 							>
 								<img src={track.artwork_url} />
 								<Icon
-									name={`${playing &&
-									idx === playingTrackIdx &&
-									!playingFiltersChanged
+									name={`${playing && track.id === playingTrackId
 										? 'pause circle'
 										: 'video play'} outline`}
 									className="Feed-play-pause-icon"
 									style={{ position: 'absolute' }}
-									onClick={() => togglePlay(idx)}
+									onClick={() => togglePlay(track.id)}
 								/>
 							</div>
 
 							<Item.Content>
-								<Item.Header
-									as="a"
-									onClick={() => window.open(track.permalink_url, '_blank')}
-								>
+								<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
 									{track.name}{' '}
 								</Item.Header>
 								<Item.Meta>{publisher[0].name}</Item.Meta>
@@ -122,17 +114,12 @@ const Feed = ({
 										{curators.map(curator => curator.name).join(', ')}{' '}
 									</Popup>
 								</Item.Header>
-								<Item.Description>
-									Released {track.created_at_external}
-								</Item.Description>
+								<Item.Description>Released {track.created_at_external}</Item.Description>
 								<Item.Extra>
 									{makeBCBadge(track)}
 									{makeTrackTypeBadge(track)}
 									{publisherLocationsToString(publisher[0]) ? (
-										<Label
-											icon="globe"
-											content={publisherLocationsToString(publisher[0])}
-										/>
+										<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
 									) : null}
 								</Item.Extra>
 							</Item.Content>
