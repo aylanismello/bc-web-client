@@ -202,7 +202,7 @@ class App extends Component {
 									<Feed
 										tracks={this.state.tracks}
 										playing={this.state.playing}
-										loading={this.state.loading}
+										loading={false}
 										donePaginating={this.state.donePaginating}
 										paginate={() => {
 											this.setState({
@@ -248,7 +248,7 @@ class App extends Component {
 							},
 							{
 								menuItem: 'Artists 💃',
-								render: () => <BCUsers tracks={this.state.tracks} />
+								render: () => <BCUsers tracks={this.state.tracks} loading={false} />
 							}
 						]}
 					/>
