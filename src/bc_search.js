@@ -1,15 +1,10 @@
-import _ from 'lodash';
-import faker from 'faker';
 import React, { Component } from 'react';
-import { Search, Grid, Header, Flag } from 'semantic-ui-react';
+import { Search, Container, Grid, Header, Flag } from 'semantic-ui-react';
 import async from 'async';
 import axios from 'axios';
 import { countries, baseUrl } from './config';
 
-
 const url = `${baseUrl}/search/`;
-
-
 
 const flagRenderer = item => <Flag name={item.countryCode} />;
 
@@ -26,9 +21,9 @@ export default class BCSearch extends Component {
 	};
 
 	resetComponent = () => {
-		this.props.setFilter({ value: 'reset' })
+		this.props.setFilter({ value: 'reset' });
 		this.setState({ isLoading: false, results: [], value: '' });
-	}
+	};
 
 	handleResultSelect = (e, { result }) => {
 		if (
@@ -103,37 +98,35 @@ export default class BCSearch extends Component {
 		const { isLoading, value, results } = this.state;
 
 		return (
-			<Grid>
-				<Grid.Column width={8}>
-					<Search
-						category
-						loading={isLoading}
-						placeholder="Search by location!"
-						noResultsMessage="No countries/cities found."
-						onResultSelect={this.handleResultSelect}
-						onSearchChange={this.handleSearchChange}
-						results={results}
-						value={value}
-						resultRenderer={thing => {
-							const countryMatch = countries.filter(country => {
-								return country.name === thing.title || country.alias === thing.title;
-							});
+			<Search
+				category
+				loading={isLoading}
+				aligned="right"
+				textAlign="left"
+				placeholder=""
+				noResultsMessage="No countries/cities found."
+				onResultSelect={this.handleResultSelect}
+				onSearchChange={this.handleSearchChange}
+				results={results}
+				value={value}
+				resultRenderer={thing => {
+					const countryMatch = countries.filter(country => {
+						return country.name === thing.title || country.alias === thing.title;
+					});
 
-							if (countryMatch.length) {
-								return (
-									<span>
-										{' '}
-										<Flag name={countryMatch[0].countryCode} /> {thing.title}{' '}
-									</span>
-								);
-							} else {
-								return <span> {thing.title} </span>;
-							}
-						}}
-						{...this.props}
-					/>
-				</Grid.Column>
-			</Grid>
+					if (countryMatch.length) {
+						return (
+							<span>
+								{' '}
+								<Flag name={countryMatch[0].countryCode} /> {thing.title}{' '}
+							</span>
+						);
+					} else {
+						return <span> {thing.title} </span>;
+					}
+				}}
+				{...this.props}
+			/>
 		);
 	}
 }

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Segment, Image, Grid, Message, Responsive } from 'semantic-ui-react';
+import { Container, Segment, Image, Message, Grid } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
-import logo from './logo.png';
+import logo from './bc_logo.png';
+import BCSearch from './bc_search';
 import Feed from './feed';
-import RightSideMenu from './right_side_menu';
 import { baseUrl } from './config';
 import FiltersMenu from './filters_menu';
 import './App.css';
 
-// const url = process.env.apiUrl || 'http://the-bc-api.herokuapp.com/tracks';
 const url = `${baseUrl}/tracks`;
 
 class App extends Component {
@@ -106,10 +105,39 @@ class App extends Component {
 				this.setState({ error: error.message, loading: false });
 			});
 	}
-
-	renderFeed(columnWidth) {
+	render() {
 		return (
-			<Grid.Column width={columnWidth}>
+			<Container className="App">
+				{this.state.error ? (
+					<Message
+						className="App-error"
+						negative
+						onDismiss={() => {
+							this.setState({ error: null });
+						}}
+						header="Sorry, something went wrong!"
+						content={this.state.error}
+					/>
+				) : null}
+
+				<Segment className="App-top-nav">
+					<div className="App-logo-container">
+						<img src={logo} className="App-logo" />
+					</div>
+					<BCSearch
+						setFilter={({ param, value }) => {
+							const { country, city, ...oldFilters } = this.state.filters;
+
+							if (value === 'reset') {
+								this.setState({ filters: oldFilters });
+							} else {
+								const newFilter = {};
+								newFilter[param] = value;
+								this.setState({ filters: { ...oldFilters, ...newFilter } });
+							}
+						}}
+					/>
+				</Segment>
 				<Feed
 					tracks={this.state.tracks}
 					playing={this.state.playing}
@@ -185,59 +213,6 @@ class App extends Component {
 						}}
 					/>
 				</Feed>
-			</Grid.Column>
-		);
-	}
-
-	render() {
-		return (
-			<Container className="App">
-				{this.state.error ? (
-					<Message
-						className="App-error"
-						negative
-						onDismiss={() => {
-							this.setState({ error: null });
-						}}
-						header="Sorry, something went wrong!"
-						content={this.state.error}
-					/>
-				) : null}
-
-				<Segment
-					className="App-top-nav"
-					style={{
-						backgroundImage: 'linear-gradient(black, gray)'
-					}}
-				>
-					<Segment className="App-logo-segment" basic>
-						<Image src={logo} alt="bc_logo" size="small" />
-						{/* <BCSearch
-							setFilter={({ param, value }) => {
-								const { country, city, ...oldFilters } = this.state.filters;
-
-								if (value === 'reset') {
-									this.setState({ filters: oldFilters });
-								} else {
-									const newFilter = {};
-									newFilter[param] = value;
-									this.setState({ filters: { ...oldFilters, ...newFilter } });
-								}
-							}}
-						/> */}
-					</Segment>
-				</Segment>
-
-				<Grid>
-					<Responsive minWidth={768}>{this.renderFeed(12)}</Responsive>
-					<Responsive maxWidth={767}>{this.renderFeed(16)}</Responsive>
-
-					<Responsive minWidth={768}>
-						<Grid.Column width={4}>
-							<RightSideMenu />
-						</Grid.Column>
-					</Responsive>
-				</Grid>
 			</Container>
 		);
 	}
