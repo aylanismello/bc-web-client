@@ -1,9 +1,10 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import './BCMap.css';
+import { Segment, Image } from 'semantic-ui-react';
 
 import ReactMapboxGl, { Layer, Feature, Popup, StyledPopup } from 'react-mapbox-gl';
 
-const Map = ReactMapboxGl({
+const MapBox = ReactMapboxGl({
 	accessToken:
 		'pk.eyJ1IjoiYnVybmNhcnRlbCIsImEiOiJjamN4MXN0dm4wdjVoMnFvNW5lMHU2NGI1In0.ZV6FeNJa2M1EFtEQegRRyQ'
 });
@@ -23,10 +24,12 @@ class BCMap extends React.Component {
 		map.getCanvas().style.cursor = cursor;
 	}
 
+  // add something here to set track from outside.. maybe have this be set at the App level.
+
 	markerClick(track, { feature }) {
 		this.setState({
 			center: feature.geometry.coordinates,
-			zoom: [14],
+			zoom: [4],
 			track
 		});
 	}
@@ -34,40 +37,50 @@ class BCMap extends React.Component {
 	render() {
 		const { track, zoom, center } = this.state;
 		// const tracksWithFakePosition =
-
 		return (
 			<Segment>
-				<Map
-					style="mapbox://styles/mapbox/dark-v9"
-					zoom={zoom}
-					center={center}
-					containerStyle={{
-						height: '100vh',
-						width: '100vh'
-					}}
-				>
-					<Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
-						{this.props.tracks.map(track => {
-							return (
-								<Feature
-									key={track.track.id}
-									coordinates={track.publisher.position}
-									onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
-									onMouseLeave={this.onToggleHover.bind(this, '')}
-									onClick={this.markerClick.bind(this, track)}
-								/>
-							);
-						})}
+				<div className="BCMap-Container">
+					<MapBox
+						style="mapbox://styles/mapbox/dark-v9"
+						zoom={zoom}
+						dragRotate={false}
+						center={center}
+						containerStyle={{
+							height: '100vh',
+							width: '100vh'
+						}}
+					>
+						<Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
+							{this.props.tracks.map(track => {
+								return (
+									<Feature
+										key={track.track.id}
+										coordinates={track.publisher.position}
+										onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
+										onMouseLeave={this.onToggleHover.bind(this, '')}
+										onClick={this.markerClick.bind(this, track)}
+									/>
+								);
+							})}
+						</Layer>
 
-						{/* {track && (
-							<Popup key={track.id} coordinates={track.position}>
-								<StyledPopup>
-									<div>{track.track.name}</div>
-								</StyledPopup>
+						{track && (
+							<Popup key={track.track.id} coordinates={track.publisher.position}>
+								<div>
+									<span>{track.publisher[0].name} </span>
+								</div>
+								<span>
+									{' '}
+									{track.publisher[0].city} , {track.publisher[0].county}{' '}
+								</span>
+								<Image src={track.publisher[0].avatar_url} />
+								{/* <StyledPopup>
+								<div>{track.track.name}</div>
+							</StyledPopup> */}
 							</Popup>
-						)} */}
-					</Layer>
-				</Map>
+						)}
+					</MapBox>
+				</div>
 			</Segment>
 		);
 	}
