@@ -61,7 +61,7 @@ const FiltersMenu = ({
 				<Select
 					onChange={(e, data) => onDateRangeFilterChange(data)}
 					compact
-					placeholder="Past week"
+					placeholder="Past day"
 					options={dateRangeOptions}
 				/>
 			</div>

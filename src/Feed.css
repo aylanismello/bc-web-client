@@ -1,36 +1,55 @@
-/* .Feed-track-image {
-    position: relative;
+.Feed-artwork-play-pause-container {
+	position: relative;
 }
 
-.Feed-track-ranking {
-  position: absolute;
-  top: 0;
-  left: 3px;
-  background: whitesmoke;
-  opacity: 50%;
-} */
+.Feed-artwork-play-pause-container img {
+	display: block;
+}
 
-/* i.video.play.outline.icon.Feed-play-pause-icon {
+.Feed-play-pause-icon {
 	color: white;
-	top: 40%;
-	right: 40%;
-	font-size: 40px;
-} */
+}
 
 i.pause.circle.outline.icon.Feed-play-pause-icon {
-	color: white;
-	top: 40%;
-	right: 35%;
 	font-size: 40px;
+	top: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	left: 50%;
 }
 
 i.video.play.outline.icon.Feed-play-pause-icon {
-	color: white;
-	top: 40%;
-	right: 35%;
 	font-size: 40px;
+	top: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	left: 50%;
 }
 
 .Feed-play-pause-icon:hover {
 	cursor: pointer;
+}
+
+.Feed-artist-image-container:hover {
+	cursor: pointer;
+}
+
+.Feed-artist-image-container {
+	width: 30px;
+}
+
+.Feed-artist-image {
+	width: 100%;
+	height: auto;
+	border-radius: 100px;
+}
+
+.Feed-artist-info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.ui.relaxed.divided.items>.item {
+	padding: 1.5em 1.5em;
 }

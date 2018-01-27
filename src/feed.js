@@ -10,7 +10,8 @@ import {
 	Loader,
 	Segment,
 	Header,
-	Divider
+	Divider,
+	Image
 } from 'semantic-ui-react';
 import './Feed.css';
 
@@ -56,7 +57,7 @@ const Feed = ({
 	children
 }) => {
 	return (
-		<Segment className="App-feed-container">
+		<Segment>
 			{loading ? (
 				<Dimmer active inverted>
 					<Loader />
@@ -71,15 +72,14 @@ const Feed = ({
 			{children}
 
 			<Item.Group relaxed divided>
-				{tracks.map((currentTrack) => {
+				{tracks.map(currentTrack => {
 					const { track, publisher, curators } = currentTrack;
 
 					return (
-						<Item key={track.id}>
+						<Item key={track.id} className="Feed-track-item">
 							<div
 								src={track.artwork_url}
 								className="Feed-artwork-play-pause-container ui small image"
-								style={{ position: 'relative' }}
 							>
 								<img src={track.artwork_url} />
 								<Icon
@@ -87,7 +87,6 @@ const Feed = ({
 										? 'pause circle'
 										: 'video play'} outline`}
 									className="Feed-play-pause-icon"
-									style={{ position: 'absolute' }}
 									onClick={() => togglePlay(track.id)}
 								/>
 							</div>
@@ -96,7 +95,14 @@ const Feed = ({
 								<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
 									{track.name}{' '}
 								</Item.Header>
-								<Item.Meta>{publisher[0].name}</Item.Meta>
+								<Item.Meta className="Feed-artist-info">
+									<div className="Feed-artist-name">{publisher[0].name}</div>
+									<div className="Feed-artist-image-container">
+										<a href={publisher[0].permalink_url}>
+											<img className="Feed-artist-image" src={publisher[0].avatar_url} />
+										</a>
+									</div>
+								</Item.Meta>
 
 								<Item.Header>
 									<Popup

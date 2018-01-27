@@ -36,7 +36,7 @@ class App extends Component {
 	state = Object.freeze({
 		filters: {
 			sort_type: 'hot',
-			date_range: 7,
+			date_range: 2,
 			page: 1
 		},
 		playing: false,
@@ -122,7 +122,9 @@ class App extends Component {
 
 				<Segment className="App-top-nav">
 					<div className="App-logo-container">
-						<img src={logo} className="App-logo" />
+						<a href="/">
+							<img src={logo} className="App-logo" />
+						</a>
 					</div>
 					<BCSearch
 						setFilter={({ param, value }) => {
