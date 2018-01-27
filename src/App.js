@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Segment, Image, Message, Grid } from 'semantic-ui-react';
+import { Container, Segment, Image, Tab, Message, Grid } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
 import logo from './bc_logo.png';
 import BCSearch from './bc_search';
 import Feed from './feed';
+import BCMap from './bc_map';
 import { baseUrl } from './config';
 import FiltersMenu from './filters_menu';
 import './App.css';
@@ -140,47 +141,8 @@ class App extends Component {
 						}}
 					/>
 				</Segment>
-				<Feed
-					tracks={this.state.tracks}
-					playing={this.state.playing}
-					loading={this.state.loading}
-					donePaginating={this.state.donePaginating}
-					paginate={() => {
-						this.setState({
-							filters: {
-								...this.state.filters,
-								page: this.state.filters.page + 1
-							}
-						});
-					}}
-					playingTrackId={this.state.playingTrackId}
-					togglePlay={trackId => {
-						if (this.state.playing && this.state.playingTrackId === trackId) {
-							this.scAudio.pause();
-							this.setState({ playing: !this.state.playing });
-						} else if (this.state.playing && this.state.playingTrackId !== trackId) {
-							this.scAudio.pause();
-							this.scAudio.play({
-								streamUrl: this.getTrackById(trackId).stream_url
-							});
-						} else if (!this.state.playing && this.state.playingTrackId === trackId) {
-							this.scAudio.play({
-								streamUrl: this.getTrackById(trackId).stream_url
-							});
-							this.setState({ playing: !this.state.playing });
-						} else {
-							// !this.state.playing && this.state.playingTrackId !== trackId
-							this.scAudio.play({
-								streamUrl: this.getTrackById(trackId).stream_url
-							});
-							this.setState({ playing: !this.state.playing });
-						}
 
-						if (this.state.playingTrackId !== trackId) {
-							this.setState({ playingTrackId: trackId });
-						}
-					}}
-				>
+				<Container>
 					<FiltersMenu
 						onSortFilterChange={data =>
 							this.setState({
@@ -214,7 +176,63 @@ class App extends Component {
 							});
 						}}
 					/>
-				</Feed>
+
+					<Tab
+						menu={{ secondary: true, pointing: true }}
+						panes={[
+							{
+								menuItem: 'Track List',
+								render: () => (
+									<Feed
+										tracks={this.state.tracks}
+										playing={this.state.playing}
+										loading={this.state.loading}
+										donePaginating={this.state.donePaginating}
+										paginate={() => {
+											this.setState({
+												filters: {
+													...this.state.filters,
+													page: this.state.filters.page + 1
+												}
+											});
+										}}
+										playingTrackId={this.state.playingTrackId}
+										togglePlay={trackId => {
+											if (this.state.playing && this.state.playingTrackId === trackId) {
+												this.scAudio.pause();
+												this.setState({ playing: !this.state.playing });
+											} else if (this.state.playing && this.state.playingTrackId !== trackId) {
+												this.scAudio.pause();
+												this.scAudio.play({
+													streamUrl: this.getTrackById(trackId).stream_url
+												});
+											} else if (!this.state.playing && this.state.playingTrackId === trackId) {
+												this.scAudio.play({
+													streamUrl: this.getTrackById(trackId).stream_url
+												});
+												this.setState({ playing: !this.state.playing });
+											} else {
+												// !this.state.playing && this.state.playingTrackId !== trackId
+												this.scAudio.play({
+													streamUrl: this.getTrackById(trackId).stream_url
+												});
+												this.setState({ playing: !this.state.playing });
+											}
+
+											if (this.state.playingTrackId !== trackId) {
+												this.setState({ playingTrackId: trackId });
+											}
+										}}
+									/>
+								)
+							},
+							{
+								menuItem: 'Map 🗺',
+								render: () => <BCMap />
+							}
+						]}
+					/>
+				</Container>
 			</Container>
 		);
 	}
