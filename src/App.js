@@ -66,6 +66,17 @@ class App extends Component {
 		})[0].track;
 	}
 
+	tracksWithFakePosition() {
+		return this.state.tracks.map(track => {
+			return {
+				...track,
+				publisher: {
+					...track.publisher,
+					position: [BCMap.getRandomFloat(-50, 50), BCMap.getRandomFloat(-50, 50)]
+				}
+			};
+		});
+	}
 	updateTracks(filters, paginate = false) {
 		this.setState({ loading: true });
 
@@ -228,7 +239,7 @@ class App extends Component {
 							},
 							{
 								menuItem: 'Map 🗺',
-								render: () => <BCMap />
+								render: () => <BCMap tracks={this.tracksWithFakePosition()} />
 							}
 						]}
 					/>
