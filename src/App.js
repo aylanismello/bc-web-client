@@ -7,6 +7,7 @@ import logo from './bc_logo.png';
 import BCSearch from './bc_search';
 import Feed from './feed';
 import BCMap from './bc_map';
+import BCUsers from './bc_users';
 import { baseUrl } from './config';
 import FiltersMenu from './filters_menu';
 import './App.css';
@@ -14,19 +15,19 @@ import './App.css';
 const url = `${baseUrl}/tracks`;
 
 class App extends Component {
-	static formatFilters(filters) {
-		if (filters.date_range === -1 && filters.track_type === -1) {
-			const { date_range, track_type, ...newFilters } = filters;
+	static formatFilters(trackFilters) {
+		if (trackFilters.date_range === -1 && trackFilters.track_type === -1) {
+			const { date_range, track_type, ...newFilters } = trackFilters;
 			return newFilters;
-		} else if (filters.date_range === -1) {
-			const { date_range, ...newFilters } = filters;
+		} else if (trackFilters.date_range === -1) {
+			const { date_range, ...newFilters } = trackFilters;
 			return newFilters;
-		} else if (filters.track_type === -1) {
-			const { track_type, ...newFilters } = filters;
+		} else if (trackFilters.track_type === -1) {
+			const { track_type, ...newFilters } = trackFilters;
 			return newFilters;
 		}
 
-		return filters;
+		return trackFilters;
 	}
 
 	constructor(props) {
@@ -35,11 +36,12 @@ class App extends Component {
 	}
 
 	state = Object.freeze({
-		filters: {
+		trackFilters: {
 			sort_type: 'hot',
 			date_range: 2,
 			page: 1
 		},
+		soundcloudUserFilters: {},
 		playing: false,
 		playingTrackId: undefined,
 		donePaginating: false,
@@ -51,12 +53,15 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
-		this.updateTracks(this.state.filters);
+		this.updateTracks(this.state.trackFilters);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
-		if (!_.isEqual(nextState.filters, this.state.filters)) {
-			this.updateTracks(nextState.filters, nextState.filters.page !== this.state.filters.page);
+		if (!_.isEqual(nextState.trackFilters, this.state.trackFilters)) {
+			this.updateTracks(
+				nextState.trackFilters,
+				nextState.trackFilters.page !== this.state.trackFilters.page
+			);
 		}
 	}
 
@@ -77,11 +82,11 @@ class App extends Component {
 			};
 		});
 	}
-	updateTracks(filters, paginate = false) {
+	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
 		axios
-			.get(url, { params: App.formatFilters(filters) })
+			.get(url, { params: App.formatFilters(trackFilters) })
 			.then(results => {
 				if (paginate) {
 					this.setState({
@@ -140,14 +145,14 @@ class App extends Component {
 					</div>
 					<BCSearch
 						setFilter={({ param, value }) => {
-							const { country, city, ...oldFilters } = this.state.filters;
+							const { country, city, ...oldFilters } = this.state.trackFilters;
 
 							if (value === 'reset') {
-								this.setState({ filters: oldFilters });
+								this.setState({ trackFilters: oldFilters });
 							} else {
 								const newFilter = {};
 								newFilter[param] = value;
-								this.setState({ filters: { ...oldFilters, ...newFilter } });
+								this.setState({ trackFilters: { ...oldFilters, ...newFilter } });
 							}
 						}}
 					/>
@@ -157,30 +162,30 @@ class App extends Component {
 					<FiltersMenu
 						onSortFilterChange={data =>
 							this.setState({
-								filters: {
-									...this.state.filters,
+								trackFilters: {
+									...this.state.trackFilters,
 									sort_type: data.panes[data.activeIndex].value,
 									page: 1
 								}
 							})}
 						onDateRangeFilterChange={data =>
 							this.setState({
-								filters: {
-									...this.state.filters,
+								trackFilters: {
+									...this.state.trackFilters,
 									date_range: data.value,
 									page: 1
 								}
 							})}
 						onIsBCFilterChange={data => {
 							this.setState({
-								filters: { ...this.state.filters, is_bc: data.checked }
+								trackFilters: { ...this.state.trackFilters, is_bc: data.checked }
 							});
 						}}
 						onTrackTypeFilterChange={data => {
 							const { value } = data.panes[data.activeIndex];
 							this.setState({
-								filters: {
-									...this.state.filters,
+								trackFilters: {
+									...this.state.trackFilters,
 									track_type: value,
 									page: 1
 								}
@@ -192,7 +197,7 @@ class App extends Component {
 						menu={{ secondary: true, pointing: true }}
 						panes={[
 							{
-								menuItem: 'Track List',
+								menuItem: 'Tracks ⬆️',
 								render: () => (
 									<Feed
 										tracks={this.state.tracks}
@@ -201,9 +206,9 @@ class App extends Component {
 										donePaginating={this.state.donePaginating}
 										paginate={() => {
 											this.setState({
-												filters: {
-													...this.state.filters,
-													page: this.state.filters.page + 1
+												trackFilters: {
+													...this.state.trackFilters,
+													page: this.state.trackFilters.page + 1
 												}
 											});
 										}}
@@ -240,6 +245,10 @@ class App extends Component {
 							{
 								menuItem: 'Map 🗺',
 								render: () => <BCMap tracks={this.tracksWithFakePosition()} />
+							},
+							{
+								menuItem: 'Artists 💃',
+								render: () => <BCUsers tracks={this.state.tracks} />
 							}
 						]}
 					/>
