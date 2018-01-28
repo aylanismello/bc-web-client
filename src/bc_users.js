@@ -2,22 +2,15 @@ import React from 'react';
 import { Segment, Card, Image, Header, Divider, Dimmer, Loader } from 'semantic-ui-react';
 import './BCUsers.css';
 
-const BCUsers = ({ tracks, loading }) => {
+const BCUsers = ({ tracks }) => {
 	const publishers = tracks.map(({ publisher, track }) => {
 		return { ...publisher[0], trackName: track.name };
 	});
 
-	// publishers = [...new Set(publishers.map(publisher => publisher.id))];
-
 	return (
-		<Segment className="BCUsers-container">
-			{loading ? (
-				<Dimmer active inverted>
-					<Loader />
-				</Dimmer>
-			) : null}
+		<div className="BCUsers-container">
 			<Header as="h1" textAlign="left">
-				BEST NEW ARTISTS
+				BEST ARTISTS
 			</Header>
 
 			<Divider />
@@ -36,7 +29,7 @@ const BCUsers = ({ tracks, loading }) => {
 					);
 				})}
 			</Card.Group>
-		</Segment>
+		</div>
 	);
 };
 

@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Segment, Image, Tab, Message, Grid } from 'semantic-ui-react';
+import {
+	Container,
+	Segment,
+	Image,
+	Tab,
+	Message,
+	Grid
+} from 'semantic-ui-react';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
@@ -9,6 +16,7 @@ import Feed from './feed';
 import BCMap from './bc_map';
 import BCUsers from './bc_users';
 import { baseUrl } from './config';
+import TabbedSegment from './tabbed_segment';
 import FiltersMenu from './filters_menu';
 import './App.css';
 
@@ -77,7 +85,10 @@ class App extends Component {
 				...track,
 				publisher: {
 					...track.publisher,
-					position: [BCMap.getRandomFloat(-50, 50), BCMap.getRandomFloat(-50, 50)]
+					position: [
+						BCMap.getRandomFloat(-50, 50),
+						BCMap.getRandomFloat(-50, 50)
+					]
 				}
 			};
 		});
@@ -152,7 +163,9 @@ class App extends Component {
 							} else {
 								const newFilter = {};
 								newFilter[param] = value;
-								this.setState({ trackFilters: { ...oldFilters, ...newFilter } });
+								this.setState({
+									trackFilters: { ...oldFilters, ...newFilter }
+								});
 							}
 						}}
 					/>
@@ -178,7 +191,10 @@ class App extends Component {
 							})}
 						onIsBCFilterChange={data => {
 							this.setState({
-								trackFilters: { ...this.state.trackFilters, is_bc: data.checked }
+								trackFilters: {
+									...this.state.trackFilters,
+									is_bc: data.checked
+								}
 							});
 						}}
 						onTrackTypeFilterChange={data => {
@@ -199,47 +215,58 @@ class App extends Component {
 							{
 								menuItem: 'Tracks ⬆️',
 								render: () => (
-									<Feed
-										tracks={this.state.tracks}
-										playing={this.state.playing}
-										loading={false}
-										donePaginating={this.state.donePaginating}
-										paginate={() => {
-											this.setState({
-												trackFilters: {
-													...this.state.trackFilters,
-													page: this.state.trackFilters.page + 1
+									<TabbedSegment loading={this.state.loading}>
+										<Feed
+											tracks={this.state.tracks}
+											playing={this.state.playing}
+											loading={this.state.loading}
+											donePaginating={this.state.donePaginating}
+											paginate={() => {
+												this.setState({
+													trackFilters: {
+														...this.state.trackFilters,
+														page: this.state.trackFilters.page + 1
+													}
+												});
+											}}
+											playingTrackId={this.state.playingTrackId}
+											togglePlay={trackId => {
+												if (
+													this.state.playing &&
+													this.state.playingTrackId === trackId
+												) {
+													this.scAudio.pause();
+													this.setState({ playing: !this.state.playing });
+												} else if (
+													this.state.playing &&
+													this.state.playingTrackId !== trackId
+												) {
+													this.scAudio.pause();
+													this.scAudio.play({
+														streamUrl: this.getTrackById(trackId).stream_url
+													});
+												} else if (
+													!this.state.playing &&
+													this.state.playingTrackId === trackId
+												) {
+													this.scAudio.play({
+														streamUrl: this.getTrackById(trackId).stream_url
+													});
+													this.setState({ playing: !this.state.playing });
+												} else {
+													// !this.state.playing && this.state.playingTrackId !== trackId
+													this.scAudio.play({
+														streamUrl: this.getTrackById(trackId).stream_url
+													});
+													this.setState({ playing: !this.state.playing });
 												}
-											});
-										}}
-										playingTrackId={this.state.playingTrackId}
-										togglePlay={trackId => {
-											if (this.state.playing && this.state.playingTrackId === trackId) {
-												this.scAudio.pause();
-												this.setState({ playing: !this.state.playing });
-											} else if (this.state.playing && this.state.playingTrackId !== trackId) {
-												this.scAudio.pause();
-												this.scAudio.play({
-													streamUrl: this.getTrackById(trackId).stream_url
-												});
-											} else if (!this.state.playing && this.state.playingTrackId === trackId) {
-												this.scAudio.play({
-													streamUrl: this.getTrackById(trackId).stream_url
-												});
-												this.setState({ playing: !this.state.playing });
-											} else {
-												// !this.state.playing && this.state.playingTrackId !== trackId
-												this.scAudio.play({
-													streamUrl: this.getTrackById(trackId).stream_url
-												});
-												this.setState({ playing: !this.state.playing });
-											}
 
-											if (this.state.playingTrackId !== trackId) {
-												this.setState({ playingTrackId: trackId });
-											}
-										}}
-									/>
+												if (this.state.playingTrackId !== trackId) {
+													this.setState({ playingTrackId: trackId });
+												}
+											}}
+										/>
+									</TabbedSegment>
 								)
 							},
 							{
@@ -248,7 +275,11 @@ class App extends Component {
 							},
 							{
 								menuItem: 'Artists 💃',
-								render: () => <BCUsers tracks={this.state.tracks} loading={false} />
+								render: () => (
+									<TabbedSegment loading={this.state.loading}>
+										<BCUsers tracks={this.state.tracks} />
+									</TabbedSegment>
+								)
 							}
 						]}
 					/>

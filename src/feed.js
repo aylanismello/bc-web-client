@@ -4,14 +4,10 @@ import {
 	Label,
 	Popup,
 	Button,
-	Dimmer,
 	Statistic,
 	Icon,
-	Loader,
-	Segment,
 	Header,
-	Divider,
-	Image
+	Divider
 } from 'semantic-ui-react';
 import './Feed.css';
 
@@ -57,15 +53,9 @@ const Feed = ({
 	children
 }) => {
 	return (
-		<Segment>
-			{loading ? (
-				<Dimmer active inverted>
-					<Loader />
-				</Dimmer>
-			) : null}
-
+		<div className="Feed-container">
 			<Header as="h1" textAlign="left">
-				BEST NEW SONGS
+				BEST TRACKS
 			</Header>
 
 			<Divider />
@@ -92,14 +82,20 @@ const Feed = ({
 							</div>
 
 							<Item.Content>
-								<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
+								<Item.Header
+									as="a"
+									onClick={() => window.open(track.permalink_url, '_blank')}
+								>
 									{track.name}{' '}
 								</Item.Header>
 								<Item.Meta className="Feed-artist-info">
 									<div className="Feed-artist-name">{publisher[0].name}</div>
 									<div className="Feed-artist-image-container">
 										<a href={publisher[0].permalink_url}>
-											<img className="Feed-artist-image" src={publisher[0].avatar_url} />
+											<img
+												className="Feed-artist-image"
+												src={publisher[0].avatar_url}
+											/>
 										</a>
 									</div>
 								</Item.Meta>
@@ -120,12 +116,17 @@ const Feed = ({
 										{curators.map(curator => curator.name).join(', ')}{' '}
 									</Popup>
 								</Item.Header>
-								<Item.Description>Released {track.created_at_external}</Item.Description>
+								<Item.Description>
+									Released {track.created_at_external}
+								</Item.Description>
 								<Item.Extra>
 									{makeBCBadge(track)}
 									{makeTrackTypeBadge(track)}
 									{publisherLocationsToString(publisher[0]) ? (
-										<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
+										<Label
+											icon="globe"
+											content={publisherLocationsToString(publisher[0])}
+										/>
 									) : null}
 								</Item.Extra>
 							</Item.Content>
@@ -143,7 +144,7 @@ const Feed = ({
 				{' '}
 				More.{' '}
 			</Button>
-		</Segment>
+		</div>
 	);
 };
 
