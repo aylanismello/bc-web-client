@@ -46,7 +46,7 @@ class App extends Component {
 	state = Object.freeze({
 		trackFilters: {
 			sort_type: 'hot',
-			date_range: 2,
+			date_range: 7,
 			page: 1
 		},
 		soundcloudUserFilters: {},
