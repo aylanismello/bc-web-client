@@ -3,13 +3,13 @@ import { Dimmer, Loader, Segment, Header } from 'semantic-ui-react';
 
 import './TabbedSegment.css';
 
-const TabbedSegment = ({ loading, children }) => {
+const TabbedSegment = ({ loading, children, firstRequestMade }) => {
 	return (
 		<Dimmer.Dimmable as={Segment} dimmed={loading}>
 			<Dimmer active={loading} inverted>
 				<Loader> Loading </Loader>
 			</Dimmer>
-			{children.props.tracks.length > 0 ? (
+			{children.props.tracks.length > 0 || !firstRequestMade ? (
 				children
 			) : (
 				<div className="TabbedSegment-Error-Container">

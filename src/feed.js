@@ -55,7 +55,7 @@ const Feed = ({
 	return (
 		<div className="Feed-container">
 			<Header as="h1" textAlign="left">
-				BEST TRACKS
+				CURATED TRACKS
 			</Header>
 
 			<Divider />

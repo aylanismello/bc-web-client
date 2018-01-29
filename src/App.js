@@ -56,12 +56,16 @@ class App extends Component {
 		tracks: [],
 		error: null,
 		loading: false,
-		unsplashPhoto: null
+		unsplashPhoto: null,
+		firstRequestMade: false
 	});
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
 		this.updateTracks(this.state.trackFilters);
+		setTimeout(() => {
+			this.setState({ firstRequestMade: true });
+		}, 500);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -199,13 +203,26 @@ class App extends Component {
 						}}
 						onTrackTypeFilterChange={data => {
 							const { value } = data.panes[data.activeIndex];
-							this.setState({
-								trackFilters: {
-									...this.state.trackFilters,
-									track_type: value,
-									page: 1
-								}
-							});
+							if (value === 'is_bc') {
+								this.setState({
+									trackFilters: {
+										...this.state.trackFilters,
+										// reset trackType to be any, which is -1
+										track_type: -1,
+										page: 1,
+										is_bc: true
+									}
+								});
+							} else {
+								this.setState({
+									trackFilters: {
+										...this.state.trackFilters,
+										track_type: value,
+										page: 1,
+										is_bc: false
+									}
+								});
+							}
 						}}
 					/>
 
@@ -215,7 +232,10 @@ class App extends Component {
 							{
 								menuItem: 'Tracks ⬆️',
 								render: () => (
-									<TabbedSegment loading={this.state.loading}>
+									<TabbedSegment
+										loading={this.state.loading}
+										firstRequestMade={this.state.firstRequestMade}
+									>
 										<Feed
 											tracks={this.state.tracks}
 											playing={this.state.playing}
@@ -276,7 +296,10 @@ class App extends Component {
 							{
 								menuItem: 'Artists 💃',
 								render: () => (
-									<TabbedSegment loading={this.state.loading}>
+									<TabbedSegment
+										loading={this.state.loading}
+										firstRequestMade={this.state.firstRequestMade}
+									>
 										<BCUsers tracks={this.state.tracks} />
 									</TabbedSegment>
 								)

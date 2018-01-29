@@ -10,7 +10,7 @@ const BCUsers = ({ tracks }) => {
 	return (
 		<div className="BCUsers-container">
 			<Header as="h1" textAlign="left">
-				BEST ARTISTS
+				CURATED ARTISTS
 			</Header>
 
 			<Divider />

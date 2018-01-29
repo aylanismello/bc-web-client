@@ -5,13 +5,15 @@ import './FiltersMenu.css';
 const sortingPanes = [
 	{ menuItem: 'Hot 🔥', value: 'hot' },
 	{ menuItem: 'Latest 🚀', value: 'latest' },
-	{ menuItem: 'Top 💯', value: 'top' }
+	{ menuItem: 'Top 💯', value: 'top' },
+	{ menuItem: 'Shuffle 🔀', value: 'random' }
 ];
 
 const trackTypePanes = [
-	{ menuItem: 'Either', value: -1 },
+	{ menuItem: 'Any', value: -1 },
 	{ menuItem: 'Remix', value: 1 },
-	{ menuItem: 'Mix', value: 2 }
+	{ menuItem: 'Mix', value: 2 },
+	{ menuItem: 'On BC Radio', value: 'is_bc' }
 ];
 
 const dateRangeOptions = [
