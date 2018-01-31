@@ -3,8 +3,11 @@ import {
 	Container,
 	Segment,
 	Image,
+	Menu,
 	Tab,
+	Sidebar,
 	Message,
+	Icon,
 	Grid
 } from 'semantic-ui-react';
 import * as _ from 'lodash';
@@ -57,7 +60,8 @@ class App extends Component {
 		error: null,
 		loading: false,
 		unsplashPhoto: null,
-		firstRequestMade: false
+		firstRequestMade: false,
+		sidebarVisible: false
 	});
 
 	componentWillMount() {
@@ -89,10 +93,7 @@ class App extends Component {
 				...track,
 				publisher: {
 					...track.publisher,
-					position: [
-						BCMap.getRandomFloat(-50, 50),
-						BCMap.getRandomFloat(-50, 50)
-					]
+					position: [BCMap.getRandomFloat(-50, 50), BCMap.getRandomFloat(-50, 50)]
 				}
 			};
 		});
@@ -125,6 +126,15 @@ class App extends Component {
 			});
 	}
 
+	toggleSidebar(options = {}) {
+		const { clickedOutsideMenu } = options;
+		if (clickedOutsideMenu && this.state.sidebarVisible) {
+			this.setState({ sidebarVisible: false });
+		} else if (!clickedOutsideMenu) {
+			this.setState({ sidebarVisible: !this.state.sidebarVisible });
+		}
+	}
+
 	checkForNextPagination(next_href) {
 		axios
 			.get(next_href)
@@ -139,175 +149,198 @@ class App extends Component {
 	}
 	render() {
 		return (
-			<Container className="App">
-				{this.state.error ? (
-					<Message
-						className="App-error"
-						negative
-						onDismiss={() => {
-							this.setState({ error: null });
-						}}
-						header="Sorry, something went wrong!"
-						content={this.state.error}
-					/>
-				) : null}
+			<Sidebar.Pushable as={Container} className="App">
+				<Sidebar
+					as={Menu}
+					animation="overlay"
+					width="thin"
+					visible={this.state.sidebarVisible}
+					icon="labeled"
+					vertical
+				>
+					<Menu.Item name="home">
+						<Icon name="home" />
+						Home
+					</Menu.Item>
+					<Menu.Item name="gamepad">
+						<Icon name="gamepad" />
+						Games
+					</Menu.Item>
+					<Menu.Item name="camera">
+						<Icon name="camera" />
+						Channels
+					</Menu.Item>
+				</Sidebar>
+				<Sidebar.Pusher onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}>
+					{this.state.error ? (
+						<Message
+							className="App-error"
+							negative
+							onDismiss={() => {
+								this.setState({ error: null });
+							}}
+							header="Sorry, something went wrong!"
+							content={this.state.error}
+						/>
+					) : null}
 
-				<Segment className="App-top-nav">
-					<div className="App-logo-container">
-						<a href="/">
-							<img src={logo} className="App-logo" />
-						</a>
-					</div>
-					<BCSearch
-						setFilter={({ param, value }) => {
-							const { country, city, ...oldFilters } = this.state.trackFilters;
+					<Segment className="App-top-nav">
+						<Icon
+							name="content"
+							size="big"
+							color="blue"
+							className="App-sidebar-button"
+							onClick={() => this.toggleSidebar()}
+						/>
 
-							if (value === 'reset') {
-								this.setState({ trackFilters: oldFilters });
-							} else {
-								const newFilter = {};
-								newFilter[param] = value;
-								this.setState({
-									trackFilters: { ...oldFilters, ...newFilter }
-								});
-							}
-						}}
-					/>
-				</Segment>
+						<div className="App-logo-container">
+							<a href="/">
+								<img src={logo} className="App-logo" />
+							</a>
+						</div>
 
-				<Container>
-					<FiltersMenu
-						onSortFilterChange={data =>
-							this.setState({
-								trackFilters: {
-									...this.state.trackFilters,
-									sort_type: data.panes[data.activeIndex].value,
-									page: 1
+						<BCSearch
+							setFilter={({ param, value }) => {
+								const { country, city, ...oldFilters } = this.state.trackFilters;
+
+								if (value === 'reset') {
+									this.setState({ trackFilters: oldFilters });
+								} else {
+									const newFilter = {};
+									newFilter[param] = value;
+									this.setState({
+										trackFilters: { ...oldFilters, ...newFilter }
+									});
 								}
-							})}
-						onDateRangeFilterChange={data =>
-							this.setState({
-								trackFilters: {
-									...this.state.trackFilters,
-									date_range: data.value,
-									page: 1
-								}
-							})}
-						onIsBCFilterChange={data => {
-							this.setState({
-								trackFilters: {
-									...this.state.trackFilters,
-									is_bc: data.checked
-								}
-							});
-						}}
-						onTrackTypeFilterChange={data => {
-							const { value } = data.panes[data.activeIndex];
-							if (value === 'is_bc') {
-								this.setState({
-									trackFilters: {
-										...this.state.trackFilters,
-										// reset trackType to be any, which is -1
-										track_type: -1,
-										page: 1,
-										is_bc: true
-									}
-								});
-							} else {
+							}}
+						/>
+					</Segment>
+
+					<Container>
+						<FiltersMenu
+							onSortFilterChange={data =>
 								this.setState({
 									trackFilters: {
 										...this.state.trackFilters,
-										track_type: value,
-										page: 1,
-										is_bc: false
+										sort_type: data.panes[data.activeIndex].value,
+										page: 1
+									}
+								})}
+							onDateRangeFilterChange={data =>
+								this.setState({
+									trackFilters: {
+										...this.state.trackFilters,
+										date_range: data.value,
+										page: 1
+									}
+								})}
+							onIsBCFilterChange={data => {
+								this.setState({
+									trackFilters: {
+										...this.state.trackFilters,
+										is_bc: data.checked
 									}
 								});
-							}
-						}}
-					/>
+							}}
+							onTrackTypeFilterChange={data => {
+								const { value } = data.panes[data.activeIndex];
+								if (value === 'is_bc') {
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											// reset trackType to be any, which is -1
+											track_type: -1,
+											page: 1,
+											is_bc: true
+										}
+									});
+								} else {
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											track_type: value,
+											page: 1,
+											is_bc: false
+										}
+									});
+								}
+							}}
+						/>
 
-					<Tab
-						menu={{ secondary: true, pointing: true }}
-						panes={[
-							{
-								menuItem: 'Tracks ⬆️',
-								render: () => (
-									<TabbedSegment
-										loading={this.state.loading}
-										firstRequestMade={this.state.firstRequestMade}
-									>
-										<Feed
-											tracks={this.state.tracks}
-											playing={this.state.playing}
+						<Tab
+							menu={{ secondary: true, pointing: true }}
+							panes={[
+								{
+									menuItem: 'Tracks ⬆️',
+									render: () => (
+										<TabbedSegment
 											loading={this.state.loading}
-											donePaginating={this.state.donePaginating}
-											paginate={() => {
-												this.setState({
-													trackFilters: {
-														...this.state.trackFilters,
-														page: this.state.trackFilters.page + 1
+											firstRequestMade={this.state.firstRequestMade}
+										>
+											<Feed
+												tracks={this.state.tracks}
+												playing={this.state.playing}
+												loading={this.state.loading}
+												donePaginating={this.state.donePaginating}
+												paginate={() => {
+													this.setState({
+														trackFilters: {
+															...this.state.trackFilters,
+															page: this.state.trackFilters.page + 1
+														}
+													});
+												}}
+												playingTrackId={this.state.playingTrackId}
+												togglePlay={trackId => {
+													if (this.state.playing && this.state.playingTrackId === trackId) {
+														this.scAudio.pause();
+														this.setState({ playing: !this.state.playing });
+													} else if (this.state.playing && this.state.playingTrackId !== trackId) {
+														this.scAudio.pause();
+														this.scAudio.play({
+															streamUrl: this.getTrackById(trackId).stream_url
+														});
+													} else if (!this.state.playing && this.state.playingTrackId === trackId) {
+														this.scAudio.play({
+															streamUrl: this.getTrackById(trackId).stream_url
+														});
+														this.setState({ playing: !this.state.playing });
+													} else {
+														// !this.state.playing && this.state.playingTrackId !== trackId
+														this.scAudio.play({
+															streamUrl: this.getTrackById(trackId).stream_url
+														});
+														this.setState({ playing: !this.state.playing });
 													}
-												});
-											}}
-											playingTrackId={this.state.playingTrackId}
-											togglePlay={trackId => {
-												if (
-													this.state.playing &&
-													this.state.playingTrackId === trackId
-												) {
-													this.scAudio.pause();
-													this.setState({ playing: !this.state.playing });
-												} else if (
-													this.state.playing &&
-													this.state.playingTrackId !== trackId
-												) {
-													this.scAudio.pause();
-													this.scAudio.play({
-														streamUrl: this.getTrackById(trackId).stream_url
-													});
-												} else if (
-													!this.state.playing &&
-													this.state.playingTrackId === trackId
-												) {
-													this.scAudio.play({
-														streamUrl: this.getTrackById(trackId).stream_url
-													});
-													this.setState({ playing: !this.state.playing });
-												} else {
-													// !this.state.playing && this.state.playingTrackId !== trackId
-													this.scAudio.play({
-														streamUrl: this.getTrackById(trackId).stream_url
-													});
-													this.setState({ playing: !this.state.playing });
-												}
 
-												if (this.state.playingTrackId !== trackId) {
-													this.setState({ playingTrackId: trackId });
-												}
-											}}
-										/>
-									</TabbedSegment>
-								)
-							},
-							{
-								menuItem: 'Map 🗺',
-								render: () => <BCMap tracks={this.tracksWithFakePosition()} />
-							},
-							{
-								menuItem: 'Artists 💃',
-								render: () => (
-									<TabbedSegment
-										loading={this.state.loading}
-										firstRequestMade={this.state.firstRequestMade}
-									>
-										<BCUsers tracks={this.state.tracks} />
-									</TabbedSegment>
-								)
-							}
-						]}
-					/>
-				</Container>
-			</Container>
+													if (this.state.playingTrackId !== trackId) {
+														this.setState({ playingTrackId: trackId });
+													}
+												}}
+											/>
+										</TabbedSegment>
+									)
+								},
+								{
+									menuItem: 'Map 🗺',
+									render: () => <BCMap tracks={this.tracksWithFakePosition()} />
+								},
+								{
+									menuItem: 'Artists 💃',
+									render: () => (
+										<TabbedSegment
+											loading={this.state.loading}
+											firstRequestMade={this.state.firstRequestMade}
+										>
+											<BCUsers tracks={this.state.tracks} />
+										</TabbedSegment>
+									)
+								}
+							]}
+						/>
+					</Container>
+				</Sidebar.Pusher>
+			</Sidebar.Pushable>
 		);
 	}
 }

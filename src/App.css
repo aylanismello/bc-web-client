@@ -6,6 +6,10 @@
   cursor: pointer;
 }
 
+.App-sidebar-button:hover {
+  cursor: pointer;
+}
+
 
 .ui.negative.message.App-error {
   position: absolute;
