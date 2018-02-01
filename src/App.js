@@ -19,6 +19,7 @@ import Feed from './feed';
 import BCMap from './bc_map';
 import BCUsers from './bc_users';
 import { baseUrl } from './config';
+import SideMenu from './side_menu';
 import TabbedSegment from './tabbed_segment';
 import FiltersMenu from './filters_menu';
 import './App.css';
@@ -93,7 +94,10 @@ class App extends Component {
 				...track,
 				publisher: {
 					...track.publisher,
-					position: [BCMap.getRandomFloat(-50, 50), BCMap.getRandomFloat(-50, 50)]
+					position: [
+						BCMap.getRandomFloat(-50, 50),
+						BCMap.getRandomFloat(-50, 50)
+					]
 				}
 			};
 		});
@@ -149,42 +153,13 @@ class App extends Component {
 	}
 	render() {
 		return (
-			<Sidebar.Pushable as={Container} className="App">
-				<Sidebar
-					as={Menu}
-					animation="overlay"
-					width="thin"
-					visible={this.state.sidebarVisible}
-					icon="labeled"
-					vertical
-				>
-					<Menu.Item name="home">
-						<Icon name="home" />
-						Home
-					</Menu.Item>
-					<Menu.Item name="gamepad">
-						<Icon name="gamepad" />
-						Games
-					</Menu.Item>
-					<Menu.Item name="camera">
-						<Icon name="camera" />
-						Channels
-					</Menu.Item>
-				</Sidebar>
-				<Sidebar.Pusher onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}>
-					{this.state.error ? (
-						<Message
-							className="App-error"
-							negative
-							onDismiss={() => {
-								this.setState({ error: null });
-							}}
-							header="Sorry, something went wrong!"
-							content={this.state.error}
-						/>
-					) : null}
+			<div className="App-container">
+				<Sidebar.Pushable className="App">
 
-					<Segment className="App-top-nav">
+					<Segment
+						className="App-top-nav"
+						onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+					>
 						<Icon
 							name="content"
 							size="big"
@@ -201,7 +176,11 @@ class App extends Component {
 
 						<BCSearch
 							setFilter={({ param, value }) => {
-								const { country, city, ...oldFilters } = this.state.trackFilters;
+								const {
+									country,
+									city,
+									...oldFilters
+								} = this.state.trackFilters;
 
 								if (value === 'reset') {
 									this.setState({ trackFilters: oldFilters });
@@ -215,132 +194,162 @@ class App extends Component {
 							}}
 						/>
 					</Segment>
+					<SideMenu visible={this.state.sidebarVisible} />
 
-					<Container>
-						<FiltersMenu
-							onSortFilterChange={data =>
-								this.setState({
-									trackFilters: {
-										...this.state.trackFilters,
-										sort_type: data.panes[data.activeIndex].value,
-										page: 1
-									}
-								})}
-							onDateRangeFilterChange={data =>
-								this.setState({
-									trackFilters: {
-										...this.state.trackFilters,
-										date_range: data.value,
-										page: 1
-									}
-								})}
-							onIsBCFilterChange={data => {
-								this.setState({
-									trackFilters: {
-										...this.state.trackFilters,
-										is_bc: data.checked
-									}
-								});
-							}}
-							onTrackTypeFilterChange={data => {
-								const { value } = data.panes[data.activeIndex];
-								if (value === 'is_bc') {
+					<Sidebar.Pusher
+						onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+						as={Container}
+					>
+
+						{this.state.error ? (
+							<Message
+								className="App-error"
+								negative
+								onDismiss={() => {
+									this.setState({ error: null });
+								}}
+								header="Sorry, something went wrong!"
+								content={this.state.error}
+							/>
+						) : null}
+
+						<Container>
+							<FiltersMenu
+								onSortFilterChange={data =>
 									this.setState({
 										trackFilters: {
 											...this.state.trackFilters,
-											// reset trackType to be any, which is -1
-											track_type: -1,
-											page: 1,
-											is_bc: true
+											sort_type: data.panes[data.activeIndex].value,
+											page: 1
 										}
-									});
-								} else {
+									})}
+								onDateRangeFilterChange={data =>
 									this.setState({
 										trackFilters: {
 											...this.state.trackFilters,
-											track_type: value,
-											page: 1,
-											is_bc: false
+											date_range: data.value,
+											page: 1
+										}
+									})}
+								onIsBCFilterChange={data => {
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											is_bc: data.checked
 										}
 									});
-								}
-							}}
-						/>
+								}}
+								onTrackTypeFilterChange={data => {
+									const { value } = data.panes[data.activeIndex];
+									if (value === 'is_bc') {
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												// reset trackType to be any, which is -1
+												track_type: -1,
+												page: 1,
+												is_bc: true
+											}
+										});
+									} else {
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												track_type: value,
+												page: 1,
+												is_bc: false
+											}
+										});
+									}
+								}}
+							/>
 
-						<Tab
-							menu={{ secondary: true, pointing: true }}
-							panes={[
-								{
-									menuItem: 'Tracks ⬆️',
-									render: () => (
-										<TabbedSegment
-											loading={this.state.loading}
-											firstRequestMade={this.state.firstRequestMade}
-										>
-											<Feed
-												tracks={this.state.tracks}
-												playing={this.state.playing}
+							<Tab
+								menu={{ secondary: true, pointing: true }}
+								panes={[
+									{
+										menuItem: 'Tracks ⬆️',
+										render: () => (
+											<TabbedSegment
 												loading={this.state.loading}
-												donePaginating={this.state.donePaginating}
-												paginate={() => {
-													this.setState({
-														trackFilters: {
-															...this.state.trackFilters,
-															page: this.state.trackFilters.page + 1
+												firstRequestMade={this.state.firstRequestMade}
+											>
+												<Feed
+													tracks={this.state.tracks}
+													playing={this.state.playing}
+													loading={this.state.loading}
+													donePaginating={this.state.donePaginating}
+													paginate={() => {
+														this.setState({
+															trackFilters: {
+																...this.state.trackFilters,
+																page: this.state.trackFilters.page + 1
+															}
+														});
+													}}
+													playingTrackId={this.state.playingTrackId}
+													togglePlay={trackId => {
+														if (
+															this.state.playing &&
+															this.state.playingTrackId === trackId
+														) {
+															this.scAudio.pause();
+															this.setState({ playing: !this.state.playing });
+														} else if (
+															this.state.playing &&
+															this.state.playingTrackId !== trackId
+														) {
+															this.scAudio.pause();
+															this.scAudio.play({
+																streamUrl: this.getTrackById(trackId).stream_url
+															});
+														} else if (
+															!this.state.playing &&
+															this.state.playingTrackId === trackId
+														) {
+															this.scAudio.play({
+																streamUrl: this.getTrackById(trackId).stream_url
+															});
+															this.setState({ playing: !this.state.playing });
+														} else {
+															// !this.state.playing && this.state.playingTrackId !== trackId
+															this.scAudio.play({
+																streamUrl: this.getTrackById(trackId).stream_url
+															});
+															this.setState({ playing: !this.state.playing });
 														}
-													});
-												}}
-												playingTrackId={this.state.playingTrackId}
-												togglePlay={trackId => {
-													if (this.state.playing && this.state.playingTrackId === trackId) {
-														this.scAudio.pause();
-														this.setState({ playing: !this.state.playing });
-													} else if (this.state.playing && this.state.playingTrackId !== trackId) {
-														this.scAudio.pause();
-														this.scAudio.play({
-															streamUrl: this.getTrackById(trackId).stream_url
-														});
-													} else if (!this.state.playing && this.state.playingTrackId === trackId) {
-														this.scAudio.play({
-															streamUrl: this.getTrackById(trackId).stream_url
-														});
-														this.setState({ playing: !this.state.playing });
-													} else {
-														// !this.state.playing && this.state.playingTrackId !== trackId
-														this.scAudio.play({
-															streamUrl: this.getTrackById(trackId).stream_url
-														});
-														this.setState({ playing: !this.state.playing });
-													}
 
-													if (this.state.playingTrackId !== trackId) {
-														this.setState({ playingTrackId: trackId });
-													}
-												}}
-											/>
-										</TabbedSegment>
-									)
-								},
-								{
-									menuItem: 'Map 🗺',
-									render: () => <BCMap tracks={this.tracksWithFakePosition()} />
-								},
-								{
-									menuItem: 'Artists 💃',
-									render: () => (
-										<TabbedSegment
-											loading={this.state.loading}
-											firstRequestMade={this.state.firstRequestMade}
-										>
-											<BCUsers tracks={this.state.tracks} />
-										</TabbedSegment>
-									)
-								}
-							]}
-						/>
-					</Container>
-				</Sidebar.Pusher>
-			</Sidebar.Pushable>
+														if (this.state.playingTrackId !== trackId) {
+															this.setState({ playingTrackId: trackId });
+														}
+													}}
+												/>
+											</TabbedSegment>
+										)
+									},
+									{
+										menuItem: 'Map 🗺',
+										render: () => (
+											<BCMap tracks={this.tracksWithFakePosition()} />
+										)
+									},
+									{
+										menuItem: 'Artists 💃',
+										render: () => (
+											<TabbedSegment
+												loading={this.state.loading}
+												firstRequestMade={this.state.firstRequestMade}
+											>
+												<BCUsers tracks={this.state.tracks} />
+											</TabbedSegment>
+										)
+									}
+								]}
+							/>
+						</Container>
+					</Sidebar.Pusher>
+				</Sidebar.Pushable>
+			</div>
 		);
 	}
 }
