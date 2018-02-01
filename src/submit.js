@@ -7,30 +7,49 @@ import {
 	Divider,
 	Step,
 	Icon,
-	Button
+	Button,
+	Message
 } from 'semantic-ui-react';
 import axios from 'axios';
 import BCLogo from './bc_logo';
 import { baseUrl } from './config';
+import './submit.css';
+
 const url = `${baseUrl}/submissions`;
 
 class Submit extends React.Component {
 	state = {
-		permalinkUrl: ''
+		permalinkUrl: '',
+		error: '',
+		success: '',
+		loading: false
 	};
 
 	submitTrack() {
+		this.setState({ loading: true });
 		axios
 			.post(url, {
 				type: 'track',
 				permalink_url: this.state.permalinkUrl
 			})
-			.then(response => {
-				console.log(response);
+			.then(({ data }) => {
+				if (Object.keys(data.error).length > 0) {
+					this.setState({ error: data.error.message });
+				} else {
+					// this.setState({ success: data.metadata.message });
+					this.setState({
+						success: `Succesfully submitted ${this.state
+							.permalinkUrl}! Keep you eye on the submissions board!`
+					});
+				}
 			})
 			.catch(error => {
-				debugger;
-				// this.props.setError(error.error.message);
+				this.setState({ error: error.message });
+
+				// API is not sending error codes + json properly
+			})
+			.finally(() => {
+				this.setState({ loading: false });
 			});
 	}
 
@@ -48,9 +67,7 @@ class Submit extends React.Component {
 							<Icon name="soundcloud" />
 							<Step.Content>
 								<Step.Title>Submit Track</Step.Title>
-								<Step.Description>
-									Include link to soundcloud track.
-								</Step.Description>
+								<Step.Description>Include link to soundcloud track.</Step.Description>
 							</Step.Content>
 						</Step>
 
@@ -73,25 +90,46 @@ class Submit extends React.Component {
 						</Step>
 					</Step.Group>
 
-					<p>
-						{' '}
-						Please note that for now only valid soundcloud URLs are allowed.{' '}
-					</p>
-					<Container>
+					<p> Only valid soundcloud URLs are allowed. </p>
+					<Container className="Submit-form">
 						<Input
 							placeholder="https://soundcloud.com/burncartel/...."
 							value={this.state.permalinkUrl}
-							onChange={e =>
-								this.setState({ permalinkUrl: e.currentTarget.value })}
+							fluid
+							onChange={e => this.setState({ permalinkUrl: e.currentTarget.value })}
 						/>
 						<Button
 							onClick={() => this.submitTrack()}
 							disabled={!this.state.permalinkUrl.trim()}
+							loading={this.state.loading}
 							primary
 						>
 							Submit
 						</Button>
 					</Container>
+					{this.state.error ? (
+						<Message
+							className="Submit-error-message"
+							negative
+							onDismiss={() => {
+								this.setState({ error: null });
+							}}
+							header="Just a sec -"
+							content={this.state.error}
+						/>
+					) : null}
+
+					{this.state.success ? (
+						<Message
+							className="Submit-success-message"
+							positive
+							onDismiss={() => {
+								this.setState({ success: null });
+							}}
+							header="Nice."
+							content={this.state.success}
+						/>
+					) : null}
 				</Segment>
 			</Container>
 		);

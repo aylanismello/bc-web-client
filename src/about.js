@@ -10,7 +10,7 @@ const About = () => (
 			<Header as="h1"> About Burn Cartel </Header> <Divider />{' '}
 			<p className="About-text-intro About-text">
 				{' '}
-				We’re a team of music lovers, producers, DJs, and techies that want to
+				We’re a team of music lovers, producers, DJs, and dreamers that want to
 				take music curation into the 21st century and build a worldwide
 				community to share and grow different music styles and help them scale
 				beyond regional scenes.
