@@ -31,7 +31,8 @@ const About = () => (
 				<a href="mailto:hello@burncartel.com"> hello@burncartel.com </a>. If
 				you’re an artist looking for some promotion, click{' '}
 				<Link to="/submit"> here </Link> to submit a track for Burn Cartel
-				network consideration.
+				network consideration. If you're intersted in having your label
+				featured, also email us ❤️
 			</p>
 			<Header as="h1"> The Squad. </Header>
 			<Divider />

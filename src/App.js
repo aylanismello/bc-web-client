@@ -11,7 +11,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
-import logo from './bc_logo.png';
 import BCSearch from './bc_search';
 import Feed from './feed';
 import BCMap from './bc_map';
@@ -19,6 +18,8 @@ import BCUsers from './bc_users';
 import { baseUrl } from './config';
 import SideMenu from './side_menu';
 import About from './about';
+import Submit from './submit';
+import BCLogo from './bc_logo';
 import TabbedSegment from './tabbed_segment';
 import FiltersMenu from './filters_menu';
 import './App.css';
@@ -167,11 +168,7 @@ class App extends Component {
 								onClick={() => this.toggleSidebar()}
 							/>
 
-							<div className="App-logo-container">
-								<a href="/">
-									<img src={logo} className="App-logo" />
-								</a>
-							</div>
+							<BCLogo />
 
 							<BCSearch
 								setFilter={({ param, value }) => {
@@ -365,9 +362,17 @@ class App extends Component {
 								)}
 							/>
 
+							<Route path="/about" component={About} />
+
 							<Route
-								path="/about"
-								component={About}
+								path="/submit"
+								render={() => (
+									<Submit
+										setError={error => {
+											this.state.setState({ error });
+										}}
+									/>
+								)}
 							/>
 						</Sidebar.Pusher>
 					</Sidebar.Pushable>
