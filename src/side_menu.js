@@ -1,8 +1,9 @@
 import React from 'react';
 import { Menu, Sidebar, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import './side_menu.css';
 
-const SideMenu = ({ visible }) => {
+const SideMenu = ({ visible, clickedOnMenuItem }) => {
 	return (
 		<Sidebar
 			as={Menu}
@@ -13,14 +14,23 @@ const SideMenu = ({ visible }) => {
 			className="SideMenu"
 			vertical
 		>
-			<Menu.Item name="code" className="SideMenu-item">
-				<Icon name="code" />
-				About
-			</Menu.Item>
-			<Menu.Item name="external share" className="SideMenu-item">
-				<Icon name="external share" />
-				Submit
-			</Menu.Item>
+			<Link to="/about" onClick={clickedOnMenuItem}>
+				<Menu.Item name="code" className="SideMenu-item">
+					<Icon name="code" />
+					About
+				</Menu.Item>
+			</Link>
+
+			<Link to="/submit" onClick={clickedOnMenuItem}>
+				<Menu.Item
+					name="external share"
+					className="SideMenu-item"
+					onClick={clickedOnMenuItem}
+				>
+					<Icon name="external share" />
+					Submit
+				</Menu.Item>
+			</Link>
 		</Sidebar>
 	);
 };
