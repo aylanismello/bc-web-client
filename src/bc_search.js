@@ -26,14 +26,19 @@ export default class BCSearch extends Component {
 	};
 
 	handleResultSelect = (e, { result }) => {
-		if (
-			countries.filter(country => {
-				return country.name === result.title || country.alias === result.title;
-			}).length
-		) {
-			this.props.setFilter({ param: 'country', value: result.title });
-		} else {
-			this.props.setFilter({ param: 'city', value: result.title });
+		// if (
+		// 	countries.filter(country => {
+		// 		return country.name === result.title || country.alias === result.title;
+		// 	}).length
+		// ) {
+		// 	this.props.setFilter({ param: 'country', value: result.title });
+		// } else {
+		// }
+
+		if(result.result_type === 'location') {
+			this.props.setFilter({ param: 'location_id', value: result.id });
+		} else if(result.result_type === 'soundcloud_user') {
+			this.props.setFilter({ param: 'soundcloud_user_id', value: result.id });
 		}
 
 		this.setState({ value: result.title });
@@ -45,11 +50,10 @@ export default class BCSearch extends Component {
 			return;
 		}
 		this.setState({ isLoading: true, value });
-		const resource = 'city';
 
 		async.parallel(
 			{
-				city: cb => {
+				location: cb => {
 					axios
 						.get(`${url}/locations`, { params: { q: value } })
 						.then(results => {
@@ -59,9 +63,9 @@ export default class BCSearch extends Component {
 							// hand;e
 						});
 				},
-				country: cb => {
+				soundcloud_user: cb => {
 					axios
-						.get(`${url}/locations`, { params: { q: value } })
+						.get(`${url}/soundcloud_users`, { params: { q: value } })
 						.then(results => {
 							cb(null, results.data.data.suggestions);
 						})
@@ -76,13 +80,13 @@ export default class BCSearch extends Component {
 				}
 
 				const filteredResults = {
-					City: {
-						name: 'City',
-						results: results.city.map(suggestion => ({ title: suggestion.name }))
+					Location: {
+						name: 'Location',
+						results: results.location.map(suggestion => ({ title: suggestion.name, id: suggestion.id, result_type: 'location' }))
 					},
-					Country: {
-						name: 'Country',
-						results: results.country.map(suggestion => ({ title: suggestion.name }))
+					User: {
+						name: 'User',
+						results: results.soundcloud_user.map(suggestion => ({ title: suggestion.name, id: suggestion.id, result_type: 'soundcloud_user' }))
 					}
 				};
 
@@ -109,22 +113,22 @@ export default class BCSearch extends Component {
 				onSearchChange={this.handleSearchChange}
 				results={results}
 				value={value}
-				resultRenderer={thing => {
-					const countryMatch = countries.filter(country => {
-						return country.name === thing.title || country.alias === thing.title;
-					});
-
-					if (countryMatch.length) {
-						return (
-							<span>
-								{' '}
-								<Flag name={countryMatch[0].countryCode} /> {thing.title}{' '}
-							</span>
-						);
-					} else {
-						return <span> {thing.title} </span>;
-					}
-				}}
+				// resultRenderer={thing => {
+				// 	const countryMatch = countries.filter(country => {
+				// 		return country.name === thing.title || country.alias === thing.title;
+				// 	});
+        //
+				// 	if (countryMatch.length) {
+				// 		return (
+				// 			<span>
+				// 				{' '}
+				// 				<Flag name={countryMatch[0].countryCode} /> {thing.title}{' '}
+				// 			</span>
+				// 		);
+				// 	} else {
+				// 		return <span> {thing.title} </span>;
+				// 	}
+				// }}
 				{...this.props}
 			/>
 		);

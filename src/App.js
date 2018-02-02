@@ -174,8 +174,8 @@ class App extends Component {
 							<BCSearch
 								setFilter={({ param, value }) => {
 									const {
-										country,
-										city,
+										location_id,
+										soundcloud_user_id,
 										...oldFilters
 									} = this.state.trackFilters;
 
