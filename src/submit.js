@@ -8,7 +8,8 @@ import {
 	Step,
 	Icon,
 	Button,
-	Message
+	Message,
+	Form
 } from 'semantic-ui-react';
 import axios from 'axios';
 import BCLogo from './bc_logo';
@@ -65,7 +66,9 @@ class Submit extends React.Component {
 							<Icon name="soundcloud" />
 							<Step.Content>
 								<Step.Title>Submit Track</Step.Title>
-								<Step.Description>Include link to soundcloud track.</Step.Description>
+								<Step.Description>
+									Include link to soundcloud track.
+								</Step.Description>
 							</Step.Content>
 						</Step>
 
@@ -89,14 +92,18 @@ class Submit extends React.Component {
 					</Step.Group>
 
 					<p> Only valid soundcloud URLs are allowed. </p>
-					<Container className="Submit-form">
-						<Input
-							placeholder="https://soundcloud.com/burncartel/...."
-							value={this.state.permalinkUrl}
-							fluid
-							onChange={e => this.setState({ permalinkUrl: e.currentTarget.value })}
-						/>
+					<Form>
+						<Form.Field>
+							<Input
+								placeholder="https://soundcloud.com/burncartel/...."
+								value={this.state.permalinkUrl}
+								fluid
+								onChange={e =>
+									this.setState({ permalinkUrl: e.currentTarget.value })}
+							/>
+						</Form.Field>
 						<Button
+							type="submit"
 							onClick={() => this.submitTrack()}
 							disabled={!this.state.permalinkUrl.trim()}
 							loading={this.state.loading}
@@ -104,7 +111,8 @@ class Submit extends React.Component {
 						>
 							Submit
 						</Button>
-					</Container>
+					</Form>
+
 					{this.state.error ? (
 						<Message
 							className="Submit-error-message"
