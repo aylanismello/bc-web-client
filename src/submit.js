@@ -29,7 +29,6 @@ class Submit extends React.Component {
 		this.setState({ loading: true });
 		axios
 			.post(url, {
-				type: 'track',
 				permalink_url: this.state.permalinkUrl
 			})
 			.then(({ data }) => {
@@ -45,7 +44,6 @@ class Submit extends React.Component {
 			})
 			.catch(error => {
 				this.setState({ error: error.message });
-
 				// API is not sending error codes + json properly
 			})
 			.finally(() => {
