@@ -51,7 +51,7 @@ export default class BCSearch extends Component {
 			{
 				city: cb => {
 					axios
-						.get(`${url}/city`, { params: { q: value } })
+						.get(`${url}/locations`, { params: { q: value } })
 						.then(results => {
 							cb(null, results.data.data.suggestions);
 						})
@@ -61,7 +61,7 @@ export default class BCSearch extends Component {
 				},
 				country: cb => {
 					axios
-						.get(`${url}/country`, { params: { q: value } })
+						.get(`${url}/locations`, { params: { q: value } })
 						.then(results => {
 							cb(null, results.data.data.suggestions);
 						})
@@ -78,11 +78,11 @@ export default class BCSearch extends Component {
 				const filteredResults = {
 					City: {
 						name: 'City',
-						results: results.city.map(suggestion => ({ title: suggestion.resource }))
+						results: results.city.map(suggestion => ({ title: suggestion.name }))
 					},
 					Country: {
 						name: 'Country',
-						results: results.country.map(suggestion => ({ title: suggestion.resource }))
+						results: results.country.map(suggestion => ({ title: suggestion.name }))
 					}
 				};
 
