@@ -7,7 +7,7 @@ import {
 	Message,
 	Icon
 } from 'semantic-ui-react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
