@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-	Item,
-	Label,
-	Popup,
-	Button,
-	Statistic,
-	Icon,
-	Header,
-	Divider
-} from 'semantic-ui-react';
+import { Item, Label, Popup, Button, Statistic, Icon, Header, Divider } from 'semantic-ui-react';
 import './Feed.css';
 
 const publisherLocationsToString = ({ location }) => {
@@ -19,9 +10,9 @@ const publisherLocationsToString = ({ location }) => {
 			return location;
 		} else {
 			// Convert location to City, State or City, Country if possible.
-			const parts = location.split(', ').filter(part =>
-				part.match(/[a-z]/) && !part.includes('United States')
-			);
+			const parts = location
+				.split(', ')
+				.filter(part => part.match(/[a-z]/) && !part.includes('United States'));
 
 			if (parts.length > 2) {
 				return `${parts[0]}, ${parts.slice(-1)[0]}`;
@@ -50,14 +41,6 @@ const makeBCBadge = track => {
 
 	return null;
 };
-
-const makeBCCuratorBadge = (publisher) => {
-		if (publisher.is_curator) {
-			return <Label color="yellow" size="tiny"> Certified Curator </Label>;
-		}
-
-		return null;
-}
 
 const Feed = ({
 	tracks,
@@ -100,23 +83,20 @@ const Feed = ({
 							</div>
 
 							<Item.Content>
-								<Item.Header
-									as="a"
-									onClick={() => window.open(track.permalink_url, '_blank')}
-								>
+								<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
 									{track.name}{' '}
 								</Item.Header>
 								<Item.Meta className="Feed-artist-info">
 									<div className="Feed-artist-name">{publisher[0].name}</div>
 									<div className="Feed-artist-image-container">
-										<a href={publisher[0].permalink_url}>
+										<a href={publisher[0].permalink_url} target="_">
 											<img
 												className="Feed-artist-image"
 												src={publisher[0].avatar_url}
+												style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
 											/>
 										</a>
 									</div>
-									{makeBCCuratorBadge(publisher[0])}
 								</Item.Meta>
 
 								<Item.Header>
@@ -124,10 +104,10 @@ const Feed = ({
 										trigger={
 											<Statistic className="Feed-selection-count" size="tiny">
 												<Statistic.Value>
-													<Icon name="soundcloud" />
+													<Icon name="soundcloud" size="tiny"/>
 													{curators.length}
 												</Statistic.Value>
-												<Statistic.Label>Selections</Statistic.Label>
+												<Statistic.Label>Curators</Statistic.Label>
 											</Statistic>
 										}
 										position="top center"
@@ -135,17 +115,12 @@ const Feed = ({
 										{curators.map(curator => curator.name).join(', ')}{' '}
 									</Popup>
 								</Item.Header>
-								<Item.Description>
-									Released {track.created_at_external}
-								</Item.Description>
+								<Item.Description>Released {track.created_at_external}</Item.Description>
 								<Item.Extra>
 									{makeBCBadge(track)}
 									{makeTrackTypeBadge(track)}
 									{publisherLocationsToString(publisher[0]) ? (
-										<Label
-											icon="globe"
-											content={publisherLocationsToString(publisher[0])}
-										/>
+										<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
 									) : null}
 								</Item.Extra>
 							</Item.Content>
