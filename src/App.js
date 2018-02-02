@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Segment, Tab, Sidebar, Message, Icon } from 'semantic-ui-react';
+import {
+	Container,
+	Segment,
+	Tab,
+	Sidebar,
+	Message,
+	Icon
+} from 'semantic-ui-react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -81,16 +88,18 @@ class App extends Component {
 		})[0].track;
 	}
 
-	tracksWithFakePosition() {
-		return this.state.tracks.map(track => {
-			return {
-				...track,
-				publisher: {
-					...track.publisher,
-					position: [BCMap.getRandomFloat(-50, 50), BCMap.getRandomFloat(-50, 50)]
-				}
-			};
-		});
+	tracksWithPosition() {
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
 	}
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
@@ -164,7 +173,11 @@ class App extends Component {
 
 							<BCSearch
 								setFilter={({ param, value }) => {
-									const { country, city, ...oldFilters } = this.state.trackFilters;
+									const {
+										country,
+										city,
+										...oldFilters
+									} = this.state.trackFilters;
 
 									if (value === 'reset') {
 										this.setState({ trackFilters: oldFilters });
@@ -180,7 +193,8 @@ class App extends Component {
 						</Segment>
 						<SideMenu
 							visible={this.state.sidebarVisible}
-							clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+							clickedOnMenuItem={() =>
+								this.toggleSidebar({ clickedOutsideMenu: true })}
 						/>
 
 						<Sidebar.Pusher
@@ -279,7 +293,10 @@ class App extends Component {
 																}}
 																playingTrackId={this.state.playingTrackId}
 																togglePlay={trackId => {
-																	if (this.state.playing && this.state.playingTrackId === trackId) {
+																	if (
+																		this.state.playing &&
+																		this.state.playingTrackId === trackId
+																	) {
 																		this.scAudio.pause();
 																		this.setState({
 																			playing: !this.state.playing
@@ -290,14 +307,16 @@ class App extends Component {
 																	) {
 																		this.scAudio.pause();
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
+																			streamUrl: this.getTrackById(trackId)
+																				.stream_url
 																		});
 																	} else if (
 																		!this.state.playing &&
 																		this.state.playingTrackId === trackId
 																	) {
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
+																			streamUrl: this.getTrackById(trackId)
+																				.stream_url
 																		});
 																		this.setState({
 																			playing: !this.state.playing
@@ -305,7 +324,8 @@ class App extends Component {
 																	} else {
 																		// !this.state.playing && this.state.playingTrackId !== trackId
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
+																			streamUrl: this.getTrackById(trackId)
+																				.stream_url
 																		});
 																		this.setState({
 																			playing: !this.state.playing
@@ -322,7 +342,9 @@ class App extends Component {
 												},
 												{
 													menuItem: 'Map 🗺',
-													render: () => <BCMap tracks={this.tracksWithFakePosition()} />
+													render: () => (
+														<BCMap tracks={this.tracksWithPosition()} />
+													)
 												},
 												{
 													menuItem: 'Artists 💃',

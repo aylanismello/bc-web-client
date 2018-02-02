@@ -11,17 +11,27 @@ import {
 } from 'semantic-ui-react';
 import './Feed.css';
 
-const publisherLocationsToString = publisher => {
-	let locationsString = '';
+const publisherLocationsToString = ({ location }) => {
+	// TODO move earlier in the chain so it's also in the map.
+	if (location) {
+		if (!location.includes(',')) {
+			// Location only has one part - just return it as-is then.
+			return location;
+		} else {
+			// Convert location to City, State or City, Country if possible.
+			const parts = location.split(', ').filter(part =>
+				part.match(/[a-z]/) && !part.includes('United States')
+			);
 
-	if (publisher.city) {
-		locationsString += `${publisher.city}, `;
+			if (parts.length > 2) {
+				return `${parts[0]}, ${parts.slice(-1)[0]}`;
+			} else {
+				return parts.join(', ');
+			}
+		}
+	} else {
+		return '';
 	}
-
-	if (publisher.country) {
-		locationsString += publisher.country;
-	}
-	return locationsString;
 };
 
 const makeTrackTypeBadge = track => {
