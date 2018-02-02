@@ -51,6 +51,14 @@ const makeBCBadge = track => {
 	return null;
 };
 
+const makeBCCuratorBadge = (publisher) => {
+		if (publisher.is_curator) {
+			return <Label color="yellow" size="tiny"> Certified Curator </Label>;
+		}
+
+		return null;
+}
+
 const Feed = ({
 	tracks,
 	playing,
@@ -108,6 +116,7 @@ const Feed = ({
 											/>
 										</a>
 									</div>
+									{makeBCCuratorBadge(publisher[0])}
 								</Item.Meta>
 
 								<Item.Header>
