@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-	Container,
-	Segment,
-	Tab,
-	Sidebar,
-	Message,
-	Icon
-} from 'semantic-ui-react';
+import { Container, Segment, Tab, Sidebar, Message, Icon, Menu } from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -62,7 +55,8 @@ class App extends Component {
 		loading: false,
 		unsplashPhoto: null,
 		firstRequestMade: false,
-		sidebarVisible: false
+		sideMenuVisible: false,
+		bottomMenuVisible: false
 	});
 
 	componentWillMount() {
@@ -89,17 +83,15 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks
-			.filter(track => track.publisher[0].location)
-			.map(track => {
-				return {
-					...track,
-					publisher: {
-						...track.publisher[0],
-						position: [track.publisher[0].lng, track.publisher[0].lat]
-					}
-				};
-			});
+		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
+			return {
+				...track,
+				publisher: {
+					...track.publisher[0],
+					position: [track.publisher[0].lng, track.publisher[0].lat]
+				}
+			};
+		});
 	}
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
@@ -131,11 +123,15 @@ class App extends Component {
 
 	toggleSidebar(options = {}) {
 		const { clickedOutsideMenu } = options;
-		if (clickedOutsideMenu && this.state.sidebarVisible) {
-			this.setState({ sidebarVisible: false });
+		if (clickedOutsideMenu && this.state.sideMenuVisible) {
+			this.setState({ sideMenuVisible: false });
 		} else if (!clickedOutsideMenu) {
-			this.setState({ sidebarVisible: !this.state.sidebarVisible });
+			this.setState({ sideMenuVisible: !this.state.sideMenuVisible });
 		}
+	}
+
+	toggleBottomMenu() {
+		this.setState({ bottomMenuVisible: !this.state.bottomMenuVisible });
 	}
 
 	checkForNextPagination(next_href) {
@@ -192,9 +188,8 @@ class App extends Component {
 							/>
 						</Segment>
 						<SideMenu
-							visible={this.state.sidebarVisible}
-							clickedOnMenuItem={() =>
-								this.toggleSidebar({ clickedOutsideMenu: true })}
+							visible={this.state.sideMenuVisible}
+							clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
 						/>
 
 						<Sidebar.Pusher
@@ -218,56 +213,6 @@ class App extends Component {
 								path="/"
 								render={() => (
 									<Container>
-										<FiltersMenu
-											onSortFilterChange={data =>
-												this.setState({
-													trackFilters: {
-														...this.state.trackFilters,
-														sort_type: data.panes[data.activeIndex].value,
-														page: 1
-													}
-												})}
-											onDateRangeFilterChange={data =>
-												this.setState({
-													trackFilters: {
-														...this.state.trackFilters,
-														date_range: data.value,
-														page: 1
-													}
-												})}
-											onIsBCFilterChange={data => {
-												this.setState({
-													trackFilters: {
-														...this.state.trackFilters,
-														is_bc: data.checked
-													}
-												});
-											}}
-											onTrackTypeFilterChange={data => {
-												const { value } = data.panes[data.activeIndex];
-												if (value === 'is_bc') {
-													this.setState({
-														trackFilters: {
-															...this.state.trackFilters,
-															// reset trackType to be any, which is -1
-															track_type: -1,
-															page: 1,
-															is_bc: true
-														}
-													});
-												} else {
-													this.setState({
-														trackFilters: {
-															...this.state.trackFilters,
-															track_type: value,
-															page: 1,
-															is_bc: false
-														}
-													});
-												}
-											}}
-										/>
-
 										<Tab
 											menu={{ secondary: true, pointing: true }}
 											panes={[
@@ -293,10 +238,7 @@ class App extends Component {
 																}}
 																playingTrackId={this.state.playingTrackId}
 																togglePlay={trackId => {
-																	if (
-																		this.state.playing &&
-																		this.state.playingTrackId === trackId
-																	) {
+																	if (this.state.playing && this.state.playingTrackId === trackId) {
 																		this.scAudio.pause();
 																		this.setState({
 																			playing: !this.state.playing
@@ -307,16 +249,14 @@ class App extends Component {
 																	) {
 																		this.scAudio.pause();
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId)
-																				.stream_url
+																			streamUrl: this.getTrackById(trackId).stream_url
 																		});
 																	} else if (
 																		!this.state.playing &&
 																		this.state.playingTrackId === trackId
 																	) {
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId)
-																				.stream_url
+																			streamUrl: this.getTrackById(trackId).stream_url
 																		});
 																		this.setState({
 																			playing: !this.state.playing
@@ -324,8 +264,7 @@ class App extends Component {
 																	} else {
 																		// !this.state.playing && this.state.playingTrackId !== trackId
 																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId)
-																				.stream_url
+																			streamUrl: this.getTrackById(trackId).stream_url
 																		});
 																		this.setState({
 																			playing: !this.state.playing
@@ -342,9 +281,7 @@ class App extends Component {
 												},
 												{
 													menuItem: 'Map 🗺',
-													render: () => (
-														<BCMap tracks={this.tracksWithPosition()} />
-													)
+													render: () => <BCMap tracks={this.tracksWithPosition()} />
 												},
 												{
 													menuItem: 'Artists 💃',
@@ -368,6 +305,73 @@ class App extends Component {
 							<Route path="/submit" render={() => <Submit />} />
 						</Sidebar.Pusher>
 					</Sidebar.Pushable>
+
+					<div className="App-bottom-nav-container">
+						<Sidebar.Pushable>
+							<Sidebar
+								as={Menu}
+								animation="push"
+								width="thin"
+								visible={this.state.bottomMenuVisible}
+								direction="bottom"
+								icon="labeled"
+								className="SideMenu"
+							>
+								<FiltersMenu
+									onSortFilterChange={data =>
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												sort_type: data.panes[data.activeIndex].value,
+												page: 1
+											}
+										})}
+									onDateRangeFilterChange={data =>
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												date_range: data.value,
+												page: 1
+											}
+										})}
+									onIsBCFilterChange={data => {
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												is_bc: data.checked
+											}
+										});
+									}}
+									onTrackTypeFilterChange={data => {
+										const { value } = data.panes[data.activeIndex];
+										if (value === 'is_bc') {
+											this.setState({
+												trackFilters: {
+													...this.state.trackFilters,
+													// reset trackType to be any, which is -1
+													track_type: -1,
+													page: 1,
+													is_bc: true
+												}
+											});
+										} else {
+											this.setState({
+												trackFilters: {
+													...this.state.trackFilters,
+													track_type: value,
+													page: 1,
+													is_bc: false
+												}
+											});
+										}
+									}}
+								/>
+							</Sidebar>
+							<Icon name="options" size="huge" color="red" className="App-filters-toggle-icon" onClick={() => this.toggleBottomMenu()} />
+						</Sidebar.Pushable>
+						{/* <Menu> */}
+						{/* </Menu> */}
+					</div>
 				</div>
 			</Router>
 		);
