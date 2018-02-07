@@ -14,21 +14,24 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 			className="SideMenu"
 			vertical
 		>
-			<Link to="/about" onClick={clickedOnMenuItem}>
-				<Menu.Item name="code" className="SideMenu-item">
-					<Icon name="code" />
-					About
+			<Link to="/curators" onClick={clickedOnMenuItem}>
+				<Menu.Item name="record" className="SideMenu-item">
+					<Icon name="music" />
+					Curators
 				</Menu.Item>
 			</Link>
 
 			<Link to="/submit" onClick={clickedOnMenuItem}>
-				<Menu.Item
-					name="external share"
-					className="SideMenu-item"
-					onClick={clickedOnMenuItem}
-				>
+				<Menu.Item name="external share" className="SideMenu-item" onClick={clickedOnMenuItem}>
 					<Icon name="external share" />
 					Submit
+				</Menu.Item>
+			</Link>
+
+			<Link to="/about" onClick={clickedOnMenuItem}>
+				<Menu.Item name="code" className="SideMenu-item">
+					<Icon name="code" />
+					About
 				</Menu.Item>
 			</Link>
 		</Sidebar>

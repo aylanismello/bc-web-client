@@ -12,12 +12,11 @@ import { baseUrl } from './config';
 import SideMenu from './side_menu';
 import About from './about';
 import Submit from './submit';
+import Curators from './curators';
 import BCLogo from './bc_logo';
 import TabbedSegment from './tabbed_segment';
 import FiltersMenu from './filters_menu';
 import './App.css';
-
-const url = `${baseUrl}/tracks`;
 
 class App extends Component {
 	static formatFilters(trackFilters) {
@@ -51,6 +50,7 @@ class App extends Component {
 		playingTrackId: undefined,
 		donePaginating: false,
 		tracks: [],
+		curators: [],
 		error: null,
 		loading: false,
 		unsplashPhoto: null,
@@ -62,6 +62,7 @@ class App extends Component {
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
 		this.updateTracks(this.state.trackFilters);
+		this.fetchCurators();
 		setTimeout(() => {
 			this.setState({ firstRequestMade: true });
 		}, 500);
@@ -74,6 +75,19 @@ class App extends Component {
 				nextState.trackFilters.page !== this.state.trackFilters.page
 			);
 		}
+	}
+
+	fetchCurators() {
+		axios
+			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
+			.then(results => {
+				this.setState({
+					curators: results.data.data.soundcloud_users
+				});
+			})
+			.catch(error => {
+				this.setState({ error: error.message });
+			});
 	}
 
 	getTrackById(trackId) {
@@ -97,7 +111,7 @@ class App extends Component {
 		this.setState({ loading: true });
 
 		axios
-			.get(url, { params: App.formatFilters(trackFilters) })
+			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
 				if (paginate) {
 					this.setState({
@@ -300,9 +314,9 @@ class App extends Component {
 								)}
 							/>
 
-							<Route path="/about" component={About} />
-
+							<Route path="/curators" render={() => <Curators curators={this.state.curators} />} />
 							<Route path="/submit" render={() => <Submit />} />
+							<Route path="/about" component={About} />
 						</Sidebar.Pusher>
 					</Sidebar.Pushable>
 
