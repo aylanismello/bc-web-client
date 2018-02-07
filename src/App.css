@@ -1,6 +1,11 @@
 .App {
   /* text-align: center; */
 }
+
+.App-bottom-nav {
+  position: relative;
+}
+
 .App-bottom-nav-container {
   width: 100%;;
   bottom: 0;
@@ -11,8 +16,13 @@
   flex-direction: row-reverse;
 }
 
-i.red.options.huge.icon.App-filters-toggle-icon:hover {
-  cursor: display;
+
+.App-filters-toggle-icon-container  {
+  padding-right: 10px;
+}
+
+.App-filters-toggle-icon-container:hover {
+  cursor: pointer;
 }
 
 .App-logo:hover {

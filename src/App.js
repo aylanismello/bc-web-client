@@ -307,70 +307,67 @@ class App extends Component {
 					</Sidebar.Pushable>
 
 					<div className="App-bottom-nav-container">
-						<Sidebar.Pushable>
-							<Sidebar
-								as={Menu}
-								animation="push"
-								width="thin"
+						<div className="App-bottom-nav">
+							<FiltersMenu
 								visible={this.state.bottomMenuVisible}
-								direction="bottom"
-								icon="labeled"
-								className="SideMenu"
-							>
-								<FiltersMenu
-									onSortFilterChange={data =>
+								onSortFilterChange={data =>
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											sort_type: data.panes[data.activeIndex].value,
+											page: 1
+										}
+									})}
+								onDateRangeFilterChange={data =>
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											date_range: data.value,
+											page: 1
+										}
+									})}
+								onIsBCFilterChange={data => {
+									this.setState({
+										trackFilters: {
+											...this.state.trackFilters,
+											is_bc: data.checked
+										}
+									});
+								}}
+								onTrackTypeFilterChange={data => {
+									const { value } = data.panes[data.activeIndex];
+									if (value === 'is_bc') {
 										this.setState({
 											trackFilters: {
 												...this.state.trackFilters,
-												sort_type: data.panes[data.activeIndex].value,
-												page: 1
-											}
-										})}
-									onDateRangeFilterChange={data =>
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												date_range: data.value,
-												page: 1
-											}
-										})}
-									onIsBCFilterChange={data => {
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												is_bc: data.checked
+												// reset trackType to be any, which is -1
+												track_type: -1,
+												page: 1,
+												is_bc: true
 											}
 										});
-									}}
-									onTrackTypeFilterChange={data => {
-										const { value } = data.panes[data.activeIndex];
-										if (value === 'is_bc') {
-											this.setState({
-												trackFilters: {
-													...this.state.trackFilters,
-													// reset trackType to be any, which is -1
-													track_type: -1,
-													page: 1,
-													is_bc: true
-												}
-											});
-										} else {
-											this.setState({
-												trackFilters: {
-													...this.state.trackFilters,
-													track_type: value,
-													page: 1,
-													is_bc: false
-												}
-											});
-										}
-									}}
+									} else {
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												track_type: value,
+												page: 1,
+												is_bc: false
+											}
+										});
+									}
+								}}
+							/>
+							<div className="App-filters-toggle-icon-container">
+								<Icon
+									name="options"
+									size="huge"
+									color="blue"
+									className="App-filters-toggle-icon"
+									onClick={() => this.toggleBottomMenu()}
 								/>
-							</Sidebar>
-							<Icon name="options" size="huge" color="red" className="App-filters-toggle-icon" onClick={() => this.toggleBottomMenu()} />
-						</Sidebar.Pushable>
-						{/* <Menu> */}
-						{/* </Menu> */}
+							</div>
+						</div>
 					</div>
 				</div>
 			</Router>

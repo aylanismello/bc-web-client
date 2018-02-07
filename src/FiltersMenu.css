@@ -1,5 +1,11 @@
-@media screen and (max-width: 760px) {
-  .App-filters {
+/* @media screen and (max-width: 760px) {
+} */
+
+.App-filters {
     flex-direction: column;
-  }
+    position: absolute;
+    right: 0px;
+    bottom: 68px;
+    padding: 10px;
+    background: black;
 }
