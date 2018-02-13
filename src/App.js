@@ -107,6 +107,18 @@ class App extends Component {
 			};
 		});
 	}
+
+	curatorsWithPosition() {
+		return this.state.curators.filter(curator => (curator.location && curator.location.name)).map(curator => {
+			return {
+				...curator,
+				location: {
+					...curator.location,
+					position: [curator.location.lng, curator.location.lat]
+				}
+			};
+		});
+	}
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
@@ -295,7 +307,7 @@ class App extends Component {
 												},
 												{
 													menuItem: 'Map 🗺',
-													render: () => <BCMap tracks={this.tracksWithPosition()} />
+													render: () => <BCMap data={this.tracksWithPosition()} featureType="track" />
 												},
 												{
 													menuItem: 'Artists 💃',
@@ -314,7 +326,7 @@ class App extends Component {
 								)}
 							/>
 
-							<Route path="/curators" render={() => <Curators curators={this.state.curators} />} />
+							<Route path="/curators" render={() => <Curators curators={this.curatorsWithPosition()} />} />
 							<Route path="/submit" render={() => <Submit />} />
 							<Route path="/about" component={About} />
 						</Sidebar.Pusher>

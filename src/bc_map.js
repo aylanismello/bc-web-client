@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment, Image, Header, Divider } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';
 
@@ -8,17 +9,17 @@ const MapBox = ReactMapboxGl({
 		'pk.eyJ1IjoiYnVybmNhcnRlbCIsImEiOiJjamN4MXN0dm4wdjVoMnFvNW5lMHU2NGI1In0.ZV6FeNJa2M1EFtEQegRRyQ'
 });
 
-const publisherLocationsToString = ({ location }) => {
+const publisherLocationsToString = locationName => {
 	// TODO move earlier in the chain so it's also in the map.
-	if (location) {
-		if (!location.includes(',')) {
+	if (locationName) {
+		if (!locationName.includes(',')) {
 			// Location only has one part - just return it as-is then.
-			return location;
+			return locationName;
 		} else {
-			// Convert location to City, State or City, Country if possible.
-			const parts = location.split(', ').filter(part =>
-				part.match(/[a-z]/) && !part.includes('United States')
-			);
+			// Convert locationName to City, State or City, Country if possible.
+			const parts = locationName
+				.split(', ')
+				.filter(part => part.match(/[a-z]/) && !part.includes('United States'));
 
 			if (parts.length > 2) {
 				return `${parts[0]}, ${parts.slice(-1)[0]}`;
@@ -37,7 +38,7 @@ class BCMap extends React.Component {
 	}
 
 	state = {
-		track: null,
+		selectedFeature: null,
 		center: [0, 0],
 		zoom: [0]
 	};
@@ -48,17 +49,56 @@ class BCMap extends React.Component {
 
 	// add something here to set track from outside.. maybe have this be set at the App level.
 
-	markerClick(track, { feature }) {
-		console.log(track);
+	markerClick(selectedFeature, { feature }) {
 		this.setState({
 			center: feature.geometry.coordinates,
 			zoom: [4],
-			track
+			selectedFeature
+		});
+	}
+
+	makeTrackFeatures() {
+		return this.props.data.map(track => {
+			return (
+				<Feature
+					key={track.track.id}
+					coordinates={track.publisher.position}
+					onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
+					onMouseLeave={this.onToggleHover.bind(this, '')}
+					onClick={this.markerClick.bind(this, {
+						id: track.track.id,
+						position: track.publisher.position,
+						avatar_url: track.publisher.avatar_url,
+						name: track.publisher.name,
+						locationName: track.publisher.location
+					})}
+				/>
+			);
+		});
+	}
+
+	makeCuratorFeatures() {
+		return this.props.data.map(soundcloudUser => {
+			return (
+				<Feature
+					key={soundcloudUser.soundcloud_user.id}
+					coordinates={soundcloudUser.location.position}
+					onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
+					onMouseLeave={this.onToggleHover.bind(this, '')}
+					onClick={this.markerClick.bind(this, {
+						id: soundcloudUser.soundcloud_user.id,
+						position: soundcloudUser.location.position,
+						avatar_url: soundcloudUser.soundcloud_user.avatar_url,
+						name: soundcloudUser.soundcloud_user.name,
+						locationName: soundcloudUser.location.name
+					})}
+				/>
+			);
 		});
 	}
 
 	render() {
-		const { track, zoom, center } = this.state;
+		const { selectedFeature, zoom, center } = this.state;
 
 		return (
 			<Segment>
@@ -78,32 +118,21 @@ class BCMap extends React.Component {
 							id="marker"
 							layout={{ 'icon-image': 'marker-15' }}
 						>
-							{this.props.tracks.map(track => {
-								return (
-									<Feature
-										key={track.track.id}
-										coordinates={track.publisher.position}
-										onMouseEnter={this.onToggleHover.bind(this, 'pointer')}
-										onMouseLeave={this.onToggleHover.bind(this, '')}
-										onClick={this.markerClick.bind(this, track)}
-									/>
-								);
-							})}
+							{this.props.featureType === 'track'
+								? this.makeTrackFeatures()
+								: this.makeCuratorFeatures()}
 						</Layer>
 
-						{track && (
+						{selectedFeature && (
 							<Popup
-								key={track.track.id}
-								coordinates={track.publisher.position}
+								key={selectedFeature.id}
+								coordinates={selectedFeature.position}
 							>
 								<div>
-									<span>{track.publisher.name} </span>
+									<span>{selectedFeature.name} </span>
 								</div>
-								<span>
-									{' '}
-									{publisherLocationsToString(track.publisher)}
-								</span>
-								<Image src={track.publisher.avatar_url} />
+								<span> {publisherLocationsToString(selectedFeature.locationName)}</span>
+								<Image src={selectedFeature.avatar_url} />
 							</Popup>
 						)}
 					</MapBox>
@@ -112,5 +141,15 @@ class BCMap extends React.Component {
 		);
 	}
 }
+
+const { instanceOf, string } = PropTypes;
+
+BCMap.propTypes = {
+	data: instanceOf(Array)
+};
+
+BCMap.defaultProps = {
+	data: undefined
+};
 
 export default BCMap;
