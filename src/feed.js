@@ -51,12 +51,13 @@ const Feed = ({
 	donePaginating,
 	filters,
 	paginate,
-	children
+	children,
+	headerText
 }) => {
 	return (
 		<div className="Feed-container">
 			<Header as="h1" textAlign="left">
-				CURATED TRACKS
+				{headerText}
 			</Header>
 
 			<Divider />

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Segment, Tab, Sidebar, Message, Icon, Menu } from 'semantic-ui-react';
+import {
+	Container,
+	Segment,
+	Tab,
+	Sidebar,
+	Message,
+	Icon,
+	Menu
+} from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -97,27 +105,31 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
-			return {
-				...track,
-				publisher: {
-					...track.publisher[0],
-					position: [track.publisher[0].lng, track.publisher[0].lat]
-				}
-			};
-		});
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
 	}
 
 	curatorsWithPosition() {
-		return this.state.curators.filter(curator => (curator.location && curator.location.name)).map(curator => {
-			return {
-				...curator,
-				location: {
-					...curator.location,
-					position: [curator.location.lng, curator.location.lat]
-				}
-			};
-		});
+		return this.state.curators
+			.filter(curator => curator.location && curator.location.name)
+			.map(curator => {
+				return {
+					...curator,
+					location: {
+						...curator.location,
+						position: [curator.location.lng, curator.location.lat]
+					}
+				};
+			});
 	}
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
@@ -172,14 +184,82 @@ class App extends Component {
 				this.setState({ error: error.message, loading: false });
 			});
 	}
+
+	feedInstance() {
+		return (
+			<Feed
+				tracks={this.state.tracks}
+				headerText={
+					this.state.trackFilters.is_submission
+						? 'SUBMITTED TRACKS'
+						: 'CURATED TRACKS'
+				}
+				playing={this.state.playing}
+				loading={this.state.loading}
+				donePaginating={this.state.donePaginating}
+				paginate={() => {
+					this.setState({
+						trackFilters: {
+							...this.state.trackFilters,
+							page: this.state.trackFilters.page + 1
+						}
+					});
+				}}
+				playingTrackId={this.state.playingTrackId}
+				togglePlay={trackId => {
+					if (this.state.playing && this.state.playingTrackId === trackId) {
+						this.scAudio.pause();
+						this.setState({
+							playing: !this.state.playing
+						});
+					} else if (
+						this.state.playing &&
+						this.state.playingTrackId !== trackId
+					) {
+						this.scAudio.pause();
+						this.scAudio.play({
+							streamUrl: this.getTrackById(trackId).stream_url
+						});
+					} else if (
+						!this.state.playing &&
+						this.state.playingTrackId === trackId
+					) {
+						this.scAudio.play({
+							streamUrl: this.getTrackById(trackId).stream_url
+						});
+						this.setState({
+							playing: !this.state.playing
+						});
+					} else {
+						// !this.state.playing && this.state.playingTrackId !== trackId
+						this.scAudio.play({
+							streamUrl: this.getTrackById(trackId).stream_url
+						});
+						this.setState({
+							playing: !this.state.playing
+						});
+					}
+
+					if (this.state.playingTrackId !== trackId) {
+						this.setState({ playingTrackId: trackId });
+					}
+				}}
+			/>
+		);
+	}
 	render() {
 		return (
 			<Router>
 				<div className="App-container">
-					<Sidebar.Pushable className="App">
+					<Sidebar.Pushable
+						className="App"
+						onClick={() => this.setState({ bottomMenuVisible: false })}
+					>
 						<Segment
 							className="App-top-nav"
-							onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+							onClick={() => {
+								this.toggleSidebar({ clickedOutsideMenu: true });
+							}}
 						>
 							<Icon
 								name="content"
@@ -215,7 +295,8 @@ class App extends Component {
 						</Segment>
 						<SideMenu
 							visible={this.state.sideMenuVisible}
-							clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+							clickedOnMenuItem={() =>
+								this.toggleSidebar({ clickedOutsideMenu: true })}
 						/>
 
 						<Sidebar.Pusher
@@ -241,6 +322,32 @@ class App extends Component {
 									<Container>
 										<Tab
 											menu={{ secondary: true, pointing: true }}
+											onTabChange={(e, data) => {
+												if (
+													data.panes[
+														data.activeIndex
+													].menuItem.toLowerCase() === 'submissions'
+												) {
+													// update to get submissions
+													this.setState({
+														trackFilters: {
+															...this.state.trackFilters,
+															is_submission: true
+														}
+													});
+												} else if (
+													data.panes[data.activeIndex].menuItem
+														.toLowerCase()
+														.includes('tracks')
+												) {
+													this.setState({
+														trackFilters: {
+															...this.state.trackFilters,
+															is_submission: false
+														}
+													});
+												}
+											}}
 											panes={[
 												{
 													menuItem: 'Tracks ⬆️',
@@ -249,65 +356,18 @@ class App extends Component {
 															loading={this.state.loading}
 															firstRequestMade={this.state.firstRequestMade}
 														>
-															<Feed
-																tracks={this.state.tracks}
-																playing={this.state.playing}
-																loading={this.state.loading}
-																donePaginating={this.state.donePaginating}
-																paginate={() => {
-																	this.setState({
-																		trackFilters: {
-																			...this.state.trackFilters,
-																			page: this.state.trackFilters.page + 1
-																		}
-																	});
-																}}
-																playingTrackId={this.state.playingTrackId}
-																togglePlay={trackId => {
-																	if (this.state.playing && this.state.playingTrackId === trackId) {
-																		this.scAudio.pause();
-																		this.setState({
-																			playing: !this.state.playing
-																		});
-																	} else if (
-																		this.state.playing &&
-																		this.state.playingTrackId !== trackId
-																	) {
-																		this.scAudio.pause();
-																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
-																		});
-																	} else if (
-																		!this.state.playing &&
-																		this.state.playingTrackId === trackId
-																	) {
-																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
-																		});
-																		this.setState({
-																			playing: !this.state.playing
-																		});
-																	} else {
-																		// !this.state.playing && this.state.playingTrackId !== trackId
-																		this.scAudio.play({
-																			streamUrl: this.getTrackById(trackId).stream_url
-																		});
-																		this.setState({
-																			playing: !this.state.playing
-																		});
-																	}
-
-																	if (this.state.playingTrackId !== trackId) {
-																		this.setState({ playingTrackId: trackId });
-																	}
-																}}
-															/>
+															{this.feedInstance()}
 														</TabbedSegment>
 													)
 												},
 												{
 													menuItem: 'Map 🗺',
-													render: () => <BCMap data={this.tracksWithPosition()} featureType="track" />
+													render: () => (
+														<BCMap
+															data={this.tracksWithPosition()}
+															featureType="track"
+														/>
+													)
 												},
 												{
 													menuItem: 'Artists 💃',
@@ -319,6 +379,14 @@ class App extends Component {
 															<BCUsers tracks={this.state.tracks} />
 														</TabbedSegment>
 													)
+												},
+												{
+													menuItem: 'Submissions',
+													render: () => (
+														<TabbedSegment loading={this.state.loading}>
+															{this.feedInstance()}
+														</TabbedSegment>
+													)
 												}
 											]}
 										/>
@@ -326,13 +394,26 @@ class App extends Component {
 								)}
 							/>
 
-							<Route path="/curators" render={() => <Curators curators={this.curatorsWithPosition()} />} />
+							<Route
+								path="/curators"
+								render={() => (
+									<Curators curators={this.curatorsWithPosition()} />
+								)}
+							/>
 							<Route path="/submit" render={() => <Submit />} />
 							<Route path="/about" component={About} />
 						</Sidebar.Pusher>
+						<div className="App-separator" style={{ height: '70px' }} />
 					</Sidebar.Pushable>
 
-					<div className="App-bottom-nav-container">
+					<div
+						className="App-bottom-nav-container"
+						onClick={e => {
+							if (!e.target.classList.contains('App-filters-toggle-icon')) {
+								this.setState({ bottomMenuVisible: false });
+							}
+						}}
+					>
 						<div className="App-bottom-nav">
 							<FiltersMenu
 								visible={this.state.bottomMenuVisible}
