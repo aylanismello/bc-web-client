@@ -37,12 +37,16 @@ const Curators = ({ curators }) => {
 								<Card.Group>
 									{curators.map(curator => {
 										return (
-											<Card.Content>
-												<Image
-													src={curator.soundcloud_user.avatar_url}
-													size="tiny"
-												/>
-											</Card.Content>
+											<Link
+												to={`/soundcloud_users/${curator.soundcloud_user.id}`}
+											>
+												<Card.Content>
+													<Image
+														src={curator.soundcloud_user.avatar_url}
+														size="tiny"
+													/>
+												</Card.Content>
+											</Link>
 										);
 									})}
 								</Card.Group>

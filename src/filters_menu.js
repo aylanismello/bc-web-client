@@ -34,6 +34,7 @@ const FiltersMenu = ({
 	return (
 		<div className="App-filters-container" basic style={visible ? {} : { display: 'none' }}>
 			<div className="App-filters">
+				{/*  CHANGE THESE TO UNCONTROLLED COMPONENTS so that outer filter changes change them */}
 				<Select
 					onChange={(e, data) => onDateRangeFilterChange(data)}
 					compact

@@ -12,17 +12,16 @@ import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
-import BCSearch from './bc_search';
 import Feed from './feed';
-import BCMap from './bc_map';
-import BCUsers from './bc_users';
 import { baseUrl } from './config';
 import SideMenu from './side_menu';
+import Home from './home';
 import About from './about';
 import Submit from './submit';
 import Curators from './curators';
-import BCLogo from './bc_logo';
-import TabbedSegment from './tabbed_segment';
+import SoundcloudUser from './soundcloud_user';
+import TopNav from './top_nav';
+import ScrollToTop from './scroll_to_top';
 import FiltersMenu from './filters_menu';
 import './App.css';
 
@@ -51,7 +50,8 @@ class App extends Component {
 		trackFilters: {
 			sort_type: 'hot',
 			date_range: 7,
-			page: 1
+			page: 1,
+			is_submission: false
 		},
 		soundcloudUserFilters: {},
 		playing: false,
@@ -64,16 +64,14 @@ class App extends Component {
 		unsplashPhoto: null,
 		firstRequestMade: false,
 		sideMenuVisible: false,
-		bottomMenuVisible: false
+		bottomMenuVisible: false,
+		showFullSearchBar: false
 	});
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
-		this.updateTracks(this.state.trackFilters);
+		// this.updateTracks(this.state.trackFilters);
 		this.fetchCurators();
-		setTimeout(() => {
-			this.setState({ firstRequestMade: true });
-		}, 500);
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -185,18 +183,23 @@ class App extends Component {
 			});
 	}
 
-	feedInstance() {
+	feedInstance(displayPage = 'home') {
 		return (
 			<Feed
 				tracks={this.state.tracks}
-				headerText={
-					this.state.trackFilters.is_submission
-						? 'SUBMITTED TRACKS'
-						: 'CURATED TRACKS'
-				}
+				displayPage={displayPage}
 				playing={this.state.playing}
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
+				trackFilters={this.state.trackFilters}
+				setIsSubmission={isSubmission => {
+					this.setState({
+						trackFilters: {
+							...this.state.trackFilters,
+							is_submission: isSubmission
+						}
+					});
+				}}
 				paginate={() => {
 					this.setState({
 						trackFilters: {
@@ -247,236 +250,193 @@ class App extends Component {
 			/>
 		);
 	}
+
+	setFilters(filters) {
+		this.setState({
+			trackFilters: filters
+		});
+	}
+
+	setFilter({ param, value }) {
+		const {
+			location_id,
+			soundcloud_user_id,
+			...oldFilters
+		} = this.state.trackFilters;
+
+		if (value === 'reset') {
+			this.setState({ trackFilters: oldFilters });
+		} else {
+			const newFilter = {};
+			newFilter[param] = value;
+			this.setState({
+				trackFilters: { ...oldFilters, ...newFilter }
+			});
+		}
+	}
+
+	fetchHomeTracks() {
+		this.setFilters({
+			sort_type: 'hot',
+			date_range: 7,
+			page: 1,
+			is_submission: false
+		});
+	}
+
 	render() {
 		return (
 			<Router>
-				<div className="App-container">
-					<Sidebar.Pushable
-						className="App"
-						onClick={() => this.setState({ bottomMenuVisible: false })}
-					>
-						<Segment
-							className="App-top-nav"
-							onClick={() => {
-								this.toggleSidebar({ clickedOutsideMenu: true });
+				<ScrollToTop>
+					<div className="App-container">
+						<Sidebar.Pushable
+							className="App"
+							onClick={() => this.setState({ bottomMenuVisible: false })}
+						>
+							<TopNav
+								toggleSidebar={options => this.toggleSidebar(options)}
+								setFilter={val => this.setFilter(val)}
+								fetchHomeTracks={() => this.fetchHomeTracks()}
+							/>
+
+							<SideMenu
+								visible={this.state.sideMenuVisible}
+								clickedOnMenuItem={() =>
+									this.toggleSidebar({ clickedOutsideMenu: true })}
+							/>
+
+							<Sidebar.Pusher
+								onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+								as={Container}
+							>
+								{this.state.error ? (
+									<Message
+										className="App-error"
+										negative
+										onDismiss={() => {
+											this.setState({ error: null });
+										}}
+										header="Sorry, something went wrong!"
+										content={this.state.error}
+									/>
+								) : null}
+
+								<Route
+									exact
+									path="/"
+									render={() => (
+										<Home
+											getHomeTracks={() => this.fetchHomeTracks()}
+											loading={this.state.loading}
+											setState={state => this.setState(state)}
+											trackFilters={this.state.trackFilters}
+											tracks={this.state.tracks}
+											feedInstance={displayPage => this.feedInstance(displayPage)}
+											tracksWithPosition={() => this.tracksWithPosition()}
+										/>
+									)}
+								/>
+
+								<Route
+									path="/curators"
+									render={() => (
+										<Curators curators={this.curatorsWithPosition()} />
+									)}
+								/>
+								<Route path="/submit" component={Submit} />
+								<Route
+									path="/soundcloud_users/:id"
+									render={props => {
+										const allProps = {
+											...props,
+											feed: this.feedInstance('curator'),
+											setUser: id =>
+												this.setFilters({
+													soundcloud_user_id: id,
+													date_range: 1000,
+													page: 1
+												})
+										};
+										return <SoundcloudUser {...allProps} />;
+									}}
+								/>
+								<Route path="/about" component={About} />
+							</Sidebar.Pusher>
+							<div className="App-separator" style={{ height: '70px' }} />
+						</Sidebar.Pushable>
+
+						<div
+							className="App-bottom-nav-container"
+							onClick={e => {
+								if (!e.target.classList.contains('App-filters-toggle-icon')) {
+									this.setState({ bottomMenuVisible: false });
+								}
 							}}
 						>
-							<Icon
-								name="content"
-								size="big"
-								color="blue"
-								className="App-sidebar-button"
-								onClick={() => this.toggleSidebar()}
-							/>
-
-							<Link to="/">
-								<BCLogo />
-							</Link>
-
-							<BCSearch
-								setFilter={({ param, value }) => {
-									const {
-										location_id,
-										soundcloud_user_id,
-										...oldFilters
-									} = this.state.trackFilters;
-
-									if (value === 'reset') {
-										this.setState({ trackFilters: oldFilters });
-									} else {
-										const newFilter = {};
-										newFilter[param] = value;
+							<div className="App-bottom-nav">
+								<FiltersMenu
+									visible={this.state.bottomMenuVisible}
+									onSortFilterChange={data =>
 										this.setState({
-											trackFilters: { ...oldFilters, ...newFilter }
+											trackFilters: {
+												...this.state.trackFilters,
+												sort_type: data.panes[data.activeIndex].value,
+												page: 1
+											}
+										})}
+									onDateRangeFilterChange={data =>
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												date_range: data.value,
+												page: 1
+											}
+										})}
+									onIsBCFilterChange={data => {
+										this.setState({
+											trackFilters: {
+												...this.state.trackFilters,
+												is_bc: data.checked
+											}
 										});
-									}
-								}}
-							/>
-						</Segment>
-						<SideMenu
-							visible={this.state.sideMenuVisible}
-							clickedOnMenuItem={() =>
-								this.toggleSidebar({ clickedOutsideMenu: true })}
-						/>
-
-						<Sidebar.Pusher
-							onClick={() => this.toggleSidebar({ clickedOutsideMenu: true })}
-							as={Container}
-						>
-							{this.state.error ? (
-								<Message
-									className="App-error"
-									negative
-									onDismiss={() => {
-										this.setState({ error: null });
 									}}
-									header="Sorry, something went wrong!"
-									content={this.state.error}
-								/>
-							) : null}
-
-							<Route
-								exact
-								path="/"
-								render={() => (
-									<Container>
-										<Tab
-											menu={{ secondary: true, pointing: true }}
-											onTabChange={(e, data) => {
-												if (
-													data.panes[
-														data.activeIndex
-													].menuItem.toLowerCase() === 'submissions'
-												) {
-													// update to get submissions
-													this.setState({
-														trackFilters: {
-															...this.state.trackFilters,
-															is_submission: true
-														}
-													});
-												} else if (
-													data.panes[data.activeIndex].menuItem
-														.toLowerCase()
-														.includes('tracks')
-												) {
-													this.setState({
-														trackFilters: {
-															...this.state.trackFilters,
-															is_submission: false
-														}
-													});
+									onTrackTypeFilterChange={data => {
+										const { value } = data.panes[data.activeIndex];
+										if (value === 'is_bc') {
+											this.setState({
+												trackFilters: {
+													...this.state.trackFilters,
+													// reset trackType to be any, which is -1
+													track_type: -1,
+													page: 1,
+													is_bc: true
 												}
-											}}
-											panes={[
-												{
-													menuItem: 'Tracks ⬆️',
-													render: () => (
-														<TabbedSegment
-															loading={this.state.loading}
-															firstRequestMade={this.state.firstRequestMade}
-														>
-															{this.feedInstance()}
-														</TabbedSegment>
-													)
-												},
-												{
-													menuItem: 'Map 🗺',
-													render: () => (
-														<BCMap
-															data={this.tracksWithPosition()}
-															featureType="track"
-														/>
-													)
-												},
-												{
-													menuItem: 'Artists 💃',
-													render: () => (
-														<TabbedSegment
-															loading={this.state.loading}
-															firstRequestMade={this.state.firstRequestMade}
-														>
-															<BCUsers tracks={this.state.tracks} />
-														</TabbedSegment>
-													)
-												},
-												{
-													menuItem: 'Submissions',
-													render: () => (
-														<TabbedSegment loading={this.state.loading}>
-															{this.feedInstance()}
-														</TabbedSegment>
-													)
+											});
+										} else {
+											this.setState({
+												trackFilters: {
+													...this.state.trackFilters,
+													track_type: value,
+													page: 1,
+													is_bc: false
 												}
-											]}
-										/>
-									</Container>
-								)}
-							/>
-
-							<Route
-								path="/curators"
-								render={() => (
-									<Curators curators={this.curatorsWithPosition()} />
-								)}
-							/>
-							<Route path="/submit" render={() => <Submit />} />
-							<Route path="/about" component={About} />
-						</Sidebar.Pusher>
-						<div className="App-separator" style={{ height: '70px' }} />
-					</Sidebar.Pushable>
-
-					<div
-						className="App-bottom-nav-container"
-						onClick={e => {
-							if (!e.target.classList.contains('App-filters-toggle-icon')) {
-								this.setState({ bottomMenuVisible: false });
-							}
-						}}
-					>
-						<div className="App-bottom-nav">
-							<FiltersMenu
-								visible={this.state.bottomMenuVisible}
-								onSortFilterChange={data =>
-									this.setState({
-										trackFilters: {
-											...this.state.trackFilters,
-											sort_type: data.panes[data.activeIndex].value,
-											page: 1
+											});
 										}
-									})}
-								onDateRangeFilterChange={data =>
-									this.setState({
-										trackFilters: {
-											...this.state.trackFilters,
-											date_range: data.value,
-											page: 1
-										}
-									})}
-								onIsBCFilterChange={data => {
-									this.setState({
-										trackFilters: {
-											...this.state.trackFilters,
-											is_bc: data.checked
-										}
-									});
-								}}
-								onTrackTypeFilterChange={data => {
-									const { value } = data.panes[data.activeIndex];
-									if (value === 'is_bc') {
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												// reset trackType to be any, which is -1
-												track_type: -1,
-												page: 1,
-												is_bc: true
-											}
-										});
-									} else {
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												track_type: value,
-												page: 1,
-												is_bc: false
-											}
-										});
-									}
-								}}
-							/>
-							<div className="App-filters-toggle-icon-container">
-								<Icon
-									name="options"
-									size="huge"
-									color="blue"
-									className="App-filters-toggle-icon"
-									onClick={() => this.toggleBottomMenu()}
+									}}
 								/>
+								<div className="App-filters-toggle-icon-container">
+									<Icon
+										name="options"
+										size="huge"
+										color="blue"
+										className="App-filters-toggle-icon"
+										onClick={() => this.toggleBottomMenu()}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
+				</ScrollToTop>
 			</Router>
 		);
 	}

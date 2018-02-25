@@ -9,15 +9,14 @@ const TabbedSegment = ({ loading, children, firstRequestMade }) => {
 			<Dimmer active={loading} inverted>
 				<Loader> Loading </Loader>
 			</Dimmer>
-			{children.props.tracks.length > 0 || !firstRequestMade ? (
+			{(children.props.tracks && children.props.tracks.length > 0) ||
+			(children.props.users && children.props.users.length > 0) ||
+			!firstRequestMade ? (
 				children
 			) : (
 				<div className="TabbedSegment-Error-Container">
 					{' '}
-					<Header as="h1">
-						{' '}
-						Sorry to stop the 🎧! No results found 🤧{' '}
-					</Header>
+					<Header as="h1"> Sorry to stop the 🎧! No results found 🤧 </Header>
 					<div
 						className="TabbedSegment-Error-Gif"
 						onClick={() => (window.location = 'google.com')}

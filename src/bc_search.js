@@ -1,7 +1,16 @@
 import React, { Component } from 'react';
-import { Search, Container, Grid, Header, Flag } from 'semantic-ui-react';
+import {
+	Search,
+	Container,
+	Grid,
+	Header,
+	Flag,
+	Responsive,
+	Icon
+} from 'semantic-ui-react';
 import async from 'async';
 import axios from 'axios';
+import './bc_search';
 import { countries, baseUrl } from './config';
 
 const url = `${baseUrl}/search/`;
@@ -35,9 +44,9 @@ export default class BCSearch extends Component {
 		// } else {
 		// }
 
-		if(result.result_type === 'location') {
+		if (result.result_type === 'location') {
 			this.props.setFilter({ param: 'location_id', value: result.id });
-		} else if(result.result_type === 'soundcloud_user') {
+		} else if (result.result_type === 'soundcloud_user') {
 			this.props.setFilter({ param: 'soundcloud_user_id', value: result.id });
 		}
 
@@ -82,11 +91,19 @@ export default class BCSearch extends Component {
 				const filteredResults = {
 					Location: {
 						name: 'Location',
-						results: results.location.map(suggestion => ({ title: suggestion.name, id: suggestion.id, result_type: 'location' }))
+						results: results.location.map(suggestion => ({
+							title: suggestion.name,
+							id: suggestion.id,
+							result_type: 'location'
+						}))
 					},
 					User: {
 						name: 'User',
-						results: results.soundcloud_user.map(suggestion => ({ title: suggestion.name, id: suggestion.id, result_type: 'soundcloud_user' }))
+						results: results.soundcloud_user.map(suggestion => ({
+							title: suggestion.name,
+							id: suggestion.id,
+							result_type: 'soundcloud_user'
+						}))
 					}
 				};
 
@@ -98,9 +115,11 @@ export default class BCSearch extends Component {
 		);
 	};
 
-	render() {
+	renderFullSearch(resetSearchBar = false) {
+		if (resetSearchBar && this.props.showFullSearchBar) {
+			this.props.setShowFullSearchBar(false);
+		}
 		const { isLoading, value, results } = this.state;
-
 		return (
 			<Search
 				category
@@ -117,7 +136,7 @@ export default class BCSearch extends Component {
 				// 	const countryMatch = countries.filter(country => {
 				// 		return country.name === thing.title || country.alias === thing.title;
 				// 	});
-        //
+				//
 				// 	if (countryMatch.length) {
 				// 		return (
 				// 			<span>
@@ -131,6 +150,34 @@ export default class BCSearch extends Component {
 				// }}
 				{...this.props}
 			/>
+		);
+	}
+	// style={{ width: '-webkit-fill-available' }}
+
+	render() {
+		return (
+			<div
+				className="BCSearch-container"
+				style={
+					this.props.showFullSearchBar
+						? { width: '-webkit-fill-available' }
+						: {}
+				}
+			>
+				<Responsive maxWidth={766}>
+					{this.props.showFullSearchBar ? (
+						this.renderFullSearch()
+					) : (
+						<div
+							className="BCSearch-plain-icon"
+							onClick={this.props.setShowFullSearchBar(true)}
+						>
+							<Icon name="search" color="blue" size="large" />
+						</div>
+					)}
+				</Responsive>
+				<Responsive minWidth={767}>{this.renderFullSearch(true)}</Responsive>
+			</div>
 		);
 	}
 }

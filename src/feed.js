@@ -1,5 +1,16 @@
 import React from 'react';
-import { Item, Label, Popup, Button, Statistic, Icon, Header, Divider } from 'semantic-ui-react';
+import {
+	Item,
+	Label,
+	Popup,
+	Button,
+	Statistic,
+	Icon,
+	Header,
+	Divider,
+	Breadcrumb
+} from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import './Feed.css';
 
 const publisherLocationsToString = ({ location }) => {
@@ -42,105 +53,162 @@ const makeBCBadge = track => {
 	return null;
 };
 
-const Feed = ({
-	tracks,
-	playing,
-	togglePlay,
-	playingTrackId,
-	loading,
-	donePaginating,
-	filters,
-	paginate,
-	children,
-	headerText
-}) => {
-	return (
-		<div className="Feed-container">
-			<Header as="h1" textAlign="left">
-				{headerText}
-			</Header>
+class Feed extends React.Component {
+	render() {
+		const {
+			tracks,
+			playing,
+			togglePlay,
+			playingTrackId,
+			loading,
+			donePaginating,
+			filters,
+			paginate,
+			children,
+			headerText,
+			displayPage,
+			feedType,
+			trackFilters
+		} = this.props;
 
-			<Divider />
-			{children}
-
-			<Item.Group relaxed divided>
-				{tracks.map(currentTrack => {
-					const { track, publisher, curators } = currentTrack;
-
-					return (
-						<Item key={track.id} className="Feed-track-item">
-							<div
-								src={track.artwork_url}
-								className="Feed-artwork-play-pause-container ui small image"
+		return (
+			<div className="Feed-container">
+				{/* <Header as="h1" textAlign="left"> */}
+				{displayPage === 'home' ? (
+					<div className="Feed-home-header">
+						<Breadcrumb size="huge">
+							<Breadcrumb.Section
+								active={!this.props.trackFilters.is_submission}
+								onClick={() => this.props.setIsSubmission(false)}
 							>
-								<img src={track.artwork_url} />
-								<Icon
-									name={`${playing && track.id === playingTrackId
-										? 'pause circle'
-										: 'video play'} outline`}
-									className="Feed-play-pause-icon"
-									onClick={() => togglePlay(track.id)}
-								/>
-							</div>
+								{' '}
+								Curated Tracks{' '}
+							</Breadcrumb.Section>
+							<Breadcrumb.Divider />
+							<Breadcrumb.Section
+								active={this.props.trackFilters.is_submission}
+								onClick={() => this.props.setIsSubmission(true)}
+							>
+								{' '}
+								Submitted Tracks{' '}
+							</Breadcrumb.Section>
+						</Breadcrumb>
+					</div>
+				) : (
+					'Curated Tracks'
+				)}
 
-							<Item.Content>
-								<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
-									{track.name}{' '}
-								</Item.Header>
-								<Item.Meta className="Feed-artist-info">
-									<div className="Feed-artist-name">{publisher[0].name}</div>
-									<div className="Feed-artist-image-container">
-										<a href={publisher[0].permalink_url} target="_">
-											<img
-												className="Feed-artist-image"
-												src={publisher[0].avatar_url}
-												style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
-											/>
-										</a>
-									</div>
-								</Item.Meta>
+				{/* {headerText} */}
+				{/* </Header> */}
 
-								<Item.Header>
-									<Popup
-										trigger={
-											<Statistic className="Feed-selection-count" size="tiny">
-												<Statistic.Value>
-													<Icon name="soundcloud" size="tiny"/>
-													{curators.length}
-												</Statistic.Value>
-												<Statistic.Label>Curators</Statistic.Label>
-											</Statistic>
-										}
-										position="top center"
+				<Divider />
+				{children}
+
+				<Item.Group relaxed divided>
+					{tracks.map(currentTrack => {
+						const { track, publisher, curators } = currentTrack;
+
+						return (
+							<Item key={track.id} className="Feed-track-item">
+								<div
+									src={track.artwork_url}
+									className="Feed-artwork-play-pause-container ui small image"
+								>
+									<img src={track.artwork_url} />
+									<Icon
+										name={`${playing && track.id === playingTrackId
+											? 'pause circle'
+											: 'video play'} outline`}
+										className="Feed-play-pause-icon"
+										onClick={() => togglePlay(track.id)}
+									/>
+								</div>
+
+								<Item.Content>
+									<Item.Header
+										as="a"
+										onClick={() => window.open(track.permalink_url, '_blank')}
 									>
-										{curators.map(curator => curator.name).join(', ')}{' '}
-									</Popup>
-								</Item.Header>
-								<Item.Description>Released {track.created_at_external}</Item.Description>
-								<Item.Extra>
-									{makeBCBadge(track)}
-									{makeTrackTypeBadge(track)}
-									{publisherLocationsToString(publisher[0]) ? (
-										<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
-									) : null}
-								</Item.Extra>
-							</Item.Content>
-						</Item>
-					);
-				})}
-			</Item.Group>
-			<Button
-				loading={loading}
-				disabled={donePaginating}
-				onClick={() => {
-					paginate();
-				}}
-			>
-				{' '}
-				More.{' '}
-			</Button>
-		</div>
-	);
+										{track.name}{' '}
+									</Item.Header>
+									<Item.Meta className="Feed-artist-info">
+										<Link to={`/soundcloud_users/${publisher[0].id}`}>
+											<div className="Feed-artist-name">
+												{publisher[0].name}
+											</div>{' '}
+										</Link>
+										<div className="Feed-artist-image-container">
+											<a href={publisher[0].permalink_url} target="_">
+												<img
+													className="Feed-artist-image"
+													src={publisher[0].avatar_url}
+													style={
+														publisher[0].is_curator
+															? { border: '#df5353 solid 5px' }
+															: {}
+													}
+												/>
+											</a>
+										</div>
+									</Item.Meta>
+
+									<Item.Header>
+										<Popup
+											trigger={
+												<Statistic className="Feed-selection-count" size="tiny">
+													<Statistic.Value>
+														<Icon name="soundcloud" size="tiny" />
+														{feedType === 'selection'
+															? curators.length
+															: track.submission_count}
+													</Statistic.Value>
+													<Statistic.Label>
+														{feedType === 'selection'
+															? 'Curators'
+															: 'Submissions'}
+													</Statistic.Label>
+												</Statistic>
+											}
+											position="top center"
+										>
+											{curators.map(curator => curator.name).join(', ')}{' '}
+										</Popup>
+									</Item.Header>
+									<Item.Description>
+										Released {track.created_at_external}
+									</Item.Description>
+									<Item.Extra>
+										{makeBCBadge(track)}
+										{makeTrackTypeBadge(track)}
+										{publisherLocationsToString(publisher[0]) ? (
+											<Label
+												icon="globe"
+												content={publisherLocationsToString(publisher[0])}
+											/>
+										) : null}
+									</Item.Extra>
+								</Item.Content>
+							</Item>
+						);
+					})}
+				</Item.Group>
+				<Button
+					loading={loading}
+					disabled={donePaginating}
+					onClick={() => {
+						paginate();
+					}}
+				>
+					{' '}
+					More.{' '}
+				</Button>
+			</div>
+		);
+	}
+}
+
+Feed.defaultProps = {
+	feedType: 'selection'
 };
 
 export default Feed;

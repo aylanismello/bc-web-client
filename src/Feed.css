@@ -2,6 +2,15 @@
 	text-align: center;
 }
 
+.Feed-home-header {
+	text-align: left;
+}
+
+.Feed-home-header a {
+	padding-right: 1em; 
+}
+
+
 .Feed-artwork-play-pause-container {
 	position: relative;
 }

@@ -9,7 +9,7 @@ const BCLogo = ({ width }) => (
 );
 
 BCLogo.defaultProps = {
-	width: 100
+	width: 80
 };
 
 export default BCLogo;
