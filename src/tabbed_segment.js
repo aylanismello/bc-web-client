@@ -11,6 +11,7 @@ const TabbedSegment = ({ loading, children, firstRequestMade }) => {
 			</Dimmer>
 			{(children.props.tracks && children.props.tracks.length > 0) ||
 			(children.props.users && children.props.users.length > 0) ||
+			(children.props.locations && children.props.locations.length > 0) ||
 			!firstRequestMade ? (
 				children
 			) : (

@@ -98,8 +98,6 @@ class Feed extends React.Component {
 					'Curated Tracks'
 				)}
 
-				{/* {headerText} */}
-				{/* </Header> */}
 
 				<Divider />
 				{children}

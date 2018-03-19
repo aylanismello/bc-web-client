@@ -55,6 +55,7 @@ class App extends Component {
 		},
 		soundcloudUserFilters: {},
 		playing: false,
+		query: '',
 		playingTrackId: undefined,
 		donePaginating: false,
 		tracks: [],
@@ -284,6 +285,17 @@ class App extends Component {
 		});
 	}
 
+	submitSearch() {
+		window.location = `/#search?q=${this.state.query}`;
+		// axios
+// 	.get(`${baseUrl}/search`, { params: { q: this.state.query} })
+// 	.then({ data }) => {
+//
+// 	})
+//
+
+	}
+
 	render() {
 		return (
 			<Router>
@@ -297,6 +309,11 @@ class App extends Component {
 								toggleSidebar={options => this.toggleSidebar(options)}
 								setFilter={val => this.setFilter(val)}
 								fetchHomeTracks={() => this.fetchHomeTracks()}
+								submitSearch={() => this.submitSearch()}
+								query={this.state.query}
+								handleSearchChange={value => {
+									this.setState({ query: value });
+								}}
 							/>
 
 							<SideMenu
@@ -331,7 +348,8 @@ class App extends Component {
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
 											tracks={this.state.tracks}
-											feedInstance={displayPage => this.feedInstance(displayPage)}
+											feedInstance={displayPage =>
+												this.feedInstance(displayPage)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}

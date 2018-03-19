@@ -2,7 +2,8 @@ import React from 'react';
 import { Segment, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
-import BCSearch from './bc_search';
+// import BCSearch from './bc_search';
+import SearchBar from './search_bar';
 import BCLogo from './bc_logo';
 
 const { func } = propTypes;
@@ -37,11 +38,16 @@ class TopNav extends React.Component {
 					<BCLogo />
 				</Link>
 
-				<BCSearch
+				<SearchBar
+					handleSearchChange={this.props.handleSearchChange}
+					submitSearch={this.props.submitSearch}
+					query={this.props.query}
+				/>
+				{/* <BCSearch
 					showFullSearchBar={this.state.showFullSearchBar}
 					setShowFullSearchBar={() => 5}
 					setFilter={this.props.setFilter}
-				/>
+				/> */}
 			</Segment>
 		);
 	}
