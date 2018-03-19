@@ -23,6 +23,7 @@ import SoundcloudUser from './soundcloud_user';
 import TopNav from './top_nav';
 import ScrollToTop from './scroll_to_top';
 import FiltersMenu from './filters_menu';
+import { homeFilters } from './filter_helpers';
 import './App.css';
 
 class App extends Component {
@@ -48,10 +49,10 @@ class App extends Component {
 
 	state = Object.freeze({
 		trackFilters: {
-			sort_type: 'hot',
-			date_range: 7,
-			page: 1,
-			is_submission: false
+			// sort_type: 'hot',
+			// date_range: 7,
+			// page: 1,
+			// is_submission: false
 		},
 		soundcloudUserFilters: {},
 		playing: false,
@@ -59,7 +60,6 @@ class App extends Component {
 		playingTrackId: undefined,
 		donePaginating: false,
 		tracks: [],
-		curators: [],
 		error: null,
 		loading: false,
 		unsplashPhoto: null,
@@ -72,7 +72,10 @@ class App extends Component {
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
 		// this.updateTracks(this.state.trackFilters);
-		this.fetchCurators();
+
+
+    // this should happen separately
+		// this.fetchCurators();
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -84,18 +87,19 @@ class App extends Component {
 		}
 	}
 
-	fetchCurators() {
-		axios
-			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
-			.then(results => {
-				this.setState({
-					curators: results.data.data.soundcloud_users
-				});
-			})
-			.catch(error => {
-				this.setState({ error: error.message });
-			});
-	}
+  // this should happen is fetch curators page
+	// fetchCurators() {
+	// 	axios
+	// 		.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
+	// 		.then(results => {
+	// 			this.setState({
+	// 				curators: results.data.data.soundcloud_users
+	// 			});
+	// 		})
+	// 		.catch(error => {
+	// 			this.setState({ error: error.message });
+	// 		});
+	// }
 
 	getTrackById(trackId) {
 		return this.state.tracks.filter(({ track }) => {
@@ -130,6 +134,7 @@ class App extends Component {
 				};
 			});
 	}
+
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
@@ -197,6 +202,7 @@ class App extends Component {
 					this.setState({
 						trackFilters: {
 							...this.state.trackFilters,
+							page: 1,
 							is_submission: isSubmission
 						}
 					});
@@ -278,22 +284,12 @@ class App extends Component {
 
 	fetchHomeTracks() {
 		this.setFilters({
-			sort_type: 'hot',
-			date_range: 7,
-			page: 1,
-			is_submission: false
+			...homeFilters
 		});
 	}
 
 	submitSearch() {
 		window.location = `/#search?q=${this.state.query}`;
-		// axios
-// 	.get(`${baseUrl}/search`, { params: { q: this.state.query} })
-// 	.then({ data }) => {
-//
-// 	})
-//
-
 	}
 
 	render() {
@@ -358,7 +354,7 @@ class App extends Component {
 								<Route
 									path="/curators"
 									render={() => (
-										<Curators curators={this.curatorsWithPosition()} />
+										<Curators />
 									)}
 								/>
 								<Route path="/submit" component={Submit} />
@@ -394,6 +390,7 @@ class App extends Component {
 							<div className="App-bottom-nav">
 								<FiltersMenu
 									visible={this.state.bottomMenuVisible}
+									trackFilters={this.state.trackFilters}
 									onSortFilterChange={data =>
 										this.setState({
 											trackFilters: {

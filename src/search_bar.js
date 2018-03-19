@@ -1,18 +1,10 @@
 import React from 'react';
-import {
-	Search,
-	Container,
-	Grid,
-	Header,
-	Flag,
-	Responsive,
-	Icon
-} from 'semantic-ui-react';
+import { Search, Container, Grid, Header, Flag, Responsive, Icon } from 'semantic-ui-react';
 
 const SearchBar = ({ query, handleSearchChange, submitSearch }) => {
 	return (
 		<div className="BCSearch-container">
-			<form onSubmit={submitSearch}>
+			<form onSubmit={submitSearch} style={{ visibility: 'hidden' }}>
 				<input
 					onChange={e => {
 						console.log(e);
