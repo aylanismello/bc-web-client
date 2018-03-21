@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment, Image, Header, Divider } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';
@@ -69,6 +70,7 @@ class BCMap extends React.Component {
 						id: track.track.id,
 						position: track.publisher.position,
 						avatar_url: track.publisher.avatar_url,
+						soundcloud_user_id: track.publisher.id,
 						name: track.publisher.name,
 						locationName: track.publisher.location
 					})}
@@ -100,6 +102,7 @@ class BCMap extends React.Component {
 	render() {
 		const { selectedFeature, zoom, center } = this.state;
 
+
 		return (
 			<Segment>
 				<div className="BCMap-Container">
@@ -113,26 +116,27 @@ class BCMap extends React.Component {
 							width: '100vh'
 						}}
 					>
-						<Layer
-							type="symbol"
-							id="marker"
-							layout={{ 'icon-image': 'marker-15' }}
-						>
+						<Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
 							{this.props.featureType === 'track'
 								? this.makeTrackFeatures()
 								: this.makeCuratorFeatures()}
 						</Layer>
 
 						{selectedFeature && (
-							<Popup
-								key={selectedFeature.id}
-								coordinates={selectedFeature.position}
-							>
+							<Popup key={selectedFeature.id} coordinates={selectedFeature.position}>
 								<div>
 									<span>{selectedFeature.name} </span>
 								</div>
 								<span> {publisherLocationsToString(selectedFeature.locationName)}</span>
-								<Image src={selectedFeature.avatar_url} />
+
+								<Link
+									to={`/soundcloud_users/${this.props.featureType === 'track'
+										? selectedFeature.soundcloud_user_id
+										: selectedFeature.id}`}
+								>
+									{' '}
+									<Image src={selectedFeature.avatar_url} />{' '}
+								</Link>
 							</Popup>
 						)}
 					</MapBox>

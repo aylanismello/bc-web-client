@@ -33,7 +33,7 @@ class SoundcloudUser extends React.Component {
 					menu={{ secondary: true, pointing: true }}
 					panes={[
 						{
-							menuItem: 'Tracks',
+							menuItem: 'Tracks ⬆️',
 							render: () => (
 								<TabbedSegment
 									loading={this.state.loading}

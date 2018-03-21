@@ -45,7 +45,7 @@ class Curators extends React.Component {
 					menu={{ secondary: true, pointing: true }}
 					panes={[
 						{
-							menuItem: 'List',
+							menuItem: 'List ⬆️',
 							render: () => (
 								<Segment>
 									<Header as="h1"> Curators </Header>
@@ -79,7 +79,7 @@ class Curators extends React.Component {
 							)
 						},
 						{
-							menuItem: 'Map',
+							menuItem: 'Map 🗺',
 							render: () => <BCMap featureType="soundcloudUser" data={curators} />
 						}
 					]}
