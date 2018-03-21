@@ -128,22 +128,19 @@ class App extends Component {
 		});
 	}
 
-
 	fetchSoundcloudUser(id) {
-		this.setState({loadingSoundcloudUser: true});
-		axios
-			.get(`${baseUrl}/soundcloud_users/${id}`)
-			.then(results => {
-				this.setState({
-					soundcloudUser: results.data.data.soundcloud_user,
-					loadingSoundcloudUser: false
-				});
+		this.setState({ loadingSoundcloudUser: true });
+		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
+			this.setState({
+				soundcloudUser: results.data.data.soundcloud_user,
+				loadingSoundcloudUser: false
 			});
+		});
 	}
 
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
-		
+
 		axios
 			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
@@ -364,14 +361,27 @@ class App extends Component {
 											...props,
 											soundcloudUser: this.state.soundcloudUser,
 											loading: this.state.loading && this.state.loadingSoundcloudUser,
-											fetchSoundcloudUser: (id) => this.fetchSoundcloudUser(id),
+											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance('curator'),
-											setUser: id =>
-												this.setFilters({
-													soundcloud_user_id: id,
-													date_range: -1,
-													page: 1
-												})
+											setUser: (id, only_mixes) => {
+												if (only_mixes) {
+													this.setFilters({
+														soundcloud_user_id: id,
+														date_range: -1,
+														sort_type: 'latest',
+														track_type: 2,
+														page: 1
+													});
+												} else {
+													this.setFilters({
+														soundcloud_user_id: id,
+														sort_type: 'hot',
+														date_range: -1,
+														track_type: -1,
+														page: 1
+													});
+												}
+											}
 										};
 										return <SoundcloudUser {...allProps} />;
 									}}

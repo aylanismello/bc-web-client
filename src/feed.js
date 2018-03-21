@@ -94,7 +94,7 @@ class Feed extends React.Component {
 							</Breadcrumb.Section>
 						</Breadcrumb>
 					) : (
-						'Curated Tracks'
+						null
 					)}
 				</div>
 
