@@ -150,7 +150,6 @@ class App extends Component {
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
-		debugger;
 		axios
 			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
