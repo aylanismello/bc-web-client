@@ -80,9 +80,21 @@ class App extends Component {
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.trackFilters, this.state.trackFilters)) {
+			let paginate;
+			if(nextState.trackFilters.page !== this.state.trackFilters.page) {
+
+				// this means we are starting a fresh pagination
+				if(nextState.trackFilters.page === 1) {
+					paginate = false;
+				} else {
+					paginate = true;
+				}
+			}
+
 			this.updateTracks(
 				nextState.trackFilters,
-				nextState.trackFilters.page !== this.state.trackFilters.page
+				// nextState.trackFilters.page !== this.state.trackFilters.page
+				paginate
 			);
 		}
 	}
@@ -138,6 +150,7 @@ class App extends Component {
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
+		debugger;
 		axios
 			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
@@ -148,6 +161,7 @@ class App extends Component {
 					});
 				} else {
 					// loading first page
+					window.scrollTo(0, 0);
 					this.setState({
 						tracks: results.data.data.tracks,
 						loading: false,
