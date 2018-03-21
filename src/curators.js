@@ -17,16 +17,14 @@ import { baseUrl } from './config';
 import './curators.css';
 
 class Curators extends React.Component {
-	state = Object.freeze({
-		curators: []
-	});
-
 	componentWillMount() {
-		this.fetchCurators();
+		if (!this.props.curators.length) {
+			this.props.fetchCurators();
+		}
 	}
 
 	curatorsWithPosition() {
-		return this.state.curators
+		return this.props.curators
 			.filter(curator => curator.location && curator.location.name)
 			.map(curator => {
 				return {
@@ -36,19 +34,6 @@ class Curators extends React.Component {
 						position: [curator.location.lng, curator.location.lat]
 					}
 				};
-			});
-	}
-
-	fetchCurators() {
-		axios
-			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
-			.then(results => {
-				this.setState({
-					curators: results.data.data.soundcloud_users
-				});
-			})
-			.catch(error => {
-				this.setState({ error: error.message });
 			});
 	}
 
@@ -73,17 +58,23 @@ class Curators extends React.Component {
 									</p>
 									<Divider />
 
-									<Card.Group>
-										{curators.map(curator => {
-											return (
-												<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
-													<Card.Content>
-														<Image src={curator.soundcloud_user.avatar_url} size="tiny" />
-													</Card.Content>
-												</Link>
-											);
-										})}
-									</Card.Group>
+									<Dimmer.Dimmable as={Segment} dimmed={this.props.loading}>
+										<Dimmer active={this.props.loading} inverted>
+											<Loader> Loading </Loader>
+										</Dimmer>
+
+										<Card.Group>
+											{curators.map(curator => {
+												return (
+													<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
+														<Card.Content>
+															<Image src={curator.soundcloud_user.avatar_url} size="tiny" />
+														</Card.Content>
+													</Link>
+												);
+											})}
+										</Card.Group>
+									</Dimmer.Dimmable>
 								</Segment>
 							)
 						},

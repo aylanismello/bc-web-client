@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-	Container,
-	Segment,
-	Tab,
-	Sidebar,
-	Message,
-	Icon,
-	Menu
-} from 'semantic-ui-react';
+import { Container, Segment, Tab, Sidebar, Message, Icon, Menu } from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -66,25 +58,24 @@ class App extends Component {
 		firstRequestMade: false,
 		sideMenuVisible: false,
 		bottomMenuVisible: false,
-		showFullSearchBar: false
+		showFullSearchBar: false,
+		curators: []
 	});
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
 		// this.updateTracks(this.state.trackFilters);
 
-
-    // this should happen separately
+		// this should happen separately
 		// this.fetchCurators();
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (!_.isEqual(nextState.trackFilters, this.state.trackFilters)) {
 			let paginate;
-			if(nextState.trackFilters.page !== this.state.trackFilters.page) {
-
+			if (nextState.trackFilters.page !== this.state.trackFilters.page) {
 				// this means we are starting a fresh pagination
-				if(nextState.trackFilters.page === 1) {
+				if (nextState.trackFilters.page === 1) {
 					paginate = false;
 				} else {
 					paginate = true;
@@ -99,19 +90,23 @@ class App extends Component {
 		}
 	}
 
-  // this should happen is fetch curators page
-	// fetchCurators() {
-	// 	axios
-	// 		.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
-	// 		.then(results => {
-	// 			this.setState({
-	// 				curators: results.data.data.soundcloud_users
-	// 			});
-	// 		})
-	// 		.catch(error => {
-	// 			this.setState({ error: error.message });
-	// 		});
-	// }
+	// this should happen is fetch curators page
+	fetchCurators() {
+		this.setState({
+			loading: true
+		});
+		axios
+			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
+			.then(results => {
+				this.setState({
+					curators: results.data.data.soundcloud_users,
+					loading: false
+				});
+			})
+			.catch(error => {
+				this.setState({ error: error.message });
+			});
+	}
 
 	getTrackById(trackId) {
 		return this.state.tracks.filter(({ track }) => {
@@ -120,31 +115,15 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks
-			.filter(track => track.publisher[0].location)
-			.map(track => {
-				return {
-					...track,
-					publisher: {
-						...track.publisher[0],
-						position: [track.publisher[0].lng, track.publisher[0].lat]
-					}
-				};
-			});
-	}
-
-	curatorsWithPosition() {
-		return this.state.curators
-			.filter(curator => curator.location && curator.location.name)
-			.map(curator => {
-				return {
-					...curator,
-					location: {
-						...curator.location,
-						position: [curator.location.lng, curator.location.lat]
-					}
-				};
-			});
+		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
+			return {
+				...track,
+				publisher: {
+					...track.publisher[0],
+					position: [track.publisher[0].lng, track.publisher[0].lat]
+				}
+			};
+		});
 	}
 
 	updateTracks(trackFilters, paginate = false) {
@@ -235,18 +214,12 @@ class App extends Component {
 						this.setState({
 							playing: !this.state.playing
 						});
-					} else if (
-						this.state.playing &&
-						this.state.playingTrackId !== trackId
-					) {
+					} else if (this.state.playing && this.state.playingTrackId !== trackId) {
 						this.scAudio.pause();
 						this.scAudio.play({
 							streamUrl: this.getTrackById(trackId).stream_url
 						});
-					} else if (
-						!this.state.playing &&
-						this.state.playingTrackId === trackId
-					) {
+					} else if (!this.state.playing && this.state.playingTrackId === trackId) {
 						this.scAudio.play({
 							streamUrl: this.getTrackById(trackId).stream_url
 						});
@@ -278,11 +251,7 @@ class App extends Component {
 	}
 
 	setFilter({ param, value }) {
-		const {
-			location_id,
-			soundcloud_user_id,
-			...oldFilters
-		} = this.state.trackFilters;
+		const { location_id, soundcloud_user_id, ...oldFilters } = this.state.trackFilters;
 
 		if (value === 'reset') {
 			this.setState({ trackFilters: oldFilters });
@@ -327,8 +296,7 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() =>
-									this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
 							/>
 
 							<Sidebar.Pusher
@@ -357,8 +325,7 @@ class App extends Component {
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
 											tracks={this.state.tracks}
-											feedInstance={displayPage =>
-												this.feedInstance(displayPage)}
+											feedInstance={displayPage => this.feedInstance(displayPage)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}
@@ -367,7 +334,11 @@ class App extends Component {
 								<Route
 									path="/curators"
 									render={() => (
-										<Curators />
+										<Curators
+											fetchCurators={() => this.fetchCurators()}
+											loading={this.state.loading}
+											curators={this.state.curators}
+										/>
 									)}
 								/>
 								<Route path="/submit" component={Submit} />
