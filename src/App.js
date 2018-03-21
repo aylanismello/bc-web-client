@@ -59,7 +59,9 @@ class App extends Component {
 		sideMenuVisible: false,
 		bottomMenuVisible: false,
 		showFullSearchBar: false,
-		curators: []
+		curators: [],
+		soundcloudUser: {},
+		loadingSoundcloudUser: false
 	});
 
 	componentWillMount() {
@@ -126,9 +128,22 @@ class App extends Component {
 		});
 	}
 
+
+	fetchSoundcloudUser(id) {
+		this.setState({loadingSoundcloudUser: true});
+		axios
+			.get(`${baseUrl}/soundcloud_users/${id}`)
+			.then(results => {
+				this.setState({
+					soundcloudUser: results.data.data.soundcloud_user,
+					loadingSoundcloudUser: false
+				});
+			});
+	}
+
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
-
+		
 		axios
 			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
@@ -347,11 +362,14 @@ class App extends Component {
 									render={props => {
 										const allProps = {
 											...props,
+											soundcloudUser: this.state.soundcloudUser,
+											loading: this.state.loading && this.state.loadingSoundcloudUser,
+											fetchSoundcloudUser: (id) => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance('curator'),
 											setUser: id =>
 												this.setFilters({
 													soundcloud_user_id: id,
-													date_range: 1000,
+													date_range: -1,
 													page: 1
 												})
 										};

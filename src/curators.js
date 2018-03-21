@@ -80,7 +80,9 @@ class Curators extends React.Component {
 						},
 						{
 							menuItem: 'Map 🗺',
-							render: () => <BCMap featureType="soundcloudUser" data={curators} />
+							render: () => (
+								<BCMap featureType="soundcloudUser" data={curators} loading={this.props.loading} />
+							)
 						}
 					]}
 				/>

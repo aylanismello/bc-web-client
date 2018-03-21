@@ -74,8 +74,8 @@ class Feed extends React.Component {
 		return (
 			<div className="Feed-container">
 				{/* <Header as="h1" textAlign="left"> */}
-				{displayPage === 'home' ? (
-					<div className="Feed-home-header">
+				<div className="Feed-home-header">
+					{displayPage === 'home' ? (
 						<Breadcrumb size="huge">
 							<Breadcrumb.Section
 								active={!this.props.trackFilters.is_submission}
@@ -93,11 +93,10 @@ class Feed extends React.Component {
 								Submitted Tracks{' '}
 							</Breadcrumb.Section>
 						</Breadcrumb>
-					</div>
-				) : (
-					'Curated Tracks'
-				)}
-
+					) : (
+						'Curated Tracks'
+					)}
+				</div>
 
 				<Divider />
 				{children}
@@ -123,28 +122,19 @@ class Feed extends React.Component {
 								</div>
 
 								<Item.Content>
-									<Item.Header
-										as="a"
-										onClick={() => window.open(track.permalink_url, '_blank')}
-									>
+									<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
 										{track.name}{' '}
 									</Item.Header>
 									<Item.Meta className="Feed-artist-info">
 										<Link to={`/soundcloud_users/${publisher[0].id}`}>
-											<div className="Feed-artist-name">
-												{publisher[0].name}
-											</div>{' '}
+											<div className="Feed-artist-name">{publisher[0].name}</div>{' '}
 										</Link>
 										<div className="Feed-artist-image-container">
 											<a href={publisher[0].permalink_url} target="_">
 												<img
 													className="Feed-artist-image"
 													src={publisher[0].avatar_url}
-													style={
-														publisher[0].is_curator
-															? { border: '#df5353 solid 5px' }
-															: {}
-													}
+													style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
 												/>
 											</a>
 										</div>
@@ -156,14 +146,10 @@ class Feed extends React.Component {
 												<Statistic className="Feed-selection-count" size="tiny">
 													<Statistic.Value>
 														<Icon name="soundcloud" size="tiny" />
-														{feedType === 'selection'
-															? curators.length
-															: track.submission_count}
+														{feedType === 'selection' ? curators.length : track.submission_count}
 													</Statistic.Value>
 													<Statistic.Label>
-														{feedType === 'selection'
-															? 'Curators'
-															: 'Submissions'}
+														{feedType === 'selection' ? 'Curators' : 'Submissions'}
 													</Statistic.Label>
 												</Statistic>
 											}
@@ -172,17 +158,12 @@ class Feed extends React.Component {
 											{curators.map(curator => curator.name).join(', ')}{' '}
 										</Popup>
 									</Item.Header>
-									<Item.Description>
-										Released {track.created_at_external}
-									</Item.Description>
+									<Item.Description>Released {track.created_at_external}</Item.Description>
 									<Item.Extra>
 										{makeBCBadge(track)}
 										{makeTrackTypeBadge(track)}
 										{publisherLocationsToString(publisher[0]) ? (
-											<Label
-												icon="globe"
-												content={publisherLocationsToString(publisher[0])}
-											/>
+											<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
 										) : null}
 									</Item.Extra>
 								</Item.Content>

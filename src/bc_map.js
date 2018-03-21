@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Image, Header, Divider } from 'semantic-ui-react';
+import { Segment, Image, Header, Divider, Dimmer, Loader } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
@@ -104,7 +104,10 @@ class BCMap extends React.Component {
 
 
 		return (
-			<Segment>
+			<Dimmer.Dimmable as={Segment} dimmed={this.props.loading}>
+				<Dimmer active={this.props.loading} inverted>
+					<Loader> Loading </Loader>
+				</Dimmer>
 				<div className="BCMap-Container">
 					<MapBox
 						style="mapbox://styles/mapbox/dark-v9"
@@ -141,7 +144,7 @@ class BCMap extends React.Component {
 						)}
 					</MapBox>
 				</div>
-			</Segment>
+			</Dimmer.Dimmable>
 		);
 	}
 }

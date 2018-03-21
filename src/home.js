@@ -49,7 +49,7 @@ class Home extends React.Component {
 						{
 							menuItem: 'Map 🗺',
 							render: () => (
-								<BCMap data={tracksWithPosition()} featureType="track" />
+								<BCMap data={tracksWithPosition()} featureType="track" loading={this.props.loading}/>
 							)
 						},
 						{

@@ -3,21 +3,13 @@ import axios from 'axios';
 import { Segment, Tab, Container } from 'semantic-ui-react';
 import TabbedSegment from './tabbed_segment';
 import { baseUrl } from './config';
+import './soundcloud_user.css';
 
 class SoundcloudUser extends React.Component {
-	state = {
-		soundcloudUser: {}
-	};
 
 	componentWillMount() {
 		this.props.setUser(this.props.match.params.id);
-		axios
-			.get(`${baseUrl}/soundcloud_users/${this.props.match.params.id}`)
-			.then(results => {
-				this.setState({
-					soundcloudUser: results.data.data.soundcloud_user
-				});
-			});
+		this.props.fetchSoundcloudUser(this.props.match.params.id);
 	}
 
 	render() {
@@ -25,7 +17,7 @@ class SoundcloudUser extends React.Component {
 			<Container>
 				<Segment>
 					<h1>
-						{this.state.soundcloudUser.name}
+						{this.props.soundcloudUser.name}
 					</h1>
 					<h2> Some stats here </h2>
 				</Segment>
@@ -36,8 +28,7 @@ class SoundcloudUser extends React.Component {
 							menuItem: 'Tracks ⬆️',
 							render: () => (
 								<TabbedSegment
-									loading={this.state.loading}
-									firstRequestMade={this.state.firstRequestMade}
+									loading={this.props.loading}
 								>
 									{this.props.feed}
 								</TabbedSegment>
