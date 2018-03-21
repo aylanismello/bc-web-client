@@ -44,6 +44,7 @@ const displayFilters = {
 
 const homeFilters = {
 	sort_type: availableTrackFilters.sort_type.HOT,
+	track_type: availableTrackFilters.track_type.ANY,
 	date_range: availableTrackFilters.date_range.PAST_WEEK,
 	page: 1,
 	is_submission: false

@@ -61,7 +61,8 @@ const FiltersMenu = ({
 					panes={displayFilters.trackType}
 					activeIndex={function() {
 						const activeIndex = displayFilters.trackType.findIndex(i => i.value === trackFilters.track_type);
-						if (activeIndex === -1) {
+						if (trackFilters.is_bc) {
+							// if trackFilters is set to is_bc, then we have to disregard track_type being any (-1)
 							return 3;
 						} else {
 							return activeIndex;
