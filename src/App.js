@@ -50,6 +50,10 @@ class App extends Component {
 		playing: false,
 		query: '',
 		playingTrackId: undefined,
+		playingTrack: Object.freeze({
+			id: undefined,
+			data: {}
+		}),
 		donePaginating: false,
 		tracks: [],
 		error: null,
@@ -84,11 +88,7 @@ class App extends Component {
 				}
 			}
 
-			this.updateTracks(
-				nextState.trackFilters,
-				// nextState.trackFilters.page !== this.state.trackFilters.page
-				paginate
-			);
+			this.updateTracks(nextState.trackFilters, paginate);
 		}
 	}
 
@@ -219,19 +219,19 @@ class App extends Component {
 						}
 					});
 				}}
-				playingTrackId={this.state.playingTrackId}
+				playingTrackId={this.state.playingTrack.id}
 				togglePlay={trackId => {
-					if (this.state.playing && this.state.playingTrackId === trackId) {
+					if (this.state.playing && this.state.playingTrack.id === trackId) {
 						this.scAudio.pause();
 						this.setState({
 							playing: !this.state.playing
 						});
-					} else if (this.state.playing && this.state.playingTrackId !== trackId) {
+					} else if (this.state.playing && this.state.playingTrack.id !== trackId) {
 						this.scAudio.pause();
 						this.scAudio.play({
 							streamUrl: this.getTrackById(trackId).stream_url
 						});
-					} else if (!this.state.playing && this.state.playingTrackId === trackId) {
+					} else if (!this.state.playing && this.state.playingTrack.id === trackId) {
 						this.scAudio.play({
 							streamUrl: this.getTrackById(trackId).stream_url
 						});
@@ -239,7 +239,7 @@ class App extends Component {
 							playing: !this.state.playing
 						});
 					} else {
-						// !this.state.playing && this.state.playingTrackId !== trackId
+						// !this.state.playing && this.state.playingTrack.id !== trackId
 						this.scAudio.play({
 							streamUrl: this.getTrackById(trackId).stream_url
 						});
@@ -248,8 +248,14 @@ class App extends Component {
 						});
 					}
 
-					if (this.state.playingTrackId !== trackId) {
-						this.setState({ playingTrackId: trackId });
+					if (this.state.playingTrack.id !== trackId) {
+						this.setState({
+							playingTrack: {
+								...this.state.playingTrack,
+								id: trackId,
+								data: this.state.tracks.find(x => x.track.id === trackId)
+							}
+						});
 					}
 				}}
 			/>
@@ -399,6 +405,28 @@ class App extends Component {
 								}
 							}}
 						>
+							<div className="App-bottom-nav-track-info-container">
+								{this.state.playingTrack.id ? (
+									<div>
+										<div className="App-bottom-nav-track-info-name">
+											{this.state.playingTrack.data.track.name}
+										</div>
+										<div className="App-bottom-nav-track-info-publisher">
+											{this.state.playingTrack.data.publisher[0].name}
+										</div>
+									</div>
+								) : null}
+							</div>
+
+							<div className="App-bottom-nav-play-button">
+								<Icon
+									name={this.state.playing ? 'pause circle' : 'video play'}
+									size="huge"
+									color="pink"
+									className="App-filters-toggle-icon"
+								/>
+							</div>
+
 							<div className="App-bottom-nav">
 								<FiltersMenu
 									visible={this.state.bottomMenuVisible}
