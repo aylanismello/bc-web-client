@@ -138,6 +138,45 @@ class App extends Component {
 		});
 	}
 
+	togglePlay(trackId) {
+		if (this.state.playing && this.state.playingTrack.id === trackId) {
+			this.scAudio.pause();
+			this.setState({
+				playing: !this.state.playing
+			});
+		} else if (this.state.playing && this.state.playingTrack.id !== trackId) {
+			this.scAudio.pause();
+			this.scAudio.play({
+				streamUrl: this.getTrackById(trackId).stream_url
+			});
+		} else if (!this.state.playing && this.state.playingTrack.id === trackId) {
+			this.scAudio.play({
+				streamUrl: this.getTrackById(trackId).stream_url
+			});
+			this.setState({
+				playing: !this.state.playing
+			});
+		} else {
+			// !this.state.playing && this.state.playingTrack.id !== trackId
+			this.scAudio.play({
+				streamUrl: this.getTrackById(trackId).stream_url
+			});
+			this.setState({
+				playing: !this.state.playing
+			});
+		}
+
+		if (this.state.playingTrack.id !== trackId) {
+			this.setState({
+				playingTrack: {
+					...this.state.playingTrack,
+					id: trackId,
+					data: this.state.tracks.find(x => x.track.id === trackId)
+				}
+			});
+		}
+	}
+
 	updateTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
@@ -220,44 +259,7 @@ class App extends Component {
 					});
 				}}
 				playingTrackId={this.state.playingTrack.id}
-				togglePlay={trackId => {
-					if (this.state.playing && this.state.playingTrack.id === trackId) {
-						this.scAudio.pause();
-						this.setState({
-							playing: !this.state.playing
-						});
-					} else if (this.state.playing && this.state.playingTrack.id !== trackId) {
-						this.scAudio.pause();
-						this.scAudio.play({
-							streamUrl: this.getTrackById(trackId).stream_url
-						});
-					} else if (!this.state.playing && this.state.playingTrack.id === trackId) {
-						this.scAudio.play({
-							streamUrl: this.getTrackById(trackId).stream_url
-						});
-						this.setState({
-							playing: !this.state.playing
-						});
-					} else {
-						// !this.state.playing && this.state.playingTrack.id !== trackId
-						this.scAudio.play({
-							streamUrl: this.getTrackById(trackId).stream_url
-						});
-						this.setState({
-							playing: !this.state.playing
-						});
-					}
-
-					if (this.state.playingTrack.id !== trackId) {
-						this.setState({
-							playingTrack: {
-								...this.state.playingTrack,
-								id: trackId,
-								data: this.state.tracks.find(x => x.track.id === trackId)
-							}
-						});
-					}
-				}}
+				togglePlay={trackId => this.togglePlay(trackId)}
 			/>
 		);
 	}
@@ -424,6 +426,12 @@ class App extends Component {
 									size="huge"
 									color="pink"
 									className="App-filters-toggle-icon"
+									onClick={() => {
+										const { id } = this.state.playingTrack;
+										if (id) {
+											this.togglePlay(id);
+										}
+									}}
 								/>
 							</div>
 
