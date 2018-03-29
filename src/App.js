@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Segment, Tab, Sidebar, Message, Icon, Menu } from 'semantic-ui-react';
+import { Container, Segment, Tab, Sidebar, Message, Icon, Menu, Item } from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -409,14 +409,29 @@ class App extends Component {
 						>
 							<div className="App-bottom-nav-track-info-container">
 								{this.state.playingTrack.id ? (
-									<div>
-										<div className="App-bottom-nav-track-info-name">
-											{this.state.playingTrack.data.track.name}
-										</div>
-										<div className="App-bottom-nav-track-info-publisher">
-											{this.state.playingTrack.data.publisher[0].name}
-										</div>
-									</div>
+									<Item>
+										<a href={this.state.playingTrack.data.track.permalink_url} target="_blank">
+											<Item.Image
+												src={this.state.playingTrack.data.track.artwork_url}
+												className="App-bottom-nav-track-image"
+												size="tiny"
+											/>
+										</a>
+										<Item.Content verticalAlign="middle" className="App-bottom-nav-track-content">
+											<Item.Header className="App-bottom-nav-track-info-name">
+												{this.state.playingTrack.data.track.name}
+											</Item.Header>
+											<Item.Meta>
+												<span className="App-bottom-nav-track-info-publisher">
+													<Link
+														to={`/soundcloud_users/${this.state.playingTrack.data.publisher[0].id}`}
+													>
+														{this.state.playingTrack.data.publisher[0].name}
+													</Link>
+												</span>
+											</Item.Meta>
+										</Item.Content>
+									</Item>
 								) : null}
 							</div>
 

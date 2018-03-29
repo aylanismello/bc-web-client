@@ -10,7 +10,6 @@
   /* margin-bottom: 70px; */
 }
 
-
 .App-bottom-nav-container {
   width: 100%;;
   justify-content: space-between;
@@ -22,9 +21,19 @@
   align-items: center;
 }
 
+
 .App-bottom-nav-track-info-container {
   color: white;
-  width: 200px;
+  /* width: 200px; */
+  height: 70px;
+}
+
+.App-bottom-nav-track-info-container > .item {
+  display: flex;
+}
+
+.ui.tiny.image.App-bottom-nav-track-image {
+    margin-right: 10px;
 }
 
 .App-bottom-nav-play-button:hover {
