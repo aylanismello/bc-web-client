@@ -188,8 +188,11 @@ class App extends Component {
 						tracks: [...this.state.tracks, ...results.data.data.tracks],
 						loading: false
 					});
+					// when paginating, scroll to bottom of page
+					window.scrollTo(0, 100000);
 				} else {
 					// loading first page
+					// when loading first page, scroll to top of page
 					window.scrollTo(0, 0);
 					this.setState({
 						tracks: results.data.data.tracks,
