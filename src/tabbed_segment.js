@@ -16,7 +16,7 @@ const TabbedSegment = ({ loading, children }) => {
 				) : (
 					<div className="TabbedSegment-Error-Container">
 						{' '}
-						<Header as="h1"> Sorry to stop the 🎧! No results found 🤧 </Header>
+						<Header as="h1"> Sorry to stop the 🎧! No results found 🙁 </Header>
 						<div className="TabbedSegment-Error-Gif" onClick={() => (window.location = 'google.com')}>
 							<iframe
 								src="https://giphy.com/embed/xT9IgKGRbWmPsUqk36"

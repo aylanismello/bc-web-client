@@ -22,10 +22,10 @@ const availableTrackFilters = {
 
 const displayFilters = {
 	sortType: [
-		{ menuItem: '🔥', value: availableTrackFilters.sort_type.HOT },
-		{ menuItem: '🚀', value: availableTrackFilters.sort_type.LATEST },
-		{ menuItem: '💯', value: availableTrackFilters.sort_type.TOP },
-		{ menuItem: '🔀', value: availableTrackFilters.sort_type.RANDOM }
+		{ menuItem: '🔥 hot', value: availableTrackFilters.sort_type.HOT },
+		{ menuItem: '🚀 latest', value: availableTrackFilters.sort_type.LATEST },
+		{ menuItem: '💯 top', value: availableTrackFilters.sort_type.TOP },
+		{ menuItem: '🔀 random', value: availableTrackFilters.sort_type.RANDOM }
 	],
 	trackType: [
 		{ menuItem: 'Any', value: availableTrackFilters.track_type.ANY },

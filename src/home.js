@@ -37,19 +37,24 @@ class Home extends React.Component {
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
+					onTabChange={(e, data) => {
+						if (data.activeIndex === 0) {
+							this.props.setIsSubmission(false);
+						}
+					}}
 					panes={[
 						{
 							menuItem: 'Tracks ⬆️',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance()}
-								</TabbedSegment>
-							)
+							render: () => <TabbedSegment loading={loading}>{feedInstance()}</TabbedSegment>
 						},
 						{
 							menuItem: 'Map 🗺',
 							render: () => (
-								<BCMap data={tracksWithPosition()} featureType="track" loading={this.props.loading}/>
+								<BCMap
+									data={tracksWithPosition()}
+									featureType="track"
+									loading={this.props.loading}
+								/>
 							)
 						},
 						{

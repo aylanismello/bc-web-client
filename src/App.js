@@ -189,7 +189,7 @@ class App extends Component {
 						loading: false
 					});
 					// when paginating, scroll to bottom of page
-					window.scrollTo(0, 100000);
+					window.scrollTo(0, (document.body.scrollHeight + 10000));
 				} else {
 					// loading first page
 					// when loading first page, scroll to top of page
@@ -235,6 +235,16 @@ class App extends Component {
 			});
 	}
 
+	setIsSubmission(isSubmission) {
+			this.setState({
+				trackFilters: {
+					...this.state.trackFilters,
+					page: 1,
+					is_submission: isSubmission
+				}
+			});
+	}
+
 	feedInstance(displayPage = 'home') {
 		return (
 			<Feed
@@ -244,15 +254,7 @@ class App extends Component {
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
-				setIsSubmission={isSubmission => {
-					this.setState({
-						trackFilters: {
-							...this.state.trackFilters,
-							page: 1,
-							is_submission: isSubmission
-						}
-					});
-				}}
+				setIsSubmission={(isSubmission) => this.setIsSubmission(isSubmission)}
 				paginate={() => {
 					this.setState({
 						trackFilters: {
@@ -344,6 +346,7 @@ class App extends Component {
 									render={() => (
 										<Home
 											getHomeTracks={() => this.fetchHomeTracks()}
+											setIsSubmission={(isSubmission) => this.setIsSubmission(isSubmission)}
 											loading={this.state.loading}
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
