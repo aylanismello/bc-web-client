@@ -56,7 +56,6 @@
   cursor: pointer;
 }
 
-
 .ui.negative.message.App-error {
   position: absolute;
   z-index: 10;
@@ -65,22 +64,18 @@
 }
 
 
-.ui.segment.App-top-nav {
-  position: relative;
-  background: black;
+/*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
+
+.App-bottom-nav-box:first-child > div { margin-right: auto; }
+/*  ino why the box doesn twork here*/
+.App-filters-toggle-icon-container {
+  margin-left: auto;
+}
+/* this would be cleaner, below */
+/* .App-bottom-nav-box:last-child { margin-left: auto; } */
+
+.App-bottom-nav-box {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 0px;
-  padding: 0 1em 0 1em;
-  margin: 0;
-}
-
-img.App-logo {
-  width: 100%;
-  height: auto;
-}
-
-.App-logo-container {
-  width: 100px;
+  justify-content: center;
 }

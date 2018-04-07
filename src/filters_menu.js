@@ -34,7 +34,7 @@ const FiltersMenu = ({
 				<div className="App-filters-filter-container" id="App-filters-sort">
 					<Label size="large" className="App-filters-filter-pre-text">
 						{' '}
-						sort by:{' '}
+						sort:{' '}
 					</Label>
 					<Tab
 						panes={displayFilters.sortType}

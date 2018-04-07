@@ -189,7 +189,7 @@ class App extends Component {
 						loading: false
 					});
 					// when paginating, scroll to bottom of page
-					window.scrollTo(0, (document.body.scrollHeight + 10000));
+					window.scrollTo(0, document.body.scrollHeight + 10000);
 				} else {
 					// loading first page
 					// when loading first page, scroll to top of page
@@ -236,13 +236,13 @@ class App extends Component {
 	}
 
 	setIsSubmission(isSubmission) {
-			this.setState({
-				trackFilters: {
-					...this.state.trackFilters,
-					page: 1,
-					is_submission: isSubmission
-				}
-			});
+		this.setState({
+			trackFilters: {
+				...this.state.trackFilters,
+				page: 1,
+				is_submission: isSubmission
+			}
+		});
 	}
 
 	feedInstance(displayPage = 'home') {
@@ -254,7 +254,7 @@ class App extends Component {
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
-				setIsSubmission={(isSubmission) => this.setIsSubmission(isSubmission)}
+				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 				paginate={() => {
 					this.setState({
 						trackFilters: {
@@ -346,7 +346,7 @@ class App extends Component {
 									render={() => (
 										<Home
 											getHomeTracks={() => this.fetchHomeTracks()}
-											setIsSubmission={(isSubmission) => this.setIsSubmission(isSubmission)}
+											setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 											loading={this.state.loading}
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
@@ -405,6 +405,8 @@ class App extends Component {
 							<div className="App-separator" style={{ height: '70px' }} />
 						</Sidebar.Pushable>
 
+						{/*  TODO: refactor the following div into its own Component */}
+
 						<div
 							className="App-bottom-nav-container"
 							onClick={e => {
@@ -413,7 +415,7 @@ class App extends Component {
 								}
 							}}
 						>
-							<div className="App-bottom-nav-track-info-container">
+							<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 								{this.state.playingTrack.id ? (
 									<Item>
 										<a href={this.state.playingTrack.data.track.permalink_url} target="_blank">
@@ -441,7 +443,7 @@ class App extends Component {
 								) : null}
 							</div>
 
-							<div className="App-bottom-nav-play-button">
+							<div className="App-bottom-nav-play-button" className="App-bottom-nav-box">
 								<Icon
 									name={this.state.playing ? 'pause circle' : 'video play'}
 									size="huge"
@@ -456,7 +458,7 @@ class App extends Component {
 								/>
 							</div>
 
-							<div className="App-bottom-nav">
+							<div className="App-bottom-nav" className="App-bottom-nav-box">
 								<FiltersMenu
 									visible={this.state.bottomMenuVisible}
 									trackFilters={this.state.trackFilters}

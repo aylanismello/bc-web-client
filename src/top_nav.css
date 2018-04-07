@@ -1,0 +1,30 @@
+.ui.segment.App-top-nav {
+  position: relative;
+  background: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0px;
+  padding: 0 1em 0 1em;
+  margin: 0;
+}
+
+img.App-logo {
+  width: 100%;
+  height: auto;
+}
+
+.App-logo-container {
+  width: 100px;
+}
+
+.App-top-nav-side {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* https://stackoverflow.com/questions/32378953/keep-the-middle-item-centered-
+when-side-items-have-different-widths */
+.App-top-nav-side:first-child > i { margin-right: auto; }
+.App-top-nav-side:last-child > div { margin-left: auto; }
