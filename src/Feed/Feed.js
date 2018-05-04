@@ -8,8 +8,6 @@ class Feed extends React.Component {
 	renderTracksMetadata() {
 		return (
 			<div>
-				{' '}
-				<div>This shows metadata specific to the super filter chosen.</div>
 				<div>
 					<SuperFilterPanel
 						superFilters={[

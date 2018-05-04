@@ -111,7 +111,7 @@ class TrackList extends React.Component {
 									src={track.artwork_url}
 									className="TrackList-artwork-play-pause-container ui small image"
 								>
-									<img src={track.artwork_url} />
+									<img src={track.artwork_url || publisher[0].avatar_url} />
 									<Icon
 										name={`${playing && track.id === playingTrackId
 											? 'pause circle'

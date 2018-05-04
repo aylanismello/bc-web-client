@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 import superFilterImg from './sample_super_filter.svg';
+import css from './SuperFilterButton.css';
 
 const SuperFilterButton = ({ setFilters, name }) => {
 	return (
@@ -9,8 +10,8 @@ const SuperFilterButton = ({ setFilters, name }) => {
 				style={{
 					background: '#5f9ea0',
 					color: '#fff',
-					fontSize: '36px',
-					lineHeight: '100px',
+					fontSize: '32px',
+					lineHeight: '50px',
 					margin: '10px',
 					padding: '2%',
 					position: 'relative',

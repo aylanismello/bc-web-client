@@ -1,12 +1,12 @@
 import React from 'react';
 import Slider from 'react-slick';
-import SuperFilterButton from './SuperFilterButton';
+import SuperFilterButton from '../SuperFilterButton';
 import './SuperFilterPanel.css';
 
 const settings = {
 	infinite: false,
 	speed: 500,
-  dots: true,
+	dots: true,
 	autoplay: false,
 	slidesToShow: 4,
 	slidesToScroll: 4,
@@ -24,16 +24,21 @@ const settings = {
 };
 
 const SuperFilterPanel = ({ setFilters, superFilters }) => (
-	<Slider className="explore-panel-slider" {...settings}>
-		{superFilters.map((superFilter, idx) => (
-			<div>
-				<SuperFilterButton
-					name={superFilter.name}
-					setFilters={() => setFilters(superFilter.filters)}
-				/>
-			</div>
-		))}
-	</Slider>
+	<div>
+		<Slider className="explore-panel-slider" {...settings}>
+			{superFilters.map((superFilter, idx) => (
+				<div>
+					<SuperFilterButton
+						name={superFilter.name}
+						setFilters={() => setFilters(superFilter.filters)}
+					/>
+				</div>
+			))}
+		</Slider>
+    <div>
+      	This shows metadata specific to the super filter chosen.
+    </div>
+	</div>
 );
 
 export default SuperFilterPanel;
