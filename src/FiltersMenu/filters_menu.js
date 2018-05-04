@@ -1,6 +1,6 @@
 import { Segment, Tab, Radio, Select, Grid, Label } from 'semantic-ui-react';
 import React from 'react';
-import { availableTrackFilters, displayFilters, homeFilters } from './filter_helpers';
+import { availableTrackFilters, displayFilters, homeFilters } from '../filter_helpers';
 import './FiltersMenu.css';
 
 const FiltersMenu = ({

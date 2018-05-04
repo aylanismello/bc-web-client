@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { Segment, Tab, Container } from 'semantic-ui-react';
-import TabbedSegment from './tabbed_segment';
-import { baseUrl } from './config';
+import TabbedSegment from '../TabbedSegment';
+import { baseUrl } from '../config';
 import './soundcloud_user.css';
 
 class SoundcloudUser extends React.Component {

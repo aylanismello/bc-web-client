@@ -1,8 +1,8 @@
 import { Container, Tab } from 'semantic-ui-react';
 import React from 'react';
-import BCMap from './bc_map';
-import UsersFeed from './users_feed';
-import TabbedSegment from './tabbed_segment';
+import BCMap from '../BCMap';
+import UsersFeed from '../UsersFeed';
+import TabbedSegment from '../TabbedSegment';
 
 class Home extends React.Component {
 	state = {

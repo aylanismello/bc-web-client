@@ -2,10 +2,9 @@ import React from 'react';
 import { Segment, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
-// import BCSearch from './bc_search';
-import SearchBar from './search_bar';
+import SearchBar from '../SearchBar';
 import './top_nav.css';
-import BCLogo from './bc_logo';
+import BCLogo from '../BCLogo';
 
 const { func } = propTypes;
 

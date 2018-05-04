@@ -10,11 +10,9 @@ import {
 	Image,
 	Tab
 } from 'semantic-ui-react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import BCMap from './bc_map';
-import { baseUrl } from './config';
-import './curators.css';
+import BCMap from '../BCMap';
+import './Curators.css';
 
 class Curators extends React.Component {
 	componentWillMount() {

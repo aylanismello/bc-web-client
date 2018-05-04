@@ -12,8 +12,8 @@ import {
 	Form
 } from 'semantic-ui-react';
 import axios from 'axios';
-import BCLogo from './bc_logo';
-import { baseUrl } from './config';
+import BCLogo from '../BCLogo';
+import { baseUrl } from '../config';
 import './submit.css';
 
 const url = `${baseUrl}/submissions`;
