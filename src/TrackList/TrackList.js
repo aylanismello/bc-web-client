@@ -140,7 +140,7 @@ class TrackList extends React.Component {
 										</div>
 									</Item.Meta>
 
-									<Item.Header>
+									{/* <Item.Header>
 										<Popup
 											trigger={
 												<Statistic className="TrackList-selection-count" size="tiny">
@@ -157,7 +157,8 @@ class TrackList extends React.Component {
 										>
 											{curators.map(curator => curator.name).join(', ')}{' '}
 										</Popup>
-									</Item.Header>
+
+									</Item.Header> */}
 									<Item.Description>Released {track.created_at_external}</Item.Description>
 									<Item.Extra>
 										{makeBCBadge(track)}

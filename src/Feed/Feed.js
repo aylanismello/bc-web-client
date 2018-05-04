@@ -1,33 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Grid, Card } from 'semantic-ui-react';
-import SuperFilterButton from './SuperFilterButton';
+import SuperFilterPanel from './SuperFilterPanel';
 import TrackList from '../TrackList';
 
 class Feed extends React.Component {
 	renderTracksMetadata() {
 		return (
-			<Segment>
+			<div>
 				{' '}
-				<Segment>
-					This shows metadata specific to the super filter chosen.
-				</Segment>
-				<Segment>
-					<Card.Group>
-						<SuperFilterButton setFilters={this.props.setFilters} />
-						<SuperFilterButton setFilters={this.props.setFilters} />
-						<SuperFilterButton setFilters={this.props.setFilters} />
-						<SuperFilterButton setFilters={this.props.setFilters} />
-						<SuperFilterButton setFilters={this.props.setFilters} />
-						<SuperFilterButton setFilters={this.props.setFilters} />
-					</Card.Group>
-				</Segment>
-				{Object.keys(this.props.trackFilters).map(daFilter => (
-					<p>
-						{daFilter} : {this.props.trackFilters[daFilter]}
-					</p>
-				))}{' '}
-			</Segment>
+				<div>This shows metadata specific to the super filter chosen.</div>
+				<div>
+					<SuperFilterPanel
+						superFilters={[
+							{
+								name: 'Hot Mixes',
+								filters: {
+									date_range: 7,
+									is_bc: false,
+									page: 1,
+									sort_type: 'hot',
+									track_type: 2
+								}
+							},
+							{
+								name: 'BC Picks',
+								filters: {
+									date_range: 365,
+
+									is_bc: true,
+									page: 1,
+									sort_type: 'latest',
+									track_type: -1
+								}
+							},
+							{
+								name: 'Top Remixes',
+								filters: {
+									date_range: 7,
+									is_bc: false,
+									page: 1,
+									sort_type: 'top',
+									track_type: 1
+								}
+							},
+							{
+								name: 'Latest',
+								filters: {
+									date_range: 7,
+
+									is_submission: false,
+									page: 1,
+									sort_type: 'latest',
+									track_type: -1
+								}
+							}
+						]}
+						setFilters={this.props.setFilters}
+					/>
+				</div>
+			</div>
 		);
 	}
 
@@ -45,7 +77,8 @@ class Feed extends React.Component {
 }
 
 Feed.propTypes = {
-	feedType: PropTypes.string.isRequired
+	feedType: PropTypes.string.isRequired,
+	setFilters: PropTypes.func.isRequired
 };
 
 export default Feed;
