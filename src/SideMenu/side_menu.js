@@ -21,12 +21,13 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 				</Menu.Item>
 			</Link>
 
-			<Link to="/submit" onClick={clickedOnMenuItem}>
+
+			{/* <Link to="/submit" onClick={clickedOnMenuItem}>
 				<Menu.Item name="external share" className="SideMenu-item" onClick={clickedOnMenuItem}>
 					<Icon name="external share" />
 					Submit
 				</Menu.Item>
-			</Link>
+			</Link> */}
 
 			<Link to="/about" onClick={clickedOnMenuItem}>
 				<Menu.Item name="code" className="SideMenu-item">

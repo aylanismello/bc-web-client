@@ -1,28 +1,29 @@
-.Feed-container {
+.TrackList-container {
 	text-align: center;
 }
 
-.Feed-home-header {
+.TrackList-home-header {
 	text-align: left;
 }
 
-.Feed-home-header a {
+.TrackList-home-header a {
 	padding-right: 1em;
 }
 
-.Feed-artwork-play-pause-container {
+
+.TrackList-artwork-play-pause-container {
 	position: relative;
 }
 
-.Feed-artwork-play-pause-container img {
+.TrackList-artwork-play-pause-container img {
 	display: block;
 }
 
-.Feed-play-pause-icon {
+.TrackList-play-pause-icon {
 	color: white;
 }
 
-i.pause.circle.outline.icon.Feed-play-pause-icon {
+i.pause.circle.outline.icon.TrackList-play-pause-icon {
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
@@ -30,7 +31,7 @@ i.pause.circle.outline.icon.Feed-play-pause-icon {
 	left: 50%;
 }
 
-i.video.play.outline.icon.Feed-play-pause-icon {
+i.video.play.outline.icon.TrackList-play-pause-icon {
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
@@ -38,25 +39,25 @@ i.video.play.outline.icon.Feed-play-pause-icon {
 	left: 50%;
 }
 
-.Feed-play-pause-icon:hover {
+.TrackList-play-pause-icon:hover {
 	cursor: pointer;
 }
 
-.Feed-artist-image-container:hover {
+.TrackList-artist-image-container:hover {
 	cursor: pointer;
 }
 
-.Feed-artist-image-container {
+.TrackList-artist-image-container {
 	width: 30px;
 }
 
-.Feed-artist-image {
+.TrackList-artist-image {
 	width: 100%;
 	height: auto;
 	border-radius: 100px;
 }
 
-.Feed-artist-info {
+.TrackList-artist-info {
 	display: flex;
 	align-items: center;
 	justify-content: center;

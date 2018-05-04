@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Container, Segment, Tab, Sidebar, Message, Icon, Menu, Item } from 'semantic-ui-react';
+import {
+	Container,
+	Segment,
+	Tab,
+	Sidebar,
+	Message,
+	Icon,
+	Menu,
+	Item
+} from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -117,15 +126,17 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
-			return {
-				...track,
-				publisher: {
-					...track.publisher[0],
-					position: [track.publisher[0].lng, track.publisher[0].lat]
-				}
-			};
-		});
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
 	}
 
 	fetchSoundcloudUser(id) {
@@ -245,15 +256,17 @@ class App extends Component {
 		});
 	}
 
-	feedInstance(displayPage = 'home') {
+	feedInstance(displayPage = 'home', feedType = 'tracks') {
 		return (
 			<Feed
 				tracks={this.state.tracks}
+				feedType={feedType}
 				displayPage={displayPage}
 				playing={this.state.playing}
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
+				setFilters={filters => this.setFilters(filters)}
 				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 				paginate={() => {
 					this.setState({
@@ -276,7 +289,11 @@ class App extends Component {
 	}
 
 	setFilter({ param, value }) {
-		const { location_id, soundcloud_user_id, ...oldFilters } = this.state.trackFilters;
+		const {
+			location_id,
+			soundcloud_user_id,
+			...oldFilters
+		} = this.state.trackFilters;
 
 		if (value === 'reset') {
 			this.setState({ trackFilters: oldFilters });
@@ -321,7 +338,8 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={() =>
+									this.toggleSidebar({ clickedOutsideMenu: true })}
 							/>
 
 							<Sidebar.Pusher
@@ -346,12 +364,14 @@ class App extends Component {
 									render={() => (
 										<Home
 											getHomeTracks={() => this.fetchHomeTracks()}
-											setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
+											setIsSubmission={isSubmission =>
+												this.setIsSubmission(isSubmission)}
 											loading={this.state.loading}
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
 											tracks={this.state.tracks}
-											feedInstance={displayPage => this.feedInstance(displayPage)}
+											feedInstance={displayPage =>
+												this.feedInstance(displayPage)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}
@@ -374,7 +394,8 @@ class App extends Component {
 										const allProps = {
 											...props,
 											soundcloudUser: this.state.soundcloudUser,
-											loading: this.state.loading && this.state.loadingSoundcloudUser,
+											loading:
+												this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance('curator'),
 											setUser: (id, only_mixes) => {
@@ -418,21 +439,28 @@ class App extends Component {
 							<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 								{this.state.playingTrack.id ? (
 									<Item>
-										<a href={this.state.playingTrack.data.track.permalink_url} target="_blank">
+										<a
+											href={this.state.playingTrack.data.track.permalink_url}
+											target="_blank"
+										>
 											<Item.Image
 												src={this.state.playingTrack.data.track.artwork_url}
 												className="App-bottom-nav-track-image"
 												size="tiny"
 											/>
 										</a>
-										<Item.Content verticalAlign="middle" className="App-bottom-nav-track-content">
+										<Item.Content
+											verticalAlign="middle"
+											className="App-bottom-nav-track-content"
+										>
 											<Item.Header className="App-bottom-nav-track-info-name">
 												{this.state.playingTrack.data.track.name}
 											</Item.Header>
 											<Item.Meta>
 												<span className="App-bottom-nav-track-info-publisher">
 													<Link
-														to={`/soundcloud_users/${this.state.playingTrack.data.publisher[0].id}`}
+														to={`/soundcloud_users/${this.state.playingTrack
+															.data.publisher[0].id}`}
 													>
 														{this.state.playingTrack.data.publisher[0].name}
 													</Link>
@@ -443,7 +471,10 @@ class App extends Component {
 								) : null}
 							</div>
 
-							<div className="App-bottom-nav-play-button" className="App-bottom-nav-box">
+							<div
+								className="App-bottom-nav-play-button"
+								className="App-bottom-nav-box"
+							>
 								<Icon
 									name={this.state.playing ? 'pause circle' : 'video play'}
 									size="huge"

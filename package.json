@@ -5,6 +5,8 @@
 	"dependencies": {
 		"async": "^2.6.0",
 		"axios": "^0.17.1",
+		"create-index": "^2.3.0",
+		"global": "^4.3.2",
 		"lodash": "^4.17.4",
 		"mapbox-gl": "^0.44.0",
 		"prop-types": "^15.6.0",
