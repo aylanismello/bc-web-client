@@ -370,8 +370,8 @@ class App extends Component {
 											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
 											tracks={this.state.tracks}
-											feedInstance={displayPage =>
-												this.feedInstance(displayPage)}
+											feedInstance={(displayPage, feedType) =>
+												this.feedInstance(displayPage, feedType)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}
