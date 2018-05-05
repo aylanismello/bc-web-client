@@ -8,26 +8,28 @@ const SuperFilterButton = ({ onClick, name, selected }) => {
 	const color = selected ? 'pink' : '#fff';
 
 	return (
-		<div className="SuperFilterButton" onClick={onClick}>
+		<div
+			className="SuperFilterButton"
+			onClick={onClick}
+			style={{
+				width: 'auto',
+				height: '100%',
+				padding: '2%',
+				margin: '2%',
+				background: '#5f9ea0'
+			}}
+		>
 			<h3
 				style={{
-					background: '#5f9ea0',
 					color,
-					fontSize: '26px',
-					lineHeight: '50px',
-					margin: '10px',
+					fontSize: '20px',
+					margin: '0px',
 					padding: '2%',
 					position: 'relative',
 					textAlign: 'center'
 				}}
 			>
 				{name}
-				{/* <Image
-								src={superFilterImg}
-								width={100}
-								height={100}
-								onClick={onClick}
-							/> */}
 			</h3>
 		</div>
 	);

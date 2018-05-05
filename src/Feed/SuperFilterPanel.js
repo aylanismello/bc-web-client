@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import { Segment } from 'semantic-ui-react';
 import SuperFilterButton from '../SuperFilterButton';
 import './SuperFilterPanel.css';
 import { SUPER_FILTER_DESCRIPTIONS } from '../constants';
-import PropTypes from 'prop-types';
 
 const settings = {
 	infinite: false,
@@ -56,7 +57,7 @@ class SuperFilterPanel extends React.Component {
 						</div>
 					))}
 				</Slider>
-				<div> {SUPER_FILTER_DESCRIPTIONS[superFilterType][superFilters[selectedIdx].name]} </div>
+				<Segment> {SUPER_FILTER_DESCRIPTIONS[superFilterType][superFilters[selectedIdx].name]} </Segment>
 			</div>
 		);
 	}

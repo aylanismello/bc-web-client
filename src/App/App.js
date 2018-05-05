@@ -27,6 +27,10 @@ import FiltersMenu from '../FiltersMenu';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
 
+const BodyContainer = ({ children }) => {
+	return <Container>{children}</Container>;
+};
+
 class App extends Component {
 	static formatFilters(trackFilters) {
 		if (trackFilters.date_range === -1 && trackFilters.track_type === -1) {
