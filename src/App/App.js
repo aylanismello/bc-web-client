@@ -14,8 +14,8 @@ import Submit from '../Submit';
 import Curators from '../Curators';
 import SoundcloudUser from '../SoundcloudUser';
 import TopNav from '../TopNav';
+import BottomNav from '../BottomNav';
 import ScrollToTop from '../scroll_to_top';
-import FiltersMenu from '../FiltersMenu';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
 
@@ -209,10 +209,6 @@ class App extends Component {
 		}
 	}
 
-	toggleBottomMenu() {
-		this.setState({ bottomMenuVisible: !this.state.bottomMenuVisible });
-	}
-
 	checkForNextPagination(next_href) {
 		axios
 			.get(next_href)
@@ -284,6 +280,10 @@ class App extends Component {
 				trackFilters: { ...oldFilters, ...newFilter }
 			});
 		}
+	}
+
+	toggleBottomMenu() {
+		this.setState({ bottomMenuVisible: !this.state.bottomMenuVisible });
 	}
 
 	tracksWithPosition() {
@@ -435,132 +435,19 @@ class App extends Component {
 							<div className="App-separator" style={{ height: '70px' }} />
 						</Sidebar.Pushable>
 
-						{/*  TODO: refactor the following div into its own Component */}
-
-						<div
-							className="App-bottom-nav-container"
-							onClick={e => {
-								if (!e.target.classList.contains('App-filters-toggle-icon')) {
-									this.setState({ bottomMenuVisible: false });
-								}
+						<BottomNav
+							playing={this.state.playing}
+							playingTrack={this.state.playingTrack}
+							bottomMenuVisible={this.state.bottomMenuVisible}
+							toggleBottomMenu={() => this.toggleBottomMenu()}
+							setBottomMenuInvisible={() =>
+								this.setState({ bottomMenuVisible: false })}
+							setTrackFilters={newFilters => {
+								this.setFilters(newFilters);
 							}}
-						>
-							<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
-								{this.state.playingTrack.id ? (
-									<Item>
-										<a
-											href={this.state.playingTrack.data.track.permalink_url}
-											target="_blank"
-										>
-											<Item.Image
-												src={this.state.playingTrack.data.track.artwork_url}
-												className="App-bottom-nav-track-image"
-												size="tiny"
-											/>
-										</a>
-										<Item.Content
-											verticalAlign="middle"
-											className="App-bottom-nav-track-content"
-										>
-											<Item.Header className="App-bottom-nav-track-info-name">
-												{this.state.playingTrack.data.track.name}
-											</Item.Header>
-											<Item.Meta>
-												<span className="App-bottom-nav-track-info-publisher">
-													<Link
-														to={`/soundcloud_users/${this.state.playingTrack
-															.data.publisher[0].id}`}
-													>
-														{this.state.playingTrack.data.publisher[0].name}
-													</Link>
-												</span>
-											</Item.Meta>
-										</Item.Content>
-									</Item>
-								) : null}
-							</div>
-
-							<div
-								className="App-bottom-nav-play-button"
-								className="App-bottom-nav-box"
-							>
-								<Icon
-									name={this.state.playing ? 'pause circle' : 'video play'}
-									size="huge"
-									color="pink"
-									className="App-filters-toggle-icon"
-									onClick={() => {
-										const { id } = this.state.playingTrack;
-										if (id) {
-											this.togglePlay(id);
-										}
-									}}
-								/>
-							</div>
-
-							<div className="App-bottom-nav" className="App-bottom-nav-box">
-								<FiltersMenu
-									visible={this.state.bottomMenuVisible}
-									trackFilters={this.state.trackFilters}
-									onSortFilterChange={data =>
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												sort_type: data.panes[data.activeIndex].value,
-												page: 1
-											}
-										})}
-									onDateRangeFilterChange={data =>
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												date_range: data.value,
-												page: 1
-											}
-										})}
-									onIsBCFilterChange={data => {
-										this.setState({
-											trackFilters: {
-												...this.state.trackFilters,
-												is_bc: data.checked
-											}
-										});
-									}}
-									onTrackTypeFilterChange={data => {
-										const { value } = data.panes[data.activeIndex];
-										if (value === 'is_bc') {
-											this.setState({
-												trackFilters: {
-													...this.state.trackFilters,
-													// reset trackType to be any, which is -1
-													track_type: -1,
-													page: 1,
-													is_bc: true
-												}
-											});
-										} else {
-											this.setState({
-												trackFilters: {
-													...this.state.trackFilters,
-													track_type: value,
-													page: 1,
-													is_bc: false
-												}
-											});
-										}
-									}}
-								/>
-								<div className="App-filters-toggle-icon-container">
-									<Icon
-										name="options"
-										size="huge"
-										color="blue"
-										className="App-filters-toggle-icon"
-										onClick={() => this.toggleBottomMenu()}
-									/>
-								</div>
-							</div>
-						</div>
+							togglePlay={id => this.togglePlay(id)}
+							trackFilters={this.state.trackFilters}
+						/>
 					</div>
 				</ScrollToTop>
 			</Router>
