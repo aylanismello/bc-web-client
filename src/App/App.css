@@ -1,5 +1,6 @@
 .App {
   /* text-align: center; */
+  background-color: #191919;
 }
 
 .App-bottom-nav {
@@ -95,4 +96,23 @@
     margin-right: auto!important;
   }
 
+  /*FeedHome.js*/
+  .ui.container .ui.segment.dimmable{
+    padding: 0;
+    background-color: transparent; 
+  }
+
+  /*TrackList.js*/
+  .TrackList-track-item{
+    padding: 0 !important;
+  }
+
+  .ui.items:not(.unstackable)>.item>.image{
+    margin: 0;
+  } 
+  .ui.items:not(.unstackable)>.item>.image>img{
+    width: 33% !important;
+    max-height: auto !important;
+    opacity: 0.6;
+  }
 }

@@ -8,7 +8,8 @@ import {
 	Icon,
 	Header,
 	Divider,
-	Breadcrumb
+	Breadcrumb,
+	Grid
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import './TrackList.css';

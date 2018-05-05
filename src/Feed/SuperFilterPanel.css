@@ -1,7 +1,7 @@
 .SuperFilterPanel {
 	padding: 35px;
 	background: linear-gradient(#e66465, #9198e5);
-	-webkit-box-shadow: 5px 1px 8px 2px #ccc;
+	/*-webkit-box-shadow: 5px 1px 8px 2px #ccc;*/
 }
 
 /* https://react-slick.neostack.com/docs/example/custom-arrows */

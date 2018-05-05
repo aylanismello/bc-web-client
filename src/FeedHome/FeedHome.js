@@ -32,7 +32,7 @@ class FeedHome extends React.Component {
 			feedInstance
 		} = this.props;
 		return (
-			<Container>
+			<Container >
 				<Tab
 					menu={{ secondary: true, pointing: true }}
 					onTabChange={(e, data) => {

@@ -61,8 +61,15 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	color: white;
 }
 
 .ui.relaxed.divided.items>.item {
 	padding: 1.5em 1.5em;
+}
+
+.ui.relaxed.divided.items .content a.header,
+.ui.relaxed.divided.items .content .TrackList-artist-name,
+.ui.relaxed.divided.items .content .description {
+	color: white;
 }
