@@ -35,7 +35,7 @@ class SuperFilterPanel extends React.Component {
 		this.props.setFilters(this.props.superFilters[0].filters);
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	componentWillUpdate(nextProps) {
 		if (nextProps.superFilterType !== this.props.superFilterType) {
 			nextProps.setFilters(nextProps.superFilters[0].filters);
 		}
@@ -76,9 +76,9 @@ class SuperFilterPanel extends React.Component {
 const { func, objectOf, string } = PropTypes;
 
 SuperFilterPanel.propTypes = {
-	setFilters: func.isRequired,
-	superFilters: objectOf(string).isRequired,
-	superFilterType: string.isRequired
+	setFilters: func.required,
+	superFilters: objectOf(string).required,
+	superFilterType: string.required
 };
 
 export default SuperFilterPanel;

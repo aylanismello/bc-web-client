@@ -57,6 +57,7 @@ class App extends Component {
 		}),
 		donePaginating: false,
 		tracks: [],
+		playingTracks: [],
 		error: null,
 		loading: false,
 		unsplashPhoto: null,
@@ -91,10 +92,25 @@ class App extends Component {
 
 			this.updateTracks(nextState.trackFilters, paginate);
 		}
+
+		if (
+			(!this.state.playing && nextState.playing) ||
+			!_.isEqual(nextState.playingTracks, this.state.playingTracks) ||
+			(this.state.playing &&
+				nextState.playing &&
+				nextState.playingTrack.id !== this.state.playingTrack.id)
+		) {
+			this.scAudio.play({
+				streamUrl: this.getTrackById(
+					nextState.playingTrack.id,
+					nextState.playingTracks
+				).stream_url
+			});
+		}
 	}
 
-	getTrackById(trackId) {
-		return this.state.tracks.filter(({ track }) => {
+	getTrackById(trackId, playingTracks = this.state.playingTracks) {
+		return playingTracks.filter(({ track }) => {
 			return track.id === trackId;
 		})[0].track;
 	}
@@ -116,9 +132,13 @@ class App extends Component {
 				playing: !this.state.playing
 			});
 		} else if (this.state.playing && this.state.playingTrack.id !== trackId) {
+			// PLAYING TRACK FOR FIRST TIME.
+			// SET playingTracks!
+
 			this.scAudio.pause();
-			this.scAudio.play({
-				streamUrl: this.getTrackById(trackId).stream_url
+
+			this.setState({
+				playingTracks: [...this.state.tracks]
 			});
 		} else if (!this.state.playing && this.state.playingTrack.id === trackId) {
 			this.scAudio.play({
@@ -128,12 +148,12 @@ class App extends Component {
 				playing: !this.state.playing
 			});
 		} else {
-			// !this.state.playing && this.state.playingTrack.id !== trackId
-			this.scAudio.play({
-				streamUrl: this.getTrackById(trackId).stream_url
-			});
+			// PLAYING TRACK FOR FIRST TIME.
+			// SET playingTracks!
+
 			this.setState({
-				playing: !this.state.playing
+				playing: !this.state.playing,
+				playingTracks: [...this.state.tracks]
 			});
 		}
 

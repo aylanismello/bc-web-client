@@ -37,7 +37,8 @@ class TopNav extends React.Component {
 				</div>
 
 				<div className="App-top-nav-side">
-					<Link to="/" onClick={() => this.props.fetchHomeTracks()}>
+					{/* <Link to="/" onClick={() => this.props.fetchHomeTracks()}> */}
+					<Link to="/">
 						<BCLogo />
 					</Link>
 				</div>
