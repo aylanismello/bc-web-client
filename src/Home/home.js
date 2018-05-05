@@ -1,97 +1,51 @@
-import { Container, Tab } from 'semantic-ui-react';
 import React from 'react';
-import BCMap from '../BCMap';
-import UsersFeed from '../UsersFeed';
-import TabbedSegment from '../TabbedSegment';
+import {
+	Container,
+	Header,
+	Responsive,
+	Segment,
+	Button,
+	Icon
+} from 'semantic-ui-react';
 
-class Home extends React.Component {
-	state = {
-		trackType: 'curated'
-	};
+const HomepageHeading = ({ mobile }) => (
+	<Container text>
+		<Header
+			as="h1"
+			content="Welcome to Burn Cartel"
+			inverted
+			style={{
+				fontSize: mobile ? '2em' : '4em',
+				fontWeight: 'normal',
+				marginBottom: 0,
+				marginTop: mobile ? '1.5em' : '3em'
+			}}
+		/>
+		<Header
+			as="h2"
+			content="only fire trax"
+			inverted
+			style={{
+				fontSize: mobile ? '1.5em' : '1.7em',
+				fontWeight: 'normal',
+				marginTop: mobile ? '0.5em' : '1.5em'
+			}}
+		/>
+		<Icon name={'video play'} size="massive" color="pink" />
+	</Container>
+);
 
-	componentWillMount() {
-		this.props.getHomeTracks();
-	}
-
-	componentWillUpdate(np, nextState) {
-		if (nextState.trackType !== this.state.trackType) {
-			this.props.setState({
-				trackFilters: {
-					...this.props.trackFilters,
-					is_submission: true
-				}
-			});
-		}
-	}
-
-	render() {
-		const {
-			loading,
-			trackFilters,
-			tracks,
-			setState,
-			tracksWithPosition,
-			feedInstance
-		} = this.props;
-		return (
-			<Container>
-				<Tab
-					menu={{ secondary: true, pointing: true }}
-					onTabChange={(e, data) => {
-						if (data.activeIndex === 0) {
-							this.props.setIsSubmission(false);
-						}
-					}}
-					panes={[
-						{
-							menuItem: 'Tracks ⬆️',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tracks')}
-								</TabbedSegment>
-							)
-						},
-						{
-							menuItem: 'Locations 🗺',
-							render: () => (
-								<div>
-									<TabbedSegment loading={loading}>
-										{feedInstance('home', 'locations')}
-									</TabbedSegment>
-									{/* <BCMap
-										data={tracksWithPosition()}
-										featureType="track"
-										loading={this.props.loading}
-									/> */}
-								</div>
-							)
-						},
-						{
-							menuItem: 'Artists 💃',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'artists')}
-									{/* <UsersFeed
-										users={tracks.map(({ publisher }) => {
-											return { ...publisher[0] };
-										})}
-									/> */}
-								</TabbedSegment>
-							)
-						},
-						{
-							menuItem: 'Tags #️⃣',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tags')}
-								</TabbedSegment>
-							)
-						}
-					]}
-				/>
-			</Container>
-		);
-	}
-}
+const Home = props => {
+	return (
+		<Segment
+			inverted
+			textAlign="center"
+			style={{ minHeight: 350, padding: '1em 0em' }}
+			vertical
+		>
+			<HomepageHeading mobile />
+		</Segment>
+	);
+};
 
 export default Home;

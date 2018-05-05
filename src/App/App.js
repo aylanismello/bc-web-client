@@ -7,6 +7,7 @@ import SoundCloudAudio from 'soundcloud-audio';
 import Feed from '../Feed';
 import { baseUrl } from '../config';
 import SideMenu from '../SideMenu';
+import FeedHome from '../FeedHome';
 import Home from '../Home';
 import About from '../About';
 import Submit from '../Submit';
@@ -348,16 +349,14 @@ class App extends Component {
 									/>
 								) : null}
 
+								<Route exact path="/" render={() => <Home />} />
+
 								<Route
-									exact
-									path="/"
+									path="/feed"
 									render={() => (
-										<Home
+										<FeedHome
 											getHomeTracks={() => this.fetchHomeTracks()}
-											setIsSubmission={isSubmission =>
-												this.setIsSubmission(isSubmission)}
 											loading={this.state.loading}
-											setState={state => this.setState(state)}
 											trackFilters={this.state.trackFilters}
 											tracks={this.state.tracks}
 											feedInstance={(displayPage, feedType) =>

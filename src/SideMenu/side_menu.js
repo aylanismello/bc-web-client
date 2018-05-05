@@ -14,13 +14,18 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 			className="SideMenu"
 			vertical
 		>
+			<Link to="/feed" onClick={clickedOnMenuItem}>
+				<Menu.Item name="radio" className="SideMenu-item">
+					<Icon name="radio" />
+					Feed
+				</Menu.Item>
+			</Link>
 			<Link to="/curators" onClick={clickedOnMenuItem}>
 				<Menu.Item name="record" className="SideMenu-item">
 					<Icon name="music" />
 					Curators
 				</Menu.Item>
 			</Link>
-
 
 			{/* <Link to="/submit" onClick={clickedOnMenuItem}>
 				<Menu.Item name="external share" className="SideMenu-item" onClick={clickedOnMenuItem}>
