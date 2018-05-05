@@ -25,6 +25,7 @@ export const SUPER_FILTER_DESCRIPTIONS = {
 		Electronic: 'This is the future of the genre',
 		'R&B': 'This is the future of the genre',
 		'Future Bass': 'This is the future of the genre',
-		Baile: 'This is the future of the genre'
+		Baile: 'This is the future of the genre',
+		Jazz: 'dope.'
 	}
 };

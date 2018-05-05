@@ -4,10 +4,81 @@ import { Segment, Grid, Card } from 'semantic-ui-react';
 import SuperFilterPanel from './SuperFilterPanel';
 import TrackList from '../TrackList';
 
-// probably the SUPER FILTERS in the filter panel should be created SERVER Side, and we can update it whenever user logs in first time
+// probably the SUPER FILTERS in the filter panel should be created SERVER Side,
+// and we can update it whenever user logs in first time
 
 class Feed extends React.Component {
+	renderTagsMetadata() {
+		const baseFilters = {
+			is_submission: false,
+			page: 1,
+			sort_type: 'hot',
+			track_type: -1,
+			date_range: 120
+		};
+
+		return (
+			<div>
+				<div>
+					<SuperFilterPanel
+						superFilters={[
+							{
+								name: 'Hip Hop',
+								filters: {
+									track_tag_id: 2,
+									...baseFilters
+								}
+							},
+							{
+								name: 'Electronic',
+								filters: {
+									track_tag_id: 18,
+									...baseFilters
+								}
+							},
+							{
+								name: 'R&B',
+								filters: {
+									track_tag_id: 72,
+									...baseFilters
+								}
+							},
+							{
+								name: 'Future Bass',
+								filters: {
+									track_tag_id: 110,
+									...baseFilters
+								}
+							},
+							{
+								name: 'Baile',
+								filters: {
+									track_tag_id: 398,
+									...baseFilters
+								}
+							},
+							{
+								name: 'Jazz',
+								filters: {
+									track_tag_id: 252,
+									...baseFilters
+								}
+							}
+						]}
+						setFilters={this.props.setFilters}
+						superFilterType="tags"
+					/>
+				</div>
+			</div>
+		);
+	}
+
 	renderTracksMetadata() {
+		const baseFilters = {
+			is_submission: false,
+			page: 1
+		};
+
 		return (
 			<div>
 				<div>
@@ -17,21 +88,18 @@ class Feed extends React.Component {
 								name: 'Trending',
 								filters: {
 									date_range: 7,
-
-									is_submission: false,
-									page: 1,
 									sort_type: 'hot',
-									track_type: -1
+									track_type: -1,
+									...baseFilters
 								}
 							},
 							{
 								name: 'Hot Mixes',
 								filters: {
 									date_range: 7,
-									is_bc: false,
-									page: 1,
 									sort_type: 'hot',
-									track_type: 2
+									track_type: 2,
+									...baseFilters
 								}
 							},
 							{
@@ -39,31 +107,27 @@ class Feed extends React.Component {
 								filters: {
 									date_range: 365,
 
-									is_bc: true,
-									page: 1,
 									sort_type: 'latest',
-									track_type: -1
+									track_type: -1,
+									...baseFilters
 								}
 							},
 							{
 								name: 'Top Remixes',
 								filters: {
 									date_range: 7,
-									is_bc: false,
-									page: 1,
 									sort_type: 'top',
-									track_type: 1
+									track_type: 1,
+									...baseFilters
 								}
 							},
 							{
 								name: 'Latest',
 								filters: {
 									date_range: 7,
-
-									is_submission: false,
-									page: 1,
 									sort_type: 'latest',
-									track_type: -1
+									track_type: -1,
+									...baseFilters
 								}
 							}
 						]}
@@ -124,7 +188,6 @@ class Feed extends React.Component {
 									...baseFilters
 								}
 							}
-
 						]}
 						setFilters={this.props.setFilters}
 						superFilterType="artists"
@@ -195,13 +258,12 @@ class Feed extends React.Component {
 		switch (this.props.feedType) {
 			case 'tracks':
 				return this.renderTracksMetadata();
-				break;
 			case 'locations':
 				return this.renderLocationsMetadata();
-				break;
 			case 'artists':
 				return this.renderArtistsMetadata();
-				break;
+			case 'tags':
+				return this.renderTagsMetadata();
 			default:
 				return null;
 		}
