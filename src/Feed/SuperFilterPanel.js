@@ -27,19 +27,22 @@ const settings = {
 };
 
 class SuperFilterPanel extends React.Component {
-	constructor(props) {
-		super(props);
-		props.setFilters(props.superFilters[0].filters);
-	}
-
 	state = {
 		selectedIdx: 0
 	};
 
+	componentWillMount() {
+		this.props.setFilters(this.props.superFilters[0].filters);
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.superFilterType !== this.props.superFilterType) {
+			nextProps.setFilters(nextProps.superFilters[0].filters);
+		}
+	}
+
 	render() {
-		const {
-			setFilters, superFilters, description, superFilterType
-		} = this.props;
+		const { setFilters, superFilters, superFilterType } = this.props;
 		const { selectedIdx } = this.state;
 		return (
 			<div className="SuperFilterPanel">
@@ -57,7 +60,14 @@ class SuperFilterPanel extends React.Component {
 						</div>
 					))}
 				</Slider>
-				<Segment> {SUPER_FILTER_DESCRIPTIONS[superFilterType][superFilters[selectedIdx].name]} </Segment>
+				<Segment>
+					{' '}
+					{
+						SUPER_FILTER_DESCRIPTIONS[superFilterType][
+							superFilters[selectedIdx].name
+						]
+					}{' '}
+				</Segment>
 			</div>
 		);
 	}
@@ -68,7 +78,6 @@ const { func, objectOf, string } = PropTypes;
 SuperFilterPanel.propTypes = {
 	setFilters: func.isRequired,
 	superFilters: objectOf(string).isRequired,
-	description: string.isRequired,
 	superFilterType: string.isRequired
 };
 

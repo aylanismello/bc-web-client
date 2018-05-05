@@ -1,14 +1,5 @@
 import React, { Component } from 'react';
-import {
-	Container,
-	Segment,
-	Tab,
-	Sidebar,
-	Message,
-	Icon,
-	Menu,
-	Item
-} from 'semantic-ui-react';
+import { Container, Sidebar, Message, Icon, Item } from 'semantic-ui-react';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
@@ -26,10 +17,6 @@ import ScrollToTop from '../scroll_to_top';
 import FiltersMenu from '../FiltersMenu';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
-
-const BodyContainer = ({ children }) => {
-	return <Container>{children}</Container>;
-};
 
 class App extends Component {
 	static formatFilters(trackFilters) {
@@ -105,42 +92,10 @@ class App extends Component {
 		}
 	}
 
-	// this should happen is fetch curators page
-	fetchCurators() {
-		this.setState({
-			loading: true
-		});
-		axios
-			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
-			.then(results => {
-				this.setState({
-					curators: results.data.data.soundcloud_users,
-					loading: false
-				});
-			})
-			.catch(error => {
-				this.setState({ error: error.message });
-			});
-	}
-
 	getTrackById(trackId) {
 		return this.state.tracks.filter(({ track }) => {
 			return track.id === trackId;
 		})[0].track;
-	}
-
-	tracksWithPosition() {
-		return this.state.tracks
-			.filter(track => track.publisher[0].location)
-			.map(track => {
-				return {
-					...track,
-					publisher: {
-						...track.publisher[0],
-						position: [track.publisher[0].lng, track.publisher[0].lat]
-					}
-				};
-			});
 	}
 
 	fetchSoundcloudUser(id) {
@@ -308,6 +263,37 @@ class App extends Component {
 				trackFilters: { ...oldFilters, ...newFilter }
 			});
 		}
+	}
+
+	tracksWithPosition() {
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
+	}
+	// this should happen is fetch curators page
+	fetchCurators() {
+		this.setState({
+			loading: true
+		});
+		axios
+			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
+			.then(results => {
+				this.setState({
+					curators: results.data.data.soundcloud_users,
+					loading: false
+				});
+			})
+			.catch(error => {
+				this.setState({ error: error.message });
+			});
 	}
 
 	fetchHomeTracks() {

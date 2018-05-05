@@ -45,19 +45,24 @@ class Home extends React.Component {
 					panes={[
 						{
 							menuItem: 'Tracks ⬆️',
-							render: () => <TabbedSegment loading={loading}>{feedInstance('home', 'tracks')}</TabbedSegment>
+							render: () => (
+								<TabbedSegment loading={loading}>
+									{feedInstance('home', 'tracks')}
+								</TabbedSegment>
+							)
 						},
 						{
 							menuItem: 'Locations 🗺',
 							render: () => (
 								<div>
-									 <TabbedSegment loading={loading}>{feedInstance('home', 'locations')}</TabbedSegment>
+									<TabbedSegment loading={loading}>
+										{feedInstance('home', 'locations')}
+									</TabbedSegment>
 									{/* <BCMap
 										data={tracksWithPosition()}
 										featureType="track"
 										loading={this.props.loading}
 									/> */}
-
 								</div>
 							)
 						},
@@ -71,6 +76,14 @@ class Home extends React.Component {
 											return { ...publisher[0] };
 										})}
 									/> */}
+								</TabbedSegment>
+							)
+						},
+						{
+							menuItem: 'Tags #️⃣',
+							render: () => (
+								<TabbedSegment loading={loading}>
+									{feedInstance('home', 'tags')}
 								</TabbedSegment>
 							)
 						}
