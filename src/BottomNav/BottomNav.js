@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Item, Icon } from 'semantic-ui-react';
 import FiltersMenu from '../FiltersMenu';
+import PlayButton from '../PlayButton';
 import css from './BottomNav.css';
 
 const BottomNav = ({
@@ -53,22 +54,13 @@ const BottomNav = ({
 			) : null}
 		</div>
 
-		<div className="App-bottom-nav-play-button" className="App-bottom-nav-box">
-			<Icon
-				name={playing ? 'pause circle' : 'video play'}
-				size="huge"
-				color="pink"
-				className="App-filters-toggle-icon"
-				onClick={() => {
-					const { id } = playingTrack;
-					if (id) {
-						togglePlay(id);
-					}
-				}}
-			/>
-		</div>
+		<PlayButton
+			playing={playing}
+			playingTrack={playingTrack}
+			togglePlay={togglePlay}
+		/>
 
-		<div className="App-bottom-nav" className="App-bottom-nav-box">
+		<div className="App-bottom-nav App-bottom-nav-box">
 			<FiltersMenu
 				visible={bottomMenuVisible}
 				trackFilters={trackFilters}

@@ -32,17 +32,17 @@ class SuperFilterPanel extends React.Component {
 	};
 
 	componentWillMount() {
-		this.props.setFilters(this.props.superFilters[0].filters);
+		this.props.setTrackFilters(this.props.superFilters[0].filters);
 	}
 
 	componentWillUpdate(nextProps) {
 		if (nextProps.superFilterType !== this.props.superFilterType) {
-			nextProps.setFilters(nextProps.superFilters[0].filters);
+			nextProps.setTrackFilters(nextProps.superFilters[0].filters);
 		}
 	}
 
 	render() {
-		const { setFilters, superFilters, superFilterType } = this.props;
+		const { setTrackFilters, superFilters, superFilterType } = this.props;
 		const { selectedIdx } = this.state;
 		return (
 			<div className="SuperFilterPanel">
@@ -53,7 +53,7 @@ class SuperFilterPanel extends React.Component {
 								name={superFilter.name}
 								onClick={() => {
 									this.setState({ selectedIdx: idx });
-									setFilters(superFilter.filters);
+									setTrackFilters(superFilter.filters);
 								}}
 								selected={idx === selectedIdx}
 							/>
@@ -76,7 +76,7 @@ class SuperFilterPanel extends React.Component {
 const { func, objectOf, string } = PropTypes;
 
 SuperFilterPanel.propTypes = {
-	setFilters: func.required,
+	setTrackFilters: func.required,
 	superFilters: objectOf(string).required,
 	superFilterType: string.required
 };

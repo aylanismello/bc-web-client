@@ -126,12 +126,20 @@ class App extends Component {
 	}
 
 	togglePlay(trackId) {
-		if (this.state.playing && this.state.playingTrack.id === trackId) {
+		let daTrackID = trackId;
+		// first track played this session
+		if (!this.state.playingTrack.id && !this.state.loading) {
+			daTrackID = this.state.tracks[0].track.id;
+			this.setState({
+				playingTracks: [...this.state.tracks],
+				playing: true
+			});
+		} else if (this.state.playing && this.state.playingTrack.id === daTrackID) {
 			this.scAudio.pause();
 			this.setState({
 				playing: !this.state.playing
 			});
-		} else if (this.state.playing && this.state.playingTrack.id !== trackId) {
+		} else if (this.state.playing && this.state.playingTrack.id !== daTrackID) {
 			// PLAYING TRACK FOR FIRST TIME.
 			// SET playingTracks!
 
@@ -140,9 +148,9 @@ class App extends Component {
 			this.setState({
 				playingTracks: [...this.state.tracks]
 			});
-		} else if (!this.state.playing && this.state.playingTrack.id === trackId) {
+		} else if (!this.state.playing && this.state.playingTrack.id === daTrackID) {
 			this.scAudio.play({
-				streamUrl: this.getTrackById(trackId).stream_url
+				streamUrl: this.getTrackById(daTrackID).stream_url
 			});
 			this.setState({
 				playing: !this.state.playing
@@ -157,12 +165,13 @@ class App extends Component {
 			});
 		}
 
-		if (this.state.playingTrack.id !== trackId) {
+
+		if (this.state.playingTrack.id !== daTrackID && !this.state.loading) {
 			this.setState({
 				playingTrack: {
 					...this.state.playingTrack,
-					id: trackId,
-					data: this.state.tracks.find(x => x.track.id === trackId)
+					id: daTrackID,
+					data: this.state.tracks.find(x => x.track.id === daTrackID)
 				}
 			});
 		}
@@ -242,7 +251,7 @@ class App extends Component {
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
-				setFilters={filters => this.setFilters(filters)}
+				setTrackFilters={filters => this.setTrackFilters(filters)}
 				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 				paginate={() => {
 					this.setState({
@@ -258,7 +267,7 @@ class App extends Component {
 		);
 	}
 
-	setFilters(filters) {
+	setTrackFilters(filters) {
 		this.setState({
 			trackFilters: filters
 		});
@@ -318,7 +327,7 @@ class App extends Component {
 	}
 
 	fetchHomeTracks() {
-		this.setFilters({
+		this.setTrackFilters({
 			...homeFilters
 		});
 	}
@@ -369,7 +378,18 @@ class App extends Component {
 									/>
 								) : null}
 
-								<Route exact path="/" render={() => <Home />} />
+								<Route
+									exact
+									path="/"
+									render={() => (
+										<Home
+											playing={this.state.playing}
+											playingTrack={this.state.playingTrack}
+											togglePlay={filters => this.togglePlay(filters)}
+											setTrackFilters={filters => this.setTrackFilters(filters)}
+										/>
+									)}
+								/>
 
 								<Route
 									path="/feed"
@@ -409,7 +429,7 @@ class App extends Component {
 											feed: this.feedInstance('curator'),
 											setUser: (id, only_mixes) => {
 												if (only_mixes) {
-													this.setFilters({
+													this.setTrackFilters({
 														soundcloud_user_id: id,
 														date_range: -1,
 														sort_type: 'latest',
@@ -417,7 +437,7 @@ class App extends Component {
 														page: 1
 													});
 												} else {
-													this.setFilters({
+													this.setTrackFilters({
 														soundcloud_user_id: id,
 														sort_type: 'hot',
 														date_range: -1,
@@ -443,7 +463,7 @@ class App extends Component {
 							setBottomMenuInvisible={() =>
 								this.setState({ bottomMenuVisible: false })}
 							setTrackFilters={newFilters => {
-								this.setFilters(newFilters);
+								this.setTrackFilters(newFilters);
 							}}
 							togglePlay={id => this.togglePlay(id)}
 							trackFilters={this.state.trackFilters}

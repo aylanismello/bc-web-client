@@ -49,5 +49,59 @@ const homeFilters = {
 	page: 1,
 	is_submission: false
 };
+
+const baseFilters = {
+	is_submission: false,
+	page: 1
+};
+
+const mainFilters = {
+	Trending: {
+		name: 'Trending',
+		filters: {
+			date_range: 7,
+			sort_type: 'hot',
+			track_type: -1,
+			...baseFilters
+		}
+	},
+	'Hot Mixes': {
+		name: 'Hot Mixes',
+		filters: {
+			date_range: 7,
+			sort_type: 'hot',
+			track_type: 2,
+			...baseFilters
+		}
+	},
+	'BC Picks': {
+		name: 'BC Picks',
+		filters: {
+			date_range: 365,
+
+			sort_type: 'latest',
+			track_type: -1,
+			...baseFilters
+		}
+	},
+	'Top Remixes': {
+		name: 'Top Remixes',
+		filters: {
+			date_range: 7,
+			sort_type: 'top',
+			track_type: 1,
+			...baseFilters
+		}
+	},
+	Latest: {
+		name: 'Latest',
+		filters: {
+			date_range: 7,
+			sort_type: 'latest',
+			track_type: -1,
+			...baseFilters
+		}
+	}
+};
 //
-export { availableTrackFilters, displayFilters, homeFilters };
+export { availableTrackFilters, displayFilters, homeFilters, mainFilters };

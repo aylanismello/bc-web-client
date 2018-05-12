@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Grid, Card } from 'semantic-ui-react';
+import { mainFilters } from '../filter_helpers';
 import SuperFilterPanel from './SuperFilterPanel';
 import TrackList from '../TrackList';
 
@@ -65,7 +66,7 @@ class Feed extends React.Component {
 								}
 							}
 						]}
-						setFilters={this.props.setFilters}
+						setTrackFilters={this.props.setTrackFilters}
 						superFilterType="tags"
 					/>
 				</div>
@@ -84,54 +85,13 @@ class Feed extends React.Component {
 				<div>
 					<SuperFilterPanel
 						superFilters={[
-							{
-								name: 'Trending',
-								filters: {
-									date_range: 7,
-									sort_type: 'hot',
-									track_type: -1,
-									...baseFilters
-								}
-							},
-							{
-								name: 'Hot Mixes',
-								filters: {
-									date_range: 7,
-									sort_type: 'hot',
-									track_type: 2,
-									...baseFilters
-								}
-							},
-							{
-								name: 'BC Picks',
-								filters: {
-									date_range: 365,
-
-									sort_type: 'latest',
-									track_type: -1,
-									...baseFilters
-								}
-							},
-							{
-								name: 'Top Remixes',
-								filters: {
-									date_range: 7,
-									sort_type: 'top',
-									track_type: 1,
-									...baseFilters
-								}
-							},
-							{
-								name: 'Latest',
-								filters: {
-									date_range: 7,
-									sort_type: 'latest',
-									track_type: -1,
-									...baseFilters
-								}
-							}
+							mainFilters['Trending'],
+							mainFilters['Hot Mixes'],
+							mainFilters['BC Picks'],
+							mainFilters['Top Remixes'],
+							mainFilters['Latest']
 						]}
-						setFilters={this.props.setFilters}
+						setTrackFilters={this.props.setTrackFilters}
 						superFilterType="tracks"
 					/>
 				</div>
@@ -189,7 +149,7 @@ class Feed extends React.Component {
 								}
 							}
 						]}
-						setFilters={this.props.setFilters}
+						setTrackFilters={this.props.setTrackFilters}
 						superFilterType="artists"
 					/>
 				</div>
@@ -246,7 +206,7 @@ class Feed extends React.Component {
 								}
 							}
 						]}
-						setFilters={this.props.setFilters}
+						setTrackFilters={this.props.setTrackFilters}
 						superFilterType="locations"
 					/>
 				</div>
@@ -281,7 +241,7 @@ class Feed extends React.Component {
 
 Feed.propTypes = {
 	feedType: PropTypes.string.isRequired,
-	setFilters: PropTypes.func.isRequired
+	setTrackFilters: PropTypes.func.isRequired
 };
 
 export default Feed;
