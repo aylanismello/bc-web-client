@@ -101,10 +101,7 @@ class App extends Component {
 				nextState.playingTrack.id !== this.state.playingTrack.id)
 		) {
 			this.scAudio.play({
-				streamUrl: this.getTrackById(
-					nextState.playingTrack.id,
-					nextState.playingTracks
-				).stream_url
+				streamUrl: this.getTrackById(nextState.playingTrack.id, nextState.playingTracks).stream_url
 			});
 		}
 	}
@@ -164,7 +161,6 @@ class App extends Component {
 				playingTracks: [...this.state.tracks]
 			});
 		}
-
 
 		if (this.state.playingTrack.id !== daTrackID && !this.state.loading) {
 			this.setState({
@@ -267,6 +263,14 @@ class App extends Component {
 		);
 	}
 
+	// for fine grained filter changes
+	updateSingleTrackFilters(filters) {
+		this.setState({
+			trackFilters: { ...this.state.trackFilters, ...filters }
+		});
+	}
+
+	// this is used for updating super filters
 	setTrackFilters(filters) {
 		this.setState({
 			trackFilters: filters
@@ -274,11 +278,7 @@ class App extends Component {
 	}
 
 	setFilter({ param, value }) {
-		const {
-			location_id,
-			soundcloud_user_id,
-			...oldFilters
-		} = this.state.trackFilters;
+		const { location_id, soundcloud_user_id, ...oldFilters } = this.state.trackFilters;
 
 		if (value === 'reset') {
 			this.setState({ trackFilters: oldFilters });
@@ -296,17 +296,15 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks
-			.filter(track => track.publisher[0].location)
-			.map(track => {
-				return {
-					...track,
-					publisher: {
-						...track.publisher[0],
-						position: [track.publisher[0].lng, track.publisher[0].lat]
-					}
-				};
-			});
+		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
+			return {
+				...track,
+				publisher: {
+					...track.publisher[0],
+					position: [track.publisher[0].lng, track.publisher[0].lat]
+				}
+			};
+		});
 	}
 	// this should happen is fetch curators page
 	fetchCurators() {
@@ -358,8 +356,7 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() =>
-									this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
 							/>
 
 							<Sidebar.Pusher
@@ -423,8 +420,7 @@ class App extends Component {
 										const allProps = {
 											...props,
 											soundcloudUser: this.state.soundcloudUser,
-											loading:
-												this.state.loading && this.state.loadingSoundcloudUser,
+											loading: this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance('curator'),
 											setUser: (id, only_mixes) => {
@@ -460,10 +456,9 @@ class App extends Component {
 							playingTrack={this.state.playingTrack}
 							bottomMenuVisible={this.state.bottomMenuVisible}
 							toggleBottomMenu={() => this.toggleBottomMenu()}
-							setBottomMenuInvisible={() =>
-								this.setState({ bottomMenuVisible: false })}
+							setBottomMenuInvisible={() => this.setState({ bottomMenuVisible: false })}
 							setTrackFilters={newFilters => {
-								this.setTrackFilters(newFilters);
+								this.updateSingleTrackFilters(newFilters);
 							}}
 							togglePlay={id => this.togglePlay(id)}
 							trackFilters={this.state.trackFilters}

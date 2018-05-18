@@ -11,11 +11,10 @@ import TrackList from '../TrackList';
 class Feed extends React.Component {
 	renderTagsMetadata() {
 		const baseFilters = {
-			is_submission: false,
 			page: 1,
 			sort_type: 'hot',
-			track_type: -1,
-			date_range: 120
+			date_range: 365,
+			track_type: -1
 		};
 
 		return (
@@ -76,7 +75,6 @@ class Feed extends React.Component {
 
 	renderTracksMetadata() {
 		const baseFilters = {
-			is_submission: false,
 			page: 1
 		};
 
@@ -101,7 +99,6 @@ class Feed extends React.Component {
 
 	renderArtistsMetadata() {
 		const baseFilters = {
-			is_submission: false,
 			page: 1,
 			sort_type: 'hot',
 			track_type: -1,
@@ -158,11 +155,10 @@ class Feed extends React.Component {
 	}
 	renderLocationsMetadata() {
 		const baseFilters = {
-			is_submission: false,
 			page: 1,
 			sort_type: 'latest',
-			track_type: -1,
-			date_range: 14
+			date_range: 30,
+			track_type: -1
 		};
 
 		return (

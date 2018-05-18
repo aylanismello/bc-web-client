@@ -46,12 +46,10 @@ const homeFilters = {
 	sort_type: availableTrackFilters.sort_type.HOT,
 	track_type: availableTrackFilters.track_type.ANY,
 	date_range: availableTrackFilters.date_range.PAST_WEEK,
-	page: 1,
-	is_submission: false
+	page: 1
 };
 
 const baseFilters = {
-	is_submission: false,
 	page: 1
 };
 
@@ -78,7 +76,7 @@ const mainFilters = {
 		name: 'BC Picks',
 		filters: {
 			date_range: 365,
-
+			is_bc: true,
 			sort_type: 'latest',
 			track_type: -1,
 			...baseFilters
