@@ -67,3 +67,7 @@
 	display: flex;
 	justify-content: center;
 }
+
+.middle.aligned.content.App-bottom-nav-track-content {
+	max-height: 80px;
+}

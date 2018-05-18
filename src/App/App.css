@@ -15,7 +15,7 @@
   justify-content: space-between;
   bottom: 0;
   position: fixed;
-  height: 70px;
+  height: 80px;
   display: flex;
   background: black;
   align-items: center;
@@ -84,6 +84,7 @@
 
 .App-bottom-nav-box {
   flex: 1;
+  align-items: inherit;
   display: flex;
   justify-content: center;
 }
