@@ -98,7 +98,7 @@ class TrackList extends React.Component {
 					)}
 				</div> */}
 
-				{children}
+				{/* {children} */}
 				<Divider />
 
 				<Item.Group relaxed divided>

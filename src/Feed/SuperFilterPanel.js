@@ -36,7 +36,9 @@ class SuperFilterPanel extends React.Component {
 	}
 
 	componentWillUpdate(nextProps) {
+		// alert('update');
 		if (nextProps.superFilterType !== this.props.superFilterType) {
+			this.setState({ selectedIdx: 0 });
 			nextProps.setTrackFilters(nextProps.superFilters[0].filters);
 		}
 	}

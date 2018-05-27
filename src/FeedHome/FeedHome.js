@@ -35,11 +35,6 @@ class FeedHome extends React.Component {
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
-					onTabChange={(e, data) => {
-						// if (data.activeIndex === 0) {
-						// 	this.props.setIsSubmission(false);
-						// }
-					}}
 					panes={[
 						{
 							menuItem: 'Tracks ⬆️',

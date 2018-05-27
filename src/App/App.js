@@ -14,9 +14,10 @@ import Submit from '../Submit';
 import Curators from '../Curators';
 import SoundcloudUser from '../SoundcloudUser';
 import TopNav from '../TopNav';
+import SuperFilterPanel from '../Feed/SuperFilterPanel';
 import BottomNav from '../BottomNav';
 import ScrollToTop from '../scroll_to_top';
-import { homeFilters } from '../filter_helpers';
+import { homeFilters, mainFilters } from '../filter_helpers';
 import './App.css';
 
 class App extends Component {
@@ -38,6 +39,12 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.getTrackById = this.getTrackById.bind(this);
+		// this.renderMetadata = this.renderMetadata.bind(this);
+		this.renderSuperFilterPanel = this.renderSuperFilterPanel.bind(this);
+		this.getTracksMetadata = this.getTracksMetadata.bind(this);
+		this.getLocationsMetadata = this.getLocationsMetadata.bind(this);
+		this.getArtistsMetadata = this.getArtistsMetadata.bind(this);
+		this.getTagsMetadata = this.getTagsMetadata.bind(this);
 	}
 
 	state = Object.freeze({
@@ -55,6 +62,7 @@ class App extends Component {
 			id: undefined,
 			data: {}
 		}),
+		initPlayer: false,
 		donePaginating: false,
 		tracks: [],
 		playingTracks: [],
@@ -72,10 +80,6 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
-		// this.updateTracks(this.state.trackFilters);
-
-		// this should happen separately
-		// this.fetchCurators();
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -101,7 +105,10 @@ class App extends Component {
 				nextState.playingTrack.id !== this.state.playingTrack.id)
 		) {
 			this.scAudio.play({
-				streamUrl: this.getTrackById(nextState.playingTrack.id, nextState.playingTracks).stream_url
+				streamUrl: this.getTrackById(
+					nextState.playingTrack.id,
+					nextState.playingTracks
+				).stream_url
 			});
 		}
 	}
@@ -145,7 +152,10 @@ class App extends Component {
 			this.setState({
 				playingTracks: [...this.state.tracks]
 			});
-		} else if (!this.state.playing && this.state.playingTrack.id === daTrackID) {
+		} else if (
+			!this.state.playing &&
+			this.state.playingTrack.id === daTrackID
+		) {
 			this.scAudio.play({
 				streamUrl: this.getTrackById(daTrackID).stream_url
 			});
@@ -168,7 +178,8 @@ class App extends Component {
 					...this.state.playingTrack,
 					id: daTrackID,
 					data: this.state.tracks.find(x => x.track.id === daTrackID)
-				}
+				},
+				initPlayer: true
 			});
 		}
 	}
@@ -236,8 +247,201 @@ class App extends Component {
 			}
 		});
 	}
+	getTagsMetadata() {
+		const baseFilters = {
+			page: 1,
+			sort_type: 'hot',
+			date_range: 365,
+			track_type: -1
+		};
 
-	feedInstance(displayPage = 'home', feedType = 'tracks') {
+		return [
+			{
+				name: 'Hip Hop',
+				filters: {
+					track_tag_id: 2,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Electronic',
+				filters: {
+					track_tag_id: 18,
+					...baseFilters
+				}
+			},
+			{
+				name: 'R&B',
+				filters: {
+					track_tag_id: 72,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Future Bass',
+				filters: {
+					track_tag_id: 110,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Baile',
+				filters: {
+					track_tag_id: 398,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Jazz',
+				filters: {
+					track_tag_id: 252,
+					...baseFilters
+				}
+			}
+		];
+	}
+
+	getTracksMetadata() {
+		const baseFilters = {
+			page: 1
+		};
+
+		return [
+			mainFilters['Trending'],
+			mainFilters['Hot Mixes'],
+			mainFilters['BC Picks'],
+			mainFilters['Top Remixes'],
+			mainFilters['Latest']
+		];
+	}
+
+	getArtistsMetadata() {
+		const baseFilters = {
+			page: 1,
+			sort_type: 'hot',
+			track_type: -1,
+			date_range: -1
+		};
+
+		return [
+			{
+				name: 'Daehan',
+				filters: {
+					soundcloud_user_id: 4181,
+					...baseFilters
+				}
+			},
+			{
+				name: 'memorecks',
+				filters: {
+					soundcloud_user_id: 7471,
+					...baseFilters
+				}
+			},
+			{
+				name: 'VHOOR',
+				filters: {
+					soundcloud_user_id: 4175,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Hooded Youth',
+				filters: {
+					soundcloud_user_id: 9536,
+					...baseFilters
+				}
+			},
+			{
+				name: 'whereisalex',
+				filters: {
+					soundcloud_user_id: 624,
+					...baseFilters
+				}
+			}
+		];
+	}
+	getLocationsMetadata() {
+		const baseFilters = {
+			page: 1,
+			sort_type: 'latest',
+			date_range: 30,
+			track_type: -1
+		};
+
+		return [
+			{
+				name: 'Brazil',
+				filters: {
+					location_id: 4348,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Sweden',
+				filters: {
+					location_id: 4656,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Seattle',
+				filters: {
+					location_id: 4362,
+					...baseFilters
+				}
+			},
+			{
+				name: 'London',
+				filters: {
+					location_id: 4343,
+					...baseFilters
+				}
+			},
+			{
+				name: 'Tokyo',
+				filters: {
+					location_id: 4404,
+					...baseFilters
+				}
+			}
+		];
+	}
+
+	renderSuperFilterPanel(superFilterType) {
+		let superFilters;
+
+		switch (superFilterType) {
+			case 'tracks':
+				superFilters = this.getTracksMetadata();
+				break;
+			case 'locations':
+				superFilters = this.getLocationsMetadata();
+				break;
+			case 'artists':
+				superFilters = this.getArtistsMetadata();
+				break;
+			case 'tags':
+				superFilters = this.getTagsMetadata();
+				break;
+			default:
+				superFilters = null;
+		}
+		console.log(superFilters);
+		return (
+			<SuperFilterPanel
+				superFilters={superFilters}
+				setTrackFilters={filters => this.setTrackFilters(filters)}
+				superFilterType={superFilterType}
+			/>
+		);
+	}
+
+	renderMetadata(feedType) {
+		return this.renderSuperFilterPanel(feedType);
+	}
+
+	feedInstance(displayPage = 'home', feedType) {
 		return (
 			<Feed
 				tracks={this.state.tracks}
@@ -259,7 +463,9 @@ class App extends Component {
 				}}
 				playingTrackId={this.state.playingTrack.id}
 				togglePlay={trackId => this.togglePlay(trackId)}
-			/>
+			>
+				{feedType && this.renderSuperFilterPanel(feedType)}
+			</Feed>
 		);
 	}
 
@@ -278,7 +484,11 @@ class App extends Component {
 	}
 
 	setFilter({ param, value }) {
-		const { location_id, soundcloud_user_id, ...oldFilters } = this.state.trackFilters;
+		const {
+			location_id,
+			soundcloud_user_id,
+			...oldFilters
+		} = this.state.trackFilters;
 
 		if (value === 'reset') {
 			this.setState({ trackFilters: oldFilters });
@@ -296,15 +506,17 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
-			return {
-				...track,
-				publisher: {
-					...track.publisher[0],
-					position: [track.publisher[0].lng, track.publisher[0].lat]
-				}
-			};
-		});
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
 	}
 	// this should happen is fetch curators page
 	fetchCurators() {
@@ -356,7 +568,8 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={() =>
+									this.toggleSidebar({ clickedOutsideMenu: true })}
 							/>
 
 							<Sidebar.Pusher
@@ -381,9 +594,11 @@ class App extends Component {
 									render={() => (
 										<Home
 											playing={this.state.playing}
+											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}
 											setTrackFilters={filters => this.setTrackFilters(filters)}
+											homePlayDisabled={this.state.tracks.length === 0}
 										/>
 									)}
 								/>
@@ -420,9 +635,10 @@ class App extends Component {
 										const allProps = {
 											...props,
 											soundcloudUser: this.state.soundcloudUser,
-											loading: this.state.loading && this.state.loadingSoundcloudUser,
+											loading:
+												this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
-											feed: this.feedInstance('curator'),
+											feed: this.feedInstance(),
 											setUser: (id, only_mixes) => {
 												if (only_mixes) {
 													this.setTrackFilters({
@@ -451,18 +667,21 @@ class App extends Component {
 							<div className="App-separator" style={{ height: '70px' }} />
 						</Sidebar.Pushable>
 
-						<BottomNav
-							playing={this.state.playing}
-							playingTrack={this.state.playingTrack}
-							bottomMenuVisible={this.state.bottomMenuVisible}
-							toggleBottomMenu={() => this.toggleBottomMenu()}
-							setBottomMenuInvisible={() => this.setState({ bottomMenuVisible: false })}
-							setTrackFilters={newFilters => {
-								this.updateSingleTrackFilters(newFilters);
-							}}
-							togglePlay={id => this.togglePlay(id)}
-							trackFilters={this.state.trackFilters}
-						/>
+						{this.state.initPlayer && (
+							<BottomNav
+								playing={this.state.playing}
+								playingTrack={this.state.playingTrack}
+								bottomMenuVisible={this.state.bottomMenuVisible}
+								toggleBottomMenu={() => this.toggleBottomMenu()}
+								setBottomMenuInvisible={() =>
+									this.setState({ bottomMenuVisible: false })}
+								setTrackFilters={newFilters => {
+									this.updateSingleTrackFilters(newFilters);
+								}}
+								togglePlay={id => this.togglePlay(id)}
+								trackFilters={this.state.trackFilters}
+							/>
+						)}
 					</div>
 				</ScrollToTop>
 			</Router>
