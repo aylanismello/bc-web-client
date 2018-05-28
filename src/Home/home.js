@@ -29,9 +29,15 @@ class Home extends React.Component {
 						<Link to="/about"> more </Link>.
 					</div>
 					<div className="Home-social-links">
-						<Icon link size="huge" name="soundcloud" color="pink" />
-						<Icon link size="huge" name="instagram" color="pink" />
-						<Icon link size="huge" name="youtube" color="pink" />
+						<a href="https://soundcloud.com/burncartel" target="_blank">
+							<Icon link size="huge" name="soundcloud" color="pink" />
+						</a>
+						<a href="https://instagram.com/burncartel" target="_blank">
+							<Icon link size="huge" name="instagram" color="pink" />
+						</a>
+						<a href="https://twitter.com/burncartel" target="_blank">
+							<Icon link size="huge" name="twitter" color="pink" />
+						</a>
 					</div>
 				</Segment>
 			</div>
