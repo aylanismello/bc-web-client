@@ -8,7 +8,8 @@ import './Home.css';
 
 class Home extends React.Component {
 	componentWillMount() {
-		this.props.setTrackFilters(mainFilters.Trending.filters);
+		this.props.fetchSuperfilters('custom');
+		// this.props.setTrackFilters(mainFilters.Trending.filters);
 	}
 
 	renderBurnCartelGreeting() {

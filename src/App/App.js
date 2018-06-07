@@ -62,6 +62,7 @@ class App extends Component {
 			id: undefined,
 			data: {}
 		}),
+		playingSuperfilterId: null,
 		initPlayer: false,
 		donePaginating: false,
 		tracks: [],
@@ -73,6 +74,7 @@ class App extends Component {
 		sideMenuVisible: false,
 		bottomMenuVisible: false,
 		showFullSearchBar: false,
+		superFilters: [],
 		curators: [],
 		soundcloudUser: {},
 		loadingSoundcloudUser: false
@@ -97,6 +99,13 @@ class App extends Component {
 			this.updateTracks(nextState.trackFilters, paginate);
 		}
 
+		// on initial App load, we need to set our superfilter, then track filters
+
+		// this is really only for the home page and the feedhome though.
+		if(!this.state.superFilters.length && nextState.superFilters.length) {
+			this.setSuperfilter(nextState.superFilters[0]);
+		}
+
 		if (
 			(!this.state.playing && nextState.playing) ||
 			!_.isEqual(nextState.playingTracks, this.state.playingTracks) ||
@@ -111,6 +120,32 @@ class App extends Component {
 				).stream_url
 			});
 		}
+	}
+
+
+	setSuperfilter(selectedSuperFilter) {
+		// const selectedSuperFilter = this.state.superFilters.filter(superFilter => {
+		// 	superFilter.id === superfilterId
+		// });
+
+		const { id, name, position, superfilter_type,
+			image_url, description, created_at, updated_at,
+			...formattedSuperfilters } = selectedSuperFilter;
+
+		this.setState({
+			playingSuperfilterId: selectedSuperFilter.id,
+			trackFilters: formattedSuperfilters
+		})
+	}
+
+	fetchSuperfilters(superfilterType) {
+		axios.get(`${baseUrl}/superfilters?superfilter_type=${superfilterType}`).then(results => {
+			// const newSuperfilters = { ...this.state.superFilters };
+			// newSuperfilters[superfilterType] = results.data.data.superfilters;
+			this.setState({
+				superFilters: [ ...this.state.superFilters, ...results.data.data.superfilters ],
+			});
+		});
 	}
 
 	getTrackById(trackId, playingTracks = this.state.playingTracks) {
@@ -428,6 +463,8 @@ class App extends Component {
 				superFilters = null;
 		}
 		console.log(superFilters);
+
+		// AYLAN WAKE UP
 		return (
 			<SuperFilterPanel
 				superFilters={superFilters}
@@ -438,6 +475,7 @@ class App extends Component {
 	}
 
 	renderMetadata(feedType) {
+		// AYLAN WAKE UP. why does this function exist at all?
 		return this.renderSuperFilterPanel(feedType);
 	}
 
@@ -597,6 +635,7 @@ class App extends Component {
 											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}
+											fetchSuperfilters={superfilterType => this.fetchSuperfilters(superfilterType)}
 											setTrackFilters={filters => this.setTrackFilters(filters)}
 											homePlayDisabled={this.state.tracks.length === 0}
 										/>
