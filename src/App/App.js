@@ -106,6 +106,10 @@ class App extends Component {
 	}
 
 	setSuperfilter(selectedSuperFilter) {
+		if(this.state.selectedSuperFilterId === selectedSuperFilter.id) {
+			return;
+		}
+
 		const {
 			id,
 			name,
@@ -121,7 +125,7 @@ class App extends Component {
 
 		this.setState({
 			selectedSuperFilterId: selectedSuperFilter.id,
-			trackFilters: formattedSuperfilters
+			trackFilters: { ...formattedSuperfilters, page: 1 }
 		});
 	}
 
@@ -161,8 +165,10 @@ class App extends Component {
 	togglePlay(trackId) {
 		let daTrackID = trackId;
 		// first track played this session
+
 		if (!this.state.playingTrack.id && !this.state.loading) {
-			daTrackID = this.state.tracks[0].track.id;
+			// need to find a better way to set htis
+			// daTrackID = this.state.tracks[0].track.id;
 			this.setState({
 				playingTracks: [...this.state.tracks],
 				playing: true
@@ -276,17 +282,11 @@ class App extends Component {
 
 	renderSuperFilterPanel(superFilterType) {
 		let superFilters;
-		// 	case 'tracks':
-		// 	case 'locations':
-		// 	case 'artists':
-		// 	case 'tags':
 
-		// AYLAN WAKE UP
 		const needToLoadSuperFilter = !this.state.superFilters.filter(superfilter => superfilter.superfilter_type === superFilterType).length;
 
 		if (needToLoadSuperFilter && !this.state.loadingSuperfilter) {
 			this.fetchSuperfilters(superFilterType);
-			// alert('fuk we gotta load that shit!');
 		}
 
 		return (
