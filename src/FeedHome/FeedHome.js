@@ -3,24 +3,10 @@ import React from 'react';
 import TabbedSegment from '../TabbedSegment';
 
 class FeedHome extends React.Component {
-	state = {
-		trackType: 'curated'
-	};
-	//
-	componentWillMount() {
-		this.props.getHomeTracks();
-	}
 
-	// componentWillUpdate(np, nextState) {
-	// 	if (nextState.trackType !== this.state.trackType) {
-	// 		this.props.setState({
-	// 			trackFilters: {
-	// 				...this.props.trackFilters,
-	// 				is_submission: true
-	// 			}
-	// 		});
-	// 	}
-	// }
+	componentWillMount() {
+		// this.props.fetchSuperfilters('custom');
+	}
 
 	render() {
 		const {
@@ -40,7 +26,7 @@ class FeedHome extends React.Component {
 							menuItem: 'Tracks ⬆️',
 							render: () => (
 								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tracks')}
+									{feedInstance('home', 'custom')}
 								</TabbedSegment>
 							)
 						},
@@ -49,7 +35,7 @@ class FeedHome extends React.Component {
 							render: () => (
 								<div>
 									<TabbedSegment loading={loading}>
-										{feedInstance('home', 'locations')}
+										{feedInstance('home', 'location')}
 									</TabbedSegment>
 									{/* <BCMap
 										data={tracksWithPosition()}
@@ -63,7 +49,7 @@ class FeedHome extends React.Component {
 							menuItem: 'Artists 💃',
 							render: () => (
 								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'artists')}
+									{feedInstance('home', 'artist')}
 									{/* <UsersFeed
 										users={tracks.map(({ publisher }) => {
 											return { ...publisher[0] };
@@ -76,7 +62,7 @@ class FeedHome extends React.Component {
 							menuItem: 'Tags #️⃣',
 							render: () => (
 								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tags')}
+									{feedInstance('home', 'tag')}
 								</TabbedSegment>
 							)
 						}

@@ -26,54 +26,36 @@ const settings = {
 	]
 };
 
-class SuperFilterPanel extends React.Component {
-	state = {
-		selectedIdx: 0
-	};
+const SuperFilterPanel = props => {
+	// const { setTrackFilters, superFilters, superFilterType } = this.props;
+	const {
+		superFilters, setSuperfilter, selectedSuperFilterId, loading
+	} = props;
+	const description =
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].description;
 
-	componentWillMount() {
-		this.props.setTrackFilters(this.props.superFilters[0].filters);
-	}
-
-	componentWillUpdate(nextProps) {
-		// alert('update');
-		if (nextProps.superFilterType !== this.props.superFilterType) {
-			this.setState({ selectedIdx: 0 });
-			nextProps.setTrackFilters(nextProps.superFilters[0].filters);
-		}
-	}
-
-	render() {
-		const { setTrackFilters, superFilters, superFilterType } = this.props;
-		const { selectedIdx } = this.state;
-		return (
+	return (
+		!loading && (
 			<div className="SuperFilterPanel">
 				<Slider className="explore-panel-slider" {...settings}>
-					{superFilters.map((superFilter, idx) => (
+					{superFilters.map(superFilter => (
 						<div>
 							<SuperFilterButton
 								name={superFilter.name}
 								onClick={() => {
-									this.setState({ selectedIdx: idx });
-									setTrackFilters(superFilter.filters);
+									setSuperfilter(superFilter);
 								}}
-								selected={idx === selectedIdx}
+								selected={superFilter.id === selectedSuperFilterId}
 							/>
 						</div>
 					))}
 				</Slider>
-				<Segment>
-					{' '}
-					{
-						SUPER_FILTER_DESCRIPTIONS[superFilterType][
-							superFilters[selectedIdx].name
-						]
-					}{' '}
-				</Segment>
+				<Segment> {description} </Segment>
 			</div>
-		);
-	}
-}
+		)
+	);
+};
 
 const { func, objectOf, string } = PropTypes;
 
