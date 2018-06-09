@@ -8,7 +8,7 @@ import './Home.css';
 
 class Home extends React.Component {
 	componentWillMount() {
-		// this.props.fetchSuperfilters('custom');
+		this.props.fetchSuperfilters('custom');
 	}
 
 	renderBurnCartelGreeting() {
@@ -51,7 +51,8 @@ class Home extends React.Component {
 			togglePlay,
 			playing,
 			homePlayDisabled,
-			initPlayer
+			initPlayer,
+			homePageTrack
 		} = this.props;
 
 		return (
@@ -93,7 +94,7 @@ class Home extends React.Component {
 					) : (
 						<PlayButton
 							size="massive"
-							playingTrack={playingTrack}
+							playingTrack={(playingTrack.id && playingTrack) || homePageTrack}
 							togglePlay={togglePlay}
 							playing={playing}
 							disabled={homePlayDisabled}

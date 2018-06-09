@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Segment, Grid, Card } from 'semantic-ui-react';
 import { mainFilters } from '../filter_helpers';
+import TabbedSegment from '../TabbedSegment';
 import SuperFilterPanel from './SuperFilterPanel';
 import TrackList from '../TrackList';
 
@@ -14,7 +15,9 @@ class Feed extends React.Component {
 			<div className="Feed">
 				{this.props.children}
 				{/* {this.renderMetadata()} */}
-				<TrackList {...this.props} />
+				<TabbedSegment loading={this.props.loading}>
+					<TrackList {...this.props} />
+				</TabbedSegment>
 			</div>
 		);
 	}

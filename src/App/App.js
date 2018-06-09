@@ -22,12 +22,12 @@ import './App.css';
 
 class App extends Component {
 	static formatFilters(trackFilters) {
-		const { location_ids, track_tag_ids } = trackFilters
+		const { location_ids, track_tag_ids } = trackFilters;
 
-		if(location_ids) {
-			return { ...trackFilters, location_ids: JSON.stringify(location_ids), };
-		} else if(track_tag_ids) {
-			return { ...trackFilters, track_tag_ids: JSON.stringify(track_tag_ids)};
+		if (location_ids) {
+			return { ...trackFilters, location_ids: JSON.stringify(location_ids) };
+		} else if (track_tag_ids) {
+			return { ...trackFilters, track_tag_ids: JSON.stringify(track_tag_ids) };
 		}
 
 		return trackFilters;
@@ -88,7 +88,7 @@ class App extends Component {
 
 		if (!this.state.superFilters.length && nextState.superFilters.length) {
 			this.setSuperfilter(nextState.superFilters[0]);
-		} else if(this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId) {
+		} else if (this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId) {
 			// this.setSuperfilter(nextState.superFilters.filter(sf => sf.id === nextState.selectedSuperFilterId))[0];
 		}
 
@@ -106,7 +106,7 @@ class App extends Component {
 	}
 
 	setSuperfilter(selectedSuperFilter) {
-		if(this.state.selectedSuperFilterId === selectedSuperFilter.id) {
+		if (this.state.selectedSuperFilterId === selectedSuperFilter.id) {
 			return;
 		}
 
@@ -122,28 +122,10 @@ class App extends Component {
 			...formattedSuperfilters
 		} = selectedSuperFilter;
 
-
 		this.setState({
 			selectedSuperFilterId: selectedSuperFilter.id,
 			trackFilters: { ...formattedSuperfilters, page: 1 }
 		});
-	}
-
-	fetchSuperfilters(superfilterType) {
-		if (
-			this.state.superFilters.filter(sf => sf.superfilter_type === superfilterType).length ||
-			this.state.loadingSuperfilter
-		) {
-			console.log('no need to get this');
-		} else {
-			this.setState({ loadingSuperfilter: true });
-			axios.get(`${baseUrl}/superfilters?superfilter_type=${superfilterType}`).then(results => {
-				this.setState({
-					superFilters: [...this.state.superFilters, ...results.data.data.superfilters],
-					loadingSuperfilter: false
-				});
-			});
-		}
 	}
 
 	getTrackById(trackId, playingTracks = this.state.playingTracks) {
@@ -152,18 +134,8 @@ class App extends Component {
 		})[0].track;
 	}
 
-	fetchSoundcloudUser(id) {
-		this.setState({ loadingSoundcloudUser: true });
-		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
-			this.setState({
-				soundcloudUser: results.data.data.soundcloud_user,
-				loadingSoundcloudUser: false
-			});
-		});
-	}
-
 	togglePlay(trackId) {
-		let daTrackID = trackId;
+		const daTrackID = trackId;
 		// first track played this session
 
 		if (!this.state.playingTrack.id && !this.state.loading) {
@@ -355,6 +327,21 @@ class App extends Component {
 		}
 	}
 
+	fetchSoundcloudUser(id) {
+		// let's rethink this.
+
+		this.setTrackFilters({
+			soundcloud_user_id: id
+		});
+		// this.setState({ loadingSoundcloudUser: true });
+		// axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
+		// 	this.setState({
+		// 		soundcloudUser: results.data.data.soundcloud_user,
+		// 		loadingSoundcloudUser: false
+		// 	});
+		// });
+	}
+
 	toggleBottomMenu() {
 		this.setState({ bottomMenuVisible: !this.state.bottomMenuVisible });
 	}
@@ -370,6 +357,39 @@ class App extends Component {
 			};
 		});
 	}
+
+	fetchSuperfilters(superfilterType) {
+		const shouldFetchSuperfilter = () => {
+			return !(
+				this.state.superFilters.filter(sf => sf.superfilter_type === superfilterType).length ||
+				this.state.loadingSuperfilter ||
+				this.state.error
+			);
+		};
+
+		if (shouldFetchSuperfilter()) {
+			this.setState({ loadingSuperfilter: true });
+			axios.get(`${baseUrl}/superfilters?superfilter_type=${superfilterType}`).then(results => {
+				const { length } = results.data.data.superfilters;
+				if (length) {
+					this.setState({
+						superFilters: [...this.state.superFilters, ...results.data.data.superfilters],
+						loadingSuperfilter: false
+					});
+				} else {
+					this.setState({
+						superFilters: [
+							...this.state.superFilters,
+							{ superfilter_type: superfilterType, name: 'No results. This should never happen.' }
+						],
+						error: 'Could not find super filter!',
+						loadingSuperfilter: false
+					});
+				}
+			});
+		}
+	}
+
 	// this should happen is fetch curators page
 	fetchCurators() {
 		this.setState({
@@ -435,7 +455,7 @@ class App extends Component {
 											this.setState({ error: null });
 										}}
 										header="Sorry, something went wrong!"
-										content={this.state.error}
+										content={this.state.error.message}
 									/>
 								) : null}
 
@@ -445,6 +465,7 @@ class App extends Component {
 									render={() => (
 										<Home
 											playing={this.state.playing}
+											homePageTrack={this.state.tracks[0] && this.state.tracks[0].track}
 											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}
@@ -487,15 +508,14 @@ class App extends Component {
 									render={props => {
 										const allProps = {
 											...props,
-											soundcloudUser: this.state.soundcloudUser,
 											loading: this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance(),
-											setUser: (id, only_mixes) => {
+											soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
+											setUser: (id, only_mixes = false) => {
 												if (only_mixes) {
 													this.setTrackFilters({
 														soundcloud_user_id: id,
-														date_range: -1,
 														sort_type: 'latest',
 														track_type: 2,
 														page: 1
@@ -504,8 +524,6 @@ class App extends Component {
 													this.setTrackFilters({
 														soundcloud_user_id: id,
 														sort_type: 'hot',
-														date_range: -1,
-														track_type: -1,
 														page: 1
 													});
 												}
