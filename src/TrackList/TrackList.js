@@ -122,8 +122,8 @@ class TrackList extends React.Component {
 								</div>
 
 								<Item.Content>
-									<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
-										{track.name}{' '}
+									<Item.Header>
+										<Link to={`/tracks/${track.id}`}>{track.name}</Link>
 									</Item.Header>
 									<Item.Meta className="TrackList-artist-info">
 										<Link to={`/soundcloud_users/${publisher[0].id}`}>

@@ -51,7 +51,7 @@ const SuperFilterPanel = props => {
 						</div>
 					))}
 				</Slider>
-				<Segment> {description} </Segment>
+				{description && <Segment> {description} </Segment>}
 			</div>
 		)
 	);

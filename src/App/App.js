@@ -9,6 +9,7 @@ import { baseUrl } from '../config';
 import SideMenu from '../SideMenu';
 import FeedHome from '../FeedHome';
 import Home from '../Home';
+import Track from '../Track';
 import About from '../About';
 import Submit from '../Submit';
 import Curators from '../Curators';
@@ -194,7 +195,7 @@ class App extends Component {
 		axios
 			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
-				if (paginate) {
+				if (paginate && !trackFilters.track_id) {
 					this.setState({
 						tracks: [...this.state.tracks, ...results.data.data.tracks],
 						loading: false
@@ -211,7 +212,8 @@ class App extends Component {
 						donePaginating: false
 					});
 				}
-				if (!this.state.donePaginating) {
+				// we don't paginate a single track!
+				if (!this.state.donePaginating && !trackFilters.track_id) {
 					this.checkForNextPagination(results.data.metadata.next_href);
 				}
 			})
@@ -455,7 +457,7 @@ class App extends Component {
 											this.setState({ error: null });
 										}}
 										header="Sorry, something went wrong!"
-										content={this.state.error.message}
+										content={this.state.error}
 									/>
 								) : null}
 
@@ -488,6 +490,20 @@ class App extends Component {
 											feedInstance={(displayPage, feedType) =>
 												this.feedInstance(displayPage, feedType)}
 											tracksWithPosition={() => this.tracksWithPosition()}
+										/>
+									)}
+								/>
+
+								<Route
+									path="/tracks/:id"
+									render={({ match }) => (
+										<Track
+											match={match}
+											feed={this.feedInstance()}
+											loading={this.state.loading}
+											setTrack={id => {
+												this.setTrackFilters({ track_id: id });
+											}}
 										/>
 									)}
 								/>
