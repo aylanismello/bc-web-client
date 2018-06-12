@@ -5,3 +5,17 @@
 .ui.segment.dimmed.dimmable {
   height: 500px;
 }
+
+
+.Curators-curator-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .Curators-curator-list-item {
+    flex-direction: column;
+  }
+}

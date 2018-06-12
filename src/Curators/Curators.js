@@ -8,13 +8,20 @@ import {
 	Card,
 	Container,
 	Image,
-	Tab
+	Item,
+	Tab,
+	Label
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
 import BCMap from '../BCMap';
 import './Curators.css';
 
 class Curators extends React.Component {
+	state = {
+		view: 'list'
+	};
+
 	componentWillMount() {
 		if (!this.props.curators.length) {
 			this.props.fetchCurators();
@@ -22,25 +29,79 @@ class Curators extends React.Component {
 	}
 
 	curatorsWithPosition() {
-		return this.props.curators
-			.filter(curator => curator.location && curator.location.name)
-			.map(curator => {
-				return {
-					...curator,
-					location: {
-						...curator.location,
-						position: [curator.location.lng, curator.location.lat]
-					}
-				};
-			});
+		return (
+			this.props.curators
+				// .filter(curator => curator.location && curator.location.name)
+				.filter(curator => curator.soundcloud_user.location_id && curator.location.name)
+				.map(curator => {
+					return {
+						...curator,
+						location: {
+							...curator.location,
+							position: [curator.location.lng, curator.location.lat]
+						}
+					};
+				})
+		);
 	}
 
+	renderList(curators) {
+		return (
+			<Item.Group relaxed divided>
+				{curators.map((curator, idx) => {
+					return (
+						<Item key={curator.id}>
+							<div className="Curators-curator-list-item">
+								<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
+									<Label color="teal">#{idx + 1}</Label>
+									<Label as="a" basic>
+										<Image avatar spaced="right" src={curator.soundcloud_user.avatar_url} />
+										{curator.soundcloud_user.name}
+									</Label>
+								</Link>
+								<Label
+									icon="globe"
+									content={publisherLocationsToString({ location: curator.location.name })}
+								/>
+							</div>
+						</Item>
+					);
+				})}
+			</Item.Group>
+		);
+	}
+
+	renderGallery(curators) {
+		return (
+			<Card.Group>
+				{curators.map(curator => {
+					return (
+						<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
+							<Card.Content>
+								<Image src={curator.soundcloud_user.avatar_url} size="tiny" />
+							</Card.Content>
+						</Link>
+					);
+				})}
+			</Card.Group>
+		);
+	}
 	render() {
 		const curators = this.curatorsWithPosition();
+		const view = {
+			list: 0,
+			map: 1
+		};
+		
 		return (
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
+					activeIndex={parseInt(view[this.props.view] || 0)}
+					onTabChange={(e, data) => {
+						window.location =
+							`/#curators/${Object.keys(view)[parseInt(data.activeIndex)]}`;
+					}}
 					panes={[
 						{
 							menuItem: 'List ⬆️',
@@ -61,17 +122,9 @@ class Curators extends React.Component {
 											<Loader> Loading </Loader>
 										</Dimmer>
 
-										<Card.Group>
-											{curators.map(curator => {
-												return (
-													<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
-														<Card.Content>
-															<Image src={curator.soundcloud_user.avatar_url} size="tiny" />
-														</Card.Content>
-													</Link>
-												);
-											})}
-										</Card.Group>
+										{this.state.view === 'list'
+											? this.renderList(curators)
+											: this.renderGallery(curators)}
 									</Dimmer.Dimmable>
 								</Segment>
 							)

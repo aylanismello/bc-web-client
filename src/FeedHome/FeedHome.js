@@ -2,6 +2,13 @@ import { Container, Tab } from 'semantic-ui-react';
 import React from 'react';
 import TabbedSegment from '../TabbedSegment';
 
+const superfilter_types = {
+	custom: 0,
+	location: 1,
+	artist: 2,
+	tag: 3
+};
+
 class FeedHome extends React.Component {
 	componentWillMount() {
 		// this.props.fetchSuperfilters('custom');
@@ -20,6 +27,11 @@ class FeedHome extends React.Component {
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
+					activeIndex={parseInt(superfilter_types[this.props.superfilter_type] || 0)}
+					onTabChange={(e, data) => {
+						window.location =
+							`/#feed/${Object.keys(superfilter_types)[parseInt(data.activeIndex)]}`;
+					}}
 					panes={[
 						{
 							menuItem: 'Tracks ⬆️',

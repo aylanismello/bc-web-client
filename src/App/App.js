@@ -21,6 +21,8 @@ import ScrollToTop from '../scroll_to_top';
 import { homeFilters, mainFilters } from '../filter_helpers';
 import './App.css';
 
+const queryString = require('query-string');
+
 class App extends Component {
 	static formatFilters(trackFilters) {
 		const { location_ids, track_tag_ids } = trackFilters;
@@ -104,6 +106,11 @@ class App extends Component {
 				streamUrl: this.getTrackById(nextState.playingTrack.id, nextState.playingTracks).stream_url
 			});
 		}
+	}
+
+	setSuperfilterById(id) {
+		const yo = this.state.superFilters.filter(sf => sf.id === parseInt(id))[0];
+		this.setSuperfilter(yo);
 	}
 
 	setSuperfilter(selectedSuperFilter) {
@@ -254,7 +261,7 @@ class App extends Component {
 		});
 	}
 
-	renderSuperFilterPanel(superFilterType) {
+	renderSuperFilterPanel(superFilterType, superfilterId) {
 		let superFilters;
 
 		const needToLoadSuperFilter = !this.state.superFilters.filter(superfilter => superfilter.superfilter_type === superFilterType).length;
@@ -269,11 +276,13 @@ class App extends Component {
 				setSuperfilter={selectedSuperFilter => this.setSuperfilter(selectedSuperFilter)}
 				selectedSuperFilterId={this.state.selectedSuperFilterId}
 				loading={this.state.loadingSuperfilter}
+				setSuperfilterById={(id) => this.setSuperfilterById(id)}
+				superfilterId={superfilterId}
 			/>
 		);
 	}
 
-	feedInstance(displayPage = 'home', feedType) {
+	feedInstance(displayPage = 'home', feedType, superfilterId) {
 		return (
 			<Feed
 				tracks={this.state.tracks}
@@ -296,7 +305,7 @@ class App extends Component {
 				playingTrackId={this.state.playingTrack.id}
 				togglePlay={trackId => this.togglePlay(trackId)}
 			>
-				{feedType && this.renderSuperFilterPanel(feedType)}
+				{feedType && this.renderSuperFilterPanel(feedType, superfilterId)}
 			</Feed>
 		);
 	}
@@ -398,7 +407,7 @@ class App extends Component {
 			loading: true
 		});
 		axios
-			.get(`${baseUrl}/soundcloud_users`, { params: { is_curator: true } })
+			.get(`${baseUrl}/soundcloud_users/curators`)
 			.then(results => {
 				this.setState({
 					curators: results.data.data.soundcloud_users,
@@ -479,8 +488,9 @@ class App extends Component {
 								/>
 
 								<Route
+									exact
 									path="/feed"
-									render={() => (
+									render={({ match }) => (
 										<FeedHome
 											getHomeTracks={() => this.fetchHomeTracks()}
 											loading={this.state.loading}
@@ -492,6 +502,30 @@ class App extends Component {
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}
+								/>
+
+								<Route
+									path="/feed/:superfilter_type"
+									render={({ match, location }) => {
+										return (
+											<FeedHome
+												superfilter_type={match.params.superfilter_type}
+												getHomeTracks={() => this.fetchHomeTracks()}
+												loading={this.state.loading}
+												trackFilters={this.state.trackFilters}
+												fetchSuperfilters={superfilterType =>
+													this.fetchSuperfilters(superfilterType)}
+												tracks={this.state.tracks}
+												feedInstance={(displayPage, feedType) =>
+													this.feedInstance(
+														displayPage,
+														feedType,
+														queryString.parse(location.search).id
+													)}
+												tracksWithPosition={() => this.tracksWithPosition()}
+											/>
+										);
+									}}
 								/>
 
 								<Route
@@ -509,15 +543,30 @@ class App extends Component {
 								/>
 
 								<Route
-									path="/curators"
-									render={() => (
+									path="/curators/"
+									exact
+									render={({ match }) => (
 										<Curators
+											view={match.params.view}
 											fetchCurators={() => this.fetchCurators()}
 											loading={this.state.loading}
 											curators={this.state.curators}
 										/>
 									)}
 								/>
+
+								<Route
+									path="/curators/:view"
+									render={({ match }) => (
+										<Curators
+											view={match.params.view}
+											fetchCurators={() => this.fetchCurators()}
+											loading={this.state.loading}
+											curators={this.state.curators}
+										/>
+									)}
+								/>
+
 								<Route path="/submit" component={Submit} />
 								<Route
 									path="/soundcloud_users/:id"

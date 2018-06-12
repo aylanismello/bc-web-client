@@ -7,51 +7,13 @@ import {
 	Statistic,
 	Icon,
 	Header,
+	Image,
 	Divider,
 	Breadcrumb
 } from 'semantic-ui-react';
+import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
 import { Link } from 'react-router-dom';
 import './TrackList.css';
-
-const publisherLocationsToString = ({ location }) => {
-	// TODO move earlier in the chain so it's also in the map.
-	if (location) {
-		if (!location.includes(',')) {
-			// Location only has one part - just return it as-is then.
-			return location;
-		} else {
-			// Convert location to City, State or City, Country if possible.
-			const parts = location
-				.split(', ')
-				.filter(part => part.match(/[a-z]/) && !part.includes('United States'));
-
-			if (parts.length > 2) {
-				return `${parts[0]}, ${parts.slice(-1)[0]}`;
-			} else {
-				return parts.join(', ');
-			}
-		}
-	} else {
-		return '';
-	}
-};
-
-const makeTrackTypeBadge = track => {
-	if (track.track_type === 1) {
-		return <Label color="teal"> Remix </Label>;
-	} else if (track.track_type === 2) {
-		return <Label color="pink"> Mix </Label>;
-	}
-	return null;
-};
-
-const makeBCBadge = track => {
-	if (track.episode_track_id) {
-		return <Label color="black"> On BC Radio </Label>;
-	}
-
-	return null;
-};
 
 class TrackList extends React.Component {
 	render() {
@@ -140,25 +102,36 @@ class TrackList extends React.Component {
 										</div>
 									</Item.Meta>
 
-									{/* <Item.Header>
+									<Item.Header>
 										<Popup
 											trigger={
 												<Statistic className="TrackList-selection-count" size="tiny">
 													<Statistic.Value>
 														<Icon name="soundcloud" size="tiny" />
-														{feedType === 'selection' ? curators.length : track.submission_count}
+														{/* {feedType === 'selection' ? curators.length : track.submission_count} */}
+														{curators.length}
 													</Statistic.Value>
 													<Statistic.Label>
-														{feedType === 'selection' ? 'Curators' : 'Submissions'}
+														{/* {feedType === 'selection' ? 'Curators' : 'Submissions'} */}
+														Curators
 													</Statistic.Label>
 												</Statistic>
 											}
 											position="top center"
 										>
-											{curators.map(curator => curator.name).join(', ')}{' '}
+											<Item.Group>
+											{curators.map(curator => (
+											<Link key={curator.name} className="TrackList-curator-popup-container" to={`/soundcloud_users/${curator.id}`}>
+												<Label as="a" basic>
+													<Image avatar spaced="right" src={curator.avatar_url} />
+													{curator.name}
+												</Label>
+											</Link>
+										))}
+										</Item.Group>
 										</Popup>
 
-									</Item.Header> */}
+									</Item.Header>
 									<Item.Description>Released {track.created_at_external}</Item.Description>
 									<Item.Extra>
 										{makeBCBadge(track)}

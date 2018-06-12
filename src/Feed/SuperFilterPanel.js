@@ -29,11 +29,15 @@ const settings = {
 const SuperFilterPanel = props => {
 	// const { setTrackFilters, superFilters, superFilterType } = this.props;
 	const {
-		superFilters, setSuperfilter, selectedSuperFilterId, loading
+		superFilters, setSuperfilter, selectedSuperFilterId, loading, superfilterId, setSuperfilterById
 	} = props;
 	const description =
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].description;
+
+	if(superfilterId && !loading && superFilters.length) {
+		setSuperfilterById(superfilterId);
+	}
 
 	return (
 		!loading && (
@@ -44,7 +48,8 @@ const SuperFilterPanel = props => {
 							<SuperFilterButton
 								name={superFilter.name}
 								onClick={() => {
-									setSuperfilter(superFilter);
+									window.location =
+										`/#feed/${superFilter.superfilter_type}?id=${superFilter.id}`;
 								}}
 								selected={superFilter.id === selectedSuperFilterId}
 							/>

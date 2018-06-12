@@ -19,6 +19,10 @@
 	display: block;
 }
 
+.TrackList-curator-popup-container {
+	width: 3em;
+}
+
 .TrackList-play-pause-icon {
 	color: white;
 }
