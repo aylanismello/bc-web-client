@@ -35,15 +35,20 @@ const SuperFilterPanel = props => {
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].description;
 
+	const image_url =
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].image_url;
+
 	if(superfilterId && !loading && superFilters.length) {
 		setSuperfilterById(superfilterId);
 	}
 
+
 	return (
 		!loading && (
-			<div className="SuperFilterPanel">
+			<div className="SuperFilterPanel" style={image_url && { backgroundImage: `url('${image_url}')`}}>
 				<Slider className="explore-panel-slider" {...settings}>
-					{superFilters.map(superFilter => (
+					{superFilters.sort(sf => sf.position).map(superFilter => (
 						<div>
 							<SuperFilterButton
 								name={superFilter.name}

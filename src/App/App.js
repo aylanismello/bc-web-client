@@ -108,13 +108,13 @@ class App extends Component {
 		}
 	}
 
-	setSuperfilterById(id) {
+	setSuperfilterById(id, backToSameFilter) {
 		const yo = this.state.superFilters.filter(sf => sf.id === parseInt(id))[0];
-		this.setSuperfilter(yo);
+		this.setSuperfilter(yo, backToSameFilter);
 	}
 
-	setSuperfilter(selectedSuperFilter) {
-		if (this.state.selectedSuperFilterId === selectedSuperFilter.id) {
+	setSuperfilter(selectedSuperFilter, backToSameFilter) {
+		if (this.state.selectedSuperFilterId === selectedSuperFilter.id && !backToSameFilter) {
 			return;
 		}
 
@@ -242,7 +242,7 @@ class App extends Component {
 		axios
 			.get(next_href)
 			.then(results => {
-				if (!results.data.data.tracks.length) {
+				if (results.data.data.tracks && !results.data.data.tracks.length) {
 					this.setState({ donePaginating: true });
 				}
 			})
@@ -276,7 +276,7 @@ class App extends Component {
 				setSuperfilter={selectedSuperFilter => this.setSuperfilter(selectedSuperFilter)}
 				selectedSuperFilterId={this.state.selectedSuperFilterId}
 				loading={this.state.loadingSuperfilter}
-				setSuperfilterById={(id) => this.setSuperfilterById(id)}
+				setSuperfilterById={id => this.setSuperfilterById(id)}
 				superfilterId={superfilterId}
 			/>
 		);
@@ -492,7 +492,6 @@ class App extends Component {
 									path="/feed"
 									render={({ match }) => (
 										<FeedHome
-											getHomeTracks={() => this.fetchHomeTracks()}
 											loading={this.state.loading}
 											trackFilters={this.state.trackFilters}
 											fetchSuperfilters={superfilterType => this.fetchSuperfilters(superfilterType)}
@@ -510,7 +509,13 @@ class App extends Component {
 										return (
 											<FeedHome
 												superfilter_type={match.params.superfilter_type}
-												getHomeTracks={() => this.fetchHomeTracks()}
+												getHomeTracks={() => {
+													const yo = this.state;
+													debugger
+													if (this.state.selectedSuperFilterId) {
+														this.setSuperfilterById(this.state.selectedSuperFilterId, true);
+													}
+												}}
 												loading={this.state.loading}
 												trackFilters={this.state.trackFilters}
 												fetchSuperfilters={superfilterType =>

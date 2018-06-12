@@ -11,6 +11,7 @@ const superfilter_types = {
 
 class FeedHome extends React.Component {
 	componentWillMount() {
+		this.props.getHomeTracks();
 		// this.props.fetchSuperfilters('custom');
 	}
 
