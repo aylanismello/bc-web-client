@@ -29,7 +29,12 @@ const settings = {
 const SuperFilterPanel = props => {
 	// const { setTrackFilters, superFilters, superFilterType } = this.props;
 	const {
-		superFilters, setSuperfilter, selectedSuperFilterId, loading, superfilterId, setSuperfilterById
+		superFilters,
+		setSuperfilter,
+		selectedSuperFilterId,
+		loading,
+		superfilterId,
+		setSuperfilterById
 	} = props;
 	const description =
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
@@ -39,31 +44,35 @@ const SuperFilterPanel = props => {
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].image_url;
 
-	if(superfilterId && !loading && superFilters.length) {
+	if (superfilterId && !loading && superFilters.length) {
 		setSuperfilterById(superfilterId);
 	}
 
-
 	return (
-		!loading && (
-			<div className="SuperFilterPanel" style={image_url && { backgroundImage: `url('${image_url}')`}}>
-				<Slider className="explore-panel-slider" {...settings}>
-					{superFilters.sort(sf => sf.position).map(superFilter => (
-						<div>
-							<SuperFilterButton
-								name={superFilter.name}
-								onClick={() => {
-									window.location =
-										`/#feed/${superFilter.superfilter_type}?id=${superFilter.id}`;
-								}}
-								selected={superFilter.id === selectedSuperFilterId}
-							/>
-						</div>
-					))}
-				</Slider>
-				{description && <Segment> {description} </Segment>}
-			</div>
-		)
+		<div
+			className="SuperFilterPanel"
+			style={image_url && { backgroundImage: `url('${image_url}')` }}
+		>
+			{!loading ? (
+				<div>
+					{' '}
+					<Slider className="explore-panel-slider" {...settings}>
+						{superFilters.sort(sf => sf.position).map(superFilter => (
+							<div>
+								<SuperFilterButton
+									name={superFilter.name}
+									onClick={() => {
+										window.location = `/#feed/${superFilter.superfilter_type}?id=${superFilter.id}`;
+									}}
+									selected={superFilter.id === selectedSuperFilterId}
+								/>
+							</div>
+						))}
+					</Slider>
+					{description && <Segment> {description} </Segment>}{' '}
+				</div>
+			) : null}
+		</div>
 	);
 };
 

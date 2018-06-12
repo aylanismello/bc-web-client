@@ -90,7 +90,7 @@ class App extends Component {
 		}
 
 		if (!this.state.superFilters.length && nextState.superFilters.length) {
-			this.setSuperfilter(nextState.superFilters[0]);
+			this.setSuperfilter(nextState.superFilters.filter(sf => sf.position === 0)[0]);
 		} else if (this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId) {
 			// this.setSuperfilter(nextState.superFilters.filter(sf => sf.id === nextState.selectedSuperFilterId))[0];
 		}
@@ -490,14 +490,24 @@ class App extends Component {
 								<Route
 									exact
 									path="/feed"
-									render={({ match }) => (
+									render={({ match, location }) => (
 										<FeedHome
+											superfilter_type={match.params.superfilter_type}
+											getHomeTracks={() => {
+												if (this.state.selectedSuperFilterId) {
+													this.setSuperfilterById(this.state.selectedSuperFilterId, true);
+												}
+											}}
 											loading={this.state.loading}
 											trackFilters={this.state.trackFilters}
 											fetchSuperfilters={superfilterType => this.fetchSuperfilters(superfilterType)}
 											tracks={this.state.tracks}
 											feedInstance={(displayPage, feedType) =>
-												this.feedInstance(displayPage, feedType)}
+												this.feedInstance(
+													displayPage,
+													feedType,
+													queryString.parse(location.search).id
+												)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
 									)}
@@ -510,8 +520,6 @@ class App extends Component {
 											<FeedHome
 												superfilter_type={match.params.superfilter_type}
 												getHomeTracks={() => {
-													const yo = this.state;
-													debugger
 													if (this.state.selectedSuperFilterId) {
 														this.setSuperfilterById(this.state.selectedSuperFilterId, true);
 													}
