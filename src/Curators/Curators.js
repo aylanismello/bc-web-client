@@ -14,6 +14,7 @@ import {
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
+import PaginateButton from '../PaginateButton';
 import BCMap from '../BCMap';
 import './Curators.css';
 
@@ -126,6 +127,12 @@ class Curators extends React.Component {
 											? this.renderList(curators)
 											: this.renderGallery(curators)}
 									</Dimmer.Dimmable>
+									<PaginateButton
+										loading={this.props.loading}
+										donePaginating={false}
+										paginate={() => this.props.fetchCurators(true)}
+										>
+									</PaginateButton>
 								</Segment>
 							)
 						},

@@ -59,6 +59,7 @@ class App extends Component {
 		playingTracks: [],
 		error: null,
 		loading: false,
+		curators_next_href: '',
 		unsplashPhoto: null,
 		sideMenuVisible: false,
 		bottomMenuVisible: false,
@@ -86,7 +87,7 @@ class App extends Component {
 				}
 			}
 
-			this.updateTracks(nextState.trackFilters, paginate);
+			this.fetchTracks(nextState.trackFilters, paginate);
 		}
 
 		if (!this.state.superFilters.length && nextState.superFilters.length) {
@@ -196,7 +197,7 @@ class App extends Component {
 		}
 	}
 
-	updateTracks(trackFilters, paginate = false) {
+	fetchTracks(trackFilters, paginate = false) {
 		this.setState({ loading: true });
 
 		axios
@@ -402,17 +403,31 @@ class App extends Component {
 	}
 
 	// this should happen is fetch curators page
-	fetchCurators() {
+	fetchCurators(paginate = false) {
 		this.setState({
 			loading: true
 		});
 		axios
-			.get(`${baseUrl}/soundcloud_users/curators`)
+			.get(paginate ? this.state.curators_next_href : `${baseUrl}/soundcloud_users/curators`)
 			.then(results => {
-				this.setState({
-					curators: results.data.data.soundcloud_users,
-					loading: false
-				});
+					if (paginate) {
+						this.setState({
+							curators: [...this.state.curators, ...results.data.data.soundcloud_users],
+							curators_next_href: results.data.metadata.next_href,
+							loading: false
+						});
+					} else {
+						// loading first page
+						this.setState({
+							curators: results.data.data.soundcloud_users,
+							curators_next_href: results.data.metadata.next_href,
+							loading: false
+						});
+				}
+				// this.setState({
+				// 	curators: results.data.data.soundcloud_users,
+				// 	loading: false
+				// });
 			})
 			.catch(error => {
 				this.setState({ error: error.message });
@@ -555,13 +570,15 @@ class App extends Component {
 									)}
 								/>
 
+
+								{/*  how the fuck do these two become the same */}
 								<Route
 									path="/curators/"
 									exact
 									render={({ match }) => (
 										<Curators
 											view={match.params.view}
-											fetchCurators={() => this.fetchCurators()}
+											fetchCurators={(paginate) => this.fetchCurators(paginate)}
 											loading={this.state.loading}
 											curators={this.state.curators}
 										/>
@@ -573,7 +590,7 @@ class App extends Component {
 									render={({ match }) => (
 										<Curators
 											view={match.params.view}
-											fetchCurators={() => this.fetchCurators()}
+											fetchCurators={(paginate) => this.fetchCurators(paginate)}
 											loading={this.state.loading}
 											curators={this.state.curators}
 										/>
