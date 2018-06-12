@@ -53,7 +53,7 @@ class Curators extends React.Component {
 						<Item key={curator.id}>
 							<div className="Curators-curator-list-item">
 								<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
-									<Label color="teal">#{idx + 1}</Label>
+									{/* <Label color="teal">#{idx + 1}</Label> */}
 									<Label as="a" basic>
 										<Image avatar spaced="right" src={curator.soundcloud_user.avatar_url} />
 										{curator.soundcloud_user.name}
@@ -92,7 +92,7 @@ class Curators extends React.Component {
 			list: 0,
 			map: 1
 		};
-		
+
 		return (
 			<Container>
 				<Tab

@@ -12,6 +12,7 @@ import {
 	Breadcrumb
 } from 'semantic-ui-react';
 import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
+import PaginateButton from '../PaginateButton';
 import { Link } from 'react-router-dom';
 import './TrackList.css';
 
@@ -120,17 +121,20 @@ class TrackList extends React.Component {
 											position="top center"
 										>
 											<Item.Group>
-											{curators.map(curator => (
-											<Link key={curator.name} className="TrackList-curator-popup-container" to={`/soundcloud_users/${curator.id}`}>
-												<Label as="a" basic>
-													<Image avatar spaced="right" src={curator.avatar_url} />
-													{curator.name}
-												</Label>
-											</Link>
-										))}
-										</Item.Group>
+												{curators.map(curator => (
+													<Link
+														key={curator.name}
+														className="TrackList-curator-popup-container"
+														to={`/soundcloud_users/${curator.id}`}
+													>
+														<Label as="a" basic>
+															<Image avatar spaced="right" src={curator.avatar_url} />
+															{curator.name}
+														</Label>
+													</Link>
+												))}
+											</Item.Group>
 										</Popup>
-
 									</Item.Header>
 									<Item.Description>Released {track.created_at_external}</Item.Description>
 									<Item.Extra>
@@ -145,16 +149,8 @@ class TrackList extends React.Component {
 						);
 					})}
 				</Item.Group>
-				<Button
-					loading={loading}
-					disabled={donePaginating}
-					onClick={() => {
-						paginate();
-					}}
-				>
-					{' '}
-					More.{' '}
-				</Button>
+
+				<PaginateButton loading={loading} disabled={donePaginating} paginate={paginate} />
 			</div>
 		);
 	}
