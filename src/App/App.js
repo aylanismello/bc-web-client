@@ -606,6 +606,7 @@ class App extends Component {
 											loading: this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											feed: this.feedInstance(),
+											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
 											soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
 											setUser: (id, only_mixes = false) => {
 												if (only_mixes) {

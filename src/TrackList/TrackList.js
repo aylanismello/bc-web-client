@@ -119,15 +119,17 @@ class TrackList extends React.Component {
 												</Statistic>
 											}
 											position="top center"
+											hoverable
+											basic
 										>
 											<Item.Group>
-												{curators.map(curator => (
+												{curators.slice(0,8).map(curator => (
 													<Link
 														key={curator.name}
 														className="TrackList-curator-popup-container"
 														to={`/soundcloud_users/${curator.id}`}
 													>
-														<Label as="a" basic>
+														<Label as="a" basic className="TrackList-curator-list-items">
 															<Image avatar spaced="right" src={curator.avatar_url} />
 															{curator.name}
 														</Label>

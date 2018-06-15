@@ -20,7 +20,11 @@
 }
 
 .TrackList-curator-popup-container {
-	width: 3em;
+	display: block;
+}
+
+.TrackList-curator-list-items.ui.basic.label {
+	width: 100%
 }
 
 .TrackList-play-pause-icon {
