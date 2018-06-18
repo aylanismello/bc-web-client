@@ -339,19 +339,35 @@ class App extends Component {
 		}
 	}
 
-	fetchSoundcloudUser(id) {
+	fetchSoundcloudUser(id, onlyMixes) {
 		// let's rethink this.
 
-		this.setTrackFilters({
-			soundcloud_user_id: id
+		if (onlyMixes) {
+			this.setTrackFilters({
+				soundcloud_user_id: id,
+				sort_type: 'latest',
+				track_type: 2,
+				page: 1
+			});
+		} else {
+			this.setTrackFilters({
+				soundcloud_user_id: id,
+				sort_type: 'hot',
+				page: 1
+			});
+		}
+
+		this.setState({ loadingSoundcloudUser: true });
+
+		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
+
+			const { soundcloud_user, handles } = results.data.data;
+
+			this.setState({
+				soundcloudUser: { soundcloud_user, handles },
+				loadingSoundcloudUser: false
+			});
 		});
-		// this.setState({ loadingSoundcloudUser: true });
-		// axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
-		// 	this.setState({
-		// 		soundcloudUser: results.data.data.soundcloud_user,
-		// 		loadingSoundcloudUser: false
-		// 	});
-		// });
 	}
 
 	toggleBottomMenu() {
@@ -605,24 +621,13 @@ class App extends Component {
 											...props,
 											loading: this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
+											tracks: this.state.tracks,
 											feed: this.feedInstance(),
 											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
-											soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
-											setUser: (id, only_mixes = false) => {
-												if (only_mixes) {
-													this.setTrackFilters({
-														soundcloud_user_id: id,
-														sort_type: 'latest',
-														track_type: 2,
-														page: 1
-													});
-												} else {
-													this.setTrackFilters({
-														soundcloud_user_id: id,
-														sort_type: 'hot',
-														page: 1
-													});
-												}
+											// soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
+											soundcloudUser: Object.keys(this.state.soundcloudUser).length && this.state.soundcloudUser,
+											setUser: (id, onlyMixes = false) => {
+												this.fetchSoundcloudUser(id, onlyMixes);
 											}
 										};
 										return <SoundcloudUser {...allProps} />;

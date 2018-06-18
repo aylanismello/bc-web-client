@@ -98,7 +98,7 @@ const BottomNav = ({
 				}}
 			/>
 			{/* We'll bring this back when we've though it through more clearly */}
-			{/* <div className="App-filters-toggle-icon-container">
+			<div className="App-filters-toggle-icon-container">
 				<Icon
 					name="options"
 					size="huge"
@@ -106,7 +106,7 @@ const BottomNav = ({
 					className="App-filters-toggle-icon"
 					onClick={() => toggleBottomMenu()}
 				/>
-			</div> */}
+			</div>
 		</div>
 	</div>
 );

@@ -1,3 +1,14 @@
 .ui.segment.dimmed.dimmable {
   height: 500px;
 }
+
+a.ui.basic.label.Soundclouduser-Banner-Handle {
+  margin-right: 1rem;
+}
+
+
+.Soundclouduser-Banner-Top-Half {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
