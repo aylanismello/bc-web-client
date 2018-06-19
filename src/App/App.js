@@ -73,6 +73,8 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+
+		window.scAudio = this.scAudio;
 	}
 
 	componentWillUpdate(nextProps, nextState) {
@@ -103,9 +105,14 @@ class App extends Component {
 				nextState.playing &&
 				nextState.playingTrack.id !== this.state.playingTrack.id)
 		) {
+			// remove all old event listeners from this.scAudio object
+			this.scAudio.unbindAll();
+
 			this.scAudio.play({
 				streamUrl: this.getTrackById(nextState.playingTrack.id, nextState.playingTracks).stream_url
 			});
+
+			this.scAudio.on('ended', () => this.togglePlay(nextState.playingTrack.id));
 		}
 	}
 
@@ -143,13 +150,11 @@ class App extends Component {
 		})[0].track;
 	}
 
-	togglePlay(trackId) {
-		const daTrackID = trackId;
+	togglePlay(daTrackID) {
+		// const daTrackID = trackId;
 		// first track played this session
 
 		if (!this.state.playingTrack.id && !this.state.loading) {
-			// need to find a better way to set htis
-			// daTrackID = this.state.tracks[0].track.id;
 			this.setState({
 				playingTracks: [...this.state.tracks],
 				playing: true
