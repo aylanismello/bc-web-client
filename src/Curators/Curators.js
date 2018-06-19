@@ -32,8 +32,7 @@ class Curators extends React.Component {
 	curatorsWithPosition() {
 		return (
 			this.props.curators
-				// .filter(curator => curator.location && curator.location.name)
-				.filter(curator => curator.soundcloud_user.location_id && curator.location.name)
+				.filter(curator => curator.location.id)
 				.map(curator => {
 					return {
 						...curator,

@@ -29,10 +29,7 @@ class SoundcloudUser extends React.Component {
 			avatar_url = this.props.soundcloudUser.soundcloud_user.avatar_url;
 			is_curator = this.props.soundcloudUser.soundcloud_user.is_curator;
 			handles = this.props.soundcloudUser.handles;
-		}
-
-		if (this.props.tracks.length && this.props.tracks[0].publisher[0].location) {
-			location = publisherLocationsToString(this.props.tracks[0].publisher[0]);
+			location = this.props.soundcloudUser.location.name;
 		}
 
 		const iconNames = [
