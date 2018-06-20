@@ -3,10 +3,10 @@ import {
 	Button
 } from 'semantic-ui-react';
 
-const PaginateButton = ({ loading, donePaginating, paginate }) => (
+const PaginateButton = ({ loading, disabled, paginate }) => (
   	<Button
       loading={loading}
-      disabled={donePaginating}
+      disabled={disabled}
       onClick={() => {
         paginate();
       }}
