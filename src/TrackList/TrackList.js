@@ -152,7 +152,16 @@ class TrackList extends React.Component {
 					})}
 				</Item.Group>
 
-				<PaginateButton loading={loading} disabled={donePaginating} paginate={paginate} />
+					{
+						tracks && (tracks.length === 1) ?
+							null :
+							<PaginateButton
+								loading={loading}
+								disabled={donePaginating}
+								paginate={paginate}
+							/>
+					}
+
 			</div>
 		);
 	}

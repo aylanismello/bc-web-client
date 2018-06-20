@@ -27,7 +27,6 @@ const settings = {
 };
 
 const SuperFilterPanel = props => {
-	// const { setTrackFilters, superFilters, superFilterType } = this.props;
 	const {
 		superFilters,
 		setSuperfilter,
