@@ -26,13 +26,13 @@ const BottomNav = ({
 		<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 			{playingTrack.id ? (
 				<Item>
-					<a href={playingTrack.data.track.permalink_url} target="_blank">
+					<Link to={`/tracks/${playingTrack.data.track.id}`}>
 						<Item.Image
 							src={playingTrack.data.track.artwork_url}
 							className="App-bottom-nav-track-image"
 							size="tiny"
 						/>
-					</a>
+					</Link>
 					<Item.Content
 						verticalAlign="middle"
 						className="App-bottom-nav-track-content"

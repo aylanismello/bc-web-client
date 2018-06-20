@@ -59,6 +59,7 @@ class App extends Component {
 		playingTracks: [],
 		error: null,
 		loading: false,
+		loadingUpdatePlayCount: false,
 		curators_next_href: '',
 		unsplashPhoto: null,
 		sideMenuVisible: false,
@@ -150,6 +151,24 @@ class App extends Component {
 		})[0].track;
 	}
 
+	updateTrackPlay(id) {
+		if(this.state.loadingUpdatePlayCount) {
+			alert('cant do shit, waiting');
+			return;
+		}
+
+		this.setState({ loadingUpdatePlayCount: true });
+
+		axios
+		.post(`${baseUrl}/tracks/play`, { id })
+		.then(results => {
+			this.setState({ loadingUpdatePlayCount: false });
+		})
+		.catch(error => {
+			this.setState({ error: error.message, loadingUpdatePlayCount: false})
+		});
+	}
+
 	togglePlay(daTrackID) {
 		// const daTrackID = trackId;
 		// first track played this session
@@ -159,6 +178,7 @@ class App extends Component {
 				playingTracks: [...this.state.tracks],
 				playing: true
 			});
+			this.updateTrackPlay(daTrackID);
 		} else if (this.state.playing && this.state.playingTrack.id === daTrackID) {
 			this.scAudio.pause();
 			this.setState({
@@ -169,6 +189,7 @@ class App extends Component {
 			// SET playingTracks!
 
 			this.scAudio.pause();
+			this.updateTrackPlay(daTrackID);
 
 			this.setState({
 				playingTracks: [...this.state.tracks]
@@ -183,6 +204,7 @@ class App extends Component {
 		} else {
 			// PLAYING TRACK FOR FIRST TIME.
 			// SET playingTracks!
+			this.updateTrackPlay(daTrackID);
 
 			this.setState({
 				playing: !this.state.playing,
@@ -583,6 +605,7 @@ class App extends Component {
 										<Track
 											match={match}
 											feed={this.feedInstance()}
+											track={this.state.tracks[0] && this.state.tracks[0].track}
 											loading={this.state.loading}
 											setTrack={id => {
 												this.setTrackFilters({ track_id: id });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Container } from 'semantic-ui-react';
+import { Segment, Container, Header, Image, Label } from 'semantic-ui-react';
 import './Track.css';
 
 class Track extends React.Component {
@@ -8,12 +8,21 @@ class Track extends React.Component {
 	}
 
 	render() {
+		const { feed, track } = this.props;
 		return (
 			<Container>
 				<Segment>
-					<h1> Track Info </h1>
+					<Header as="h2">
+						<Image circular src={track && track.artwork_url} /> {track && track.name}
+					</Header>
+					<Label
+						color="pink"
+						size="small"
+						icon="headphone"
+						content={track && track.playback_count_bc}
+					/>
 				</Segment>
-				{this.props.feed}
+				{feed}
 			</Container>
 		);
 	}
