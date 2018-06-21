@@ -10,6 +10,7 @@ import SideMenu from '../SideMenu';
 import FeedHome from '../FeedHome';
 import Home from '../Home';
 import Track from '../Track';
+import Mixes from '../Mixes';
 import About from '../About';
 import Submit from '../Submit';
 import Curators from '../Curators';
@@ -25,12 +26,14 @@ const queryString = require('query-string');
 
 class App extends Component {
 	static formatFilters(trackFilters) {
-		const { location_ids, track_tag_ids } = trackFilters;
+		const { location_ids, track_tag_ids, mix_names } = trackFilters;
 
 		if (location_ids) {
 			return { ...trackFilters, location_ids: JSON.stringify(location_ids) };
 		} else if (track_tag_ids) {
 			return { ...trackFilters, track_tag_ids: JSON.stringify(track_tag_ids) };
+		} else if (mix_names) {
+			return { ...trackFilters, mix_names: JSON.stringify(mix_names) };
 		}
 
 		return trackFilters;
@@ -159,19 +162,18 @@ class App extends Component {
 		axios
 			.get(`${baseUrl}/plays/${trackId}`)
 			.then(results => {
-
 				this.setState({
 					currentTrackGraphData: results.data.data.plays,
 					loadingCurrentTrackGraphData: false
-				})
+				});
 			})
 			.catch(error => {
-				this.setState({ loadingCurrentTrackGraphData: false});
-			})
+				this.setState({ loadingCurrentTrackGraphData: false });
+			});
 	}
 
 	updateTrackPlay(id) {
-		if(this.state.loadingUpdatePlayCount) {
+		if (this.state.loadingUpdatePlayCount) {
 			console.log('cant do shit, waiting');
 			return;
 		}
@@ -184,7 +186,7 @@ class App extends Component {
 				this.setState({ loadingUpdatePlayCount: false });
 			})
 			.catch(error => {
-				this.setState({ error: error.message, loadingUpdatePlayCount: false})
+				this.setState({ error: error.message, loadingUpdatePlayCount: false });
 			});
 	}
 
@@ -406,7 +408,6 @@ class App extends Component {
 		this.setState({ loadingSoundcloudUser: true });
 
 		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
-
 			const { soundcloud_user, handles, location } = results.data.data;
 
 			this.setState({
@@ -472,19 +473,19 @@ class App extends Component {
 		axios
 			.get(paginate ? this.state.curators_next_href : `${baseUrl}/soundcloud_users/curators`)
 			.then(results => {
-					if (paginate) {
-						this.setState({
-							curators: [...this.state.curators, ...results.data.data.soundcloud_users],
-							curators_next_href: results.data.metadata.next_href,
-							loading: false
-						});
-					} else {
-						// loading first page
-						this.setState({
-							curators: results.data.data.soundcloud_users,
-							curators_next_href: results.data.metadata.next_href,
-							loading: false
-						});
+				if (paginate) {
+					this.setState({
+						curators: [...this.state.curators, ...results.data.data.soundcloud_users],
+						curators_next_href: results.data.metadata.next_href,
+						loading: false
+					});
+				} else {
+					// loading first page
+					this.setState({
+						curators: results.data.data.soundcloud_users,
+						curators_next_href: results.data.metadata.next_href,
+						loading: false
+					});
 				}
 				// this.setState({
 				// 	curators: results.data.data.soundcloud_users,
@@ -636,6 +637,22 @@ class App extends Component {
 									)}
 								/>
 
+								<Route
+									path="/mixes/"
+									exact
+									render={() => (
+										<Mixes
+											fetchMixes={() => {
+												this.fetchSuperfilters('mix');
+											}}
+											mixes={this.state.superFilters}
+											loading={this.state.loadingSuperfilter}
+											selectMix={mix => {
+												this.setSuperfilter(mix);
+											}}
+										/>
+									)}
+								/>
 
 								{/*  how the fuck do these two become the same */}
 								<Route
@@ -644,7 +661,7 @@ class App extends Component {
 									render={({ match }) => (
 										<Curators
 											view={match.params.view}
-											fetchCurators={(paginate) => this.fetchCurators(paginate)}
+											fetchCurators={paginate => this.fetchCurators(paginate)}
 											loading={this.state.loading}
 											curators={this.state.curators}
 										/>
@@ -656,7 +673,7 @@ class App extends Component {
 									render={({ match }) => (
 										<Curators
 											view={match.params.view}
-											fetchCurators={(paginate) => this.fetchCurators(paginate)}
+											fetchCurators={paginate => this.fetchCurators(paginate)}
 											loading={this.state.loading}
 											curators={this.state.curators}
 										/>
@@ -675,7 +692,8 @@ class App extends Component {
 											feed: this.feedInstance(),
 											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
 											// soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
-											soundcloudUser: Object.keys(this.state.soundcloudUser).length && this.state.soundcloudUser,
+											soundcloudUser:
+												Object.keys(this.state.soundcloudUser).length && this.state.soundcloudUser,
 											setUser: (id, onlyMixes = false) => {
 												this.fetchSoundcloudUser(id, onlyMixes);
 											}
