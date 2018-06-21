@@ -13,3 +13,9 @@
     margin-top: 2rem;
   }
 }
+
+.Track-banner-main-icons {
+  display: flex;
+  width: 7rem;
+  justify-content: space-between;
+}

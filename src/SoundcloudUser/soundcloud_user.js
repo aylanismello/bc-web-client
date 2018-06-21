@@ -23,11 +23,12 @@ class SoundcloudUser extends React.Component {
 	}
 
 	render() {
-		let name, is_curator, handles, avatar_url, location;
+		let name, is_curator, handles, avatar_url, location, permalink_url;
 		if (this.props.soundcloudUser) {
 			name = this.props.soundcloudUser.soundcloud_user.name;
 			avatar_url = this.props.soundcloudUser.soundcloud_user.avatar_url;
 			is_curator = this.props.soundcloudUser.soundcloud_user.is_curator;
+			permalink_url = this.props.soundcloudUser.soundcloud_user.permalink_url;
 			handles = this.props.soundcloudUser.handles;
 			location = this.props.soundcloudUser.location.name;
 		}
@@ -45,9 +46,14 @@ class SoundcloudUser extends React.Component {
 			<Container>
 				<Segment className="Soundclouduser-Banner-Container">
 					<div className="Soundclouduser-Banner-Top-Half">
+						<div>
 						<Header as="h2">
 							<Image circular src={avatar_url} /> {name}
 						</Header>
+							<a href={permalink_url} target="blank">
+								<Icon link size="big" name="soundcloud" color="pink" />
+							</a>
+						</div>
 						{/*  Put a map here */}
 						{location && <Label icon="globe" content={location} />}
 					</div>

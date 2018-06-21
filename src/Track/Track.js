@@ -1,5 +1,5 @@
 import React from 'react';
-import { Segment, Container, Header, Image, Label } from 'semantic-ui-react';
+import { Segment, Container, Header, Image, Label, Icon } from 'semantic-ui-react';
 import ReactChartkick, { LineChart, BarChart, PieChart, ColumnChart } from 'react-chartkick';
 import Chart from 'chart.js';
 import './Track.css';
@@ -15,7 +15,9 @@ class Track extends React.Component {
 		const {
 			feed, track, graphData, loadingCurrentTrackGraphData
 		} = this.props;
-		const messages = loadingCurrentTrackGraphData ? {} : { empty: 'No plays. Wanna be the first? :) ' };
+		const messages = loadingCurrentTrackGraphData
+			? {}
+			: { empty: 'No plays. Wanna be the first? :) ' };
 		return (
 			<Container>
 				<Segment className="Track-banner-container">
@@ -23,12 +25,17 @@ class Track extends React.Component {
 						<Header as="h2">
 							<Image circular src={track && track.artwork_url} /> {track && track.name}
 						</Header>
-						<Label
-							color="pink"
-							size="small"
-							icon="headphone"
-							content={track && track.playback_count_bc}
-						/>
+						<div className="Track-banner-main-icons">
+							<Label
+								color="pink"
+								size="small"
+								icon="headphone"
+								content={track && track.playback_count_bc}
+							/>
+							<a href={track && track.permalink_url} target="blank">
+								<Icon link size="big" name="soundcloud" color="pink" />
+							</a>
+						</div>
 					</div>
 					<div className="Track-banner-right-half">
 						<LineChart
