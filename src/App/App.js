@@ -52,6 +52,8 @@ class App extends Component {
 			id: undefined,
 			data: {}
 		}),
+		currentTrackGraphData: {},
+		loadingCurrentTrackGraphData: false,
 		selectedSuperFilterId: null,
 		initPlayer: false,
 		donePaginating: false,
@@ -151,22 +153,39 @@ class App extends Component {
 		})[0].track;
 	}
 
+	fetchCurrentTrackGraphdata(trackId) {
+		this.setState({ loadingCurrentTrackGraphData: true });
+
+		axios
+			.get(`${baseUrl}/plays/${trackId}`)
+			.then(results => {
+
+				this.setState({
+					currentTrackGraphData: results.data.data.plays,
+					loadingCurrentTrackGraphData: false
+				})
+			})
+			.catch(error => {
+				this.setState({ loadingCurrentTrackGraphData: false});
+			})
+	}
+
 	updateTrackPlay(id) {
 		if(this.state.loadingUpdatePlayCount) {
-			alert('cant do shit, waiting');
+			console.log('cant do shit, waiting');
 			return;
 		}
 
 		this.setState({ loadingUpdatePlayCount: true });
 
 		axios
-		.post(`${baseUrl}/tracks/play`, { id })
-		.then(results => {
-			this.setState({ loadingUpdatePlayCount: false });
-		})
-		.catch(error => {
-			this.setState({ error: error.message, loadingUpdatePlayCount: false})
-		});
+			.post(`${baseUrl}/tracks/play`, { id })
+			.then(results => {
+				this.setState({ loadingUpdatePlayCount: false });
+			})
+			.catch(error => {
+				this.setState({ error: error.message, loadingUpdatePlayCount: false})
+			});
 	}
 
 	togglePlay(daTrackID) {
@@ -604,11 +623,14 @@ class App extends Component {
 									render={({ match }) => (
 										<Track
 											match={match}
+											graphData={this.state.currentTrackGraphData}
 											feed={this.feedInstance()}
 											track={this.state.tracks[0] && this.state.tracks[0].track}
 											loading={this.state.loading}
+											loadingCurrentTrackGraphData={this.state.loadingCurrentTrackGraphData}
 											setTrack={id => {
 												this.setTrackFilters({ track_id: id });
+												this.fetchCurrentTrackGraphdata(id);
 											}}
 										/>
 									)}

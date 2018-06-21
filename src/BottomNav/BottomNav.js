@@ -33,18 +33,15 @@ const BottomNav = ({
 							size="tiny"
 						/>
 					</Link>
-					<Item.Content
-						verticalAlign="middle"
-						className="App-bottom-nav-track-content"
-					>
+					<Item.Content verticalAlign="middle" className="App-bottom-nav-track-content">
 						<Item.Header className="App-bottom-nav-track-info-name">
-							{playingTrack.data.track.name}
+							<Link to={`/tracks/${playingTrack.data.track.id}`} style={{ color: 'white' }}>
+								{playingTrack.data.track.name}
+							</Link>
 						</Item.Header>
 						<Item.Meta>
 							<span className="App-bottom-nav-track-info-publisher">
-								<Link
-									to={`/soundcloud_users/${playingTrack.data.publisher[0].id}`}
-								>
+								<Link to={`/soundcloud_users/${playingTrack.data.publisher[0].id}`} style={{ color: 'gray' }}>
 									{playingTrack.data.publisher[0].name}
 								</Link>
 							</span>
@@ -54,11 +51,7 @@ const BottomNav = ({
 			) : null}
 		</div>
 
-		<PlayButton
-			playing={playing}
-			playingTrack={playingTrack}
-			togglePlay={togglePlay}
-		/>
+		<PlayButton playing={playing} playingTrack={playingTrack} togglePlay={togglePlay} />
 
 		<div className="App-bottom-nav App-bottom-nav-box">
 			<FiltersMenu

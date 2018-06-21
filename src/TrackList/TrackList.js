@@ -93,13 +93,13 @@ class TrackList extends React.Component {
 											<div className="TrackList-artist-name">{publisher[0].name}</div>{' '}
 										</Link>
 										<div className="TrackList-artist-image-container">
-											<a href={publisher[0].permalink_url} target="_">
+											<Link to={`/soundcloud_users/${publisher[0].id}`}>
 												<img
 													className="TrackList-artist-image"
 													src={publisher[0].avatar_url}
 													style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
 												/>
-											</a>
+											</Link>
 										</div>
 									</Item.Meta>
 
