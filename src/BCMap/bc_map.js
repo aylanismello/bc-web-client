@@ -101,7 +101,7 @@ class BCMap extends React.Component {
 
 	render() {
 		const { selectedFeature, zoom, center } = this.state;
-
+		const width = this.props.size === 'small' ? '25vh' : '100vh';
 
 		return (
 			<Dimmer.Dimmable as={Segment} dimmed={this.props.loading}>
@@ -115,8 +115,8 @@ class BCMap extends React.Component {
 						dragRotate={false}
 						center={center}
 						containerStyle={{
-							height: '100vh',
-							width: '100vh'
+							height: width,
+							width
 						}}
 					>
 						<Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>

@@ -51,4 +51,19 @@ const makeBCBadge = track => {
 	return null;
 };
 
-export { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge };
+const formatSoundcloudUserForMap = soundcloudUser => {
+	return {
+		...soundcloudUser,
+		location: {
+			...soundcloudUser.location,
+			position: [soundcloudUser.location.lng, soundcloudUser.location.lat]
+		}
+	};
+};
+
+export {
+	publisherLocationsToString,
+	makeTrackTypeBadge,
+	makeBCBadge,
+	formatSoundcloudUserForMap
+};

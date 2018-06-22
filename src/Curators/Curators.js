@@ -13,7 +13,7 @@ import {
 	Label
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
+import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge, formatSoundcloudUserForMap } from '../helpers';
 import PaginateButton from '../PaginateButton';
 import BCMap from '../BCMap';
 import './Curators.css';
@@ -34,13 +34,7 @@ class Curators extends React.Component {
 			this.props.curators
 				.filter(curator => curator.location.id)
 				.map(curator => {
-					return {
-						...curator,
-						location: {
-							...curator.location,
-							position: [curator.location.lng, curator.location.lat]
-						}
-					};
+					return formatSoundcloudUserForMap(curator);
 				})
 		);
 	}

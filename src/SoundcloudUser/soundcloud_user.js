@@ -1,9 +1,8 @@
 import React from 'react';
 import { Segment, Tab, Container, Label, Icon, Divider, Image, Header } from 'semantic-ui-react';
-import { publisherLocationsToString } from '../helpers';
+import { formatSoundcloudUserForMap } from '../helpers';
+import BCMap from '../BCMap';
 import './soundcloud_user.css';
-
-let lastId;
 
 class SoundcloudUser extends React.Component {
 	state = {
@@ -24,6 +23,8 @@ class SoundcloudUser extends React.Component {
 
 	render() {
 		let name, is_curator, handles, avatar_url, location, permalink_url;
+		const data = this.props.soundcloudUser ? [formatSoundcloudUserForMap(this.props.soundcloudUser)] : [];
+
 		if (this.props.soundcloudUser) {
 			name = this.props.soundcloudUser.soundcloud_user.name;
 			avatar_url = this.props.soundcloudUser.soundcloud_user.avatar_url;
@@ -55,7 +56,13 @@ class SoundcloudUser extends React.Component {
 							</a>
 						</div>
 						{/*  Put a map here */}
-						{location && <Label icon="globe" content={location} />}
+						<BCMap
+							featureType="soundcloudUser"
+							data={data}
+							loading={this.props.loading}
+							size="small"
+						/>
+						{/* {location && <Label icon="globe" content={location} />} */}
 					</div>
 					<Divider />
 					{handles && (

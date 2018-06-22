@@ -122,6 +122,9 @@ class App extends Component {
 		}
 	}
 
+	getSuperFilterById(id) {
+		return this.state.superFilters.filter(sf => sf.id === parseInt(id))[0];
+	}
 	setSuperfilterById(id, backToSameFilter) {
 		const yo = this.state.superFilters.filter(sf => sf.id === parseInt(id))[0];
 		this.setSuperfilter(yo, backToSameFilter);
@@ -341,6 +344,7 @@ class App extends Component {
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
+				selectedSuperFilter={this.getSuperFilterById(superfilterId)}
 				setTrackFilters={filters => this.setTrackFilters(filters)}
 				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 				paginate={() => {
@@ -681,6 +685,7 @@ class App extends Component {
 								/>
 
 								<Route path="/submit" component={Submit} />
+								
 								<Route
 									path="/soundcloud_users/:id"
 									render={props => {

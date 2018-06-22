@@ -11,7 +11,11 @@ import {
 	Divider,
 	Breadcrumb
 } from 'semantic-ui-react';
-import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
+import {
+	publisherLocationsToString,
+	makeTrackTypeBadge,
+	makeBCBadge
+} from '../helpers';
 import PaginateButton from '../PaginateButton';
 import { Link } from 'react-router-dom';
 import './TrackList.css';
@@ -27,6 +31,7 @@ class TrackList extends React.Component {
 			donePaginating,
 			filters,
 			paginate,
+			selectedSuperFilter,
 			children,
 			headerText,
 			displayPage,
@@ -65,8 +70,24 @@ class TrackList extends React.Component {
 				<Divider />
 
 				<Item.Group relaxed divided>
-					{tracks.map(currentTrack => {
+					{tracks.map((currentTrack, idx) => {
 						const { track, publisher, curators } = currentTrack;
+						const trackImageProps = {
+							fluid: true,
+							src: track.artwork_url || publisher[0].avatar_url
+						};
+
+						if (
+							selectedSuperFilter &&
+							selectedSuperFilter.name === 'Trending'
+						) {
+							trackImageProps.label = {
+								attached: 'top left',
+								content: `#${idx + 1}`,
+								color: 'pink',
+								ribbon: 'true'
+							};
+						}
 
 						return (
 							<Item key={track.id} className="TrackList-track-item">
@@ -74,7 +95,8 @@ class TrackList extends React.Component {
 									src={track.artwork_url}
 									className="TrackList-artwork-play-pause-container ui small image"
 								>
-									<img src={track.artwork_url || publisher[0].avatar_url} />
+									{/* <img src={track.artwork_url || publisher[0].avatar_url} /> */}
+									<Image {...trackImageProps} />
 									<Icon
 										name={`${playing && track.id === playingTrackId
 											? 'pause circle'
@@ -90,14 +112,20 @@ class TrackList extends React.Component {
 									</Item.Header>
 									<Item.Meta className="TrackList-artist-info">
 										<Link to={`/soundcloud_users/${publisher[0].id}`}>
-											<div className="TrackList-artist-name">{publisher[0].name}</div>{' '}
+											<div className="TrackList-artist-name">
+												{publisher[0].name}
+											</div>{' '}
 										</Link>
 										<div className="TrackList-artist-image-container">
 											<Link to={`/soundcloud_users/${publisher[0].id}`}>
 												<img
 													className="TrackList-artist-image"
 													src={publisher[0].avatar_url}
-													style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
+													style={
+														publisher[0].is_curator
+															? { border: '#df5353 solid 5px' }
+															: {}
+													}
 												/>
 											</Link>
 										</div>
@@ -106,7 +134,10 @@ class TrackList extends React.Component {
 									<Item.Header>
 										<Popup
 											trigger={
-												<Statistic className="TrackList-selection-count" size="tiny">
+												<Statistic
+													className="TrackList-selection-count"
+													size="tiny"
+												>
 													<Statistic.Value>
 														<Icon name="soundcloud" size="tiny" />
 														{/* {feedType === 'selection' ? curators.length : track.submission_count} */}
@@ -123,14 +154,22 @@ class TrackList extends React.Component {
 											basic
 										>
 											<Item.Group>
-												{curators.slice(0,8).map(curator => (
+												{curators.slice(0, 8).map(curator => (
 													<Link
 														key={curator.name}
 														className="TrackList-curator-popup-container"
 														to={`/soundcloud_users/${curator.id}`}
 													>
-														<Label as="a" basic className="TrackList-curator-list-items">
-															<Image avatar spaced="right" src={curator.avatar_url} />
+														<Label
+															as="a"
+															basic
+															className="TrackList-curator-list-items"
+														>
+															<Image
+																avatar
+																spaced="right"
+																src={curator.avatar_url}
+															/>
 															{curator.name}
 														</Label>
 													</Link>
@@ -138,12 +177,17 @@ class TrackList extends React.Component {
 											</Item.Group>
 										</Popup>
 									</Item.Header>
-									<Item.Description>Released {track.created_at_external}</Item.Description>
+									<Item.Description>
+										Released {track.created_at_external}
+									</Item.Description>
 									<Item.Extra>
 										{makeBCBadge(track)}
 										{makeTrackTypeBadge(track)}
 										{publisherLocationsToString(publisher[0]) ? (
-											<Label icon="globe" content={publisherLocationsToString(publisher[0])} />
+											<Label
+												icon="globe"
+												content={publisherLocationsToString(publisher[0])}
+											/>
 										) : null}
 									</Item.Extra>
 								</Item.Content>
@@ -152,16 +196,13 @@ class TrackList extends React.Component {
 					})}
 				</Item.Group>
 
-					{
-						tracks && (tracks.length === 1) ?
-							null :
-							<PaginateButton
-								loading={loading}
-								disabled={donePaginating}
-								paginate={paginate}
-							/>
-					}
-
+				{tracks && tracks.length === 1 ? null : (
+					<PaginateButton
+						loading={loading}
+						disabled={donePaginating}
+						paginate={paginate}
+					/>
+				)}
 			</div>
 		);
 	}
