@@ -23,7 +23,9 @@ class SoundcloudUser extends React.Component {
 
 	render() {
 		let name, is_curator, handles, avatar_url, location, permalink_url;
-		const data = this.props.soundcloudUser ? [formatSoundcloudUserForMap(this.props.soundcloudUser)] : [];
+		const data = this.props.soundcloudUser
+			? [formatSoundcloudUserForMap(this.props.soundcloudUser)]
+			: [];
 
 		if (this.props.soundcloudUser) {
 			name = this.props.soundcloudUser.soundcloud_user.name;
@@ -43,45 +45,65 @@ class SoundcloudUser extends React.Component {
 			'instagram',
 			'itunes'
 		];
+
+		const soundcloudHandle = [
+			<a href={permalink_url} target="_">
+				<Label as="a" basic className="Soundclouduser-Banner-Handle">
+					<Icon name="soundcloud" size="small" color="pink" />
+					soundcloud
+				</Label>
+			</a>
+		];
+		const formattedHandles =
+			handles &&
+			handles.filter(handle => handle.service !== 'soundcloud').map(handle => (
+				<a href={handle.url} target="_">
+					<Label as="a" basic className="Soundclouduser-Banner-Handle">
+						{iconNames.includes(handle.service) ? (
+							<Icon name={handle.service} size="small" color="pink" />
+						) : (
+							<Icon name="globe" size="small" color="pink" />
+						)}
+						{handle.service}
+					</Label>
+				</a>
+			));
+
 		return (
 			<Container>
 				<Segment className="Soundclouduser-Banner-Container">
 					<div className="Soundclouduser-Banner-Top-Half">
 						<div>
-						<Header as="h2">
-							<Image circular src={avatar_url} /> {name}
-						</Header>
-							<a href={permalink_url} target="blank">
-								<Icon link size="big" name="soundcloud" color="pink" />
-							</a>
+							<Header as="h2">
+								<Image
+									circular
+									src={avatar_url}
+									style={is_curator ? { border: '#df5353 solid 5px' } : {}}
+								/>{' '}
+								{name}
+							</Header>
+				
 						</div>
 						{/*  Put a map here */}
-						<BCMap
-							featureType="soundcloudUser"
-							data={data}
-							loading={this.props.loading}
-							size="small"
-						/>
+						{location && (
+							<BCMap
+								featureType="soundcloudUser"
+								data={data}
+								loading={this.props.loading}
+								isSingleUser
+								size="small"
+							/>
+						)}
+
 						{/* {location && <Label icon="globe" content={location} />} */}
 					</div>
 					<Divider />
 					{handles && (
 						<Segment className="Soundclouduser-Banner-Handles">
-							{handles.filter(handle => handle.service !== 'soundcloud').map(handle => (
-								<a href={handle.url} target="_">
-									<Label as="a" basic className="Soundclouduser-Banner-Handle">
-										{iconNames.includes(handle.service) ? (
-											<Icon name={handle.service} size="small" color="pink" />
-										) : (
-											<Icon name="globe" size="small" color="pink" />
-										)}
-										{handle.service}
-									</Label>
-								</a>
-							))}
+							{[...soundcloudHandle, ...formattedHandles]}
 						</Segment>
 					)}
-					{is_curator && 'Is Curator'}
+					{/* {is_curator && 'Is Curator'} */}
 				</Segment>
 				<Tab
 					menu={{ secondary: true, pointing: true }}

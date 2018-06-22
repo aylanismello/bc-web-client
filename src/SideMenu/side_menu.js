@@ -34,12 +34,12 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 				</Menu.Item>
 			</Link> */}
 
-			<Link to="/mixes" onClick={clickedOnMenuItem}>
+			{/* <Link to="/mixes" onClick={clickedOnMenuItem}>
 				<Menu.Item name="music" className="SideMenu-item">
 					<Icon name="music" />
 					Mixes
 				</Menu.Item>
-			</Link>
+			</Link> */}
 
 			<Link to="/about" onClick={clickedOnMenuItem}>
 				<Menu.Item name="code" className="SideMenu-item">
