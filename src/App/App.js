@@ -124,17 +124,22 @@ class App extends Component {
 					nextState.playingTracks
 				).stream_url
 			});
+
 			this.scAudio.on('ended', () => {
 				const { playingTracks } = this.state;
-				const newSongIdx = playingTracks.findIndex(track => track.track.id === this.state.playingTrack.id) + 1;
-				if (newSongIdx > (playingTracks.length - 1)) {
+				// if we're viewing a single track, just pause
+				const newSongIdx = playingTracks.findIndex( track => track.track.id === this.state.playingTrack.id ) + 1;
+				debugger;
+
+				if (playingTracks.length === 1) {
+					this.togglePlay(nextState.playingTrack.id);
+				} else if (newSongIdx > playingTracks.length - 1) {
 					// TODO: to logic to play once new tracks load.
 					// this should be a general reusable function
 				} else {
 					this.togglePlay(playingTracks[newSongIdx].track.id);
 				}
 			});
-
 		}
 	}
 

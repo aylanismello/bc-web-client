@@ -19,8 +19,10 @@ class Home extends React.Component {
 					[ You're listening to {playingTrack.data.track.name} by{' '}
 					<Link to={`/soundcloud_users/${playingTrack.data.publisher[0].id}`}>
 						{playingTrack.data.publisher[0].name}
-					</Link>. ] It's been selected by {playingTrack.data.curators.length}{' '}
-					curators in the last week
+					</Link>. ]
+					<br />
+					It's been selected by {playingTrack.data.curators.length}{' '}
+					<Link to="/curators">curators</Link> in the last week
 					{/* {this.props.playingTrack.data.track.created_at_external} */}
 				</Segment>
 				<Segment>
