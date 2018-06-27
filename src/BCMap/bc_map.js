@@ -1,6 +1,5 @@
 import React from 'react';
 import { Segment, Image, Item, Header, Divider, Dimmer, Loader } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';

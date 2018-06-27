@@ -99,8 +99,12 @@ class App extends Component {
 		}
 
 		if (!this.state.superFilters.length && nextState.superFilters.length) {
-			this.setSuperfilter(nextState.superFilters.filter(sf => sf.position === 0)[0]);
-		} else if (this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId) {
+			this.setSuperfilter(
+				nextState.superFilters.filter(sf => sf.position === 0)[0]
+			);
+		} else if (
+			this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId
+		) {
 			// this.setSuperfilter(nextState.superFilters.filter(sf => sf.id === nextState.selectedSuperFilterId))[0];
 		}
 
@@ -115,10 +119,15 @@ class App extends Component {
 			this.scAudio.unbindAll();
 
 			this.scAudio.play({
-				streamUrl: this.getTrackById(nextState.playingTrack.id, nextState.playingTracks).stream_url
+				streamUrl: this.getTrackById(
+					nextState.playingTrack.id,
+					nextState.playingTracks
+				).stream_url
 			});
 
-			this.scAudio.on('ended', () => this.togglePlay(nextState.playingTrack.id));
+			this.scAudio.on('ended', () =>
+				this.togglePlay(nextState.playingTrack.id)
+			);
 		}
 	}
 
@@ -131,7 +140,10 @@ class App extends Component {
 	}
 
 	setSuperfilter(selectedSuperFilter, backToSameFilter) {
-		if (this.state.selectedSuperFilterId === selectedSuperFilter.id && !backToSameFilter) {
+		if (
+			this.state.selectedSuperFilterId === selectedSuperFilter.id &&
+			!backToSameFilter
+		) {
 			return;
 		}
 
@@ -218,7 +230,10 @@ class App extends Component {
 			this.setState({
 				playingTracks: [...this.state.tracks]
 			});
-		} else if (!this.state.playing && this.state.playingTrack.id === daTrackID) {
+		} else if (
+			!this.state.playing &&
+			this.state.playingTrack.id === daTrackID
+		) {
 			this.scAudio.play({
 				streamUrl: this.getTrackById(daTrackID).stream_url
 			});
@@ -316,7 +331,9 @@ class App extends Component {
 	renderSuperFilterPanel(superFilterType, superfilterId) {
 		let superFilters;
 
-		const needToLoadSuperFilter = !this.state.superFilters.filter(superfilter => superfilter.superfilter_type === superFilterType).length;
+		const needToLoadSuperFilter = !this.state.superFilters.filter(
+			superfilter => superfilter.superfilter_type === superFilterType
+		).length;
 
 		if (needToLoadSuperFilter && !this.state.loadingSuperfilter) {
 			this.fetchSuperfilters(superFilterType);
@@ -324,8 +341,12 @@ class App extends Component {
 
 		return (
 			<SuperFilterPanel
-				superFilters={this.state.superFilters.filter(superfilter => superfilter.superfilter_type === superFilterType)}
-				setSuperfilter={selectedSuperFilter => this.setSuperfilter(selectedSuperFilter)}
+				superFilters={this.state.superFilters.filter(superfilter => {
+					return superfilter.superfilter_type === superFilterType;
+				})}
+				key={superfilterId}
+				setSuperfilter={selectedSuperFilter =>
+					this.setSuperfilter(selectedSuperFilter)}
 				selectedSuperFilterId={this.state.selectedSuperFilterId}
 				loading={this.state.loadingSuperfilter}
 				setSuperfilterById={id => this.setSuperfilterById(id)}
@@ -378,7 +399,11 @@ class App extends Component {
 	}
 
 	setFilter({ param, value }) {
-		const { location_id, soundcloud_user_id, ...oldFilters } = this.state.trackFilters;
+		const {
+			location_id,
+			soundcloud_user_id,
+			...oldFilters
+		} = this.state.trackFilters;
 
 		if (value === 'reset') {
 			this.setState({ trackFilters: oldFilters });
@@ -426,21 +451,25 @@ class App extends Component {
 	}
 
 	tracksWithPosition() {
-		return this.state.tracks.filter(track => track.publisher[0].location).map(track => {
-			return {
-				...track,
-				publisher: {
-					...track.publisher[0],
-					position: [track.publisher[0].lng, track.publisher[0].lat]
-				}
-			};
-		});
+		return this.state.tracks
+			.filter(track => track.publisher[0].location)
+			.map(track => {
+				return {
+					...track,
+					publisher: {
+						...track.publisher[0],
+						position: [track.publisher[0].lng, track.publisher[0].lat]
+					}
+				};
+			});
 	}
 
 	fetchSuperfilters(superfilterType) {
 		const shouldFetchSuperfilter = () => {
 			return !(
-				this.state.superFilters.filter(sf => sf.superfilter_type === superfilterType).length ||
+				this.state.superFilters.filter(
+					sf => sf.superfilter_type === superfilterType
+				).length ||
 				this.state.loadingSuperfilter ||
 				this.state.error
 			);
@@ -448,24 +477,32 @@ class App extends Component {
 
 		if (shouldFetchSuperfilter()) {
 			this.setState({ loadingSuperfilter: true });
-			axios.get(`${baseUrl}/superfilters?superfilter_type=${superfilterType}`).then(results => {
-				const { length } = results.data.data.superfilters;
-				if (length) {
-					this.setState({
-						superFilters: [...this.state.superFilters, ...results.data.data.superfilters],
-						loadingSuperfilter: false
-					});
-				} else {
-					this.setState({
-						superFilters: [
-							...this.state.superFilters,
-							{ superfilter_type: superfilterType, name: 'No results. This should never happen.' }
-						],
-						error: 'Could not find super filter!',
-						loadingSuperfilter: false
-					});
-				}
-			});
+			axios
+				.get(`${baseUrl}/superfilters?superfilter_type=${superfilterType}`)
+				.then(results => {
+					const { length } = results.data.data.superfilters;
+					if (length) {
+						this.setState({
+							superFilters: [
+								...this.state.superFilters,
+								...results.data.data.superfilters
+							],
+							loadingSuperfilter: false
+						});
+					} else {
+						this.setState({
+							superFilters: [
+								...this.state.superFilters,
+								{
+									superfilter_type: superfilterType,
+									name: 'No results. This should never happen.'
+								}
+							],
+							error: 'Could not find super filter!',
+							loadingSuperfilter: false
+						});
+					}
+				});
 		}
 	}
 
@@ -475,11 +512,18 @@ class App extends Component {
 			loading: true
 		});
 		axios
-			.get(paginate ? this.state.curators_next_href : `${baseUrl}/soundcloud_users/curators`)
+			.get(
+				paginate
+					? this.state.curators_next_href
+					: `${baseUrl}/soundcloud_users/curators`
+			)
 			.then(results => {
 				if (paginate) {
 					this.setState({
-						curators: [...this.state.curators, ...results.data.data.soundcloud_users],
+						curators: [
+							...this.state.curators,
+							...results.data.data.soundcloud_users
+						],
 						curators_next_href: results.data.metadata.next_href,
 						loading: false
 					});
@@ -533,7 +577,8 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() => this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={() =>
+									this.toggleSidebar({ clickedOutsideMenu: true })}
 							/>
 
 							<Sidebar.Pusher
@@ -558,11 +603,14 @@ class App extends Component {
 									render={() => (
 										<Home
 											playing={this.state.playing}
-											homePageTrack={this.state.tracks[0] && this.state.tracks[0].track}
+											homePageTrack={
+												this.state.tracks[0] && this.state.tracks[0].track
+											}
 											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}
-											fetchSuperfilters={superfilterType => this.fetchSuperfilters(superfilterType)}
+											fetchSuperfilters={superfilterType =>
+												this.fetchSuperfilters(superfilterType)}
 											setTrackFilters={filters => this.setTrackFilters(filters)}
 											homePlayDisabled={this.state.tracks.length === 0}
 										/>
@@ -577,12 +625,16 @@ class App extends Component {
 											superfilter_type={match.params.superfilter_type}
 											getHomeTracks={() => {
 												if (this.state.selectedSuperFilterId) {
-													this.setSuperfilterById(this.state.selectedSuperFilterId, true);
+													this.setSuperfilterById(
+														this.state.selectedSuperFilterId,
+														true
+													);
 												}
 											}}
 											loading={this.state.loading}
 											trackFilters={this.state.trackFilters}
-											fetchSuperfilters={superfilterType => this.fetchSuperfilters(superfilterType)}
+											fetchSuperfilters={superfilterType =>
+												this.fetchSuperfilters(superfilterType)}
 											tracks={this.state.tracks}
 											feedInstance={(displayPage, feedType) =>
 												this.feedInstance(
@@ -603,7 +655,10 @@ class App extends Component {
 												superfilter_type={match.params.superfilter_type}
 												getHomeTracks={() => {
 													if (this.state.selectedSuperFilterId) {
-														this.setSuperfilterById(this.state.selectedSuperFilterId, true);
+														this.setSuperfilterById(
+															this.state.selectedSuperFilterId,
+															true
+														);
 													}
 												}}
 												loading={this.state.loading}
@@ -632,7 +687,9 @@ class App extends Component {
 											feed={this.feedInstance()}
 											track={this.state.tracks[0] && this.state.tracks[0].track}
 											loading={this.state.loading}
-											loadingCurrentTrackGraphData={this.state.loadingCurrentTrackGraphData}
+											loadingCurrentTrackGraphData={
+												this.state.loadingCurrentTrackGraphData
+											}
 											setTrack={id => {
 												this.setTrackFilters({ track_id: id });
 												this.fetchCurrentTrackGraphdata(id);
@@ -685,20 +742,23 @@ class App extends Component {
 								/>
 
 								<Route path="/submit" component={Submit} />
-								
+
 								<Route
 									path="/soundcloud_users/:id"
 									render={props => {
 										const allProps = {
 											...props,
-											loading: this.state.loading && this.state.loadingSoundcloudUser,
+											loading:
+												this.state.loading && this.state.loadingSoundcloudUser,
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											tracks: this.state.tracks,
 											feed: this.feedInstance(),
-											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
+											soundcloudUserId: this.state.trackFilters
+												.soundcloud_user_id,
 											// soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
 											soundcloudUser:
-												Object.keys(this.state.soundcloudUser).length && this.state.soundcloudUser,
+												Object.keys(this.state.soundcloudUser).length &&
+												this.state.soundcloudUser,
 											setUser: (id, onlyMixes = false) => {
 												this.fetchSoundcloudUser(id, onlyMixes);
 											}
@@ -717,7 +777,8 @@ class App extends Component {
 								playingTrack={this.state.playingTrack}
 								bottomMenuVisible={this.state.bottomMenuVisible}
 								toggleBottomMenu={() => this.toggleBottomMenu()}
-								setBottomMenuInvisible={() => this.setState({ bottomMenuVisible: false })}
+								setBottomMenuInvisible={() =>
+									this.setState({ bottomMenuVisible: false })}
 								setTrackFilters={newFilters => {
 									this.updateSingleTrackFilters(newFilters);
 								}}

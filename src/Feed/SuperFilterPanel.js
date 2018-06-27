@@ -4,7 +4,6 @@ import Slider from 'react-slick';
 import { Segment } from 'semantic-ui-react';
 import SuperFilterButton from '../SuperFilterButton';
 import './SuperFilterPanel.css';
-import { SUPER_FILTER_DESCRIPTIONS } from '../constants';
 
 const settings = {
 	infinite: false,
@@ -51,13 +50,14 @@ const SuperFilterPanel = props => {
 		<div
 			className="SuperFilterPanel"
 			style={image_url && { backgroundImage: `url('${image_url}')` }}
+			key={`outer-${selectedSuperFilterId}`}
 		>
 			{!loading ? (
-				<div>
+				<div key={`inner-${selectedSuperFilterId}`}>
 					{' '}
 					<Slider className="explore-panel-slider" {...settings}>
 						{superFilters.sort(sf => sf.position).map(superFilter => (
-							<div>
+							<div key={`inner-inner-${selectedSuperFilterId}`}>
 								<SuperFilterButton
 									name={superFilter.name}
 									onClick={() => {
@@ -75,12 +75,11 @@ const SuperFilterPanel = props => {
 	);
 };
 
-const { func, objectOf, string } = PropTypes;
+const { instanceOf, string } = PropTypes;
 
 SuperFilterPanel.propTypes = {
-	setTrackFilters: func.required,
-	superFilters: objectOf(string).required,
-	superFilterType: string.required
+	superFilters: instanceOf(Array),
+	superFilterType: string
 };
 
 export default SuperFilterPanel;

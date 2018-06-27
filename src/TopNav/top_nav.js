@@ -9,7 +9,7 @@ import BCLogo from '../BCLogo';
 const { func } = propTypes;
 
 class TopNav extends React.Component {
-	propTypes = {
+	static propTypes = {
 		toggleSidebar: func.isRequired,
 		setFilter: func.isRequired
 	};

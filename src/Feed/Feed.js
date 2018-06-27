@@ -14,7 +14,6 @@ class Feed extends React.Component {
 		return (
 			<div className="Feed">
 				{this.props.children}
-				{/* {this.renderMetadata()} */}
 				<TabbedSegment loading={this.props.loading}>
 					<TrackList {...this.props} />
 				</TabbedSegment>
