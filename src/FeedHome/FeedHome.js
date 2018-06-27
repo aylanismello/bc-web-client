@@ -52,10 +52,6 @@ class FeedHome extends React.Component {
 							)
 						},
 						{
-							menuItem: 'Artists 💃',
-							render: () => feedInstance('home', 'artist')
-						},
-						{
 							menuItem: 'Tags #️⃣',
 							render: () => feedInstance('home', 'tag')
 						}

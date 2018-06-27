@@ -82,7 +82,6 @@ class TrackList extends React.Component {
 							selectedSuperFilter.name === 'Trending'
 						) {
 							trackImageProps.label = {
-								attached: 'top left',
 								content: `#${idx + 1}`,
 								color: 'pink',
 								ribbon: 'true'
@@ -95,7 +94,6 @@ class TrackList extends React.Component {
 									src={track.artwork_url}
 									className="TrackList-artwork-play-pause-container ui small image"
 								>
-									{/* <img src={track.artwork_url || publisher[0].avatar_url} /> */}
 									<Image {...trackImageProps} />
 									<Icon
 										name={`${playing && track.id === playingTrackId

@@ -124,10 +124,17 @@ class App extends Component {
 					nextState.playingTracks
 				).stream_url
 			});
+			this.scAudio.on('ended', () => {
+				const { playingTracks } = this.state;
+				const newSongIdx = playingTracks.findIndex(track => track.track.id === this.state.playingTrack.id) + 1;
+				if (newSongIdx > (playingTracks.length - 1)) {
+					// TODO: to logic to play once new tracks load.
+					// this should be a general reusable function
+				} else {
+					this.togglePlay(playingTracks[newSongIdx].track.id);
+				}
+			});
 
-			this.scAudio.on('ended', () =>
-				this.togglePlay(nextState.playingTrack.id)
-			);
 		}
 	}
 
@@ -356,6 +363,8 @@ class App extends Component {
 	}
 
 	feedInstance(displayPage = 'home', feedType, superfilterId) {
+		const selectedSuperFilter = this.getSuperFilterById(superfilterId);
+
 		return (
 			<Feed
 				tracks={this.state.tracks}
@@ -365,7 +374,7 @@ class App extends Component {
 				loading={this.state.loading}
 				donePaginating={this.state.donePaginating}
 				trackFilters={this.state.trackFilters}
-				selectedSuperFilter={this.getSuperFilterById(superfilterId)}
+				selectedSuperFilter={selectedSuperFilter}
 				setTrackFilters={filters => this.setTrackFilters(filters)}
 				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
 				paginate={() => {
@@ -640,7 +649,8 @@ class App extends Component {
 												this.feedInstance(
 													displayPage,
 													feedType,
-													queryString.parse(location.search).id
+													// fuck this is hacky TODO: make this suck less
+													queryString.parse(location.search).id || 1
 												)}
 											tracksWithPosition={() => this.tracksWithPosition()}
 										/>
