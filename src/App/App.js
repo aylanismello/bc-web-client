@@ -128,8 +128,10 @@ class App extends Component {
 			this.scAudio.on('ended', () => {
 				const { playingTracks } = this.state;
 				// if we're viewing a single track, just pause
-				const newSongIdx = playingTracks.findIndex( track => track.track.id === this.state.playingTrack.id ) + 1;
-				debugger;
+				const newSongIdx =
+					playingTracks.findIndex(
+						track => track.track.id === this.state.playingTrack.id
+					) + 1;
 
 				if (playingTracks.length === 1) {
 					this.togglePlay(nextState.playingTrack.id);
@@ -137,7 +139,7 @@ class App extends Component {
 					// TODO: to logic to play once new tracks load.
 					// this should be a general reusable function
 				} else {
-					this.togglePlay(playingTracks[newSongIdx].track.id);
+					this.togglePlay(playingTracks[newSongIdx].track.id, true);
 				}
 			});
 		}
@@ -217,7 +219,7 @@ class App extends Component {
 			});
 	}
 
-	togglePlay(daTrackID) {
+	togglePlay(daTrackID, goingToNextPreloadedTracks = false) {
 		// const daTrackID = trackId;
 		// first track played this session
 
@@ -233,15 +235,19 @@ class App extends Component {
 				playing: !this.state.playing
 			});
 		} else if (this.state.playing && this.state.playingTrack.id !== daTrackID) {
+			// we might be going to the next track while in a different page
+
 			// PLAYING TRACK FOR FIRST TIME.
 			// SET playingTracks!
 
 			this.scAudio.pause();
 			this.updateTrackPlay(daTrackID);
 
-			this.setState({
-				playingTracks: [...this.state.tracks]
-			});
+			if (!goingToNextPreloadedTracks) {
+				this.setState({
+					playingTracks: [...this.state.tracks]
+				});
+			}
 		} else if (
 			!this.state.playing &&
 			this.state.playingTrack.id === daTrackID
@@ -263,12 +269,14 @@ class App extends Component {
 			});
 		}
 
+		const sourceTracks = goingToNextPreloadedTracks ? this.state.playingTracks : this.state.tracks;
+
 		if (this.state.playingTrack.id !== daTrackID && !this.state.loading) {
 			this.setState({
 				playingTrack: {
 					...this.state.playingTrack,
 					id: daTrackID,
-					data: this.state.tracks.find(x => x.track.id === daTrackID)
+					data: sourceTracks.find(x => x.track.id === daTrackID)
 				},
 				initPlayer: true
 			});
