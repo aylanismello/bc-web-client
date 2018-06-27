@@ -12,6 +12,7 @@ const settings = {
 	autoplay: false,
 	slidesToShow: 4,
 	slidesToScroll: 4,
+	swipeToSlide: true,
 	responsive: [
 		{
 			breakpoint: 768,
@@ -42,8 +43,19 @@ const SuperFilterPanel = props => {
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].image_url;
 
+	let startingIdx = 0;
+	let newSettings = { ...settings };
+
+	const orderedSuperFilters = loading
+		? null
+		: superFilters.sort((x, y) => x.position > y.position);
+
 	if (superfilterId && !loading && superFilters.length) {
 		setSuperfilterById(superfilterId);
+		startingIdx = orderedSuperFilters.findIndex(sf => {
+			return sf.id === selectedSuperFilterId;
+		});
+		newSettings = { ...settings, initialSlide: startingIdx };
 	}
 
 	return (
@@ -55,8 +67,8 @@ const SuperFilterPanel = props => {
 			{!loading ? (
 				<div key={`inner-${selectedSuperFilterId}`}>
 					{' '}
-					<Slider className="explore-panel-slider" {...settings}>
-						{superFilters.sort(sf => sf.position).map(superFilter => (
+					<Slider className="explore-panel-slider" {...newSettings}>
+						{orderedSuperFilters.map(superFilter => (
 							<div key={`inner-inner-${selectedSuperFilterId}`}>
 								<SuperFilterButton
 									name={superFilter.name}

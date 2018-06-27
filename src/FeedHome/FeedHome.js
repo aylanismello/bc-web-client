@@ -39,10 +39,6 @@ class FeedHome extends React.Component {
 							render: () => feedInstance('home', 'custom')
 						},
 						{
-							menuItem: 'Artists 💻',
-							render: () => feedInstance('home', 'artist')
-						},
-						{
 							menuItem: 'Locations 🗺',
 							render: () => (
 								<div>
@@ -54,6 +50,10 @@ class FeedHome extends React.Component {
 									/> */}
 								</div>
 							)
+						},
+						{
+							menuItem: 'Artists 💻',
+							render: () => feedInstance('home', 'artist')
 						},
 						{
 							menuItem: 'Tags #️⃣',
