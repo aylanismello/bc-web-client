@@ -459,10 +459,10 @@ class App extends Component {
 		this.setState({ loadingSoundcloudUser: true });
 
 		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
-			const { soundcloud_user, handles, location } = results.data.data;
+			const { soundcloud_user, handles, location, associated_users } = results.data.data;
 
 			this.setState({
-				soundcloudUser: { soundcloud_user, handles, location },
+				soundcloudUser: { soundcloud_user, handles, location, associated_users },
 				loadingSoundcloudUser: false
 			});
 		});

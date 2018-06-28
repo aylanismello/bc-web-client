@@ -3,7 +3,7 @@
 }
 
 a.ui.basic.label.Soundclouduser-Banner-Handle {
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
 }
 
 
@@ -21,4 +21,21 @@ a.ui.basic.label.Soundclouduser-Banner-Handle {
   /* .Soundclouduser-banner-right-half { */
     /* margin-top: 2rem; */
   /* } */
+}
+
+
+.ui.grid>.column:not(.row) {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.SoundcloudUser-Associated-User {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+
+.SoundcloudUser-Associated-User-List{
+  margin-left: 1rem;
 }

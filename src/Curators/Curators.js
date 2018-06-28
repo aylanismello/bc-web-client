@@ -13,7 +13,12 @@ import {
 	Label
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge, formatSoundcloudUserForMap } from '../helpers';
+import {
+	publisherLocationsToString,
+	makeTrackTypeBadge,
+	makeBCBadge,
+	formatSoundcloudUserForMap
+} from '../helpers';
 import PaginateButton from '../PaginateButton';
 import BCMap from '../BCMap';
 import './Curators.css';
@@ -30,13 +35,9 @@ class Curators extends React.Component {
 	}
 
 	curatorsWithPosition() {
-		return (
-			this.props.curators
-				.filter(curator => curator.location.id)
-				.map(curator => {
-					return formatSoundcloudUserForMap(curator);
-				})
-		);
+		return this.props.curators.filter(curator => curator.location.id).map(curator => {
+			return formatSoundcloudUserForMap(curator);
+		});
 	}
 
 	renderList(curators) {
@@ -49,7 +50,12 @@ class Curators extends React.Component {
 								<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
 									{/* <Label color="teal">#{idx + 1}</Label> */}
 									<Label as="a" basic>
-										<Image avatar spaced="right" src={curator.soundcloud_user.avatar_url} />
+										<Image
+											avatar
+											spaced="right"
+											src={curator.soundcloud_user.avatar_url}
+											style={{ border: '#df5353 solid 5px' }}
+										/>
 										{curator.soundcloud_user.name}
 									</Label>
 								</Link>
@@ -93,8 +99,7 @@ class Curators extends React.Component {
 					menu={{ secondary: true, pointing: true }}
 					activeIndex={parseInt(view[this.props.view] || 0)}
 					onTabChange={(e, data) => {
-						window.location =
-							`/#curators/${Object.keys(view)[parseInt(data.activeIndex)]}`;
+						window.location = `/#curators/${Object.keys(view)[parseInt(data.activeIndex)]}`;
 					}}
 					panes={[
 						{
@@ -124,8 +129,7 @@ class Curators extends React.Component {
 										loading={this.props.loading}
 										donePaginating={false}
 										paginate={() => this.props.fetchCurators(true)}
-										>
-									</PaginateButton>
+									/>
 								</Segment>
 							)
 						},

@@ -1,5 +1,18 @@
 import React from 'react';
-import { Segment, Tab, Container, Label, Icon, Divider, Image, Header } from 'semantic-ui-react';
+import {
+	Segment,
+	Tab,
+	Container,
+	Label,
+	Icon,
+	Divider,
+	Image,
+	Header,
+	Popup,
+	Statistic,
+	List,
+	Grid
+} from 'semantic-ui-react';
 import { formatSoundcloudUserForMap } from '../helpers';
 import BCMap from '../BCMap';
 import './soundcloud_user.css';
@@ -21,10 +34,21 @@ class SoundcloudUser extends React.Component {
 		}
 	}
 
+	renderHandles(allHandles) {
+		return (
+			<Grid doubling columns={8}>
+				{allHandles.map(handle => <Grid.Column>{handle}</Grid.Column>)}
+			</Grid>
+		);
+	}
+
 	render() {
 		let name, is_curator, handles, avatar_url, location, permalink_url;
 		const data = this.props.soundcloudUser
 			? [formatSoundcloudUserForMap(this.props.soundcloudUser)]
+			: [];
+		const associated_users = this.props.soundcloudUser
+			? this.props.soundcloudUser.associated_users
 			: [];
 
 		if (this.props.soundcloudUser) {
@@ -54,6 +78,7 @@ class SoundcloudUser extends React.Component {
 				</Label>
 			</a>
 		];
+
 		const formattedHandles =
 			handles &&
 			handles.filter(handle => handle.service !== 'soundcloud').map(handle => (
@@ -82,10 +107,9 @@ class SoundcloudUser extends React.Component {
 								/>{' '}
 								{name}
 							</Header>
-				
 						</div>
 						{/*  Put a map here */}
-						{location && (
+						{/* {location && (
 							<BCMap
 								featureType="soundcloudUser"
 								data={data}
@@ -93,17 +117,74 @@ class SoundcloudUser extends React.Component {
 								isSingleUser
 								size="small"
 							/>
-						)}
+						)} */}
 
 						{/* {location && <Label icon="globe" content={location} />} */}
 					</div>
 					<Divider />
 					{handles && (
-						<Segment className="Soundclouduser-Banner-Handles">
-							{[...soundcloudHandle, ...formattedHandles]}
-						</Segment>
+						<div className="Soundclouduser-Banner-Handles">
+							{this.renderHandles([...soundcloudHandle, ...formattedHandles])}
+						</div>
 					)}
-					{/* {is_curator && 'Is Curator'} */}
+					<Divider />
+
+					<div className="SoundcloudUser-Associated-User">
+						{/* <Statistic size="tiny">
+							<Statistic.Value text>
+								Most
+								<br />Selected
+							</Statistic.Value>
+							<Statistic.Label>Artists</Statistic.Label>
+						</Statistic> */}
+
+						{/* {is_curator ? (
+							<Statistic size="tiny">
+								<Statistic.Value text>
+									Most
+									<br />Selected
+								</Statistic.Value>
+								<Statistic.Label>Artists</Statistic.Label>
+							</Statistic>
+						) : (
+							<Statistic size="tiny">
+								<Statistic.Value text>
+									Curators
+									<br />Selecting
+								</Statistic.Value>
+								<Statistic.Label>Most</Statistic.Label>
+							</Statistic>
+						)} */}
+						<List
+							animated
+							divided
+							horizontal
+							ordered
+							size="small"
+							className="SoundcloudUser-Associated-User-List"
+						>
+							{associated_users.slice(0, 6).map(user => (
+								<Popup
+									trigger={
+										<List.Item
+											as="a"
+											onClick={() => (window.location = `#/soundcloud_users/${user.id}`)}
+										>
+											<Image
+												avatar
+												src={user.avatar_url}
+												style={user.is_curator ? { border: '#df5353 solid 5px' } : {}}
+											/>
+										</List.Item>
+									}
+									basic
+									hoverable
+								>
+									{user.name}
+								</Popup>
+							))}
+						</List>
+					</div>
 				</Segment>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
