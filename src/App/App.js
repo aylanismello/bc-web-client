@@ -47,6 +47,7 @@ class App extends Component {
 
 	state = Object.freeze({
 		trackFilters: {},
+		playingTrackFilters: {},
 		soundcloudUserFilters: {},
 		playing: false,
 		query: '',
@@ -74,7 +75,8 @@ class App extends Component {
 		curators: [],
 		soundcloudUser: {},
 		loadingSoundcloudUser: false,
-		loadingSuperfilter: false
+		loadingSuperfilter: false,
+		playFirstNewTrackOnLoad: false
 	});
 
 	componentWillMount() {
@@ -95,8 +97,14 @@ class App extends Component {
 				}
 			}
 
-			this.fetchTracks(nextState.trackFilters, paginate);
+			this.fetchTracks(
+				nextState.trackFilters,
+				paginate,
+				nextState.playFirstNewTrackOnLoad
+			);
 		}
+
+		// THIS IS FOR WHEN WE ARE LOADING MORE TRACKS ON AN ALREADY PLAYING FEED AUTOMATICALLY
 
 		if (!this.state.superFilters.length && nextState.superFilters.length) {
 			this.setSuperfilter(
@@ -125,24 +133,30 @@ class App extends Component {
 				).stream_url
 			});
 
-			this.scAudio.on('ended', () => {
-				const { playingTracks } = this.state;
-				// if we're viewing a single track, just pause
-				const newSongIdx =
-					playingTracks.findIndex(
-						track => track.track.id === this.state.playingTrack.id
-					) + 1;
-
-				if (playingTracks.length === 1) {
-					this.togglePlay(nextState.playingTrack.id);
-				} else if (newSongIdx > playingTracks.length - 1) {
-					// TODO: to logic to play once new tracks load.
-					// this should be a general reusable function
-				} else {
-					this.togglePlay(playingTracks[newSongIdx].track.id, true);
-				}
-			});
+			this.setSCAudioEndCB(nextState.playingTrack.id);
 		}
+	}
+
+	setSCAudioEndCB(id) {
+		this.scAudio.on('ended', () => {
+			// TODO there's
+			const { playingTracks } = this.state;
+			// if we're viewing a single track, just pause
+			const newSongIdx =
+				playingTracks.findIndex(track => {
+					return track.track.id === this.state.playingTrack.id;
+				}) + 1;
+
+			if (playingTracks.length === 1) {
+				this.togglePlay(id);
+			} else if (newSongIdx > playingTracks.length - 1) {
+				this.paginate(true);
+				// TODO: to logic to play once new tracks load.
+				// this should be a general reusable function
+			} else {
+				this.togglePlay(playingTracks[newSongIdx].track.id, true);
+			}
+		});
 	}
 
 	getSuperFilterById(id) {
@@ -226,7 +240,8 @@ class App extends Component {
 		if (!this.state.playingTrack.id && !this.state.loading) {
 			this.setState({
 				playingTracks: [...this.state.tracks],
-				playing: true
+				playing: true,
+				playingTrackFilters: this.state.trackFilters
 			});
 			this.updateTrackPlay(daTrackID);
 		} else if (this.state.playing && this.state.playingTrack.id === daTrackID) {
@@ -245,7 +260,8 @@ class App extends Component {
 
 			if (!goingToNextPreloadedTracks) {
 				this.setState({
-					playingTracks: [...this.state.tracks]
+					playingTracks: [...this.state.tracks],
+					playingTrackFilters: this.state.trackFilters
 				});
 			}
 		} else if (
@@ -265,11 +281,14 @@ class App extends Component {
 
 			this.setState({
 				playing: !this.state.playing,
-				playingTracks: [...this.state.tracks]
+				playingTracks: [...this.state.tracks],
+				playingTrackFilters: this.state.trackFilters
 			});
 		}
 
-		const sourceTracks = goingToNextPreloadedTracks ? this.state.playingTracks : this.state.tracks;
+		const sourceTracks = goingToNextPreloadedTracks
+			? this.state.playingTracks
+			: this.state.tracks;
 
 		if (this.state.playingTrack.id !== daTrackID && !this.state.loading) {
 			this.setState({
@@ -283,7 +302,7 @@ class App extends Component {
 		}
 	}
 
-	fetchTracks(trackFilters, paginate = false) {
+	fetchTracks(trackFilters, paginate = false, playFirstNewTrackOnLoad = false) {
 		this.setState({ loading: true });
 
 		axios
@@ -306,6 +325,19 @@ class App extends Component {
 						donePaginating: false
 					});
 				}
+
+				if (playFirstNewTrackOnLoad) {
+					// this IS buggy af.
+					// TODO add page size to api results
+
+					// const newTrackIdx = (trackFilters.page - 1) * 10;
+					const newTrackIdx = (trackFilters.page - 1) * 10;
+					this.togglePlay(this.state.tracks[newTrackIdx].track.id);
+					this.setState({
+						playFirstNewTrackOnLoad: false
+					});
+				}
+
 				// we don't paginate a single track!
 				if (!this.state.donePaginating && !trackFilters.track_id) {
 					this.checkForNextPagination(results.data.metadata.next_href);
@@ -375,6 +407,31 @@ class App extends Component {
 		);
 	}
 
+	paginate(playFirstNewTrackOnLoad = false) {
+		if (!this.state.donePaginating && !playFirstNewTrackOnLoad) {
+			this.setState({
+				trackFilters: {
+					...this.state.trackFilters,
+					page: this.state.trackFilters.page + 1
+				}
+			});
+		} else if (!this.state.donePaginating && playFirstNewTrackOnLoad) {
+			// THHIS IS TO PAGINATE then play
+			if (_.isEqual(this.state.playingTrackFilters, this.state.trackFilters)) {
+				this.setState({
+					trackFilters: {
+						...this.state.trackFilters,
+						page: this.state.trackFilters.page + 1
+					},
+					playFirstNewTrackOnLoad
+				});
+				// alert('u are play paginating from the same page, easy af');
+			} else {
+				// alert('u are play paginating from a diff page, hard af');
+				this.togglePlay(this.state.playingTrack.id);
+			}
+		}
+	}
 	feedInstance(displayPage = 'home', feedType, superfilterId) {
 		const selectedSuperFilter = this.getSuperFilterById(superfilterId);
 
@@ -390,14 +447,7 @@ class App extends Component {
 				selectedSuperFilter={selectedSuperFilter}
 				setTrackFilters={filters => this.setTrackFilters(filters)}
 				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
-				paginate={() => {
-					this.setState({
-						trackFilters: {
-							...this.state.trackFilters,
-							page: this.state.trackFilters.page + 1
-						}
-					});
-				}}
+				paginate={() => this.paginate()}
 				playingTrackId={this.state.playingTrack.id}
 				togglePlay={trackId => this.togglePlay(trackId)}
 			>
@@ -459,10 +509,20 @@ class App extends Component {
 		this.setState({ loadingSoundcloudUser: true });
 
 		axios.get(`${baseUrl}/soundcloud_users/${id}`).then(results => {
-			const { soundcloud_user, handles, location, associated_users } = results.data.data;
+			const {
+				soundcloud_user,
+				handles,
+				location,
+				associated_users
+			} = results.data.data;
 
 			this.setState({
-				soundcloudUser: { soundcloud_user, handles, location, associated_users },
+				soundcloudUser: {
+					soundcloud_user,
+					handles,
+					location,
+					associated_users
+				},
 				loadingSoundcloudUser: false
 			});
 		});
