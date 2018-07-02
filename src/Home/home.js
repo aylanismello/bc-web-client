@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Header, Segment, Icon } from 'semantic-ui-react';
+import {
+	Container,
+	Header,
+	Segment,
+	Icon,
+	Form,
+	Message,
+	Button,
+	Label
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import PlayButton from '../PlayButton';
-import { mainFilters } from '../filter_helpers';
 import './Home.css';
 
 class Home extends React.Component {
@@ -41,6 +49,13 @@ class Home extends React.Component {
 							<Icon link size="huge" name="twitter" color="pink" />
 						</a>
 					</div>
+					<Form>
+						<Form.Field inline>
+							{/* <Label pointing="right">Stay in touch?</Label> */}
+							<input type="text" placeholder="Email" />
+							 <Button type='submit'>Submit</Button>
+						</Form.Field>
+					</Form>
 				</Segment>
 			</div>
 		);
