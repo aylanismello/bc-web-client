@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import { Segment } from 'semantic-ui-react';
+import * as _ from 'lodash';
 import SuperFilterButton from '../SuperFilterButton';
 import './SuperFilterPanel.css';
 
@@ -48,7 +49,7 @@ const SuperFilterPanel = props => {
 
 	const orderedSuperFilters = loading
 		? null
-		: superFilters.sort((x, y) => x.position > y.position);
+		: _.sortBy(superFilters, o => o.position);
 
 	if (superfilterId && !loading && superFilters.length) {
 		setSuperfilterById(superfilterId);
