@@ -12,14 +12,15 @@
 }
 
 .App-bottom-nav-container {
-  width: 100%;;
+  width: 100%;
   justify-content: space-between;
   bottom: 0;
   position: fixed;
-  height: 70px;
+  height: 100px;
   display: flex;
   background: black;
   align-items: center;
+  border-top: white 0px solid; 
 }
 
 @media only screen and (max-width: 767px)
@@ -34,7 +35,7 @@
 .App-bottom-nav-track-info-container {
   color: white;
   /* width: 200px; */
-  height: 70px;
+  height: 100px;
 }
 
 .App-bottom-nav-track-info-container > .item {
@@ -42,7 +43,9 @@
 }
 
 .ui.tiny.image.App-bottom-nav-track-image {
-    margin-right: 10px;
+  margin-right: 10px;
+  width:100px;
+  height:100px;
 }
 
 .App-bottom-nav-play-button:hover {
@@ -72,6 +75,9 @@
   right: 40%;
 }
 
+.ui.container.pusher .ui.container{
+  margin-top: 100px;
+}
 
 /*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
 
@@ -108,11 +114,20 @@
   }
 
   .ui.items:not(.unstackable)>.item>.image{
+    /*max-width 100% for grid*/
+    /*max-width: 25% !important;*/
+    max-height: auto !important;
     margin: 0;
   } 
+
   .ui.items:not(.unstackable)>.item>.image>img{
-    width: 33% !important;
+    width: 100% !important;
     max-height: auto !important;
-    opacity: 0.6;
+    opacity: 0.85;
   }
+
+  .ui.container .grid .column{
+    padding: 0;
+  }
+
 }

@@ -12,6 +12,8 @@
 
 
 .TrackList-artwork-play-pause-container {
+	width: 25% !important;
+	max-height: auto !important;
 	position: relative;
 }
 
@@ -24,6 +26,7 @@
 }
 
 i.pause.circle.outline.icon.TrackList-play-pause-icon {
+	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
@@ -32,11 +35,13 @@ i.pause.circle.outline.icon.TrackList-play-pause-icon {
 }
 
 i.video.play.outline.icon.TrackList-play-pause-icon {
+	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
 	left: 50%;
+	opacity: 0.75;
 }
 
 .TrackList-play-pause-icon:hover {
@@ -62,14 +67,24 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	align-items: center;
 	justify-content: center;
 	color: white;
+	/*display none DEBUGGING ONLY v*/
+	/*display:none;*/
 }
 
 .ui.relaxed.divided.items>.item {
 	padding: 1.5em 1.5em;
 }
 
+.ui.relaxed.divided.items .content{
+	/*DEBUG CLASS ONLY ERASE IF NOT NEEDED*/
+	padding: 0 !important;
+}
+
 .ui.relaxed.divided.items .content a.header,
 .ui.relaxed.divided.items .content .TrackList-artist-name,
-.ui.relaxed.divided.items .content .description {
+.ui.relaxed.divided.items .content .description,
+.ui.relaxed.divided.items .content .extra {
 	color: white;
+	/*display none DEBUGGING ONLY v*/
+	/*display: none;*/
 }
