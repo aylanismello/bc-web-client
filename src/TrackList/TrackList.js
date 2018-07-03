@@ -273,7 +273,7 @@ class TrackList extends React.Component {
 									
 
 									
-										<Item.Content vertialAlign='middle'>
+										<Item.Content verticalAlign='middle'>
 											<Item.Header as="a" onClick={() => window.open(track.permalink_url, '_blank')}>
 												{track.name}{' '}
 											</Item.Header>
@@ -332,6 +332,7 @@ class TrackList extends React.Component {
 
 									</Item>
 								</Item.Group>
+							<hr className="separator" />
 						</Grid.Row>
 
 						);
@@ -349,25 +350,6 @@ class TrackList extends React.Component {
 					More.{' '}
 				</Button>
 			</Grid>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		);
 	}

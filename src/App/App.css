@@ -23,15 +23,6 @@
   border-top: white 0px solid; 
 }
 
-@media only screen and (max-width: 767px)
-.ui.container {
-    /* margin-left: 1em!important; */
-    /* margin-right: 1em!important; */
-    margin-left: 0!important;
-    margin-right: 0!important;
-  }
-
-
 .App-bottom-nav-track-info-container {
   color: white;
   /* width: 200px; */
@@ -110,7 +101,11 @@
 
   /*TrackList.js*/
   .TrackList-track-item{
-    padding: 0 !important;
+    padding: 10px 0px;
+  }
+
+  .ui.items {
+    margin: 0;
   }
 
   .ui.items:not(.unstackable)>.item>.image{
@@ -118,16 +113,21 @@
     /*max-width: 25% !important;*/
     max-height: auto !important;
     margin: 0;
+    width:30% !important; 
   } 
 
   .ui.items:not(.unstackable)>.item>.image>img{
     width: 100% !important;
-    max-height: auto !important;
+    max-height: auto;
     opacity: 0.85;
   }
 
   .ui.container .grid .column{
     padding: 0;
+  }
+
+  .ui.container .grid>.row{
+    padding: 0.25rem 0;
   }
 
 }
