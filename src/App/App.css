@@ -97,6 +97,7 @@
   .ui.container .ui.segment.dimmable{
     padding: 0;
     background-color: transparent; 
+    margin: 0;
   }
 
   /*TrackList.js*/
@@ -128,6 +129,22 @@
 
   .ui.container .grid>.row{
     padding: 0.25rem 0;
+  }
+
+  button.ui.button[role*=button] {
+    margin: 10px auto 65px auto;
+    background: transparent;
+    font-size: 1.2rem;
+    color: white;
+    padding:15px 50px;
+    border: 2px white solid;
+    border-radius: 0;
+    transition: 0.5s background;
+  }
+
+  button.ui.button[role*=button]:hover, 
+  button.ui.button[role*=button]:active {
+    background: rgba(33, 133, 208, 0.5);
   }
 
 }

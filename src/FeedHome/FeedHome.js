@@ -1,6 +1,7 @@
 import { Container, Tab } from 'semantic-ui-react';
 import React from 'react';
 import TabbedSegment from '../TabbedSegment';
+import './FeedHome.css';
 
 class FeedHome extends React.Component {
 	state = {
@@ -42,7 +43,8 @@ class FeedHome extends React.Component {
 					}}
 					panes={[
 						{
-							menuItem: 'Tracks ⬆️',
+							// menuItem: 'Tracks ⬆️',
+							menuItem: 'Tracks',
 							render: () => (
 								<TabbedSegment loading={loading}>
 									{feedInstance('home', 'tracks')}
@@ -50,7 +52,8 @@ class FeedHome extends React.Component {
 							)
 						},
 						{
-							menuItem: 'Locations 🗺',
+							// menuItem: 'Locations 🗺',
+							menuItem: 'Places',
 							render: () => (
 								<div>
 									<TabbedSegment loading={loading}>
@@ -65,7 +68,8 @@ class FeedHome extends React.Component {
 							)
 						},
 						{
-							menuItem: 'Artists 💃',
+							// menuItem: 'Artists 💃',
+							menuItem: 'Artists',
 							render: () => (
 								<TabbedSegment loading={loading}>
 									{feedInstance('home', 'artists')}
@@ -78,7 +82,8 @@ class FeedHome extends React.Component {
 							)
 						},
 						{
-							menuItem: 'Tags #️⃣',
+							// menuItem: 'Tags #️⃣',
+							menuItem: 'Tags',
 							render: () => (
 								<TabbedSegment loading={loading}>
 									{feedInstance('home', 'tags')}

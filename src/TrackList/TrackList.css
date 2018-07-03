@@ -118,7 +118,9 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 }
 
 hr.separator {
-	width:5%;
-	background-color: blue;
+	width:75%;
+	border-color: #5a5a5a;
+	margin: 0.75rem auto;
 }
+
 
