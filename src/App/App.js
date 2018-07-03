@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Sidebar, Message, Icon, Item } from 'semantic-ui-react';
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { Container, Sidebar, Message } from 'semantic-ui-react';
+import { HashRouter as Router, Route } from 'react-router-dom';
 import * as _ from 'lodash';
 import axios from 'axios';
 import SoundCloudAudio from 'soundcloud-audio';
@@ -19,7 +19,7 @@ import TopNav from '../TopNav';
 import SuperFilterPanel from '../Feed/SuperFilterPanel';
 import BottomNav from '../BottomNav';
 import ScrollToTop from '../scroll_to_top';
-import { homeFilters, mainFilters } from '../filter_helpers';
+import { homeFilters } from '../filter_helpers';
 import './App.css';
 
 const queryString = require('query-string');
@@ -64,6 +64,7 @@ class App extends Component {
 		tracks: [],
 		playingTracks: [],
 		error: null,
+		success: null,
 		loading: false,
 		loadingUpdatePlayCount: false,
 		curators_next_href: '',
@@ -669,13 +670,25 @@ class App extends Component {
 							>
 								{this.state.error ? (
 									<Message
-										className="App-error"
+										className="App-message"
 										negative
 										onDismiss={() => {
-											this.setState({ error: null });
+											this.setState({ error: null, success: null });
 										}}
 										header="Sorry, something went wrong!"
 										content={this.state.error}
+									/>
+								) : null}
+
+								{this.state.success ? (
+									<Message
+										positive
+										className="App-message"
+										onDismiss={() => {
+											this.setState({ error: null, success: null });
+										}}
+										header="Sweetness, thy name is you"
+										content={this.state.success}
 									/>
 								) : null}
 
@@ -688,12 +701,13 @@ class App extends Component {
 											homePageTrack={
 												this.state.tracks[0] && this.state.tracks[0].track
 											}
+											setError={(error) => this.setState({ error })}
+											setSuccess={(success) => this.setState({ success })}
 											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}
 											fetchSuperfilters={superfilterType =>
 												this.fetchSuperfilters(superfilterType)}
-											setTrackFilters={filters => this.setTrackFilters(filters)}
 											homePlayDisabled={this.state.tracks.length === 0}
 										/>
 									)}

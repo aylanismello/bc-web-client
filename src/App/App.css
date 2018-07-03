@@ -64,11 +64,20 @@
   cursor: pointer;
 }
 
-.ui.negative.message.App-error {
+.ui.negative.message.App-message {
+  width: 25rem;
   position: absolute;
   z-index: 10;
   top: 0;
-  right: 40%;
+  right: 0;
+}
+
+.ui.positive.message.App-message {
+  width: 25rem;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
 }
 
 

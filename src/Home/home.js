@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import {
 	Container,
 	Header,
@@ -11,10 +12,16 @@ import {
 	Label
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import { baseUrl } from '../config';
 import PlayButton from '../PlayButton';
 import './Home.css';
 
 class Home extends React.Component {
+	state = {
+		loadingEmail: false,
+		email: ''
+	};
+
 	componentWillMount() {
 		this.props.fetchSuperfilters('custom');
 	}
@@ -49,11 +56,44 @@ class Home extends React.Component {
 							<Icon link size="huge" name="twitter" color="pink" />
 						</a>
 					</div>
-					<Form>
+					<Form
+						onSubmit={() => {
+							this.setState({ loadingEmail: true });
+
+							axios
+								.post(`${baseUrl}/emails`, { email: this.state.email })
+								.then(results => {
+									this.setState({ loadingEmail: false });
+									const { error, data } = results.data;
+									if (error.message && Object.keys(error.message).length) {
+										if (error.message.errors && error.message.errors.length) {
+											this.props.setError('Invaild email');
+										} else {
+											this.props.setError(error.message.name);
+										}
+									} else if (data) {
+										this.props.setSuccess(
+											'Successfully added your info to our DB!'
+										);
+									}
+								});
+						}}
+					>
 						<Form.Field inline>
 							{/* <Label pointing="right">Stay in touch?</Label> */}
-							<input type="text" placeholder="Email" />
-							 <Button type='submit'>Submit</Button>
+							<input
+								value={this.state.email}
+								onChange={e => this.setState({ email: e.currentTarget.value })}
+								type="text"
+								placeholder="Email"
+							/>
+							<Button
+								type="submit"
+								disabled={this.state.loadingEmail}
+								loading={this.state.loadingEmail}
+							>
+								Submit
+							</Button>
 						</Form.Field>
 					</Form>
 				</Segment>
@@ -124,7 +164,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-	setTrackFilters: PropTypes.func.isRequired
+	setError: PropTypes.func.isRequired
 };
 
 export default Home;
