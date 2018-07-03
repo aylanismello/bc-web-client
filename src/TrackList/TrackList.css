@@ -1,5 +1,6 @@
 .TrackList-container {
 	text-align: center;
+	margin-bottom: 2rem;
 }
 
 .TrackList-home-header {
@@ -10,6 +11,21 @@
 	padding-right: 1em;
 }
 
+.TrackList-Scroll-Button:hover {
+	cursor: pointer;
+}
+i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
+    margin-top: 1rem;
+}
+
+.TrackList-Bottom-Buttons-Container {
+	display: flex;
+	flex-direction: column;
+	width: 6rem;
+	margin: auto;
+	width: 50%;
+	align-items: center;
+}
 
 .TrackList-artwork-play-pause-container {
 	position: relative;
@@ -24,7 +40,7 @@
 }
 
 .TrackList-curator-list-items.ui.basic.label {
-	width: 100%
+	width: 100%;
 }
 
 .TrackList-play-pause-icon {
@@ -71,6 +87,6 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	justify-content: center;
 }
 
-.ui.relaxed.divided.items>.item {
+.ui.relaxed.divided.items > .item {
 	padding: 1.5em 1.5em;
 }

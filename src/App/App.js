@@ -701,8 +701,10 @@ class App extends Component {
 											homePageTrack={
 												this.state.tracks[0] && this.state.tracks[0].track
 											}
-											setError={(error) => this.setState({ error })}
-											setSuccess={(success) => this.setState({ success })}
+											setError={error =>
+												this.setState({ error, success: null })}
+											setSuccess={success =>
+												this.setState({ success, error: null })}
 											initPlayer={this.state.initPlayer}
 											playingTrack={this.state.playingTrack}
 											togglePlay={filters => this.togglePlay(filters)}

@@ -67,7 +67,7 @@ class TrackList extends React.Component {
 				</div> */}
 
 				{/* {children} */}
-				<Divider />
+				{/* <Divider /> */}
 
 				<Item.Group relaxed divided>
 					{tracks.map((currentTrack, idx) => {
@@ -193,13 +193,23 @@ class TrackList extends React.Component {
 						);
 					})}
 				</Item.Group>
+				<Divider />
 
 				{tracks && tracks.length === 1 ? null : (
-					<PaginateButton
-						loading={loading}
-						disabled={donePaginating}
-						paginate={paginate}
-					/>
+					<div className="TrackList-Bottom-Buttons-Container">
+						<PaginateButton
+							loading={loading}
+							disabled={donePaginating}
+							className="PaginateButton"
+							paginate={paginate}
+						/>
+						<Icon
+							name="arrow alternate circle up outline"
+							className="TrackList-Scroll-Button"
+							size="big	"
+							onClick={() => window.scrollTo(0, 0)}
+						/>
+					</div>
 				)}
 			</div>
 		);

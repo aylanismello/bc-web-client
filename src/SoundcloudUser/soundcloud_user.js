@@ -10,9 +10,11 @@ import {
 	Header,
 	Popup,
 	Statistic,
+	Responsive,
 	List,
 	Grid
 } from 'semantic-ui-react';
+import MediaQuery from 'react-responsive';
 import { formatSoundcloudUserForMap } from '../helpers';
 import BCMap from '../BCMap';
 import './soundcloud_user.css';
@@ -109,17 +111,19 @@ class SoundcloudUser extends React.Component {
 							</Header>
 						</div>
 						{/*  Put a map here */}
-						{/* {location && (
-							<BCMap
-								featureType="soundcloudUser"
-								data={data}
-								loading={this.props.loading}
-								isSingleUser
-								size="small"
-							/>
-						)} */}
+						{location && (
+							<Segment className="SoundcloudUser-Map-Container">
+								<BCMap
+									featureType="soundcloudUser"
+									data={data}
+									loading={this.props.loading}
+									isSingleUser
+									size="small"
+								/>
 
-						{/* {location && <Label icon="globe" content={location} />} */}
+								<Label icon="globe" content={location} />
+							</Segment>
+						)}
 					</div>
 					<Divider />
 					{handles && (
@@ -138,7 +142,7 @@ class SoundcloudUser extends React.Component {
 							<Statistic.Label>Artists</Statistic.Label>
 						</Statistic> */}
 
-						{/* {is_curator ? (
+						{is_curator ? (
 							<Statistic size="tiny">
 								<Statistic.Value text>
 									Most
@@ -154,7 +158,7 @@ class SoundcloudUser extends React.Component {
 								</Statistic.Value>
 								<Statistic.Label>Most</Statistic.Label>
 							</Statistic>
-						)} */}
+						)}
 						<List
 							animated
 							divided
@@ -164,24 +168,16 @@ class SoundcloudUser extends React.Component {
 							className="SoundcloudUser-Associated-User-List"
 						>
 							{associated_users.slice(0, 6).map(user => (
-								<Popup
-									trigger={
-										<List.Item
-											as="a"
-											onClick={() => (window.location = `#/soundcloud_users/${user.id}`)}
-										>
-											<Image
-												avatar
-												src={user.avatar_url}
-												style={user.is_curator ? { border: '#df5353 solid 5px' } : {}}
-											/>
-										</List.Item>
-									}
-									basic
-									hoverable
+								<List.Item
+									as="a"
+									onClick={() =>
+										(window.location = `#/soundcloud_users/${user.id}`)}
 								>
-									{user.name}
-								</Popup>
+									<Image avatar src={user.avatar_url} />
+									<MediaQuery minWidth={600}>
+										<List.Content>{user.name}</List.Content>
+									</MediaQuery>
+								</List.Item>
 							))}
 						</List>
 					</div>
