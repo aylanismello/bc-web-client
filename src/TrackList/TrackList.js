@@ -232,8 +232,7 @@ class TrackList extends React.Component {
 						}
 
 						return (
-		<Grid.Row>
-			<Item.Group relaxed divided> 
+			<Grid.Row>
 				<Item key={track.id} className="TrackList-track-item">
 					<div
 						src={track.artwork_url}
@@ -335,11 +334,11 @@ class TrackList extends React.Component {
 						</Item.Extra>
 					</Item.Content>
 				</Item>
-			</Item.Group>
 			<hr className="separator" />
 		</Grid.Row>
 			);
 		})}
+		</Item.Group>
 
 
 
