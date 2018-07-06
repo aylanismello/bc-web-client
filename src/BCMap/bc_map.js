@@ -1,6 +1,13 @@
 import React from 'react';
-import { Segment, Image, Header, Divider, Dimmer, Loader } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import {
+	Segment,
+	Image,
+	Item,
+	Header,
+	Divider,
+	Dimmer,
+	Loader
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';
@@ -43,6 +50,23 @@ class BCMap extends React.Component {
 		center: [0, 0],
 		zoom: [0]
 	};
+
+	componentWillUpdate(nextProps) {
+		if (
+			this.props.data &&
+			this.props.data[0] &&
+			this.props.isSingleUser &&
+			(JSON.stringify(this.state.center) === JSON.stringify([0, 0]) ||
+				nextProps.data[0].location.position !==
+					this.props.data[0].location.position)
+		) {
+			this.setState({
+				center: nextProps.data[0].location.position.map(coordinate =>
+					parseInt(coordinate)
+				)
+			});
+		}
+	}
 
 	onToggleHover(cursor, { map }) {
 		map.getCanvas().style.cursor = cursor;
@@ -101,10 +125,14 @@ class BCMap extends React.Component {
 
 	render() {
 		const { selectedFeature, zoom, center } = this.state;
-
+		const width = this.props.size === 'small' ? '25vh' : '100vh';
+		const { isSingleUser } = this.props;
 
 		return (
-			<Dimmer.Dimmable as={Segment} dimmed={this.props.loading}>
+			<Dimmer.Dimmable
+				as={isSingleUser ? Item : Segment}
+				dimmed={this.props.loading}
+			>
 				<Dimmer active={this.props.loading} inverted>
 					<Loader> Loading </Loader>
 				</Dimmer>
@@ -115,31 +143,39 @@ class BCMap extends React.Component {
 						dragRotate={false}
 						center={center}
 						containerStyle={{
-							height: '100vh',
-							width: '100vh'
+							height: width,
+							width
 						}}
 					>
-						<Layer type="symbol" id="marker" layout={{ 'icon-image': 'marker-15' }}>
+						<Layer
+							type="symbol"
+							id="marker"
+							layout={{ 'icon-image': 'marker-15' }}
+						>
 							{this.props.featureType === 'track'
 								? this.makeTrackFeatures()
 								: this.makeCuratorFeatures()}
 						</Layer>
 
 						{selectedFeature && (
-							<Popup key={selectedFeature.id} coordinates={selectedFeature.position}>
+							<Popup
+								className="BCMap-Popup-Container"
+								key={selectedFeature.id}
+								coordinates={selectedFeature.position}
+								onClick={() =>
+									(window.location = `#/soundcloud_users/${this.props
+										.featureType === 'track'
+										? selectedFeature.soundcloud_user_id
+										: selectedFeature.id}`)}
+							>
 								<div>
 									<span>{selectedFeature.name} </span>
 								</div>
-								<span> {publisherLocationsToString(selectedFeature.locationName)}</span>
-
-								<Link
-									to={`/soundcloud_users/${this.props.featureType === 'track'
-										? selectedFeature.soundcloud_user_id
-										: selectedFeature.id}`}
-								>
+								<span>
 									{' '}
-									<Image src={selectedFeature.avatar_url} />{' '}
-								</Link>
+									{publisherLocationsToString(selectedFeature.locationName)}
+								</span>
+								<Image src={selectedFeature.avatar_url} size="mini" />{' '}
 							</Popup>
 						)}
 					</MapBox>
@@ -149,14 +185,16 @@ class BCMap extends React.Component {
 	}
 }
 
-const { instanceOf, string } = PropTypes;
+const { instanceOf, string, bool } = PropTypes;
 
 BCMap.propTypes = {
-	data: instanceOf(Array)
+	data: instanceOf(Array),
+	isSingleUser: bool
 };
 
 BCMap.defaultProps = {
-	data: undefined
+	data: undefined,
+	isSingleUser: false
 };
 
 export default BCMap;

@@ -7,7 +7,6 @@ const SearchBar = ({ query, handleSearchChange, submitSearch }) => {
 			<form onSubmit={submitSearch} style={{ visibility: 'hidden' }}>
 				<input
 					onChange={e => {
-						console.log(e);
 						handleSearchChange(e.currentTarget.value);
 					}}
 					value={query}

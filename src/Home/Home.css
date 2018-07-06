@@ -1,0 +1,14 @@
+.Home-social-links {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 2rem;
+}
+
+.Home-BC-greeting-container {
+  margin-top: 3em;
+}
+
+.Home-BC-description {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}

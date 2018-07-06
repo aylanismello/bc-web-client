@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 import { Segment } from 'semantic-ui-react';
+import * as _ from 'lodash';
 import SuperFilterButton from '../SuperFilterButton';
 import './SuperFilterPanel.css';
-import { SUPER_FILTER_DESCRIPTIONS } from '../constants';
 
 const settings = {
 	infinite: false,
@@ -13,6 +13,7 @@ const settings = {
 	autoplay: false,
 	slidesToShow: 4,
 	slidesToScroll: 4,
+	swipeToSlide: true,
 	responsive: [
 		{
 			breakpoint: 768,
@@ -26,59 +27,72 @@ const settings = {
 	]
 };
 
-class SuperFilterPanel extends React.Component {
-	state = {
-		selectedIdx: 0
-	};
+const SuperFilterPanel = props => {
+	const {
+		superFilters,
+		setSuperfilter,
+		selectedSuperFilterId,
+		loading,
+		superfilterId,
+		setSuperfilterById
+	} = props;
+	const description =
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].description;
 
-	componentWillMount() {
-		this.props.setFilters(this.props.superFilters[0].filters);
+	const image_url =
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].image_url;
+
+	let startingIdx = 0;
+	let newSettings = { ...settings };
+
+	const orderedSuperFilters = loading
+		? null
+		: _.sortBy(superFilters, o => o.position);
+
+	if (superfilterId && !loading && superFilters.length) {
+		setSuperfilterById(superfilterId);
+		startingIdx = orderedSuperFilters.findIndex(sf => {
+			return sf.id === selectedSuperFilterId;
+		});
+		newSettings = { ...settings, initialSlide: startingIdx };
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		if (nextProps.superFilterType !== this.props.superFilterType) {
-			nextProps.setFilters(nextProps.superFilters[0].filters);
-		}
-	}
-
-	render() {
-		const { setFilters, superFilters, superFilterType } = this.props;
-		const { selectedIdx } = this.state;
-		return (
-			<div className="SuperFilterPanel">
-				<Slider className="explore-panel-slider" {...settings}>
-					{superFilters.map((superFilter, idx) => (
-						<div>
-							<SuperFilterButton
-								name={superFilter.name}
-								onClick={() => {
-									this.setState({ selectedIdx: idx });
-									setFilters(superFilter.filters);
-								}}
-								selected={idx === selectedIdx}
-							/>
-						</div>
-					))}
-				</Slider>
-				<Segment>
+	return (
+		<div
+			className="SuperFilterPanel"
+			style={image_url && { backgroundImage: `url('${image_url}')` }}
+			key={`outer-${selectedSuperFilterId}`}
+		>
+			{!loading ? (
+				<div key={`inner-${selectedSuperFilterId}`}>
 					{' '}
-					{
-						SUPER_FILTER_DESCRIPTIONS[superFilterType][
-							superFilters[selectedIdx].name
-						]
-					}{' '}
-				</Segment>
-			</div>
-		);
-	}
-}
+					<Slider className="explore-panel-slider" {...newSettings}>
+						{orderedSuperFilters.map(superFilter => (
+							<div key={`inner-inner-${selectedSuperFilterId}`}>
+								<SuperFilterButton
+									name={superFilter.name}
+									onClick={() => {
+										window.location = `/#feed/${superFilter.superfilter_type}?id=${superFilter.id}`;
+									}}
+									selected={superFilter.id === selectedSuperFilterId}
+								/>
+							</div>
+						))}
+					</Slider>
+					{description && <Segment> {description} </Segment>}{' '}
+				</div>
+			) : null}
+		</div>
+	);
+};
 
-const { func, objectOf, string } = PropTypes;
+const { instanceOf, string } = PropTypes;
 
 SuperFilterPanel.propTypes = {
-	setFilters: func.isRequired,
-	superFilters: objectOf(string).isRequired,
-	superFilterType: string.isRequired
+	superFilters: instanceOf(Array),
+	superFilterType: string
 };
 
 export default SuperFilterPanel;

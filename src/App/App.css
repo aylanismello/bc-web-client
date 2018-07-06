@@ -16,6 +16,7 @@
   justify-content: space-between;
   bottom: 0;
   position: fixed;
+/*Make height of footer and header 80px*/
   height: 100px;
   display: flex;
   background: black;
@@ -59,11 +60,20 @@
   cursor: pointer;
 }
 
-.ui.negative.message.App-error {
+.ui.negative.message.App-message {
+  width: 25rem;
   position: absolute;
   z-index: 10;
   top: 0;
-  right: 40%;
+  right: 0;
+}
+
+.ui.positive.message.App-message {
+  width: 25rem;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
 }
 
 .ui.container.pusher .ui.container{
@@ -82,6 +92,7 @@
 
 .App-bottom-nav-box {
   flex: 1;
+  align-items: inherit;
   display: flex;
   justify-content: center;
 }

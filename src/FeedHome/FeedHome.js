@@ -3,25 +3,18 @@ import React from 'react';
 import TabbedSegment from '../TabbedSegment';
 import './FeedHome.css';
 
+const superfilter_types = {
+	custom: 0,
+	location: 1,
+	artist: 2,
+	tag: 3
+};
+
 class FeedHome extends React.Component {
-	state = {
-		trackType: 'curated'
-	};
-	//
 	componentWillMount() {
 		this.props.getHomeTracks();
+		// this.props.fetchSuperfilters('custom');
 	}
-
-	// componentWillUpdate(np, nextState) {
-	// 	if (nextState.trackType !== this.state.trackType) {
-	// 		this.props.setState({
-	// 			trackFilters: {
-	// 				...this.props.trackFilters,
-	// 				is_submission: true
-	// 			}
-	// 		});
-	// 	}
-	// }
 
 	render() {
 		const {
@@ -36,29 +29,22 @@ class FeedHome extends React.Component {
 			<Container >
 				<Tab
 					menu={{ secondary: true, pointing: true }}
+					activeIndex={parseInt(superfilter_types[this.props.superfilter_type] || 0)}
 					onTabChange={(e, data) => {
-						// if (data.activeIndex === 0) {
-						// 	this.props.setIsSubmission(false);
-						// }
+						window.location =
+							`/#feed/${Object.keys(superfilter_types)[parseInt(data.activeIndex)]}`;
 					}}
 					panes={[
 						{
-							// menuItem: 'Tracks ⬆️',
 							menuItem: 'Tracks',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tracks')}
-								</TabbedSegment>
-							)
+							render: () => feedInstance('home', 'custom')
 						},
 						{
 							// menuItem: 'Locations 🗺',
 							menuItem: 'Places',
 							render: () => (
 								<div>
-									<TabbedSegment loading={loading}>
-										{feedInstance('home', 'locations')}
-									</TabbedSegment>
+									{feedInstance('home', 'location')}
 									{/* <BCMap
 										data={tracksWithPosition()}
 										featureType="track"
@@ -68,33 +54,26 @@ class FeedHome extends React.Component {
 							)
 						},
 						{
-							// menuItem: 'Artists 💃',
 							menuItem: 'Artists',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'artists')}
-									{/* <UsersFeed
-										users={tracks.map(({ publisher }) => {
-											return { ...publisher[0] };
-										})}
-									/> */}
-								</TabbedSegment>
-							)
+							render: () => feedInstance('home', 'artist')
 						},
 						{
-							// menuItem: 'Tags #️⃣',
 							menuItem: 'Tags',
-							render: () => (
-								<TabbedSegment loading={loading}>
-									{feedInstance('home', 'tags')}
-								</TabbedSegment>
-							)
+							render: () => feedInstance('home', 'tag')
 						}
 					]}
 				/>
 			</Container>
 		);
 	}
+}
+
+{
+	/* <UsersFeed
+		users={tracks.map(({ publisher }) => {
+			return { ...publisher[0] };
+		})
+	/>  */
 }
 
 export default FeedHome;
