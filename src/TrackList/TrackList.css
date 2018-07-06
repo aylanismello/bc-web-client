@@ -32,11 +32,12 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 	max-width: 250px;
 	max-height: auto;
 	position: relative;
-
+	background: gradient(linear, left top, left bottom, from(#e66465), to(#9198e5))
 }
 
 .TrackList-artwork-play-pause-container img {
 	display: block;
+	box-shadow: 5px 5px 10px;
 }
 
 .TrackList-curator-popup-container {
@@ -80,6 +81,7 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 
 .TrackList-artist-image-container {
 	width: 30px;
+	margin-left: 5px;
 }
 
 .TrackList-artist-image {
@@ -108,32 +110,80 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	max-width: 100%;
 }
 
-.ui.relaxed.divided.items>.item {
+.ui.relaxed.divided.items .item {
 	padding: 0 1.3rem 0 2rem;
-	display: inline-block;
 }
 
-.ui.relaxed.divided.items>.item>.content,
-.ui.relaxed.divided.items>.item>.TrackList-artwork-play-pause-container{
-  display: inline-block;
-  float:left;
-  padding: 0;
+.ui.relaxed.divided.items .item>.TrackList-artwork-play-pause-container{
+	width: auto;
+	height: 100px;
+	margin-right: 5%;
 }
-
 
 .ui.relaxed.divided.items .content{
 	/*DEBUG CLASS ONLY ERASE IF NOT NEEDED*/
 	padding: 0;
-	width: 70%;
+	width: 65%;
 }
+
+.ui.relaxed.divided.items .item>.content,
+.ui.relaxed.divided.items .item>.TrackList-artwork-play-pause-container{
+  display: inline-block;
+  float:left;
+  padding: 0;
+  position: relative;
+}
+
+
 
 .ui.items>.item>.content>.header:not(.ui) {
     font-size: 1em;
 }
 
+.ui.statistic>.value~.label{
+	font-size: 0.85rem;
+}
 
-.ui.relaxed.divided.items .content a.header,
-.ui.relaxed.divided.items .content .TrackList-artist-name,
+.ui.relaxed.divided.items .content .header a {
+	font-weight: 700;
+}
+
+/*.ui.image>.ui.ribbon.label {
+	z-index: 1;
+}*/
+
+.gradient {
+	width: 100px;
+	height: 100px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: linear-gradient(transparent 70%, rgba(0,0,0,0.9));
+}
+
+.header i.soundcloud, 
+.header .TrackList-selection-count .value,
+.header .TrackList-selection-count .label{
+	color: white;
+	position:absolute;
+	bottom: 0;
+}
+.header i.soundcloud{
+	left: -16px;
+}
+
+.header .TrackList-selection-count .value{
+	left: 17px;
+	font-size: 1.75rem !important;
+}
+
+.header .TrackList-selection-count .label{
+	right:2px;
+}
+
+
+.ui.relaxed.divided.items .content .header a,
+.TrackList-artist-name,
 .ui.relaxed.divided.items .content .description,
 .ui.relaxed.divided.items .content .extra {
 	color: white;
@@ -145,6 +195,7 @@ hr.separator {
 	width:75%;
 	border-color: #5a5a5a;
 	margin: 0.75rem auto;
+	display: inline-block;
 }
 
 

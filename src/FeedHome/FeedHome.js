@@ -41,7 +41,7 @@ class FeedHome extends React.Component {
 						},
 						{
 							// menuItem: 'Locations 🗺',
-							menuItem: 'Places',
+							menuItem: 'Locations',
 							render: () => (
 								<div>
 									{feedInstance('home', 'location')}
