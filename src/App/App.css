@@ -1,5 +1,6 @@
 .App {
   /* text-align: center; */
+  background-color: #191919;
 }
 
 .App-bottom-nav {
@@ -11,29 +12,22 @@
 }
 
 .App-bottom-nav-container {
-  width: 100%;;
+  width: 100%;
   justify-content: space-between;
   bottom: 0;
   position: fixed;
-  height: 80px;
+/*Make height of footer and header 80px*/
+  height: 100px;
   display: flex;
   background: black;
   align-items: center;
+  border-top: white 0px solid; 
 }
-
-@media only screen and (max-width: 767px)
-.ui.container {
-    /* margin-left: 1em!important; */
-    /* margin-right: 1em!important; */
-    margin-left: 0!important;
-    margin-right: 0!important;
-  }
-
 
 .App-bottom-nav-track-info-container {
   color: white;
   /* width: 200px; */
-  height: 70px;
+  height: 100px;
 }
 
 .App-bottom-nav-track-info-container > .item {
@@ -41,7 +35,9 @@
 }
 
 .ui.tiny.image.App-bottom-nav-track-image {
-    margin-right: 10px;
+  margin-right: 10px;
+  width:100px;
+  height:100px;
 }
 
 .App-bottom-nav-play-button:hover {
@@ -80,6 +76,9 @@
   right: 0;
 }
 
+.ui.container.pusher .ui.container{
+  margin-top: 100px;
+}
 
 /*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
 
@@ -103,6 +102,60 @@
     width: auto;
     margin-left: auto!important;
     margin-right: auto!important;
+  }
+
+  /*FeedHome.js*/
+  .ui.container .ui.segment.dimmable{
+    padding: 0;
+    background-color: transparent; 
+    margin: 0;
+  }
+
+  /*TrackList.js*/
+  .TrackList-track-item{
+    padding: 10px 0px;
+  }
+
+  .ui.items {
+    margin: 0;
+  }
+
+  .ui.items:not(.unstackable)>.item>.image{
+    /*max-width 100% for grid*/
+    /*max-width: 25% !important;*/
+    max-height: auto !important;
+    margin: 0;
+    width:30% !important; 
+  } 
+
+  .ui.items:not(.unstackable)>.item>.image>img{
+    width: 100% !important;
+    max-height: auto;
+    opacity: 0.85;
+  }
+
+  .ui.container .grid .column{
+    padding: 0;
+  }
+
+  .ui.container .grid>.row{
+    padding: 0.25rem 0;
+  }
+
+  button.ui.button[role*=button] {
+    margin: 10px auto 65px auto;
+    background: transparent;
+    font-size: 1.2rem;
+    color: white;
+    padding:15px 50px;
+    border: 2px white solid;
+    border-radius: 0;
+    transition: 0.5s background;
+  }
+
+  button.ui.button[role*=button]:hover, 
+  button.ui.button[role*=button]:active {
+    background: rgba(33, 133, 208, 0.5);
   }
 
 }

@@ -643,20 +643,21 @@ class App extends Component {
 			<Router>
 				<ScrollToTop>
 					<div className="App-container">
+					<TopNav
+						toggleSidebar={options => this.toggleSidebar(options)}
+						setFilter={val => this.setFilter(val)}
+						fetchHomeTracks={() => this.fetchHomeTracks()}
+						submitSearch={() => this.submitSearch()}
+						query={this.state.query}
+						handleSearchChange={value => {
+							this.setState({ query: value });
+						}}
+					/>
 						<Sidebar.Pushable
 							className="App"
 							onClick={() => this.setState({ bottomMenuVisible: false })}
 						>
-							<TopNav
-								toggleSidebar={options => this.toggleSidebar(options)}
-								setFilter={val => this.setFilter(val)}
-								fetchHomeTracks={() => this.fetchHomeTracks()}
-								submitSearch={() => this.submitSearch()}
-								query={this.state.query}
-								handleSearchChange={value => {
-									this.setState({ query: value });
-								}}
-							/>
+
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}

@@ -1,0 +1,30 @@
+.ui.secondary.pointing.menu{
+	color: white;
+	text-align: center;
+	margin: 0.5rem 0;
+	height: 50px;
+}
+
+.ui.secondary.pointing.menu>.item {
+	background: transparent;
+	color:#fff;
+	width:21%;
+	text-align: center;
+	margin:0;
+	font-weight: 700;
+	font-size: 1.1rem;
+	border: 2px white solid;
+	padding:10px 10px;
+	margin:0 2%;
+	display: block;
+	transition: 0.25s color, 0.25s background, 0.25s border;
+}
+
+.ui.secondary.pointing.menu>a.item:hover,
+.ui.secondary.pointing.menu>.item:active,
+.ui.secondary.pointing.menu>.item.active,
+.ui.secondary.pointing.menu>.item.active:hover{
+	background: rgb(95, 158, 160);
+	border: rgba(256,256,256,0.75) 2px solid;
+	color: rgba(256,256,256,0.75);
+}

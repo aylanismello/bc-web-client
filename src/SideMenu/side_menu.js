@@ -7,7 +7,7 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 	return (
 		<Sidebar
 			as={Menu}
-			animation="push"
+			animation="overlay"
 			width="thin"
 			visible={visible}
 			icon="labeled"

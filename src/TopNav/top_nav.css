@@ -1,5 +1,7 @@
 .ui.segment.App-top-nav {
-  position: relative;
+/*  position: relative;*/
+  position: fixed;
+  /*top: 0;*/
   background: black;
   display: flex;
   justify-content: space-between;
@@ -7,6 +9,9 @@
   border-radius: 0px;
   padding: 0 1em 0 1em;
   margin: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100px;
 }
 
 img.App-logo {
