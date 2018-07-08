@@ -29,6 +29,14 @@ class Home extends React.Component {
 
 	componentWillMount() {
 		this.props.fetchSuperfilters('custom');
+
+		const trendingSuperFilter = this.props.superFilters.filter(
+			sf => sf.name === 'Trending'
+		)[0];
+
+		if (trendingSuperFilter) {
+			this.props.setHomeTrendingFilter(trendingSuperFilter);
+		}
 	}
 
 	componentWillUpdate(nextProps) {
