@@ -1,14 +1,13 @@
 .SideMenu {
-  top: 100px;
-  position:fixed;
+  top: 69px;
 }
 
-.ui.visible.sidebar {
-  top: 100px;
+.ui.visible.push.sidebar {
+  top: 69px;
 }
 
-.ui.left.sidebar {
-  top: 100px;
+.ui.left.push.sidebar {
+  top: 69px;
 }
 
 .SideMenu-item:hover {

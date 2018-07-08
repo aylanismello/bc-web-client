@@ -28,11 +28,7 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 }
 
 .TrackList-artwork-play-pause-container {
-	width: 100%;
-	max-width: 250px;
-	max-height: auto;
 	position: relative;
-
 }
 
 .TrackList-artwork-play-pause-container img {
@@ -52,7 +48,6 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 }
 
 i.pause.circle.outline.icon.TrackList-play-pause-icon {
-	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
@@ -61,13 +56,11 @@ i.pause.circle.outline.icon.TrackList-play-pause-icon {
 }
 
 i.video.play.outline.icon.TrackList-play-pause-icon {
-	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
 	left: 50%;
-	opacity: 0.75;
 }
 
 .TrackList-play-pause-icon:hover {
@@ -92,59 +85,8 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: white;
-	/*display none DEBUGGING ONLY v*/
-	/*display:none;*/
 }
 
-.ui.relaxed.divided.items .meta, 
-.ui.relaxed.divided.items .description, 
-.ui.relaxed.divided.items .extra {
-	margin:0;
+.ui.relaxed.divided.items > .item {
+	padding: 1.5em 1.5em;
 }
-
-.ui.relaxed.divided.items {
-	width: 100%;
-	max-width: 100%;
-}
-
-.ui.relaxed.divided.items>.item {
-	padding: 0 1.3rem 0 2rem;
-	display: inline-block;
-}
-
-.ui.relaxed.divided.items>.item>.content,
-.ui.relaxed.divided.items>.item>.TrackList-artwork-play-pause-container{
-  display: inline-block;
-  float:left;
-  padding: 0;
-}
-
-
-.ui.relaxed.divided.items .content{
-	/*DEBUG CLASS ONLY ERASE IF NOT NEEDED*/
-	padding: 0;
-	width: 70%;
-}
-
-.ui.items>.item>.content>.header:not(.ui) {
-    font-size: 1em;
-}
-
-
-.ui.relaxed.divided.items .content a.header,
-.ui.relaxed.divided.items .content .TrackList-artist-name,
-.ui.relaxed.divided.items .content .description,
-.ui.relaxed.divided.items .content .extra {
-	color: white;
-	/*display none DEBUGGING ONLY v*/
-	/*display: none;*/
-}
-
-hr.separator {
-	width:75%;
-	border-color: #5a5a5a;
-	margin: 0.75rem auto;
-}
-
-
