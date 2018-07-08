@@ -9,6 +9,10 @@ import {
 	Loader
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import {
+	publisherLocationsToString,
+	formatSoundcloudUserForMap
+} from '../helpers';
 import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';
 
@@ -16,29 +20,6 @@ const MapBox = ReactMapboxGl({
 	accessToken:
 		'pk.eyJ1IjoiYnVybmNhcnRlbCIsImEiOiJjamN4MXN0dm4wdjVoMnFvNW5lMHU2NGI1In0.ZV6FeNJa2M1EFtEQegRRyQ'
 });
-
-const publisherLocationsToString = locationName => {
-	// TODO move earlier in the chain so it's also in the map.
-	if (locationName) {
-		if (!locationName.includes(',')) {
-			// Location only has one part - just return it as-is then.
-			return locationName;
-		} else {
-			// Convert locationName to City, State or City, Country if possible.
-			const parts = locationName
-				.split(', ')
-				.filter(part => part.match(/[a-z]/) && !part.includes('United States'));
-
-			if (parts.length > 2) {
-				return `${parts[0]}, ${parts.slice(-1)[0]}`;
-			} else {
-				return parts.join(', ');
-			}
-		}
-	} else {
-		return '';
-	}
-};
 
 class BCMap extends React.Component {
 	static getRandomFloat(min, max) {
@@ -70,6 +51,14 @@ class BCMap extends React.Component {
 
 	onToggleHover(cursor, { map }) {
 		map.getCanvas().style.cursor = cursor;
+	}
+
+	curatorsWithPosition() {
+		return this.props.data
+			.filter(curator => curator.location.id)
+			.map(curator => {
+				return formatSoundcloudUserForMap(curator);
+			});
 	}
 
 	// add something here to set track from outside.. maybe have this be set at the App level.
@@ -104,7 +93,8 @@ class BCMap extends React.Component {
 	}
 
 	makeCuratorFeatures() {
-		return this.props.data.map(soundcloudUser => {
+		return this.curatorsWithPosition().map(soundcloudUser => {
+			// return this.props.data.map(soundcloudUser => {
 			return (
 				<Feature
 					key={soundcloudUser.soundcloud_user.id}
@@ -125,7 +115,8 @@ class BCMap extends React.Component {
 
 	render() {
 		const { selectedFeature, zoom, center } = this.state;
-		const width = this.props.size === 'small' ? '25vh' : '100vh';
+		// const width = this.props.size === 'small' ? '25vh' : '100vh';
+		const width = `${this.props.size}vh`;
 		const { isSingleUser } = this.props;
 
 		return (

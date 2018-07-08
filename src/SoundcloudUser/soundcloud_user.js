@@ -118,7 +118,7 @@ class SoundcloudUser extends React.Component {
 									data={data}
 									loading={this.props.loading}
 									isSingleUser
-									size="small"
+									size={25}
 								/>
 
 								<Label icon="globe" content={location} />

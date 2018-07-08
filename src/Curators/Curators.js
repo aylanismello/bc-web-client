@@ -14,30 +14,18 @@ import {
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import {
-	publisherLocationsToString,
-	makeTrackTypeBadge,
-	makeBCBadge,
-	formatSoundcloudUserForMap
+	publisherLocationsToString
 } from '../helpers';
 import PaginateButton from '../PaginateButton';
+import CuratorList from '../CuratorList';
 import BCMap from '../BCMap';
 import './Curators.css';
 
 class Curators extends React.Component {
-	state = {
-		view: 'list'
-	};
-
 	componentWillMount() {
 		if (!this.props.curators.length) {
 			this.props.fetchCurators();
 		}
-	}
-
-	curatorsWithPosition() {
-		return this.props.curators.filter(curator => curator.location.id).map(curator => {
-			return formatSoundcloudUserForMap(curator);
-		});
 	}
 
 	renderList(curators) {
@@ -61,7 +49,9 @@ class Curators extends React.Component {
 								</Link>
 								<Label
 									icon="globe"
-									content={publisherLocationsToString({ location: curator.location.name })}
+									content={publisherLocationsToString({
+										location: curator.location.name
+									})}
 								/>
 							</div>
 						</Item>
@@ -87,7 +77,6 @@ class Curators extends React.Component {
 		);
 	}
 	render() {
-		const curators = this.curatorsWithPosition();
 		const view = {
 			list: 0,
 			map: 1
@@ -99,7 +88,9 @@ class Curators extends React.Component {
 					menu={{ secondary: true, pointing: true }}
 					activeIndex={parseInt(view[this.props.view] || 0)}
 					onTabChange={(e, data) => {
-						window.location = `/#curators/${Object.keys(view)[parseInt(data.activeIndex)]}`;
+						window.location = `/#curators/${Object.keys(view)[
+							parseInt(data.activeIndex)
+						]}`;
 					}}
 					panes={[
 						{
@@ -110,9 +101,9 @@ class Curators extends React.Component {
 									<Divider />
 									<p className="About-text-intro About-text">
 										{' '}
-										Burn Cartel is powered by these collectives, labels, and radio shows. Hit us up
-										if you want to see your curation up here.{' '}
-										<Link to="/about"> More info here </Link>
+										Burn Cartel is powered by these collectives, labels, and
+										radio shows. Hit us up if you want to see your curation up
+										here. <Link to="/about"> More info here </Link>
 									</p>
 									<Divider />
 
@@ -121,9 +112,8 @@ class Curators extends React.Component {
 											<Loader> Loading </Loader>
 										</Dimmer>
 
-										{this.state.view === 'list'
-											? this.renderList(curators)
-											: this.renderGallery(curators)}
+
+										<CuratorList curators={this.props.curators} view="list" />
 									</Dimmer.Dimmable>
 									<PaginateButton
 										loading={this.props.loading}
@@ -136,7 +126,12 @@ class Curators extends React.Component {
 						{
 							menuItem: 'Map 🗺',
 							render: () => (
-								<BCMap featureType="soundcloudUser" data={curators} loading={this.props.loading} />
+								<BCMap
+									featureType="soundcloudUser"
+									size={100}
+									data={this.props.curators}
+									loading={this.props.loading}
+								/>
 							)
 						}
 					]}

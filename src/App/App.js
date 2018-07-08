@@ -83,7 +83,7 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
-
+		this.fetchCurators();
 		window.scAudio = this.scAudio;
 	}
 
@@ -718,8 +718,8 @@ class App extends Component {
 									render={() => (
 										<Home
 											playing={this.state.playing}
+											curators={this.state.curators}
 											setHomeTrendingFilter={(trendingSuperFilter) => {
-												debugger;
 												this.setSuperfilter(trendingSuperFilter);
 											}}
 											superFilters={this.state.superFilters}

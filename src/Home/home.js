@@ -15,8 +15,10 @@ import {
 	Label
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
+import BCMap from '../BCMap';
 import { baseUrl } from '../config';
 import PlayButton from '../PlayButton';
+import CuratorList from '../CuratorList';
 import './Home.css';
 
 class Home extends React.Component {
@@ -178,22 +180,29 @@ class Home extends React.Component {
 					</Container>
 				</Segment>
 
-				<Grid stackable columns={2}>
-					<Grid.Column className="Home-widget">
-						<Segment>
-							<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
-							<Divider />
-							{this.props.trackListWidget}
-						</Segment>
-					</Grid.Column>
-					<Grid.Column className="Home-widget">
-						<Segment>
-							<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
-							<Divider />
-							{this.props.trackListWidget}
-						</Segment>
-					</Grid.Column>
-				</Grid>
+				<div className="Home-widget-container">
+					<Grid stackable columns={2}>
+						<Grid.Column className="Home-widget">
+							<Segment>
+								<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
+								<Divider />
+								{this.props.trackListWidget}
+							</Segment>
+						</Grid.Column>
+						<Grid.Column className="Home-widget">
+							<Segment>
+								<Header as="h3">Trending Curators</Header>
+								<Divider />
+								<BCMap
+									featureType="soundcloudUser"
+									size={80}
+									data={this.props.curators}
+								/>
+								<CuratorList curators={this.props.curators} view="list" />
+							</Segment>
+						</Grid.Column>
+					</Grid>
+				</div>
 			</Container>
 		);
 	}
