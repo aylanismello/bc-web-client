@@ -195,6 +195,9 @@ class Home extends React.Component {
 								<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
 								<Divider />
 								{this.props.trackListWidget}
+								<Header as="h3">
+									More on <Link to="/feed"> Feed </Link>
+								</Header>
 							</Segment>
 						</Grid.Column>
 						<Grid.Column className="Home-widget">
@@ -206,6 +209,10 @@ class Home extends React.Component {
 									size={80}
 									data={this.props.curators}
 								/>
+								<Header as="h3">
+									More on <Link to="/curators"> our Curators page </Link>
+								</Header>
+								<Divider />
 								<CuratorList curators={this.props.curators} view="list" />
 							</Segment>
 						</Grid.Column>
