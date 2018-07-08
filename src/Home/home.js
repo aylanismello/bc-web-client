@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import * as _ from 'lodash';
 import {
 	Container,
 	Header,
 	Segment,
 	Icon,
+	Divider,
 	Form,
 	Message,
 	Button,
@@ -24,6 +26,18 @@ class Home extends React.Component {
 
 	componentWillMount() {
 		this.props.fetchSuperfilters('custom');
+	}
+
+	componentWillUpdate(nextProps) {
+		const trendingSuperFilter = nextProps.superFilters.filter(
+			sf => sf.name === 'Trending'
+		)[0];
+
+		// if (_.isEqual(nextProps.tracks, this.props.tracks) && trendingSuperFilter) {
+		debugger;
+		if (trendingSuperFilter) {
+			this.props.setHomeTrendingFilter(trendingSuperFilter);
+		}
 	}
 
 	renderBurnCartelGreeting() {
@@ -109,56 +123,66 @@ class Home extends React.Component {
 			playing,
 			homePlayDisabled,
 			initPlayer,
-			homePageTrack
+			homePageTrack,
+			superFilters
 		} = this.props;
 
 		return (
-			<Segment
-				inverted
-				textAlign="center"
-				style={{ minHeight: 350, padding: '1em 0em' }}
-				vertical
-			>
-				<Container text>
-					{initPlayer || (
-						<div className="Home-BC-greeting-container">
-							<Header
-								as="h1"
-								content="Welcome to Burn Cartel"
-								inverted
-								style={{
-									fontSize: mobile ? '2em' : '4em',
-									fontWeight: 'normal',
-									marginBottom: 0
-									// marginTop: mobile ? '1.5em' : '3em'
-								}}
-							/>
+			<Container>
+				<Segment
+					inverted
+					textAlign="center"
+					style={{ minHeight: 350, padding: '1em 0em' }}
+					vertical
+				>
+					<Container text>
+						{initPlayer || (
+							<div className="Home-BC-greeting-container">
+								<Header
+									as="h1"
+									content="Welcome to Burn Cartel"
+									inverted
+									style={{
+										fontSize: mobile ? '2em' : '4em',
+										fontWeight: 'normal',
+										marginBottom: 0
+										// marginTop: mobile ? '1.5em' : '3em'
+									}}
+								/>
 
-							<Header
-								as="h2"
-								content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
-								inverted
-								style={{
-									fontSize: mobile ? '1.5em' : '1.7em',
-									fontWeight: 'normal',
-									marginTop: mobile ? '0.5em' : '1.5em'
-								}}
+								<Header
+									as="h2"
+									content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
+									inverted
+									style={{
+										fontSize: mobile ? '1.5em' : '1.7em',
+										fontWeight: 'normal',
+										marginTop: mobile ? '0.5em' : '1.5em'
+									}}
+								/>
+							</div>
+						)}
+						{initPlayer ? (
+							this.renderBurnCartelGreeting()
+						) : (
+							<PlayButton
+								size="massive"
+								playingTrack={
+									(playingTrack.id && playingTrack) || homePageTrack
+								}
+								togglePlay={togglePlay}
+								playing={playing}
+								disabled={homePlayDisabled}
 							/>
-						</div>
-					)}
-					{initPlayer ? (
-						this.renderBurnCartelGreeting()
-					) : (
-						<PlayButton
-							size="massive"
-							playingTrack={(playingTrack.id && playingTrack) || homePageTrack}
-							togglePlay={togglePlay}
-							playing={playing}
-							disabled={homePlayDisabled}
-						/>
-					)}
-				</Container>
-			</Segment>
+						)}
+					</Container>
+				</Segment>
+				{/* <div className="Home-widget">
+					<Header as="h2">Top of Feed</Header>
+					<Divider />
+					{this.props.trackListWidget}
+				</div> */}
+			</Container>
 		);
 	}
 }

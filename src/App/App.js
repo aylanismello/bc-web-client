@@ -18,6 +18,7 @@ import SoundcloudUser from '../SoundcloudUser';
 import TopNav from '../TopNav';
 import SuperFilterPanel from '../Feed/SuperFilterPanel';
 import BottomNav from '../BottomNav';
+import TrackList from '../TrackList';
 import ScrollToTop from '../scroll_to_top';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
@@ -433,6 +434,7 @@ class App extends Component {
 			}
 		}
 	}
+
 	feedInstance(displayPage = 'home', feedType, superfilterId) {
 		const selectedSuperFilter = this.getSuperFilterById(superfilterId);
 
@@ -454,6 +456,24 @@ class App extends Component {
 			>
 				{feedType && this.renderSuperFilterPanel(feedType, superfilterId)}
 			</Feed>
+		);
+	}
+
+	renderTrackListWidget() {
+		return (
+			<TrackList
+				isWidget
+				tracks={this.state.tracks}
+				playing={this.state.playing}
+				loading={this.state.loading}
+				donePaginating={this.state.donePaginating}
+				trackFilters={this.state.trackFilters}
+				setTrackFilters={filters => this.setTrackFilters(filters)}
+				setIsSubmission={isSubmission => this.setIsSubmission(isSubmission)}
+				playingTrackId={this.state.playingTrack.id}
+				togglePlay={trackId => this.togglePlay(trackId)}
+				selectedSuperFilter={{ name: 'Trending' }}
+			/>
 		);
 	}
 
@@ -698,11 +718,18 @@ class App extends Component {
 									render={() => (
 										<Home
 											playing={this.state.playing}
+											setHomeTrendingFilter={(trendingSuperFilter) => {
+												debugger;
+												this.setSuperfilter(trendingSuperFilter);
+											}}
+											superFilters={this.state.superFilters}
 											homePageTrack={
 												this.state.tracks[0] && this.state.tracks[0].track
 											}
+											trackListWidget={this.renderTrackListWidget()}
 											setError={error =>
 												this.setState({ error, success: null })}
+											tracks={this.state.tracks}
 											setSuccess={success =>
 												this.setState({ success, error: null })}
 											initPlayer={this.state.initPlayer}

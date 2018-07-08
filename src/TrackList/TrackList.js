@@ -36,8 +36,11 @@ class TrackList extends React.Component {
 			headerText,
 			displayPage,
 			feedType,
-			trackFilters
+			trackFilters,
+			isWidget
 		} = this.props;
+
+		const daTracks = isWidget ? tracks.slice(0, 5) : tracks;
 
 		return (
 			<div className="TrackList-container">
@@ -70,7 +73,7 @@ class TrackList extends React.Component {
 				{/* <Divider /> */}
 
 				<Item.Group relaxed divided>
-					{tracks.map((currentTrack, idx) => {
+					{daTracks.map((currentTrack, idx) => {
 						const { track, publisher, curators } = currentTrack;
 						const trackImageProps = {
 							fluid: true,
@@ -128,66 +131,69 @@ class TrackList extends React.Component {
 											</Link>
 										</div>
 									</Item.Meta>
-
-									<Item.Header>
-										<Popup
-											trigger={
-												<Statistic
-													className="TrackList-selection-count"
-													size="tiny"
-												>
-													<Statistic.Value>
-														<Icon name="soundcloud" size="tiny" />
-														{/* {feedType === 'selection' ? curators.length : track.submission_count} */}
-														{curators.length}
-													</Statistic.Value>
-													<Statistic.Label>
-														{/* {feedType === 'selection' ? 'Curators' : 'Submissions'} */}
-														Curators
-													</Statistic.Label>
-												</Statistic>
-											}
-											position="top center"
-											hoverable
-											basic
-										>
-											<Item.Group>
-												{curators.slice(0, 8).map(curator => (
-													<Link
-														key={curator.name}
-														className="TrackList-curator-popup-container"
-														to={`/soundcloud_users/${curator.id}`}
-													>
-														<Label
-															as="a"
-															basic
-															className="TrackList-curator-list-items"
+									{!isWidget && (
+										<div>
+											<Item.Header>
+												<Popup
+													trigger={
+														<Statistic
+															className="TrackList-selection-count"
+															size="tiny"
 														>
-															<Image
-																avatar
-																spaced="right"
-																src={curator.avatar_url}
-															/>
-															{curator.name}
-														</Label>
-													</Link>
-												))}
-											</Item.Group>
-										</Popup>
-									</Item.Header>
-									<Item.Description>
-										Released {track.created_at_external}
-									</Item.Description>
-									<Item.Extra>
-										{makeBCBadge(track)}
-										{makeTrackTypeBadge(track)}
-										{publisherLocationsToString(publisher[0]) ? (
-											<Label
-												icon="globe"
-												content={publisherLocationsToString(publisher[0])}
-											/>
-										) : null}
-									</Item.Extra>
+															<Statistic.Value>
+																<Icon name="soundcloud" size="tiny" />
+																{/* {feedType === 'selection' ? curators.length : track.submission_count} */}
+																{curators.length}
+															</Statistic.Value>
+															<Statistic.Label>
+																{/* {feedType === 'selection' ? 'Curators' : 'Submissions'} */}
+																Curators
+															</Statistic.Label>
+														</Statistic>
+													}
+													position="top center"
+													hoverable
+													basic
+												>
+													<Item.Group>
+														{curators.slice(0, 8).map(curator => (
+															<Link
+																key={curator.name}
+																className="TrackList-curator-popup-container"
+																to={`/soundcloud_users/${curator.id}`}
+															>
+																<Label
+																	as="a"
+																	basic
+																	className="TrackList-curator-list-items"
+																>
+																	<Image
+																		avatar
+																		spaced="right"
+																		src={curator.avatar_url}
+																	/>
+																	{curator.name}
+																</Label>
+															</Link>
+														))}
+													</Item.Group>
+												</Popup>
+											</Item.Header>
+											<Item.Description>
+												Released {track.created_at_external}
+											</Item.Description>
+											<Item.Extra>
+												{makeBCBadge(track)}
+												{makeTrackTypeBadge(track)}
+												{publisherLocationsToString(publisher[0]) ? (
+													<Label
+														icon="globe"
+														content={publisherLocationsToString(publisher[0])}
+													/>
+												) : null}
+											</Item.Extra>
+										</div>
+									)}
 								</Item.Content>
 							</Item>
 						);
@@ -195,7 +201,7 @@ class TrackList extends React.Component {
 				</Item.Group>
 				<Divider />
 
-				{tracks && tracks.length === 1 ? null : (
+				{(tracks && tracks.length === 1) || isWidget ? null : (
 					<div className="TrackList-Bottom-Buttons-Container">
 						<PaginateButton
 							loading={loading}
