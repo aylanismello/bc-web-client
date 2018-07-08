@@ -868,7 +868,7 @@ class App extends Component {
 								/>
 								<Route path="/about" component={About} />
 							</Sidebar.Pusher>
-							<div className="App-separator" style={{ height: '70px' }} />
+							<div className="App-separator" style={{ height: '100px' }} />
 						</Sidebar.Pushable>
 
 						{this.state.initPlayer && (

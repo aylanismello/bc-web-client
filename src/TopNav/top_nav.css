@@ -14,6 +14,13 @@
   height: 100px;
 }
 
+.BCLogo-container {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-48%,-50%);
+}
+
 img.App-logo {
   width: 100%;
   height: auto;
@@ -27,6 +34,7 @@ img.App-logo {
   flex: 1;
   display: flex;
   justify-content: center;
+  color: rgb(95, 158, 160);
 }
 
 /* https://stackoverflow.com/questions/32378953/keep-the-middle-item-centered-

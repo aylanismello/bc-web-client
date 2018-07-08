@@ -99,6 +99,11 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	/*display:none;*/
 }
 
+.ui.grid {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
 .ui.relaxed.divided.items .meta, 
 .ui.relaxed.divided.items .description, 
 .ui.relaxed.divided.items .extra {
@@ -117,7 +122,7 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 .ui.relaxed.divided.items .item>.TrackList-artwork-play-pause-container{
 	width: auto;
 	height: 100px;
-	margin-right: 5%;
+	margin-right: 2.5%;
 }
 
 .ui.relaxed.divided.items .content{
@@ -141,7 +146,7 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 }
 
 .ui.statistic>.value~.label{
-	font-size: 0.85rem;
+	font-size: 0.75rem;
 }
 
 .ui.relaxed.divided.items .content .header a {
@@ -172,9 +177,9 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	left: -16px;
 }
 
-.header .TrackList-selection-count .value{
+.header .TrackList-selection-count.statistic .value{
 	left: 17px;
-	font-size: 1.75rem !important;
+	font-size: 1.5rem !important;
 }
 
 .header .TrackList-selection-count .label{
@@ -198,4 +203,8 @@ hr.separator {
 	display: inline-block;
 }
 
+
+.TrackList-Bottom-Buttons-Container > .TrackList-Scroll-Button {
+	color: #fff;
+}
 

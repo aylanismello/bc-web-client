@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './bc_logo.png';
+import logo from './bc_logo_transparent.png';
 import './bc_logo.css';
 
 const BCLogo = ({ width }) => (
@@ -9,7 +9,7 @@ const BCLogo = ({ width }) => (
 );
 
 BCLogo.defaultProps = {
-	width: 80
+	width: 100
 };
 
 export default BCLogo;

@@ -30,7 +30,6 @@ class TopNav extends React.Component {
 					<Icon
 						name="content"
 						size="big"
-						color="blue"
 						className="App-sidebar-button"
 						onClick={() => this.props.toggleSidebar()}
 					/>
