@@ -11,6 +11,7 @@ import {
 	Form,
 	Message,
 	Button,
+	Grid,
 	Label
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
@@ -33,8 +34,6 @@ class Home extends React.Component {
 			sf => sf.name === 'Trending'
 		)[0];
 
-		// if (_.isEqual(nextProps.tracks, this.props.tracks) && trendingSuperFilter) {
-		debugger;
 		if (trendingSuperFilter) {
 			this.props.setHomeTrendingFilter(trendingSuperFilter);
 		}
@@ -89,6 +88,7 @@ class Home extends React.Component {
 										this.props.setSuccess(
 											'Successfully added your info to our DB!'
 										);
+										this.setState({ email: '' });
 									}
 								});
 						}}
@@ -103,7 +103,7 @@ class Home extends React.Component {
 							/>
 							<Button
 								type="submit"
-								disabled={this.state.loadingEmail}
+								disabled={this.state.loadingEmail || !this.state.email.trim()}
 								loading={this.state.loadingEmail}
 							>
 								Submit
@@ -177,11 +177,23 @@ class Home extends React.Component {
 						)}
 					</Container>
 				</Segment>
-				{/* <div className="Home-widget">
-					<Header as="h2">Top of Feed</Header>
-					<Divider />
-					{this.props.trackListWidget}
-				</div> */}
+
+				<Grid stackable columns={2}>
+					<Grid.Column className="Home-widget">
+						<Segment>
+							<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
+							<Divider />
+							{this.props.trackListWidget}
+						</Segment>
+					</Grid.Column>
+					<Grid.Column className="Home-widget">
+						<Segment>
+							<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
+							<Divider />
+							{this.props.trackListWidget}
+						</Segment>
+					</Grid.Column>
+				</Grid>
 			</Container>
 		);
 	}
