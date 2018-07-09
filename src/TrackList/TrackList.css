@@ -28,7 +28,11 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 }
 
 .TrackList-artwork-play-pause-container {
+	width: 100%;
+	max-width: 250px;
+	max-height: auto;
 	position: relative;
+	background: gradient(linear, left top, left bottom, from(#e66465), to(#9198e5))
 }
 
 .TrackList-artwork-play-pause-container img {
@@ -89,4 +93,9 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 
 .ui.relaxed.divided.items > .item {
 	padding: 1.5em 1.5em;
+}
+
+.TrackList-artwork-play-pause-container img {
+	display: block;
+	box-shadow: 5px 5px 10px;
 }
