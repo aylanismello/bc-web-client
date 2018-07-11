@@ -39,6 +39,17 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 	display: block;
 }
 
+
+@media (max-width: 770px) {
+	.ui.relaxed.divided.items .item>.TrackList-artwork-play-pause-container{
+		width: auto;
+		/* height: 100px; */
+		/* margin-right: 2.5%; */
+	}
+}
+
+
+
 .TrackList-curator-popup-container {
 	display: block;
 }
@@ -52,6 +63,7 @@ i.arrow.alternate.circle.up.outline.big.icon.TrackList-Scroll-Button {
 }
 
 i.pause.circle.outline.icon.TrackList-play-pause-icon {
+	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
@@ -60,11 +72,13 @@ i.pause.circle.outline.icon.TrackList-play-pause-icon {
 }
 
 i.video.play.outline.icon.TrackList-play-pause-icon {
+	height: auto;
 	font-size: 40px;
 	top: 50%;
 	position: absolute;
 	transform: translate(-50%, -50%);
 	left: 50%;
+	opacity: 0.75;
 }
 
 .TrackList-play-pause-icon:hover {
@@ -77,6 +91,7 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 
 .TrackList-artist-image-container {
 	width: 30px;
+	margin-left: 5px;
 }
 
 .TrackList-artist-image {
