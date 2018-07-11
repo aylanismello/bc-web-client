@@ -74,6 +74,13 @@ const SuperFilterPanel = props => {
 								<SuperFilterButton
 									name={superFilter.name}
 									onClick={() => {
+										window.amplitude
+											.getInstance()
+											.logEvent('Change Superfilter', {
+												id: selectedSuperFilterId,
+												name: superFilter.name
+											});
+
 										window.location = `/#feed/${superFilter.superfilter_type}?id=${superFilter.id}`;
 									}}
 									selected={superFilter.id === selectedSuperFilterId}

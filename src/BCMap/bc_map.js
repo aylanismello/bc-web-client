@@ -64,6 +64,13 @@ class BCMap extends React.Component {
 	// add something here to set track from outside.. maybe have this be set at the App level.
 
 	markerClick(selectedFeature, { feature }) {
+		window.amplitude
+			.getInstance()
+			.logEvent('Map - Click on SoundcloudUser Marker', {
+				id: selectedFeature.id,
+				name: selectedFeature.name
+			});
+
 		this.setState({
 			center: feature.geometry.coordinates,
 			zoom: [4],
@@ -153,11 +160,19 @@ class BCMap extends React.Component {
 								className="BCMap-Popup-Container"
 								key={selectedFeature.id}
 								coordinates={selectedFeature.position}
-								onClick={() =>
-									(window.location = `#/soundcloud_users/${this.props
+								onClick={() => {
+									window.amplitude
+										.getInstance()
+										.logEvent('Map - Click on SoundcloudUser Link', {
+											id: selectedFeature.id,
+											name: selectedFeature.name
+										});
+
+									window.location = `#/soundcloud_users/${this.props
 										.featureType === 'track'
 										? selectedFeature.soundcloud_user_id
-										: selectedFeature.id}`)}
+										: selectedFeature.id}`;
+								}}
 							>
 								<div>
 									<span>{selectedFeature.name} </span>

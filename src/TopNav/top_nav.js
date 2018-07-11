@@ -32,13 +32,22 @@ class TopNav extends React.Component {
 						size="big"
 						color="blue"
 						className="App-sidebar-button"
-						onClick={() => this.props.toggleSidebar()}
+						onClick={() => {
+							this.props.toggleSidebar();
+							window.amplitude.getInstance().logEvent('Open/Close Sidebar');
+						}}
 					/>
 				</div>
 
 				<div className="App-top-nav-side">
-					{/* <Link to="/" onClick={() => this.props.fetchHomeTracks()}> */}
-					<Link to="/">
+					<Link
+						to="/"
+						onClick={() => {
+							window.amplitude.getInstance().logEvent('Click on BC Logo', {
+								fromPage: window.location.href
+							});
+						}}
+					>
 						<BCLogo />
 					</Link>
 				</div>

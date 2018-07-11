@@ -14,34 +14,34 @@ const SideMenu = ({ visible, clickedOnMenuItem }) => {
 			className="SideMenu"
 			vertical
 		>
-			<Link to="/feed" onClick={clickedOnMenuItem}>
+			<Link to="/feed" onClick={() => clickedOnMenuItem('feed')}>
 				<Menu.Item name="radio" className="SideMenu-item">
 					<Icon name="radio" />
 					Feed
 				</Menu.Item>
 			</Link>
-			<Link to="/curators" onClick={clickedOnMenuItem}>
+			<Link to="/curators" onClick={() => clickedOnMenuItem('curators')}>
 				<Menu.Item name="record" className="SideMenu-item">
 					<Icon name="music" />
 					Curators
 				</Menu.Item>
 			</Link>
 
-			{/* <Link to="/submit" onClick={clickedOnMenuItem}>
-				<Menu.Item name="external share" className="SideMenu-item" onClick={clickedOnMenuItem}>
+			{/* <Link to="/submit" onClick={() => clickedOnMenuItem()}>
+				<Menu.Item name="external share" className="SideMenu-item" onClick={() => clickedOnMenuItem()}>
 					<Icon name="external share" />
 					Submit
 				</Menu.Item>
 			</Link> */}
 
-			{/* <Link to="/mixes" onClick={clickedOnMenuItem}>
+			{/* <Link to="/mixes" onClick={() => clickedOnMenuItem()}>
 				<Menu.Item name="music" className="SideMenu-item">
 					<Icon name="music" />
 					Mixes
 				</Menu.Item>
 			</Link> */}
 
-			<Link to="/about" onClick={clickedOnMenuItem}>
+			<Link to="/about" onClick={() => clickedOnMenuItem('about')}>
 				<Menu.Item name="code" className="SideMenu-item">
 					<Icon name="code" />
 					About

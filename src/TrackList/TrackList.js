@@ -103,22 +103,66 @@ class TrackList extends React.Component {
 											? 'pause circle'
 											: 'video play'} outline`}
 										className="TrackList-play-pause-icon"
-										onClick={() => togglePlay(track.id)}
+										onClick={() => {
+											window.amplitude
+												.getInstance()
+												.logEvent('TrackList - Toggle Play', {
+													id: track.id,
+													name: track.name
+												});
+											togglePlay(track.id);
+										}}
 									/>
 								</div>
 
 								<Item.Content>
 									<Item.Header>
-										<Link to={`/tracks/${track.id}`}>{track.name}</Link>
+										<Link
+											to={`/tracks/${track.id}`}
+											onClick={() => {
+												window.amplitude
+													.getInstance()
+													.logEvent('TrackList - Click on Track Name', {
+														id: track.id,
+														name: track.name
+													});
+											}}
+										>
+											{track.name}
+										</Link>
 									</Item.Header>
 									<Item.Meta className="TrackList-artist-info">
-										<Link to={`/soundcloud_users/${publisher[0].id}`}>
+										<Link
+											to={`/soundcloud_users/${publisher[0].id}`}
+											onClick={() => {
+												window.amplitude
+													.getInstance()
+													.logEvent('TrackList - Click on Artist Name', {
+														trackId: track.id,
+														trackName: track.name,
+														artistId: publisher[0].id,
+														artistName: publisher[0].name
+													});
+											}}
+										>
 											<div className="TrackList-artist-name">
 												{publisher[0].name}
 											</div>{' '}
 										</Link>
 										<div className="TrackList-artist-image-container">
-											<Link to={`/soundcloud_users/${publisher[0].id}`}>
+											<Link
+												to={`/soundcloud_users/${publisher[0].id}`}
+												onClick={() => {
+													window.amplitude
+														.getInstance()
+														.logEvent('TrackList - Click on Artist Avatar', {
+															trackId: track.id,
+															trackName: track.name,
+															artistId: publisher[0].id,
+															artistName: publisher[0].name
+														});
+												}}
+											>
 												<img
 													className="TrackList-artist-image"
 													src={publisher[0].avatar_url}
@@ -161,6 +205,14 @@ class TrackList extends React.Component {
 																key={curator.name}
 																className="TrackList-curator-popup-container"
 																to={`/soundcloud_users/${curator.id}`}
+																onClick={() => {
+																	window.amplitude
+																		.getInstance()
+																		.logEvent('TrackList - Click on Curator', {
+																			id: curator.id,
+																			name: curator.name
+																		});
+																}}
 															>
 																<Label
 																	as="a"

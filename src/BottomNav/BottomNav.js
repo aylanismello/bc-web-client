@@ -26,22 +26,58 @@ const BottomNav = ({
 		<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 			{playingTrack.id ? (
 				<Item>
-					<Link to={`/tracks/${playingTrack.data.track.id}`}>
+					<Link
+						to={`/tracks/${playingTrack.data.track.id}`}
+						onClick={() => {
+							window.amplitude
+								.getInstance()
+								.logEvent('Click Player - Album Art', {
+									trackId: playingTrack.data.track.id,
+									trackName: playingTrack.data.track.name
+								});
+						}}
+					>
 						<Item.Image
 							src={playingTrack.data.track.artwork_url}
 							className="App-bottom-nav-track-image"
 							size="tiny"
 						/>
 					</Link>
-					<Item.Content verticalAlign="middle" className="App-bottom-nav-track-content">
+					<Item.Content
+						verticalAlign="middle"
+						className="App-bottom-nav-track-content"
+					>
 						<Item.Header className="App-bottom-nav-track-info-name">
-							<Link to={`/tracks/${playingTrack.data.track.id}`} style={{ color: 'white' }}>
+							<Link
+								to={`/tracks/${playingTrack.data.track.id}`}
+								style={{ color: 'white' }}
+								onClick={() => {
+									window.amplitude
+										.getInstance()
+										.logEvent('Click Player - Track Name', {
+											trackId: playingTrack.data.track.id,
+											trackName: playingTrack.data.track.name
+										});
+								}}
+							>
 								{playingTrack.data.track.name}
 							</Link>
 						</Item.Header>
 						<Item.Meta>
 							<span className="App-bottom-nav-track-info-publisher">
-								<Link to={`/soundcloud_users/${playingTrack.data.publisher[0].id}`} style={{ color: 'gray' }}>
+								<Link
+									to={`/soundcloud_users/${playingTrack.data.publisher[0].id}`}
+									style={{ color: 'gray' }}
+									onClick={() => {
+										window.amplitude
+											.getInstance()
+											.logEvent('Click Player - Artist Name', {
+												trackId: playingTrack.data.track.id,
+												trackName: playingTrack.data.track.name,
+												artistName: playingTrack.data.publisher[0].name
+											});
+									}}
+								>
 									{playingTrack.data.publisher[0].name}
 								</Link>
 							</span>
@@ -51,7 +87,11 @@ const BottomNav = ({
 			) : null}
 		</div>
 
-		<PlayButton playing={playing} playingTrack={playingTrack} togglePlay={togglePlay} />
+		<PlayButton
+			playing={playing}
+			playingTrack={playingTrack}
+			togglePlay={togglePlay}
+		/>
 
 		<div className="App-bottom-nav App-bottom-nav-box">
 			<FiltersMenu

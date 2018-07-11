@@ -680,8 +680,14 @@ class App extends Component {
 
 							<SideMenu
 								visible={this.state.sideMenuVisible}
-								clickedOnMenuItem={() =>
-									this.toggleSidebar({ clickedOutsideMenu: true })}
+								clickedOnMenuItem={menuItem => {
+									window.amplitude
+										.getInstance()
+										.logEvent('Click on Menu Item', {
+											menuItem
+										});
+									this.toggleSidebar({ clickedOutsideMenu: true });
+								}}
 							/>
 
 							<Sidebar.Pusher
@@ -719,7 +725,10 @@ class App extends Component {
 										<Home
 											playing={this.state.playing}
 											curators={this.state.curators}
-											setHomeTrendingFilter={(trendingSuperFilter, forceToSame) => {
+											setHomeTrendingFilter={(
+												trendingSuperFilter,
+												forceToSame
+											) => {
 												this.setSuperfilter(trendingSuperFilter);
 											}}
 											superFilters={this.state.superFilters}

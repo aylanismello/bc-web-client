@@ -11,9 +11,34 @@ const PlayButton = ({ playing, playingTrack, togglePlay, size, disabled }) => (
 			color="pink"
 			className="App-filters-toggle-icon"
 			onClick={() => {
+				const isHome = size === 'massive';
+
 				if (!disabled) {
+					if (isHome) {
+						window.amplitude
+							.getInstance()
+							.logEvent('Home - Click on Giant Play', {
+								clickedWhileLoading: false
+							});
+					} else {
+						window.amplitude
+							.getInstance()
+							.logEvent('Track Player - Click on Play', { playing: !playing });
+					}
 					const { id } = playingTrack;
 					togglePlay(id);
+				} else {
+					if (isHome) {
+						window.amplitude
+							.getInstance()
+							.logEvent('Home - Click on Giant Play', {
+								clickedWhileLoading: true
+							});
+					} else {
+						window.amplitude
+							.getInstance()
+							.logEvent('Track Player - Click on Play', { playing });
+					}
 				}
 			}}
 		/>

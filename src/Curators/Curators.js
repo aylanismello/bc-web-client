@@ -13,9 +13,7 @@ import {
 	Label
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import {
-	publisherLocationsToString
-} from '../helpers';
+import { publisherLocationsToString } from '../helpers';
 import PaginateButton from '../PaginateButton';
 import CuratorList from '../CuratorList';
 import BCMap from '../BCMap';
@@ -28,54 +26,6 @@ class Curators extends React.Component {
 		}
 	}
 
-	renderList(curators) {
-		return (
-			<Item.Group relaxed divided>
-				{curators.map((curator, idx) => {
-					return (
-						<Item key={curator.id}>
-							<div className="Curators-curator-list-item">
-								<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
-									{/* <Label color="teal">#{idx + 1}</Label> */}
-									<Label as="a" basic>
-										<Image
-											avatar
-											spaced="right"
-											src={curator.soundcloud_user.avatar_url}
-											style={{ border: '#df5353 solid 5px' }}
-										/>
-										{curator.soundcloud_user.name}
-									</Label>
-								</Link>
-								<Label
-									icon="globe"
-									content={publisherLocationsToString({
-										location: curator.location.name
-									})}
-								/>
-							</div>
-						</Item>
-					);
-				})}
-			</Item.Group>
-		);
-	}
-
-	renderGallery(curators) {
-		return (
-			<Card.Group>
-				{curators.map(curator => {
-					return (
-						<Link to={`/soundcloud_users/${curator.soundcloud_user.id}`}>
-							<Card.Content>
-								<Image src={curator.soundcloud_user.avatar_url} size="tiny" />
-							</Card.Content>
-						</Link>
-					);
-				})}
-			</Card.Group>
-		);
-	}
 	render() {
 		const view = {
 			list: 0,
@@ -86,11 +36,17 @@ class Curators extends React.Component {
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
-					activeIndex={parseInt(view[this.props.view] || 0)}
+					activeIndex={parseInt(view[this.props.view] || 0, 10)}
 					onTabChange={(e, data) => {
-						window.location = `/#curators/${Object.keys(view)[
-							parseInt(data.activeIndex)
-						]}`;
+						const viewType = Object.keys(view)[parseInt(data.activeIndex, 10)];
+
+						window.amplitude
+							.getInstance()
+							.logEvent('Change Curators View Tab', {
+								tab: viewType
+							});
+
+						window.location = `/#curators/${viewType}`;
 					}}
 					panes={[
 						{
@@ -111,7 +67,6 @@ class Curators extends React.Component {
 										<Dimmer active={this.props.loading} inverted>
 											<Loader> Loading </Loader>
 										</Dimmer>
-
 
 										<CuratorList curators={this.props.curators} view="list" />
 									</Dimmer.Dimmable>

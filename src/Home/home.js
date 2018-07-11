@@ -65,17 +65,72 @@ class Home extends React.Component {
 				</Segment>
 				<Segment>
 					<div className="Home-BC-description">
-						We make <Link to="/feed"> Feed </Link>, BC Radio, and{' '}
-						<Link to="/about"> more </Link>.
+						We make{' '}
+						<Link
+							to="/feed"
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('Home - Click on Banner CTO ', {
+										itemClicked: 'feed'
+									});
+							}}
+						>
+							{' '}
+							Feed{' '}
+						</Link>, BC Radio, and{' '}
+						<Link
+							to="/about"
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('Home - Click on Banner CTO ', {
+										itemClicked: 'about'
+									});
+							}}
+						>
+							{' '}
+							more{' '}
+						</Link>.
 					</div>
 					<div className="Home-social-links">
-						<a href="https://soundcloud.com/burncartel" target="_blank">
+						<a
+							href="https://soundcloud.com/burncartel"
+							target="_blank"
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('Home - Click on Banner CTO ', {
+										itemClicked: 'soundcloud'
+									});
+							}}
+						>
 							<Icon link size="huge" name="soundcloud" color="pink" />
 						</a>
-						<a href="https://instagram.com/burncartel" target="_blank">
+						<a
+							href="https://instagram.com/burncartel"
+							target="_blank"
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('Home - Click on Banner CTO ', {
+										itemClicked: 'instagram'
+									});
+							}}
+						>
 							<Icon link size="huge" name="instagram" color="pink" />
 						</a>
-						<a href="https://twitter.com/burncartel" target="_blank">
+						<a
+							href="https://twitter.com/burncartel"
+							target="_blank"
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('Home - Click on Banner CTO ', {
+										itemClicked: 'twitter'
+									});
+							}}
+						>
 							<Icon link size="huge" name="twitter" color="pink" />
 						</a>
 					</div>
@@ -110,6 +165,13 @@ class Home extends React.Component {
 								onChange={e => this.setState({ email: e.currentTarget.value })}
 								type="text"
 								placeholder="Email"
+								onClick={() => {
+									window.amplitude
+										.getInstance()
+										.logEvent('Home - Click on Banner CTO ', {
+											itemClicked: 'emailField'
+										});
+								}}
 							/>
 							<Button
 								type="submit"
@@ -196,7 +258,20 @@ class Home extends React.Component {
 								<Divider />
 								{this.props.trackListWidget}
 								<Header as="h3">
-									More on <Link to="/feed"> Feed </Link>
+									More on{' '}
+									<Link
+										to="/feed"
+										onClick={() => {
+											window.amplitude
+												.getInstance()
+												.logEvent('Home - Click on Expand Widget', {
+													widget: 'feed'
+												});
+										}}
+									>
+										{' '}
+										Feed{' '}
+									</Link>
 								</Header>
 							</Segment>
 						</Grid.Column>
@@ -210,7 +285,20 @@ class Home extends React.Component {
 									data={this.props.curators}
 								/>
 								<Header as="h3">
-									More on <Link to="/curators"> our Curators page </Link>
+									More on{' '}
+									<Link
+										to="/curators"
+										onClick={() => {
+											window.amplitude
+												.getInstance()
+												.logEvent('Home - Click on Expand Widget', {
+													widget: 'curators'
+												});
+										}}
+									>
+										{' '}
+										our Curators page{' '}
+									</Link>
 								</Header>
 								<Divider />
 								<CuratorList curators={this.props.curators} view="list" />

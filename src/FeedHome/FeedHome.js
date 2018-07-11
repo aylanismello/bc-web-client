@@ -28,10 +28,21 @@ class FeedHome extends React.Component {
 			<Container>
 				<Tab
 					menu={{ secondary: true, pointing: true }}
-					activeIndex={parseInt(superfilter_types[this.props.superfilter_type] || 0)}
+					activeIndex={parseInt(
+						superfilter_types[this.props.superfilter_type] || 0
+					)}
 					onTabChange={(e, data) => {
-						window.location =
-							`/#feed/${Object.keys(superfilter_types)[parseInt(data.activeIndex)]}`;
+						const selectedSuperfilterType = Object.keys(superfilter_types)[
+							parseInt(data.activeIndex)
+						];
+
+						window.amplitude
+							.getInstance()
+							.logEvent('Change FeedHome SuperfilterType Tab', {
+								superfilterType: selectedSuperfilterType
+							});
+
+						window.location = `/#feed/${selectedSuperfilterType}`;
 					}}
 					panes={[
 						{
@@ -40,16 +51,7 @@ class FeedHome extends React.Component {
 						},
 						{
 							menuItem: 'Locations 🗺',
-							render: () => (
-								<div>
-									{feedInstance('home', 'location')}
-									{/* <BCMap
-										data={tracksWithPosition()}
-										featureType="track"
-										loading={this.props.loading}
-									/> */}
-								</div>
-							)
+							render: () => <div>{feedInstance('home', 'location')}</div>
 						},
 						{
 							menuItem: 'Artists 💻',
