@@ -5,7 +5,9 @@ import superFilterImg from './sample_super_filter.svg';
 import css from './SuperFilterButton.css';
 
 const SuperFilterButton = ({ onClick, name, selected }) => {
-	const color = selected ? 'pink' : '#fff';
+	const color = 'pink';
+	const fontWeight = selected ? 'bold' : '';
+	const fontSize = selected ? '25px' : '20px';
 
 	return (
 		<div
@@ -13,16 +15,17 @@ const SuperFilterButton = ({ onClick, name, selected }) => {
 			onClick={onClick}
 			style={{
 				width: 'auto',
-				height: '100%',
+				height: '4rem',
 				padding: '2%',
 				margin: '2%',
-				background: '#5f9ea0'
+				backgroundColor: 'rgba(0, 0, 0, 0.6)'
 			}}
 		>
-			<h3
+			<span
 				style={{
 					color,
-					fontSize: '20px',
+					fontWeight,
+					fontSize,
 					margin: '0px',
 					padding: '2%',
 					position: 'relative',
@@ -30,7 +33,7 @@ const SuperFilterButton = ({ onClick, name, selected }) => {
 				}}
 			>
 				{name}
-			</h3>
+			</span>
 		</div>
 	);
 };
