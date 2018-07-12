@@ -237,10 +237,12 @@ class TrackList extends React.Component {
 											<Item.Extra>
 												{makeBCBadge(track)}
 												{makeTrackTypeBadge(track)}
-												{publisherLocationsToString(publisher[0]) ? (
+												{publisherLocationsToString(publisher[0].location) ? (
 													<Label
 														icon="globe"
-														content={publisherLocationsToString(publisher[0])}
+														content={publisherLocationsToString(
+															publisher[0].location
+														)}
 													/>
 												) : null}
 											</Item.Extra>

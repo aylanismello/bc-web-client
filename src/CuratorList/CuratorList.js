@@ -13,12 +13,10 @@ import {
 	Label
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import {
-	publisherLocationsToString
-} from '../helpers';
+import { publisherLocationsToString } from '../helpers';
 
 class CuratorList extends React.Component {
-	renderList(curators) {
+	static renderList(curators) {
 		return (
 			<Item.Group relaxed divided>
 				{curators.map((curator, idx) => {
@@ -39,9 +37,7 @@ class CuratorList extends React.Component {
 								</Link>
 								<Label
 									icon="globe"
-									content={publisherLocationsToString({
-										location: curator.location.name
-									})}
+									content={publisherLocationsToString(curator.location.name)}
 								/>
 							</div>
 						</Item>
@@ -51,7 +47,7 @@ class CuratorList extends React.Component {
 		);
 	}
 
-	renderGallery(curators) {
+	static renderGallery(curators) {
 		return (
 			<Card.Group>
 				{curators.map(curator => {
@@ -71,12 +67,11 @@ class CuratorList extends React.Component {
 		return (
 			<div>
 				{this.props.view === 'list'
-					? this.renderList(this.props.curators)
-					: this.renderGallery(this.props.curators)}
+					? CuratorList.renderList(this.props.curators)
+					: CuratorList.renderGallery(this.props.curators)}
 			</div>
 		);
 	}
 }
-
 
 export default CuratorList;

@@ -11,9 +11,9 @@ import {
 	Breadcrumb
 } from 'semantic-ui-react';
 
-const publisherLocationsToString = ({ location }) => {
+const publisherLocationsToString = (location) => {
 	// TODO move earlier in the chain so it's also in the map.
-	if (location) {
+	if (location && (typeof location === 'string')) {
 		if (!location.includes(',')) {
 			// Location only has one part - just return it as-is then.
 			return location;

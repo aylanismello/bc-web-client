@@ -7,17 +7,27 @@ import {
 	Label,
 	Icon
 } from 'semantic-ui-react';
-import ReactChartkick, {
-	LineChart
-} from 'react-chartkick';
+import ReactChartkick, { LineChart } from 'react-chartkick';
 import Chart from 'chart.js';
 import './Track.css';
 
 ReactChartkick.addAdapter(Chart);
 
 class Track extends React.Component {
+	state = {
+		lastId: null
+	};
+
 	componentWillMount() {
 		this.props.setTrack(this.props.match.params.id);
+		this.setState({ lastId: this.props.match.params.id });
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if (nextProps.match.params.id != this.state.lastId) {
+			this.props.setTrack(this.props.match.params.id);
+			this.setState({ lastId: this.props.match.params.id });
+		}
 	}
 
 	render() {

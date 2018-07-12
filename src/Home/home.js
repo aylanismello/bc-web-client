@@ -51,6 +51,7 @@ class Home extends React.Component {
 
 	renderBurnCartelGreeting() {
 		const { playingTrack } = this.props;
+		const iconSize = 'big';
 		return (
 			<div className="Home-BC-greeting-container">
 				<Segment>
@@ -105,7 +106,7 @@ class Home extends React.Component {
 									});
 							}}
 						>
-							<Icon link size="huge" name="soundcloud" color="pink" />
+							<Icon link size={iconSize} name="soundcloud" color="pink" />
 						</a>
 						<a
 							href="https://instagram.com/burncartel"
@@ -118,7 +119,7 @@ class Home extends React.Component {
 									});
 							}}
 						>
-							<Icon link size="huge" name="instagram" color="pink" />
+							<Icon link size={iconSize} name="instagram" color="pink" />
 						</a>
 						<a
 							href="https://twitter.com/burncartel"
@@ -131,7 +132,7 @@ class Home extends React.Component {
 									});
 							}}
 						>
-							<Icon link size="huge" name="twitter" color="pink" />
+							<Icon link size={iconSize} name="twitter" color="pink" />
 						</a>
 					</div>
 					<Form
@@ -164,7 +165,7 @@ class Home extends React.Component {
 								value={this.state.email}
 								onChange={e => this.setState({ email: e.currentTarget.value })}
 								type="text"
-								placeholder="Stay up to date"
+								placeholder="stay up to date 🚀"
 								onClick={() => {
 									window.amplitude
 										.getInstance()
@@ -225,7 +226,7 @@ class Home extends React.Component {
 
 								<Header
 									as="h2"
-									content={homePlayDisabled ? 'LOADING...' : "(take a listen)"}
+									content={homePlayDisabled ? 'LOADING...' : '(take a listen)'}
 									// content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
 									inverted
 									style={{

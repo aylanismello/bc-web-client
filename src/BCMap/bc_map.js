@@ -1,19 +1,11 @@
 import React from 'react';
-import {
-	Segment,
-	Image,
-	Item,
-	Header,
-	Divider,
-	Dimmer,
-	Loader
-} from 'semantic-ui-react';
+import { Segment, Image, Item, Label, Dimmer, Loader } from 'semantic-ui-react';
+import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import PropTypes from 'prop-types';
 import {
 	publisherLocationsToString,
 	formatSoundcloudUserForMap
 } from '../helpers';
-import ReactMapboxGl, { Layer, Feature, Popup } from 'react-mapbox-gl';
 import './BCMap.css';
 
 const MapBox = ReactMapboxGl({
@@ -22,10 +14,6 @@ const MapBox = ReactMapboxGl({
 });
 
 class BCMap extends React.Component {
-	static getRandomFloat(min, max) {
-		return Math.random() * (max - min) + min;
-	}
-
 	state = {
 		selectedFeature: null,
 		center: [0, 0],
@@ -148,7 +136,8 @@ class BCMap extends React.Component {
 						<Layer
 							type="symbol"
 							id="marker"
-							layout={{ 'icon-image': 'marker-15' }}
+							// https://www.mapbox.com/maki-icons/
+							layout={{ 'icon-image': 'star-stroked-15' }}
 						>
 							{this.props.featureType === 'track'
 								? this.makeTrackFeatures()
@@ -177,11 +166,18 @@ class BCMap extends React.Component {
 								<div>
 									<span>{selectedFeature.name} </span>
 								</div>
-								<span>
-									{' '}
-									{publisherLocationsToString(selectedFeature.locationName)}
-								</span>
-								<Image src={selectedFeature.avatar_url} size="mini" />{' '}
+								{!isSingleUser && (
+									<span>
+										{' '}
+										<Label icon="globe">
+											{publisherLocationsToString(selectedFeature.locationName)}
+										</Label>
+									</span>
+								)}
+								<Image
+									src={selectedFeature.avatar_url}
+									size={isSingleUser ? 'mini' : 'tiny'}
+								/>{' '}
 							</Popup>
 						)}
 					</MapBox>
