@@ -8,10 +8,7 @@ import {
 	Icon
 } from 'semantic-ui-react';
 import ReactChartkick, {
-	LineChart,
-	BarChart,
-	PieChart,
-	ColumnChart
+	LineChart
 } from 'react-chartkick';
 import Chart from 'chart.js';
 import './Track.css';

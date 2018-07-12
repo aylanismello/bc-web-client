@@ -164,7 +164,7 @@ class Home extends React.Component {
 								value={this.state.email}
 								onChange={e => this.setState({ email: e.currentTarget.value })}
 								type="text"
-								placeholder="Email"
+								placeholder="Stay up to date"
 								onClick={() => {
 									window.amplitude
 										.getInstance()
@@ -212,7 +212,8 @@ class Home extends React.Component {
 							<div className="Home-BC-greeting-container">
 								<Header
 									as="h1"
-									content="Welcome to Burn Cartel"
+									// content="Welcome to Burn Cartel"
+									content="We organize the world's underground music."
 									inverted
 									style={{
 										fontSize: mobile ? '2em' : '4em',
@@ -224,7 +225,8 @@ class Home extends React.Component {
 
 								<Header
 									as="h2"
-									content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
+									content={homePlayDisabled ? 'LOADING...' : "(take a listen)"}
+									// content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
 									inverted
 									style={{
 										fontSize: mobile ? '1.5em' : '1.7em',
