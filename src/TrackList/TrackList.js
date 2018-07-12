@@ -11,13 +11,13 @@ import {
 	Divider,
 	Breadcrumb
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import {
 	publisherLocationsToString,
 	makeTrackTypeBadge,
 	makeBCBadge
 } from '../helpers';
 import PaginateButton from '../PaginateButton';
-import { Link } from 'react-router-dom';
 import './TrackList.css';
 
 class TrackList extends React.Component {
@@ -265,7 +265,12 @@ class TrackList extends React.Component {
 							name="arrow alternate circle up outline"
 							className="TrackList-Scroll-Button"
 							size="big	"
-							onClick={() => window.scrollTo(0, 0)}
+							onClick={() => {
+								window.amplitude
+									.getInstance()
+									.logEvent('TrackList - Click Scroll To Top Button');
+								window.scrollTo(0, 0);
+							}}
 						/>
 					</div>
 				)}

@@ -151,12 +151,25 @@ class App extends Component {
 
 			if (playingTracks.length === 1) {
 				this.togglePlay(id);
+				window.amplitude.getInstance().logEvent('Auto - Pause Single Track', {
+					trackId: id
+				});
 			} else if (newSongIdx > playingTracks.length - 1) {
-				this.paginate(true);
 				// TODO: to logic to play once new tracks load.
 				// this should be a general reusable function
+				window.amplitude.getInstance().logEvent('Auto - Paginate', {
+					page: (this.state.trackFilters.page || 0) + 1
+				});
+
+				this.paginate(true);
 			} else {
 				this.togglePlay(playingTracks[newSongIdx].track.id, true);
+				window.amplitude.getInstance().logEvent('Auto - Play Next Track', {
+					trackId: playingTracks[newSongIdx].track.id,
+					trackName: playingTracks[newSongIdx].track.name,
+					idx: newSongIdx,
+					page: this.state.trackFilters.page
+				});
 			}
 		});
 	}
@@ -332,7 +345,6 @@ class App extends Component {
 					// this IS buggy af.
 					// TODO add page size to api results
 
-					// const newTrackIdx = (trackFilters.page - 1) * 10;
 					const newTrackIdx = (trackFilters.page - 1) * 10;
 					this.togglePlay(this.state.tracks[newTrackIdx].track.id);
 					this.setState({

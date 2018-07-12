@@ -20,7 +20,6 @@ class FeedHome extends React.Component {
 			loading,
 			trackFilters,
 			tracks,
-			setState,
 			tracksWithPosition,
 			feedInstance
 		} = this.props;

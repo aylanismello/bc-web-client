@@ -6,6 +6,9 @@ const PaginateButton = ({ loading, disabled, paginate }) => (
 		loading={loading}
 		disabled={disabled}
 		onClick={() => {
+			window.amplitude
+				.getInstance()
+				.logEvent('TrackList - Click Paginate Button');
 			paginate();
 		}}
 	>

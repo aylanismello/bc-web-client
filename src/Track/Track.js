@@ -1,6 +1,18 @@
 import React from 'react';
-import { Segment, Container, Header, Image, Label, Icon } from 'semantic-ui-react';
-import ReactChartkick, { LineChart, BarChart, PieChart, ColumnChart } from 'react-chartkick';
+import {
+	Segment,
+	Container,
+	Header,
+	Image,
+	Label,
+	Icon
+} from 'semantic-ui-react';
+import ReactChartkick, {
+	LineChart,
+	BarChart,
+	PieChart,
+	ColumnChart
+} from 'react-chartkick';
 import Chart from 'chart.js';
 import './Track.css';
 
@@ -12,9 +24,7 @@ class Track extends React.Component {
 	}
 
 	render() {
-		const {
-			feed, track, graphData, loadingCurrentTrackGraphData
-		} = this.props;
+		const { feed, track, graphData, loadingCurrentTrackGraphData } = this.props;
 		const messages = loadingCurrentTrackGraphData
 			? {}
 			: { empty: 'No plays. Wanna be the first? :) ' };
@@ -23,7 +33,8 @@ class Track extends React.Component {
 				<Segment className="Track-banner-container">
 					<div className="Track-banner-left-half">
 						<Header as="h2">
-							<Image circular src={track && track.artwork_url} /> {track && track.name}
+							<Image circular src={track && track.artwork_url} />{' '}
+							{track && track.name}
 						</Header>
 						<div className="Track-banner-main-icons">
 							<Label
@@ -32,7 +43,19 @@ class Track extends React.Component {
 								icon="headphone"
 								content={track && track.playback_count_bc}
 							/>
-							<a href={track && track.permalink_url} target="blank">
+							<a
+								href={track && track.permalink_url}
+								target="blank"
+								onClick={() => {
+									window.amplitude
+										.getInstance()
+										.logEvent('Track - Click Soundcloud Link', {
+											id: track.id,
+											name: track.name,
+											permalink_url: track.permalink_url
+										});
+								}}
+							>
 								<Icon link size="big" name="soundcloud" color="pink" />
 							</a>
 						</div>

@@ -44,8 +44,23 @@ const SuperFilterPanel = props => {
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
 		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0].image_url;
 
+	const superfilterType =
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0] &&
+		superFilters.filter(sf => sf.id === selectedSuperFilterId)[0]
+			.superfilter_type;
+
 	let startingIdx = 0;
-	let newSettings = { ...settings };
+	let newSettings = {
+		...settings,
+		afterChange: lastSuperfilterIdx => {
+			window.amplitude
+				.getInstance()
+				.logEvent('FeedHome - Swiped/Scrolled Through Superfilters', {
+					lastSuperfilterIdx,
+					superfilterType
+				});
+		}
+	};
 
 	const orderedSuperFilters = loading
 		? null

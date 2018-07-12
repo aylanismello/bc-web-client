@@ -45,7 +45,7 @@ class SoundcloudUser extends React.Component {
 	}
 
 	render() {
-		let name, is_curator, handles, avatar_url, location, permalink_url;
+		let name, is_curator, handles, avatar_url, location, permalink_url, id;
 		const data = this.props.soundcloudUser
 			? [formatSoundcloudUserForMap(this.props.soundcloudUser)]
 			: [];
@@ -55,6 +55,7 @@ class SoundcloudUser extends React.Component {
 
 		if (this.props.soundcloudUser) {
 			name = this.props.soundcloudUser.soundcloud_user.name;
+			id = this.props.soundcloudUser.soundcloud_user.id;
 			avatar_url = this.props.soundcloudUser.soundcloud_user.avatar_url;
 			is_curator = this.props.soundcloudUser.soundcloud_user.is_curator;
 			permalink_url = this.props.soundcloudUser.soundcloud_user.permalink_url;
@@ -72,8 +73,23 @@ class SoundcloudUser extends React.Component {
 			'itunes'
 		];
 
+		const amplitudeHandleEvent = (handleType, handleUrl) => {
+			window.amplitude
+				.getInstance()
+				.logEvent('SoundcloudUser - Click on Handle', {
+					handleType,
+					handleUrl,
+					soundcloudUserId: id,
+					soundcloudUserName: name
+				});
+		};
+
 		const soundcloudHandle = [
-			<a href={permalink_url} target="_">
+			<a
+				href={permalink_url}
+				target="_"
+				onClick={() => amplitudeHandleEvent('soundcloud', permalink_url)}
+			>
 				<Label as="a" basic className="Soundclouduser-Banner-Handle">
 					<Icon name="soundcloud" size="small" color="pink" />
 					soundcloud
@@ -84,7 +100,13 @@ class SoundcloudUser extends React.Component {
 		const formattedHandles =
 			handles &&
 			handles.filter(handle => handle.service !== 'soundcloud').map(handle => (
-				<a href={handle.url} target="_">
+				<a
+					href={handle.url}
+					target="_"
+					onClick={() => {
+						amplitudeHandleEvent(handle.service, handle.url);
+					}}
+				>
 					<Label as="a" basic className="Soundclouduser-Banner-Handle">
 						{iconNames.includes(handle.service) ? (
 							<Icon name={handle.service} size="small" color="pink" />
@@ -187,9 +209,19 @@ class SoundcloudUser extends React.Component {
 					onTabChange={(e, data) => {
 						if (data.activeIndex === 0) {
 							this.props.setUser(this.props.match.params.id, false);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'normal'
+								});
 						} else {
 							// is_mixes is true here
 							this.props.setUser(this.props.match.params.id, true);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'mix'
+								});
 						}
 					}}
 					panes={[
