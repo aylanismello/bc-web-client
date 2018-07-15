@@ -29,9 +29,10 @@ class BCMap extends React.Component {
 				nextProps.data[0].location.position !==
 					this.props.data[0].location.position)
 		) {
+			// what if coordinate is NAN, NAN??
 			this.setState({
 				center: nextProps.data[0].location.position.map(coordinate =>
-					parseInt(coordinate)
+					parseInt(coordinate || 1)
 				)
 			});
 		}
@@ -113,6 +114,7 @@ class BCMap extends React.Component {
 		// const width = this.props.size === 'small' ? '25vh' : '100vh';
 		const width = `${this.props.size}vh`;
 		const { isSingleUser } = this.props;
+		debugger;
 
 		return (
 			<Dimmer.Dimmable

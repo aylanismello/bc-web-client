@@ -55,7 +55,8 @@ class App extends Component {
 		playingTrackId: undefined,
 		playingTrack: Object.freeze({
 			id: undefined,
-			data: {}
+			data: {},
+			url: window.location.href
 		}),
 		currentTrackGraphData: {},
 		loadingCurrentTrackGraphData: false,
@@ -310,7 +311,8 @@ class App extends Component {
 				playingTrack: {
 					...this.state.playingTrack,
 					id: daTrackID,
-					data: sourceTracks.find(x => x.track.id === daTrackID)
+					data: sourceTracks.find(x => x.track.id === daTrackID),
+					url: window.location.href
 				},
 				initPlayer: true
 			});

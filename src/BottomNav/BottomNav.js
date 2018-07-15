@@ -26,6 +26,9 @@ const BottomNav = ({
 		<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 			{playingTrack.id ? (
 				<Item>
+					{/* <a */}
+					{/* href={playingTrack.url} */}
+					{/*  find way to return to feed with UI*/}
 					<Link
 						to={`/tracks/${playingTrack.data.track.id}`}
 						onClick={() => {
@@ -43,6 +46,7 @@ const BottomNav = ({
 							size="tiny"
 						/>
 					</Link>
+					{/* </a> */}
 					<Item.Content
 						verticalAlign="middle"
 						className="App-bottom-nav-track-content"

@@ -133,7 +133,6 @@ class SoundcloudUser extends React.Component {
 							</Header>
 						</div>
 						{/*  Put a map here */}
-						{location && (
 							<Segment className="SoundcloudUser-Map-Container">
 								<BCMap
 									featureType="soundcloudUser"
@@ -143,9 +142,8 @@ class SoundcloudUser extends React.Component {
 									size={25}
 								/>
 
-								<Label icon="globe" content={location} />
+								<Label icon="globe" content={location || 'Location unkown.'} />
 							</Segment>
-						)}
 					</div>
 					<Divider />
 					{handles && (
