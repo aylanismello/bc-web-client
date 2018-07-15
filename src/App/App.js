@@ -737,11 +737,8 @@ class App extends Component {
 										<Home
 											playing={this.state.playing}
 											curators={this.state.curators}
-											setHomeTrendingFilter={(
-												trendingSuperFilter,
-												forceToSame
-											) => {
-												this.setSuperfilter(trendingSuperFilter);
+											setHomeTrendingFilter={trendingSuperFilter => {
+												this.setSuperfilter(trendingSuperFilter, true);
 											}}
 											superFilters={this.state.superFilters}
 											homePageTrack={

@@ -39,16 +39,6 @@ class Home extends React.Component {
 		}
 	}
 
-	componentWillUpdate(nextProps) {
-		const trendingSuperFilter = nextProps.superFilters.filter(
-			sf => sf.name === 'Trending'
-		)[0];
-
-		if (trendingSuperFilter) {
-			this.props.setHomeTrendingFilter(trendingSuperFilter);
-		}
-	}
-
 	renderBurnCartelGreeting() {
 		const { playingTrack } = this.props;
 		const iconSize = 'big';
