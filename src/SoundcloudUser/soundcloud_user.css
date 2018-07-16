@@ -39,3 +39,7 @@ a.ui.basic.label.Soundclouduser-Banner-Handle {
 .SoundcloudUser-Associated-User-List{
   margin-left: 1rem;
 }
+
+#root > div > div > div > div.ui.container.pusher > div > div.ui.segment.Soundclouduser-Banner-Container > div.Soundclouduser-Banner-Top-Half > div.ui.segment.SoundcloudUser-Map-Container > div.ui.label {
+  width: 100%;
+}

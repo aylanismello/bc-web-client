@@ -89,6 +89,12 @@ class App extends Component {
 	}
 
 	componentWillUpdate(nextProps, nextState) {
+		if (!this.state.error && nextState.error) {
+			window.amplitude.getInstance().logEvent('Auto - Error', {
+				error: nextState.error
+			});
+		}
+
 		if (!_.isEqual(nextState.trackFilters, this.state.trackFilters)) {
 			let paginate;
 			if (nextState.trackFilters.page !== this.state.trackFilters.page) {

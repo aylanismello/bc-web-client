@@ -132,18 +132,17 @@ class SoundcloudUser extends React.Component {
 								{name}
 							</Header>
 						</div>
-						{/*  Put a map here */}
-							<Segment className="SoundcloudUser-Map-Container">
-								<BCMap
-									featureType="soundcloudUser"
-									data={data}
-									loading={this.props.loading}
-									isSingleUser
-									size={25}
-								/>
+						<Segment className="SoundcloudUser-Map-Container">
+							<BCMap
+								featureType="soundcloudUser"
+								data={data}
+								loading={this.props.loading}
+								isSingleUser
+								size={25}
+							/>
 
-								<Label icon="globe" content={location || 'Location unkown.'} />
-							</Segment>
+							<Label icon="globe" content={location || 'Location unkown.'} />
+						</Segment>
 					</div>
 					<Divider />
 					{handles && (
