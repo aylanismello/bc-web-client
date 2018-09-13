@@ -42,6 +42,13 @@ class App extends Component {
 
 	constructor(props) {
 		super(props);
+
+		document.body.onkeydown = e => {
+			if (e.keyCode === 32 && e.target === document.body) {
+				// write pause/play functionality here
+				e.preventDefault();
+			}
+		};
 		this.getTrackById = this.getTrackById.bind(this);
 		this.renderSuperFilterPanel = this.renderSuperFilterPanel.bind(this);
 	}
@@ -905,9 +912,7 @@ class App extends Component {
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											tracks: this.state.tracks,
 											feed: this.feedInstance(),
-											soundcloudUserId: this.state.trackFilters
-												.soundcloud_user_id,
-											// soundcloudUser: this.state.tracks[0] && this.state.tracks[0].publisher[0],
+											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
 											soundcloudUser:
 												Object.keys(this.state.soundcloudUser).length &&
 												this.state.soundcloudUser,

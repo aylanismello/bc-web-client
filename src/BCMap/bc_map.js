@@ -111,10 +111,8 @@ class BCMap extends React.Component {
 
 	render() {
 		const { selectedFeature, zoom, center } = this.state;
-		// const width = this.props.size === 'small' ? '25vh' : '100vh';
 		const width = `${this.props.size}vh`;
 		const { isSingleUser } = this.props;
-		debugger;
 
 		return (
 			<Dimmer.Dimmable
