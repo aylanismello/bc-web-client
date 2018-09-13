@@ -337,7 +337,7 @@ class App extends Component {
 						loading: false
 					});
 					// when paginating, scroll to bottom of page
-					window.scrollTo(0, document.body.scrollHeight + 10000);
+					window.scrollTo(0, window.oldYOffset + 500);
 				} else {
 					// loading first page
 					// when loading first page, scroll to top of page

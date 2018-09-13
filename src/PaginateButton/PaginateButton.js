@@ -9,6 +9,7 @@ const PaginateButton = ({ loading, disabled, paginate }) => (
 			window.amplitude
 				.getInstance()
 				.logEvent('TrackList - Click Paginate Button');
+			window.oldYOffset = window.pageYOffset;
 			paginate();
 		}}
 	>
