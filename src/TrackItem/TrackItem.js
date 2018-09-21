@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-	Item,
-	Label,
-	Popup,
-	Statistic,
-	Icon,
-	Image
-} from 'semantic-ui-react';
+import { Item, Label, Popup, Statistic, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import {
 	publisherLocationsToString,
@@ -23,6 +16,13 @@ const TrackItem = ({
 	playingTrackId,
 	togglePlay
 }) => {
+
+
+  // this is where the default fake item is
+	if (!currentTrack) {
+		return <div />;
+	}
+
 	const { track, publisher, curators } = currentTrack;
 	const trackImageProps = {
 		fluid: true,

@@ -465,9 +465,17 @@ class App extends Component {
 	feedInstance(displayPage = 'home', feedType, superfilterId) {
 		const selectedSuperFilter = this.getSuperFilterById(superfilterId);
 
+		const hasEmptyTracks = !this.state.tracks.length;
+
+		let finalTracks = this.state.tracks;
+
+		if (hasEmptyTracks) {
+			finalTracks = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		}
+
 		return (
 			<Feed
-				tracks={this.state.tracks}
+				tracks={finalTracks}
 				feedType={feedType}
 				displayPage={displayPage}
 				playing={this.state.playing}
@@ -912,7 +920,8 @@ class App extends Component {
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											tracks: this.state.tracks,
 											feed: this.feedInstance(),
-											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
+											soundcloudUserId: this.state.trackFilters
+												.soundcloud_user_id,
 											soundcloudUser:
 												Object.keys(this.state.soundcloudUser).length &&
 												this.state.soundcloudUser,

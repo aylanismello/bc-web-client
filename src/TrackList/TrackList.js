@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-	Item,
-	Icon,
-	Divider
-} from 'semantic-ui-react';
+import { Item, Icon, Divider } from 'semantic-ui-react';
 import PaginateButton from '../PaginateButton';
 import TrackItem from '../TrackItem';
 import './TrackList.css';
@@ -25,7 +21,8 @@ class TrackList extends React.Component {
 			displayPage,
 			feedType,
 			trackFilters,
-			isWidget
+			isWidget,
+			hasEmptyTracks
 		} = this.props;
 
 		const daTracks = isWidget ? tracks.slice(0, 5) : tracks;

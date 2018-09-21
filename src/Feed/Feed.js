@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Grid, Card } from 'semantic-ui-react';
-import { mainFilters } from '../filter_helpers';
 import TabbedSegment from '../TabbedSegment';
-import SuperFilterPanel from './SuperFilterPanel';
 import TrackList from '../TrackList';
 
 // probably the SUPER FILTERS in the filter panel should be created SERVER Side,

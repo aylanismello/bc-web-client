@@ -38,6 +38,14 @@ class Track extends React.Component {
 		return (
 			<Container>
 				<Segment className="Track-banner-container">
+					<div
+						className="Track-banner-background-image"
+						style={{
+							backgroundImage: track && `url(${track.artwork_url})`,
+							backgroundSize: 'cover'
+						}}
+					/>
+
 					<div className="Track-banner-left-half">
 						<Header as="h2">
 							<Image circular src={track && track.artwork_url} />{' '}
