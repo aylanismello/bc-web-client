@@ -348,7 +348,11 @@ class App extends Component {
 				} else {
 					// loading first page
 					// when loading first page, scroll to top of page
-					window.scrollTo(0, 0);
+					// but not on soundcloud_user page
+					if (!window.location.href.includes('soundcloud_users')) {
+						window.scrollTo(0, 0);
+					}
+
 					this.setState({
 						tracks: results.data.data.tracks,
 						loading: false,
@@ -553,7 +557,6 @@ class App extends Component {
 			track_type,
 			page: 1
 		});
-
 
 		this.setState({ loadingSoundcloudUser: true });
 
