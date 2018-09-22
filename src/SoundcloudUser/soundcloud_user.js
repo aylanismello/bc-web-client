@@ -218,6 +218,13 @@ class SoundcloudUser extends React.Component {
 								.logEvent('SoundcloudUser - Change TrackType Tab', {
 									trackType: 'remix'
 								});
+						} else if (data.activeIndex === 3) {
+							this.props.setUser(this.props.match.params.id, undefined);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'all'
+								});
 						} else {
 							// is_mixes is true here
 							this.props.setUser(this.props.match.params.id, 0);
@@ -239,6 +246,10 @@ class SoundcloudUser extends React.Component {
 						},
 						{
 							menuItem: 'Remixes  💻',
+							render: () => this.props.feed
+						},
+						{
+							menuItem: 'All 🔥',
 							render: () => this.props.feed
 						}
 					]}
