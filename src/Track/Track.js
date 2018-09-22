@@ -31,24 +31,35 @@ class Track extends React.Component {
 	}
 
 	render() {
-		const { feed, track, graphData, loadingCurrentTrackGraphData } = this.props;
+		const { feed, graphData, loadingCurrentTrackGraphData } = this.props;
+		// const theTrack = this.props.track;
+		let track, publisher;
+
+		if (this.props.track) {
+			track = this.props.track.track;
+			publisher = this.props.track.publisher;
+		}
 		const messages = loadingCurrentTrackGraphData
 			? {}
 			: { empty: 'No plays. Wanna be the first? :) ' };
+
+		// const imageUrl = track && (track.artwork_url && `url(${track.artwork_url})`);
+		const imageUrl = track && (track.artwork_url || publisher[0].avatar_url);
+
 		return (
 			<Container>
 				<Segment className="Track-banner-container">
 					<div
 						className="Track-banner-background-image"
 						style={{
-							backgroundImage: track && `url(${track.artwork_url})`,
+							backgroundImage: `url(${imageUrl})`,
 							backgroundSize: 'cover'
 						}}
 					/>
 
 					<div className="Track-banner-left-half">
 						<Header as="h2">
-							<Image circular src={track && track.artwork_url} />{' '}
+							<Image circular src={imageUrl} />{' '}
 							{track && track.name}
 						</Header>
 						<div className="Track-banner-main-icons">

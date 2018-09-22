@@ -62,9 +62,17 @@ const SuperFilterPanel = props => {
 		}
 	};
 
-	const orderedSuperFilters = loading
-		? null
-		: _.sortBy(superFilters, o => o.position);
+	// const orderedSuperFilters = loading
+	// 	? null
+	// 	: _.sortBy(superFilters, o => o.position);
+
+	let orderedSuperFilters;
+
+	if (!loading && superFilters[0] && superFilters[0].superfilter_type === 'custom') {
+		orderedSuperFilters = _.sortBy(superFilters, o => o.position);
+	} else if (!loading) {
+		orderedSuperFilters = _.sortBy(superFilters, o => o.name);
+	}
 
 	if (superfilterId && !loading && superFilters.length) {
 		setSuperfilterById(superfilterId);

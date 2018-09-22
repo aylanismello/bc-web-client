@@ -293,8 +293,8 @@ class Home extends React.Component {
 										our Curators page{' '}
 									</Link>
 								</Header>
-								<Divider />
-								<CuratorList curators={this.props.curators} view="list" />
+								{/* <Divider /> */}
+								{/* <CuratorList curators={this.props.curators} view="list" /> */}
 							</Segment>
 						</Grid.Column>
 					</Grid>

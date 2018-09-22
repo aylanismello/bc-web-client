@@ -25,13 +25,13 @@ class SoundcloudUser extends React.Component {
 	};
 
 	componentWillMount() {
-		this.props.setUser(this.props.match.params.id);
+		this.props.setUser(this.props.match.params.id, 0);
 		this.setState({ lastId: this.props.match.params.id });
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.match.params.id != this.state.lastId) {
-			this.props.setUser(this.props.match.params.id);
+			this.props.setUser(this.props.match.params.id, 0);
 			this.setState({ lastId: this.props.match.params.id });
 		}
 	}
@@ -204,30 +204,41 @@ class SoundcloudUser extends React.Component {
 				<Tab
 					menu={{ secondary: true, pointing: true }}
 					onTabChange={(e, data) => {
-						if (data.activeIndex === 0) {
-							this.props.setUser(this.props.match.params.id, false);
-							window.amplitude
-								.getInstance()
-								.logEvent('SoundcloudUser - Change TrackType Tab', {
-									trackType: 'normal'
-								});
-						} else {
-							// is_mixes is true here
-							this.props.setUser(this.props.match.params.id, true);
+						if (data.activeIndex === 1) {
+							this.props.setUser(this.props.match.params.id, 2);
 							window.amplitude
 								.getInstance()
 								.logEvent('SoundcloudUser - Change TrackType Tab', {
 									trackType: 'mix'
 								});
+						} else if (data.activeIndex === 2) {
+							this.props.setUser(this.props.match.params.id, 1);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'remix'
+								});
+						} else {
+							// is_mixes is true here
+							this.props.setUser(this.props.match.params.id, 0);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'original'
+								});
 						}
 					}}
 					panes={[
 						{
-							menuItem: 'Tracks ⬆️',
+							menuItem: 'Original Tracks  💽',
 							render: () => this.props.feed
 						},
 						{
-							menuItem: 'Mixes 📡',
+							menuItem: 'Mixes  📡',
+							render: () => this.props.feed
+						},
+						{
+							menuItem: 'Remixes  💻',
 							render: () => this.props.feed
 						}
 					]}

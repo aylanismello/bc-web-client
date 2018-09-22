@@ -544,23 +544,16 @@ class App extends Component {
 		}
 	}
 
-	fetchSoundcloudUser(id, onlyMixes) {
+	fetchSoundcloudUser(id, track_type) {
 		// let's rethink this.
 
-		if (onlyMixes) {
-			this.setTrackFilters({
-				soundcloud_user_id: id,
-				sort_type: 'latest',
-				track_type: 2,
-				page: 1
-			});
-		} else {
-			this.setTrackFilters({
-				soundcloud_user_id: id,
-				sort_type: 'hot',
-				page: 1
-			});
-		}
+		this.setTrackFilters({
+			soundcloud_user_id: id,
+			sort_type: track_type === 2 ? 'latest' : 'top',
+			track_type,
+			page: 1
+		});
+
 
 		this.setState({ loadingSoundcloudUser: true });
 
@@ -852,7 +845,7 @@ class App extends Component {
 											match={match}
 											graphData={this.state.currentTrackGraphData}
 											feed={this.feedInstance()}
-											track={this.state.tracks[0] && this.state.tracks[0].track}
+											track={this.state.tracks[0]}
 											loading={this.state.loading}
 											loadingCurrentTrackGraphData={
 												this.state.loadingCurrentTrackGraphData
