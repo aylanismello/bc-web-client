@@ -921,7 +921,7 @@ class App extends Component {
 											soundcloudUser:
 												Object.keys(this.state.soundcloudUser).length &&
 												this.state.soundcloudUser,
-											setUser: (id, onlyMixes = false) => {
+											setUser: (id, onlyMixes) => {
 												this.fetchSoundcloudUser(id, onlyMixes);
 											}
 										};

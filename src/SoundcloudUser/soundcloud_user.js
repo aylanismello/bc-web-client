@@ -25,13 +25,13 @@ class SoundcloudUser extends React.Component {
 	};
 
 	componentWillMount() {
-		this.props.setUser(this.props.match.params.id, 0);
+		this.props.setUser(this.props.match.params.id);
 		this.setState({ lastId: this.props.match.params.id });
 	}
 
 	componentWillUpdate(nextProps, nextState) {
 		if (nextProps.match.params.id != this.state.lastId) {
-			this.props.setUser(this.props.match.params.id, 0);
+			this.props.setUser(this.props.match.params.id);
 			this.setState({ lastId: this.props.match.params.id });
 		}
 	}
@@ -205,11 +205,11 @@ class SoundcloudUser extends React.Component {
 					menu={{ secondary: true, pointing: true }}
 					onTabChange={(e, data) => {
 						if (data.activeIndex === 1) {
-							this.props.setUser(this.props.match.params.id, 2);
+							this.props.setUser(this.props.match.params.id, 0);
 							window.amplitude
 								.getInstance()
 								.logEvent('SoundcloudUser - Change TrackType Tab', {
-									trackType: 'mix'
+									trackType: 'original'
 								});
 						} else if (data.activeIndex === 2) {
 							this.props.setUser(this.props.match.params.id, 1);
@@ -219,29 +219,29 @@ class SoundcloudUser extends React.Component {
 									trackType: 'remix'
 								});
 						} else if (data.activeIndex === 3) {
+							this.props.setUser(this.props.match.params.id, 2);
+							window.amplitude
+								.getInstance()
+								.logEvent('SoundcloudUser - Change TrackType Tab', {
+									trackType: 'mix'
+								});
+						} else {
+							// is_mixes is true here
 							this.props.setUser(this.props.match.params.id, undefined);
 							window.amplitude
 								.getInstance()
 								.logEvent('SoundcloudUser - Change TrackType Tab', {
 									trackType: 'all'
 								});
-						} else {
-							// is_mixes is true here
-							this.props.setUser(this.props.match.params.id, 0);
-							window.amplitude
-								.getInstance()
-								.logEvent('SoundcloudUser - Change TrackType Tab', {
-									trackType: 'original'
-								});
 						}
 					}}
 					panes={[
 						{
-							menuItem: 'Original Tracks  💽',
+							menuItem: 'All 🔥',
 							render: () => this.props.feed
 						},
 						{
-							menuItem: 'Mixes  📡',
+							menuItem: 'OG Tracks  💽',
 							render: () => this.props.feed
 						},
 						{
@@ -249,7 +249,7 @@ class SoundcloudUser extends React.Component {
 							render: () => this.props.feed
 						},
 						{
-							menuItem: 'All 🔥',
+							menuItem: 'Mixes  📡',
 							render: () => this.props.feed
 						}
 					]}
