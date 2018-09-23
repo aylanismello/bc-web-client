@@ -1,6 +1,7 @@
 import React from 'react';
 import { Item, Label, Popup, Statistic, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import './TrackItem.css';
 import {
 	publisherLocationsToString,
 	makeTrackTypeBadge,
@@ -16,9 +17,7 @@ const TrackItem = ({
 	playingTrackId,
 	togglePlay
 }) => {
-
-
-  // this is where the default fake item is
+	// this is where the default fake item is
 	if (!currentTrack) {
 		return <div />;
 	}
