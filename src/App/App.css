@@ -80,6 +80,9 @@
   right: 0;
 }
 
+.ui.label {
+  cursor: default;
+}
 
 /*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
 
