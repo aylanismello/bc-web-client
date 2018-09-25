@@ -51,6 +51,7 @@ class App extends Component {
 		};
 		this.getTrackById = this.getTrackById.bind(this);
 		this.renderSuperFilterPanel = this.renderSuperFilterPanel.bind(this);
+		this.goToNextTrackOrPaginate = this.goToNextTrackOrPaginate.bind(this);
 	}
 
 	state = Object.freeze({
@@ -155,37 +156,64 @@ class App extends Component {
 
 	setSCAudioEndCB(id) {
 		this.scAudio.on('ended', () => {
-			// TODO there's
-			const { playingTracks } = this.state;
-			// if we're viewing a single track, just pause
-			const newSongIdx =
-				playingTracks.findIndex(track => {
-					return track.track.id === this.state.playingTrack.id;
-				}) + 1;
-
-			if (playingTracks.length === 1) {
-				this.togglePlay(id);
-				window.amplitude.getInstance().logEvent('Auto - Pause Single Track', {
-					trackId: id
-				});
-			} else if (newSongIdx > playingTracks.length - 1) {
-				// TODO: to logic to play once new tracks load.
-				// this should be a general reusable function
-				window.amplitude.getInstance().logEvent('Auto - Paginate', {
-					page: (this.state.trackFilters.page || 0) + 1
-				});
-
-				this.paginate(true);
-			} else {
-				this.togglePlay(playingTracks[newSongIdx].track.id, true);
-				window.amplitude.getInstance().logEvent('Auto - Play Next Track', {
-					trackId: playingTracks[newSongIdx].track.id,
-					trackName: playingTracks[newSongIdx].track.name,
-					idx: newSongIdx,
-					page: this.state.trackFilters.page
-				});
-			}
+			this.goToNextTrackOrPaginate(id);
 		});
+	}
+
+	goToNextTrackOrPaginate(currentTrackId) {
+		const { playingTracks } = this.state;
+		// if we're viewing a single track, just pause
+		const newSongIdx =
+			playingTracks.findIndex(track => {
+				return track.track.id === this.state.playingTrack.id;
+			}) + 1;
+
+		if (playingTracks.length === 1) {
+			this.togglePlay(currentTrackId);
+			window.amplitude.getInstance().logEvent('Pause Single Track', {
+				trackId: currentTrackId
+			});
+		} else if (newSongIdx > playingTracks.length - 1) {
+			// TODO: to logic to play once new tracks load.
+			// this should be a general reusable function
+			window.amplitude.getInstance().logEvent('Paginate', {
+				page: (this.state.trackFilters.page || 0) + 1
+			});
+
+			this.paginate(true);
+		} else {
+			this.togglePlay(playingTracks[newSongIdx].track.id, true);
+			window.amplitude.getInstance().logEvent('Play Next Track', {
+				trackId: playingTracks[newSongIdx].track.id,
+				trackName: playingTracks[newSongIdx].track.name,
+				idx: newSongIdx,
+				page: this.state.trackFilters.page
+			});
+		}
+	}
+
+	goToPrevTrack(currentTrackId) {
+		const { playingTracks } = this.state;
+		// if we're viewing a single track, just pause
+		const newSongIdx =
+			playingTracks.findIndex(track => {
+				return track.track.id === this.state.playingTrack.id;
+			}) - 1;
+
+		if (playingTracks.length === 1 || newSongIdx < 0) {
+			this.togglePlay(currentTrackId);
+			window.amplitude.getInstance().logEvent('Pause Single Track', {
+				trackId: currentTrackId
+			});
+		} else {
+			this.togglePlay(playingTracks[newSongIdx].track.id, true);
+			window.amplitude.getInstance().logEvent('Play Prev Track', {
+				trackId: playingTracks[newSongIdx].track.id,
+				trackName: playingTracks[newSongIdx].track.name,
+				idx: newSongIdx,
+				page: this.state.trackFilters.page
+			});
+		}
 	}
 
 	getSuperFilterById(id) {
@@ -254,7 +282,7 @@ class App extends Component {
 
 		axios
 			.post(`${baseUrl}/tracks/play`, { id })
-			.then(results => {
+			.then(() => {
 				this.setState({ loadingUpdatePlayCount: false });
 			})
 			.catch(error => {
@@ -265,7 +293,6 @@ class App extends Component {
 	togglePlay(daTrackID, goingToNextPreloadedTracks = false) {
 		// const daTrackID = trackId;
 		// first track played this session
-
 		if (!this.state.playingTrack.id && !this.state.loading) {
 			this.setState({
 				playingTracks: [...this.state.tracks],
@@ -936,7 +963,11 @@ class App extends Component {
 						{this.state.initPlayer && (
 							<BottomNav
 								playing={this.state.playing}
+								goToNextTrackOrPaginate={this.goToNextTrackOrPaginate}
+								goToPrevTrack={idx => this.goToPrevTrack(idx)}
 								playingTrack={this.state.playingTrack}
+								tracks={this.state.tracks}
+								playingTracks={this.state.playingTracks}
 								bottomMenuVisible={this.state.bottomMenuVisible}
 								toggleBottomMenu={() => this.toggleBottomMenu()}
 								setBottomMenuInvisible={() =>
@@ -944,8 +975,11 @@ class App extends Component {
 								setTrackFilters={newFilters => {
 									this.updateSingleTrackFilters(newFilters);
 								}}
-								togglePlay={id => this.togglePlay(id)}
+								togglePlay={(id, goingToNextPreloadedTracks) => {
+									this.togglePlay(id, goingToNextPreloadedTracks);
+								}}
 								trackFilters={this.state.trackFilters}
+								scPlayer={this.scAudio}
 							/>
 						)}
 					</div>
