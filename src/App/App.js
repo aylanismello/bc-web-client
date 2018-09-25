@@ -262,7 +262,7 @@ class App extends Component {
 			});
 	}
 
-	togglePlay(daTrackID, goingToNextPreloadedTracks = false) {
+	togglePlay(daTrackID, goingToNextPreloadedTracks = false, next) {
 		// const daTrackID = trackId;
 		// first track played this session
 
@@ -303,6 +303,14 @@ class App extends Component {
 			this.setState({
 				playing: !this.state.playing
 			});
+		} else if (next) {
+      this.updateTrackPlay(daTrackID);
+      this.scAudio.play({
+        streamUrl: this.getTrackById(daTrackID).stream_url
+      });
+      this.setState({
+        playing: this.state.playing
+      });
 		} else {
 			// PLAYING TRACK FOR FIRST TIME.
 			// SET playingTracks!
@@ -932,6 +940,7 @@ class App extends Component {
 							<BottomNav
 								playing={this.state.playing}
 								playingTrack={this.state.playingTrack}
+								tracks={this.state.tracks}
 								bottomMenuVisible={this.state.bottomMenuVisible}
 								toggleBottomMenu={() => this.toggleBottomMenu()}
 								setBottomMenuInvisible={() =>
@@ -941,6 +950,7 @@ class App extends Component {
 								}}
 								togglePlay={id => this.togglePlay(id)}
 								trackFilters={this.state.trackFilters}
+								scPlayer={this.scAudio}
 							/>
 						)}
 					</div>
