@@ -15,23 +15,12 @@ const BottomNav = ({
 	trackFilters,
 	setTrackFilters,
 	setBottomMenuInvisible,
-	tracks,
-	scPlayer
+	playingTracks,
+	scPlayer,
+	goToNextTrackOrPaginate,
+	goToPrevTrack
 }) => {
-	let nextTrack = null;
-	let prevTrack = null;
 	const currentTrack = playingTrack.data.track;
-	if (playing) {
-		tracks.forEach((track, idx) => {
-			if (JSON.stringify(track.track) === JSON.stringify(currentTrack)) {
-				nextTrack = tracks[idx + 1] ? tracks[idx + 1].track : null;
-				prevTrack =
-					tracks[idx - 1] && tracks[idx - 1] !== 0
-						? tracks[idx - 1].track
-						: null;
-			}
-		});
-	}
 	return (
 		<div
 			className="App-bottom-nav-container"
@@ -114,10 +103,8 @@ const BottomNav = ({
 				iconName="fast backward"
 				className="PrevButton"
 				onClick={() => {
-					if (!prevTrack && playing) {
-						togglePlay(currentTrack.id);
-					} else if (scPlayer.audio.currentTime < 3 && prevTrack) {
-						togglePlay(prevTrack.id, false, true);
+					if (scPlayer.audio.currentTime < 3 && playing) {
+						goToPrevTrack(currentTrack.id);
 					} else {
 						scPlayer.setTime(0);
 					}
@@ -134,11 +121,7 @@ const BottomNav = ({
 				iconName="fast forward"
 				className="PlayButton"
 				onClick={() => {
-					if (nextTrack) {
-						togglePlay(nextTrack.id, false, true);
-					} else if (!nextTrack && playing) {
-						togglePlay(currentTrack.id);
-					}
+					goToNextTrackOrPaginate(currentTrack.id);
 				}}
 			/>
 
