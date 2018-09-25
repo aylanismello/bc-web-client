@@ -304,13 +304,13 @@ class App extends Component {
 				playing: !this.state.playing
 			});
 		} else if (next) {
-      this.updateTrackPlay(daTrackID);
-      this.scAudio.play({
-        streamUrl: this.getTrackById(daTrackID).stream_url
-      });
-      this.setState({
-        playing: this.state.playing
-      });
+			this.updateTrackPlay(daTrackID);
+			this.scAudio.play({
+				streamUrl: this.getTrackById(daTrackID).stream_url
+			});
+			this.setState({
+				playing: this.state.playing
+			});
 		} else {
 			// PLAYING TRACK FOR FIRST TIME.
 			// SET playingTracks!
@@ -920,7 +920,8 @@ class App extends Component {
 											fetchSoundcloudUser: id => this.fetchSoundcloudUser(id),
 											tracks: this.state.tracks,
 											feed: this.feedInstance(),
-											soundcloudUserId: this.state.trackFilters.soundcloud_user_id,
+											soundcloudUserId: this.state.trackFilters
+												.soundcloud_user_id,
 											soundcloudUser:
 												Object.keys(this.state.soundcloudUser).length &&
 												this.state.soundcloudUser,
