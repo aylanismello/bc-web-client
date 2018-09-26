@@ -9,6 +9,7 @@ import {
 } from 'semantic-ui-react';
 import ReactChartkick, { LineChart } from 'react-chartkick';
 import Chart from 'chart.js';
+import SeekBar from '../SeekBar';
 import './Track.css';
 
 ReactChartkick.addAdapter(Chart);
@@ -31,7 +32,12 @@ class Track extends React.Component {
 	}
 
 	render() {
-		const { feed, graphData, loadingCurrentTrackGraphData } = this.props;
+		const {
+			feed,
+			graphData,
+			loadingCurrentTrackGraphData,
+			playingTrack
+		} = this.props;
 		// const theTrack = this.props.track;
 		let track, publisher;
 
@@ -50,7 +56,8 @@ class Track extends React.Component {
 			<Container>
 				<Segment className="Track-banner-container">
 					<div
-						className="Track-banner-background-image"
+						// className="Track-banner-background-image"
+						className="Track-banner-background-imag"
 						style={{
 							backgroundImage: `url(${imageUrl})`,
 							backgroundSize: 'cover'
@@ -59,8 +66,7 @@ class Track extends React.Component {
 
 					<div className="Track-banner-left-half">
 						<Header as="h2">
-							<Image circular src={imageUrl} />{' '}
-							{track && track.name}
+							<Image circular src={imageUrl} /> {track && track.name}
 						</Header>
 						<div className="Track-banner-main-icons">
 							<Label
@@ -96,6 +102,7 @@ class Track extends React.Component {
 							messages={messages}
 						/>
 					</div>
+					<SeekBar currentTime={playingTrack.currentTime} />
 				</Segment>
 				{feed}
 			</Container>

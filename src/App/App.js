@@ -64,7 +64,8 @@ class App extends Component {
 		playingTrack: Object.freeze({
 			id: undefined,
 			data: {},
-			url: window.location.href
+			url: window.location.href,
+			currentTime: 0
 		}),
 		currentTrackGraphData: {},
 		loadingCurrentTrackGraphData: false,
@@ -127,10 +128,6 @@ class App extends Component {
 			this.setSuperfilter(
 				nextState.superFilters.filter(sf => sf.position === 0)[0]
 			);
-		} else if (
-			this.state.selectedSuperFilterId !== nextState.selectedSuperFilterId
-		) {
-			// this.setSuperfilter(nextState.superFilters.filter(sf => sf.id === nextState.selectedSuperFilterId))[0];
 		}
 
 		if (
@@ -151,6 +148,11 @@ class App extends Component {
 			});
 
 			this.setSCAudioEndCB(nextState.playingTrack.id);
+			this.scAudio.on('timeupdate', () => {
+				// const currentTime = Math.floor(this.scAudio.audio.currentTime);
+				const { currentTime } = this.scAudio.audio;
+				this.setState({ playingTrack: { ...this.state.playingTrack, currentTime } });
+			});
 		}
 	}
 
@@ -876,6 +878,7 @@ class App extends Component {
 											graphData={this.state.currentTrackGraphData}
 											feed={this.feedInstance()}
 											track={this.state.tracks[0]}
+											playingTrack={this.state.playingTrack}
 											loading={this.state.loading}
 											loadingCurrentTrackGraphData={
 												this.state.loadingCurrentTrackGraphData
@@ -967,7 +970,6 @@ class App extends Component {
 								goToPrevTrack={idx => this.goToPrevTrack(idx)}
 								playingTrack={this.state.playingTrack}
 								tracks={this.state.tracks}
-								playingTracks={this.state.playingTracks}
 								bottomMenuVisible={this.state.bottomMenuVisible}
 								toggleBottomMenu={() => this.toggleBottomMenu()}
 								setBottomMenuInvisible={() =>

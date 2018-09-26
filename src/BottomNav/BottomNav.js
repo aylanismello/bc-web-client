@@ -15,7 +15,6 @@ const BottomNav = ({
 	trackFilters,
 	setTrackFilters,
 	setBottomMenuInvisible,
-	playingTracks,
 	scPlayer,
 	goToNextTrackOrPaginate,
 	goToPrevTrack
