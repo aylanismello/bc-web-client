@@ -1,5 +1,5 @@
 .ui.segment.Track-banner-container {
-    /* display: flex; */
+    display: flex;
     justify-content: space-between;
 }
 

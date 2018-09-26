@@ -56,8 +56,7 @@ class Track extends React.Component {
 			<Container>
 				<Segment className="Track-banner-container">
 					<div
-						// className="Track-banner-background-image"
-						className="Track-banner-background-imag"
+						className="Track-banner-background-image"
 						style={{
 							backgroundImage: `url(${imageUrl})`,
 							backgroundSize: 'cover'
@@ -102,7 +101,7 @@ class Track extends React.Component {
 							messages={messages}
 						/>
 					</div>
-					<SeekBar currentTime={playingTrack.currentTime} />
+					{/* <SeekBar currentTime={playingTrack.currentTime} /> */}
 				</Segment>
 				{feed}
 			</Container>

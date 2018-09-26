@@ -1,41 +1,10 @@
 .audio-player {
   border: 5px solid lighten(red, 20%);
   text-align: center;
-  /* display: flex; */
-  /* flex-flow: row; */
-  /* margin: 4rem 0 4rem 0; */
-  /* width: 600px; */
-
-
-    /* progress[value] {
-      -webkit-appearance: none;
-      appearance: none;
-      background-color: white;
-      color: pink;
-      height: 5px;
-    }
-
-    progress[value]::-webkit-progress-bar {
-      background-color: white;
-      border-radius: 2px;
-      border: 1px solid lighten(#acacac, 20%);
-      color: pink;
-    }
-
-    progress::-webkit-progress-value {
-      background-color: pink;
-    } */
-
-  /* } */
-
-}
-
-.player-controls {
-  align-items: center;
-  justify-content: center;
-  margin-top: 2.5rem;
-  flex: 3;
+  position: absolute;
   width: 100%;
+  bottom: 75px;
+  left: 0px;
 }
 
 progress {
@@ -51,7 +20,7 @@ progress[value] {
   appearance: none;
   background-color: white;
   color: #de3e96;
-  height: .5rem;
+  height: .7rem;
 }
 
 progress[value]::-webkit-progress-bar {
