@@ -8,6 +8,7 @@
 	background: black;
 	align-items: center;
 }
+
 .App-bottom-nav-container {
 	position: fixed;
 	bottom: 0;
@@ -15,7 +16,6 @@
 }
 .App-bottom-nav-track-info-container {
 	color: white;
-	/* width: 200px; */
 	height: 70px;
 }
 
