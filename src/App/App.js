@@ -982,6 +982,7 @@ class App extends Component {
 								}}
 								trackFilters={this.state.trackFilters}
 								scPlayer={this.scAudio}
+								audioObj={this.scAudio.audio}
 							/>
 						)}
 					</div>
