@@ -1,13 +1,9 @@
 import React from 'react';
 import './Vis.css';
 
-var SoundCloudAudioSource = function(player) {
+var SoundCloudAudioSource = function(player, source, analyser, audioCtx) {
   var self = this;
-  var analyser;
-  var audioCtx = new (window.AudioContext || window.webkitAudioContext); // this is because it's not been standardised accross browsers yet.
-  analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 256; // see - there is that 'fft' thing.
-  var source = audioCtx.createMediaElementSource(player); // this is where we hook up the <audio> element
+ // this is where we hook up the <audio> element
   source.connect(analyser);
   analyser.connect(audioCtx.destination);
   var sampleAudioStream = function() {
@@ -33,7 +29,7 @@ export default class Vis extends React.Component {
     this.props.audioObj.crossOrigin = "anonymous";
     const visualize = (player) => {
       window.visLoaded = true;
-      var audioSource = new SoundCloudAudioSource(player);
+      var audioSource = new SoundCloudAudioSource(player, this.props.source, this.props.analyser, this.props.audioCtx);
       var canvasElement = document.getElementById('canvas');
       var context = canvasElement.getContext("2d");
 

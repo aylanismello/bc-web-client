@@ -22,6 +22,7 @@ import TrackList from '../TrackList';
 import ScrollToTop from '../scroll_to_top';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
+import Oscill from '../Vis/Oscill';
 
 const queryString = require('query-string');
 
@@ -93,6 +94,10 @@ class App extends Component {
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext); // this is because it's not been standardised accross browsers yet.
+    this.analyser = this.audioCtx.createAnalyser();
+    this.analyser.fftSize = 256; // see - there is that 'fft' thing.
+    this.source = this.audioCtx.createMediaElementSource(this.scAudio.audio);
 		this.fetchCurators();
 		window.scAudio = this.scAudio;
 	}
@@ -736,8 +741,14 @@ class App extends Component {
 								handleSearchChange={value => {
 									this.setState({ query: value });
 								}}
-							/>
-
+							>
+								<Oscill
+									audio={this.scAudio.audio}
+									source={this.source}
+									analyser={this.analyser}
+									audioCtx={this.audioCtx}
+								/>
+							</TopNav>
 							<SideMenu
 								visible={this.state.sideMenuVisible}
 								clickedOnMenuItem={menuItem => {
@@ -983,6 +994,9 @@ class App extends Component {
 								trackFilters={this.state.trackFilters}
 								scPlayer={this.scAudio}
 								audioObj={this.scAudio.audio}
+								source={this.source}
+								analyser={this.analyser}
+								audioCtx={this.audioCtx}
 							/>
 						)}
 					</div>

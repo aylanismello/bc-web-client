@@ -2,3 +2,9 @@
     position: absolute;
     left: 79px;
 }
+
+#oscilloscope {
+    position: absolute;
+    right: -7px;
+    top: 11px;
+}

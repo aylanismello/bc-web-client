@@ -21,6 +21,9 @@ const BottomNav = ({
 	goToNextTrackOrPaginate,
 	goToPrevTrack,
 	audioObj,
+  audioCtx,
+  source,
+  analyser,
 }) => {
 	const currentTrack = playingTrack.data.track;
 	return (
@@ -32,7 +35,7 @@ const BottomNav = ({
 				}
 			}}
 		>
-      <Vis audioObj={audioObj} />
+      <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser}/>
 			<SeekBar currentTime={playingTrack.currentTime} />
 			{/* <div className="App-top-nav" /> */}
 			<div className="App-bottom-nav">

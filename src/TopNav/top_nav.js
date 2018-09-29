@@ -48,7 +48,9 @@ class TopNav extends React.Component {
 							});
 						}}
 					>
-						<BCLogo />
+						<BCLogo>
+							{this.props.children}
+						</BCLogo>
 					</Link>
 				</div>
 
