@@ -6,6 +6,7 @@ import PlayButton from '../PlayButton';
 import NextButton from '../NextButton/NextButton';
 import SeekBar from '../SeekBar';
 import Vis from '../Vis/Vis';
+import EyeButton from '../EyeButton';
 import './BottomNav.css';
 
 const BottomNav = ({
@@ -15,6 +16,7 @@ const BottomNav = ({
 	toggleBottomMenu,
 	togglePlay,
 	trackFilters,
+	visualize,
 	setTrackFilters,
 	setBottomMenuInvisible,
 	scPlayer,
@@ -24,6 +26,7 @@ const BottomNav = ({
   audioCtx,
   source,
   analyser,
+	toggleVisualize
 }) => {
 	const currentTrack = playingTrack.data.track;
 	return (
@@ -35,7 +38,9 @@ const BottomNav = ({
 				}
 			}}
 		>
-      <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser}/>
+
+      <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser} visualze={visualize}/>
+
 			<SeekBar currentTime={playingTrack.currentTime} />
 			{/* <div className="App-top-nav" /> */}
 			<div className="App-bottom-nav">
@@ -107,32 +112,35 @@ const BottomNav = ({
 						</Item>
 					) : null}
 				</div>
+				<div className="App-player-controls App-bottom-nav-box">
+					<NextButton
+						iconName="fast backward"
+						className="PrevButton"
+						onClick={() => {
+							if (scPlayer.audio.currentTime < 3 && playing) {
+								goToPrevTrack(currentTrack.id);
+							} else {
+								scPlayer.setTime(0);
+							}
+						}}
+					/>
 
-				<NextButton
-					iconName="fast backward"
-					className="PrevButton"
-					onClick={() => {
-						if (scPlayer.audio.currentTime < 3 && playing) {
-							goToPrevTrack(currentTrack.id);
-						} else {
-							scPlayer.setTime(0);
-						}
-					}}
-				/>
+					<PlayButton
+						playing={playing}
+						playingTrack={playingTrack}
+						togglePlay={togglePlay}
+					/>
 
-				<PlayButton
-					playing={playing}
-					playingTrack={playingTrack}
-					togglePlay={togglePlay}
-				/>
+					<NextButton
+						iconName="fast forward"
+						className="PlayButton"
+						onClick={() => {
+							goToNextTrackOrPaginate(currentTrack.id);
+						}}
+					/>
 
-				<NextButton
-					iconName="fast forward"
-					className="PlayButton"
-					onClick={() => {
-						goToNextTrackOrPaginate(currentTrack.id);
-					}}
-				/>
+					<EyeButton visualize={visualize} toggleVisualize={toggleVisualize} />
+				</div>
 
 				<div className="App-bottom-nav-box">
 					<FiltersMenu

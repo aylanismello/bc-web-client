@@ -22,7 +22,6 @@ import TrackList from '../TrackList';
 import ScrollToTop from '../scroll_to_top';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
-import Oscill from '../Vis/Oscill';
 
 const queryString = require('query-string');
 
@@ -89,7 +88,8 @@ class App extends Component {
 		soundcloudUser: {},
 		loadingSoundcloudUser: false,
 		loadingSuperfilter: false,
-		playFirstNewTrackOnLoad: false
+		playFirstNewTrackOnLoad: false,
+		visualize: true
 	});
 
 	componentWillMount() {
@@ -742,12 +742,12 @@ class App extends Component {
 									this.setState({ query: value });
 								}}
 							>
-								<Oscill
+								{/* <Oscill
 									audio={this.scAudio.audio}
 									source={this.source}
 									analyser={this.analyser}
 									audioCtx={this.audioCtx}
-								/>
+								/> */}
 							</TopNav>
 							<SideMenu
 								visible={this.state.sideMenuVisible}
@@ -976,6 +976,10 @@ class App extends Component {
 
 						{this.state.initPlayer && (
 							<BottomNav
+								visualize={this.state.visualize}
+								toggleVisualize={() => {
+									this.setState({ visualize: !this.state.visualize });
+								}}
 								playing={this.state.playing}
 								goToNextTrackOrPaginate={this.goToNextTrackOrPaginate}
 								goToPrevTrack={idx => this.goToPrevTrack(idx)}
