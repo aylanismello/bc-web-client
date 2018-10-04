@@ -39,11 +39,11 @@ const BottomNav = ({
 			}}
 		>
 
-      <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser} visualze={visualize}/>
+      {visualize && <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser} visualze={visualize}/> }
 
 			<SeekBar currentTime={playingTrack.currentTime} />
 			{/* <div className="App-top-nav" /> */}
-			<div className="App-bottom-nav">
+			<div className="App-bottom-nav" style={visualize ? {} : { background: 'black'}}>
 				<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 					{playingTrack.id ? (
 						<Item>

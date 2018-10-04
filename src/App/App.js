@@ -89,7 +89,7 @@ class App extends Component {
 		loadingSoundcloudUser: false,
 		loadingSuperfilter: false,
 		playFirstNewTrackOnLoad: false,
-		visualize: true
+		visualize: false
 	});
 
 	componentWillMount() {
@@ -995,6 +995,7 @@ class App extends Component {
 								togglePlay={(id, goingToNextPreloadedTracks) => {
 									this.togglePlay(id, goingToNextPreloadedTracks);
 								}}
+								style={this.state.visualize ? { background: 'black'} : {} }
 								trackFilters={this.state.trackFilters}
 								scPlayer={this.scAudio}
 								audioObj={this.scAudio.audio}
