@@ -88,11 +88,16 @@ class App extends Component {
 		soundcloudUser: {},
 		loadingSoundcloudUser: false,
 		loadingSuperfilter: false,
-		playFirstNewTrackOnLoad: false
+		playFirstNewTrackOnLoad: false,
+		visualize: false
 	});
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext); // this is because it's not been standardised accross browsers yet.
+    this.analyser = this.audioCtx.createAnalyser();
+    this.analyser.fftSize = 256; // see - there is that 'fft' thing.
+    this.source = this.audioCtx.createMediaElementSource(this.scAudio.audio);
 		this.fetchCurators();
 		window.scAudio = this.scAudio;
 	}
@@ -736,8 +741,14 @@ class App extends Component {
 								handleSearchChange={value => {
 									this.setState({ query: value });
 								}}
-							/>
-
+							>
+								{/* <Oscill
+									audio={this.scAudio.audio}
+									source={this.source}
+									analyser={this.analyser}
+									audioCtx={this.audioCtx}
+								/> */}
+							</TopNav>
 							<SideMenu
 								visible={this.state.sideMenuVisible}
 								clickedOnMenuItem={menuItem => {
@@ -965,6 +976,10 @@ class App extends Component {
 
 						{this.state.initPlayer && (
 							<BottomNav
+								visualize={this.state.visualize}
+								toggleVisualize={() => {
+									this.setState({ visualize: !this.state.visualize });
+								}}
 								playing={this.state.playing}
 								goToNextTrackOrPaginate={this.goToNextTrackOrPaginate}
 								goToPrevTrack={idx => this.goToPrevTrack(idx)}
@@ -980,8 +995,13 @@ class App extends Component {
 								togglePlay={(id, goingToNextPreloadedTracks) => {
 									this.togglePlay(id, goingToNextPreloadedTracks);
 								}}
+								style={this.state.visualize ? { background: 'black'} : {} }
 								trackFilters={this.state.trackFilters}
 								scPlayer={this.scAudio}
+								audioObj={this.scAudio.audio}
+								source={this.source}
+								analyser={this.analyser}
+								audioCtx={this.audioCtx}
 							/>
 						)}
 					</div>
