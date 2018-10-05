@@ -365,7 +365,7 @@ class App extends Component {
 		this.setState({ loading: true });
 
 		let trackUrl = `${baseUrl}/tracks`;
-		if (trackFilters.sort_type === 'trending') {
+		if (trackFilters.sort_type === 'trending' && trackFilters.track_type === 0) {
 			trackUrl = `${trackUrl}/trending`;
 		}
 
