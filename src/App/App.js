@@ -22,6 +22,8 @@ import TrackList from '../TrackList';
 import ScrollToTop from '../scroll_to_top';
 import { homeFilters } from '../filter_helpers';
 import './App.css';
+import Oscill from '../Vis/Oscill';
+import BG from '../Vis/BG';
 
 const queryString = require('query-string');
 
@@ -52,6 +54,7 @@ class App extends Component {
 		this.getTrackById = this.getTrackById.bind(this);
 		this.renderSuperFilterPanel = this.renderSuperFilterPanel.bind(this);
 		this.goToNextTrackOrPaginate = this.goToNextTrackOrPaginate.bind(this);
+		this.handleVisChange = this.handleVisChange.bind(this);
 	}
 
 	state = Object.freeze({
@@ -88,11 +91,16 @@ class App extends Component {
 		soundcloudUser: {},
 		loadingSoundcloudUser: false,
 		loadingSuperfilter: false,
-		playFirstNewTrackOnLoad: false
+		playFirstNewTrackOnLoad: false,
+		vis: false,
 	});
 
 	componentWillMount() {
 		this.scAudio = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+    this.audioCtx = new (window.AudioContext || window.webkitAudioContext); // this is because it's not been standardised accross browsers yet.
+    this.analyser = this.audioCtx.createAnalyser();
+    this.analyser.fftSize = 256; // see - there is that 'fft' thing.
+    this.source = this.audioCtx.createMediaElementSource(this.scAudio.audio);
 		this.fetchCurators();
 		window.scAudio = this.scAudio;
 	}
@@ -154,6 +162,12 @@ class App extends Component {
 				this.setState({ playingTrack: { ...this.state.playingTrack, currentTime } });
 			});
 		}
+	}
+
+	handleVisChange() {
+		this.setState({
+			vis: !this.state.vis,
+		})
 	}
 
 	setSCAudioEndCB(id) {
@@ -728,6 +742,13 @@ class App extends Component {
 		return (
 			<Router>
 				<ScrollToTop>
+					{/*{!this.scAudio.audio.paused && this.state.vis &&*/}
+					{/*<BG*/}
+						{/*audio={this.scAudio.audio}*/}
+						{/*source={this.source}*/}
+						{/*analyser={this.analyser}*/}
+						{/*audioCtx={this.audioCtx}*/}
+					{/*/> }*/}
 					<div className="App-container">
 						<Sidebar.Pushable
 							className="App"
@@ -742,8 +763,16 @@ class App extends Component {
 								handleSearchChange={value => {
 									this.setState({ query: value });
 								}}
-							/>
-
+								handleVisChange={this.handleVisChange}
+								vis={this.state.vis}
+							>
+								<Oscill
+									audio={this.scAudio.audio}
+									source={this.source}
+									analyser={this.analyser}
+									audioCtx={this.audioCtx}
+								/>
+							</TopNav>
 							<SideMenu
 								visible={this.state.sideMenuVisible}
 								clickedOnMenuItem={menuItem => {
@@ -988,6 +1017,11 @@ class App extends Component {
 								}}
 								trackFilters={this.state.trackFilters}
 								scPlayer={this.scAudio}
+								audioObj={this.scAudio.audio}
+								source={this.source}
+								analyser={this.analyser}
+								audioCtx={this.audioCtx}
+								vis={this.state.vis}
 							/>
 						)}
 					</div>

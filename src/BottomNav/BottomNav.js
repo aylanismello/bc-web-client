@@ -5,6 +5,7 @@ import FiltersMenu from '../FiltersMenu';
 import PlayButton from '../PlayButton';
 import NextButton from '../NextButton/NextButton';
 import SeekBar from '../SeekBar';
+import Vis from '../Vis/Vis';
 import './BottomNav.css';
 
 const BottomNav = ({
@@ -18,7 +19,12 @@ const BottomNav = ({
 	setBottomMenuInvisible,
 	scPlayer,
 	goToNextTrackOrPaginate,
-	goToPrevTrack
+	goToPrevTrack,
+	audioObj,
+  audioCtx,
+  source,
+  analyser,
+	vis,
 }) => {
 	const currentTrack = playingTrack.data.track;
 	return (
@@ -30,10 +36,10 @@ const BottomNav = ({
 				}
 			}}
 		>
-
+			{ vis && <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser}/> }
 			<SeekBar currentTime={playingTrack.currentTime} />
 			{/* <div className="App-top-nav" /> */}
-			<div className="App-bottom-nav">
+			<div className="App-bottom-nav" style={ vis ? {} : {background: 'black'}}>
 				<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 					{playingTrack.id ? (
 						<Item>
@@ -129,7 +135,7 @@ const BottomNav = ({
 					}}
 				/>
 
-				<div className="App-bottom-nav App-bottom-nav-box">
+				<div className="App-bottom-nav-box">
 					<FiltersMenu
 						visible={bottomMenuVisible}
 						trackFilters={trackFilters}

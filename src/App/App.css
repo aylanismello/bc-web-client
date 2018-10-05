@@ -1,5 +1,5 @@
 .App, body {
-  background: whitesmoke;
+  background: rgba(255,255,255,0.1);
 }
 
 @media only screen and (max-width: 767px)
