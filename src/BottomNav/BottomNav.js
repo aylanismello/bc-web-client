@@ -24,6 +24,7 @@ const BottomNav = ({
   audioCtx,
   source,
   analyser,
+	vis,
 }) => {
 	const currentTrack = playingTrack.data.track;
 	return (
@@ -35,10 +36,10 @@ const BottomNav = ({
 				}
 			}}
 		>
-      <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser}/>
+			{ vis && <Vis audioObj={audioObj} audioCtx={audioCtx} source={source} analyser={analyser}/> }
 			<SeekBar currentTime={playingTrack.currentTime} />
 			{/* <div className="App-top-nav" /> */}
-			<div className="App-bottom-nav">
+			<div className="App-bottom-nav" style={ vis ? {} : {background: 'black'}}>
 				<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 					{playingTrack.id ? (
 						<Item>

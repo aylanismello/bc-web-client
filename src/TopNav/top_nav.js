@@ -5,18 +5,41 @@ import propTypes from 'prop-types';
 import SearchBar from '../SearchBar';
 import './top_nav.css';
 import BCLogo from '../BCLogo';
+import seizure from './seizure.png';
 
-const { func } = propTypes;
+const { func, bool } = propTypes;
 
 class TopNav extends React.Component {
 	static propTypes = {
 		toggleSidebar: func.isRequired,
-		setFilter: func.isRequired
+		setFilter: func.isRequired,
+		vis: bool.isRequired,
 	};
 
 	state = {
 		showFullSearchBar: false
 	};
+
+	renderEye() {
+    if (this.props.vis) {
+    	return <Icon
+				name={this.props.vis ? 'eye slash outline' : 'eye'}
+				onClick={this.props.handleVisChange}
+				size="large"
+				style={{color: 'white', cursor:'pointer'}}
+			/>
+		}
+		return <img
+			src={seizure}
+			onClick={this.props.handleVisChange}
+			style={{
+				height:'44px',
+				width:'44px',
+				background:('rgba(0,0,0,0.5)'),
+				cursor:'pointer'
+			}}
+		/>
+	}
 
 	render() {
 		return (
@@ -60,6 +83,7 @@ class TopNav extends React.Component {
 						submitSearch={this.props.submitSearch}
 						query={this.props.query}
 					/>
+					{this.renderEye.bind(this)()}
 				</div>
 				{/* <BCSearch
 					showFullSearchBar={this.state.showFullSearchBar}
