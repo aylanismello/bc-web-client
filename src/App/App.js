@@ -364,8 +364,14 @@ class App extends Component {
 	fetchTracks(trackFilters, paginate = false, playFirstNewTrackOnLoad = false) {
 		this.setState({ loading: true });
 
+		let trackUrl = `${baseUrl}/tracks`;
+		if (trackFilters.sort_type === 'trending') {
+			trackUrl = `${trackUrl}/trending`;
+		}
+
 		axios
-			.get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
+			.get(trackUrl, { params: App.formatFilters(trackFilters) })
+			// .get(`${baseUrl}/tracks`, { params: App.formatFilters(trackFilters) })
 			.then(results => {
 				if (paginate && !trackFilters.track_id) {
 					this.setState({
