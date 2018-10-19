@@ -365,7 +365,8 @@ class App extends Component {
 		this.setState({ loading: true });
 
 		let trackUrl = `${baseUrl}/tracks`;
-		if (trackFilters.sort_type === 'trending' && trackFilters.track_type === 0) {
+		if (!trackFilters.soundcloud_user_id && ((trackFilters.sort_type === 'trending' && trackFilters.track_type === 0) ||
+					trackFilters.track_type === 1 || trackFilters.track_type === 2 || trackFilters.sort_type === 'obscure')) {
 			trackUrl = `${trackUrl}/trending`;
 		}
 
