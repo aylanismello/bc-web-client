@@ -2,6 +2,7 @@ $font-1: 'Open Sans', sans-serif;
 $text-color-1: #f3f3f3;
 $bg-color-1: #191925;
 $bc-purple: #6255ff;
+$bc-gray: #626970;
 
 @mixin bc-text($font-weight: normal) {
   font-family: $font-1;

@@ -85,27 +85,6 @@ i.video.play.outline.icon.TrackList-play-pause-icon {
 	cursor: pointer;
 }
 
-.TrackList-artist-image-container:hover {
-	cursor: pointer;
-}
-
-.TrackList-artist-image-container {
-	width: 30px;
-	margin-left: 5px;
-}
-
-.TrackList-artist-image {
-	width: 100%;
-	height: auto;
-	border-radius: 100px;
-}
-
-.TrackList-artist-info {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-
 .ui.relaxed.divided.items > .item {
 	padding: 1.5em 1.5em;
 }

@@ -62,6 +62,7 @@ const TrackItem = ({
 				<Item.Header>
 					<Link
 						to={`/tracks/${track.id}`}
+						className="TrackItem-track-name"
 						onClick={() => {
 							window.amplitude
 								.getInstance()
