@@ -247,7 +247,10 @@ class Home extends React.Component {
 					<Grid stackable columns={2}>
 						<Grid.Column className="Home-widget">
 							<Segment>
-								<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
+								<div className="Home-widget-header-container">
+									<h3 className="Home-widget-header">Trending releases</h3>
+									<h4 className="Home-widget-sub-header"> More releases </h4>
+								</div>
 								<Divider />
 								{this.props.trackListWidget}
 								<Header as="h3">
@@ -270,7 +273,10 @@ class Home extends React.Component {
 						</Grid.Column>
 						<Grid.Column className="Home-widget">
 							<Segment>
-								<Header as="h3">Trending Curators</Header>
+							<div className="Home-widget-header-container">
+								<h3 className="Home-widget-header">Trending curators</h3>
+								<h4 className="Home-widget-sub-header"> More curators </h4>
+							</div>
 								<Divider />
 								<BCMap
 									featureType="soundcloudUser"

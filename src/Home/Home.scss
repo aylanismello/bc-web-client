@@ -27,3 +27,18 @@
 .ui.inverted.header {
 		@include bc-text();
 }
+
+.Home-widget-header {
+		@include bc-text(600);
+		font-size: 20px;
+		line-height: 27px;
+		margin-bottom: 11px;
+}
+
+.Home-widget-sub-header {
+		@include bc-text();
+		color: $bc-purple;
+		font-size: 16px;
+		line-height: 22px;
+		margin: 0px;
+}
