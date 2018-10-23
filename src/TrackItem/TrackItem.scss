@@ -4,6 +4,14 @@
     cursor: default;
 }
 
+.ui.items>.item>.content {
+  margin-left: 20px;
+}
+
+.item.TrackList-track-item-container {
+  align-items: center;
+}
+
 .TrackItem-track-name {
   @include bc-text(600);
   font-size: 16px;

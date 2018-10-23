@@ -1,13 +1,9 @@
-import React from "react";
-import { Item, Label, Popup, Statistic, Icon, Image } from "semantic-ui-react";
-import { Link } from "react-router-dom";
-import ArtworkPlayButton from "../ArtworkPlayButton";
-import "./TrackItem.scss";
-import {
-  publisherLocationsToString,
-  makeTrackTypeBadge,
-  makeBCBadge
-} from "../helpers";
+import React from 'react';
+import { Item, Label, Popup, Statistic, Icon, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import ArtworkPlayButton from '../ArtworkPlayButton';
+import './TrackItem.scss';
+import { publisherLocationsToString, makeTrackTypeBadge, makeBCBadge } from '../helpers';
 
 const TrackItem = ({
   currentTrack,
@@ -29,36 +25,34 @@ const TrackItem = ({
     src: track.artwork_url || publisher[0].avatar_url
   };
 
-  if (selectedSuperFilter && selectedSuperFilter.name === "Trending") {
+  if (selectedSuperFilter && selectedSuperFilter.name === 'Trending') {
     trackImageProps.label = {
       content: `#${idx + 1}`,
-      color: "pink",
-      ribbon: "true"
+      color: 'pink',
+      ribbon: 'true'
     };
   }
 
   return (
-    <Item key={track.id} className="TrackList-track-item">
+    <Item key={track.id} className="TrackList-track-item-container">
       <ArtworkPlayButton
-				togglePlay={togglePlay}
-				src={trackImageProps.src}
-				playingTrackId={playingTrackId}
-				track={track}
-				playing={playing}
-			/>
+        togglePlay={togglePlay}
+        src={trackImageProps.src}
+        playingTrackId={playingTrackId}
+        track={track}
+        playing={playing}
+      />
 
-      <Item.Content>
+      <Item.Content className="TrackItem-right-side">
         <Item.Header>
           <Link
             to={`/tracks/${track.id}`}
             className="TrackItem-track-name"
             onClick={() => {
-              window.amplitude
-                .getInstance()
-                .logEvent("TrackList - Click on Track Name", {
-                  id: track.id,
-                  name: track.name
-                });
+              window.amplitude.getInstance().logEvent('TrackList - Click on Track Name', {
+                id: track.id,
+                name: track.name
+              });
             }}
           >
             {track.name}
@@ -68,38 +62,32 @@ const TrackItem = ({
           <Link
             to={`/soundcloud_users/${publisher[0].id}`}
             onClick={() => {
-              window.amplitude
-                .getInstance()
-                .logEvent("TrackList - Click on Artist Name", {
-                  trackId: track.id,
-                  trackName: track.name,
-                  artistId: publisher[0].id,
-                  artistName: publisher[0].name
-                });
+              window.amplitude.getInstance().logEvent('TrackList - Click on Artist Name', {
+                trackId: track.id,
+                trackName: track.name,
+                artistId: publisher[0].id,
+                artistName: publisher[0].name
+              });
             }}
           >
-            <div className="TrackList-artist-name">by {publisher[0].name}</div>{" "}
+            <div className="TrackList-artist-name">by {publisher[0].name}</div>{' '}
           </Link>
           <div className="TrackList-artist-image-container">
             <Link
               to={`/soundcloud_users/${publisher[0].id}`}
               onClick={() => {
-                window.amplitude
-                  .getInstance()
-                  .logEvent("TrackList - Click on Artist Avatar", {
-                    trackId: track.id,
-                    trackName: track.name,
-                    artistId: publisher[0].id,
-                    artistName: publisher[0].name
-                  });
+                window.amplitude.getInstance().logEvent('TrackList - Click on Artist Avatar', {
+                  trackId: track.id,
+                  trackName: track.name,
+                  artistId: publisher[0].id,
+                  artistName: publisher[0].name
+                });
               }}
             >
               <img
                 className="TrackList-artist-image"
                 src={publisher[0].avatar_url}
-                style={
-                  publisher[0].is_curator ? { border: "#df5353 solid 5px" } : {}
-                }
+                style={publisher[0].is_curator ? { border: '#df5353 solid 5px' } : {}}
               />
             </Link>
           </div>
@@ -132,19 +120,13 @@ const TrackItem = ({
                       className="TrackList-curator-popup-container"
                       to={`/soundcloud_users/${curator.id}`}
                       onClick={() => {
-                        window.amplitude
-                          .getInstance()
-                          .logEvent("TrackList - Click on Curator", {
-                            id: curator.id,
-                            name: curator.name
-                          });
+                        window.amplitude.getInstance().logEvent('TrackList - Click on Curator', {
+                          id: curator.id,
+                          name: curator.name
+                        });
                       }}
                     >
-                      <Label
-                        as="a"
-                        basic
-                        className="TrackList-curator-list-items"
-                      >
+                      <Label as="a" basic className="TrackList-curator-list-items">
                         <Image avatar spaced="right" src={curator.avatar_url} />
                         {curator.name}
                       </Label>
@@ -153,17 +135,12 @@ const TrackItem = ({
                 </Item.Group>
               </Popup>
             </Item.Header>
-            <Item.Description>
-              Released {track.created_at_external}
-            </Item.Description>
+            <Item.Description>Released {track.created_at_external}</Item.Description>
             <Item.Extra>
               {makeBCBadge(track)}
               {makeTrackTypeBadge(track)}
               {publisherLocationsToString(publisher[0].location) ? (
-                <Label
-                  icon="globe"
-                  content={publisherLocationsToString(publisher[0].location)}
-                />
+                <Label icon="globe" content={publisherLocationsToString(publisher[0].location)} />
               ) : null}
             </Item.Extra>
           </div>

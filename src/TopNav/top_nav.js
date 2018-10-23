@@ -9,24 +9,19 @@ import BCLogo from '../BCLogo';
 const { func } = propTypes;
 
 class TopNav extends React.Component {
-	static propTypes = {
-		toggleSidebar: func.isRequired,
-		setFilter: func.isRequired
-	};
+  static propTypes = {
+    toggleSidebar: func.isRequired
+  };
 
-	state = {
-		showFullSearchBar: false
-	};
-
-	render() {
-		return (
-			<Segment
-				className="App-top-nav"
-				onClick={() => {
-					this.props.toggleSidebar({ clickedOutsideMenu: true });
-				}}
-			>
-				<div className="App-top-nav-side">
+  render() {
+    return (
+      <Segment
+        className="App-top-nav"
+        onClick={() => {
+          this.props.toggleSidebar({ clickedOutsideMenu: true });
+        }}
+      >
+        {/*		<div className="App-top-nav-side">
 					<Icon
 						name="content"
 						size="big"
@@ -38,35 +33,33 @@ class TopNav extends React.Component {
 						}}
 					/>
 				</div>
+				*/}
 
-				<div className="App-top-nav-side">
-					<Link
-						to="/"
-						onClick={() => {
-							window.amplitude.getInstance().logEvent('Click on BC Logo', {
-								fromPage: window.location.href
-							});
-						}}
-					>
-						<BCLogo />
-					</Link>
-				</div>
+          {/*    <Link
+            to="/"
+						className="TopNav-BCLogo-Link"
+            onClick={() => {
+              window.amplitude.getInstance().logEvent('Click on BC Logo', {
+                fromPage: window.location.href
+              });
+            }}
+          > */}
+          <BCLogo />
+          {/*
+          </Link>
+					*/}
 
-				<div className="App-top-nav-side">
-					<SearchBar
-						handleSearchChange={this.props.handleSearchChange}
-						submitSearch={this.props.submitSearch}
-						query={this.props.query}
-					/>
-				</div>
-				{/* <BCSearch
-					showFullSearchBar={this.state.showFullSearchBar}
-					setShowFullSearchBar={() => 5}
-					setFilter={this.props.setFilter}
-				/> */}
-			</Segment>
-		);
-	}
+        {/* <div className="App-top-nav-side">
+          <SearchBar
+            handleSearchChange={this.props.handleSearchChange}
+            submitSearch={this.props.submitSearch}
+            query={this.props.query}
+          />
+        </div>
+				*/}
+      </Segment>
+    );
+  }
 }
 
 export default TopNav;

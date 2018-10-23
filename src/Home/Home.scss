@@ -6,6 +6,16 @@
 	margin-bottom: 2rem;
 }
 
+.Home-take-a-listen {
+	@include bc-text();
+  font-size: 12px;
+  letter-spacing: 2.6px;
+}
+
+h3.Home-take-a-listen {
+    margin: 18px;
+}
+
 .Home-BC-greeting-container {
 	margin-top: 3em;
 }
@@ -24,8 +34,9 @@
 }
 
 // OVERRIDES
-.ui.inverted.header {
-		@include bc-text();
+.Home-banner-header {
+	@include bc-text();
+	font-size: 32px;
 }
 
 .Home-widget-header {

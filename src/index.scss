@@ -1,3 +1,5 @@
+@import './semantic-overides';
+
 body {
   margin: 0;
   padding: 0;
@@ -8,6 +10,14 @@ body {
 
 .ui.segment {
   background: none;
+}
+
+.ui.header, .header {
+  @include bc-text(600);
+}
+
+p, span {
+  @include bc-text();
 }
 
 .ui.inverted.vertical.center.aligned.segment {

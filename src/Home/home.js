@@ -187,9 +187,9 @@ class Home extends React.Component {
 		} = this.props;
 
 		return (
-			<Container>
+			<Container className="Home">
 				<Segment
-					inverted
+					className="Home-BC-greeting-outer-container"
 					textAlign="center"
 					style={{ minHeight: 350, padding: '1em 0em' }}
 					vertical
@@ -197,37 +197,27 @@ class Home extends React.Component {
 					<Container text>
 						{initPlayer || (
 							<div className="Home-BC-greeting-container">
-								<Header
-									as="h1"
-									// content="Welcome to Burn Cartel"
-									content="We organize the world's underground music."
-									inverted
+								<h1
+									className="Home-banner-header"
 									style={{
-										fontSize: mobile ? '2em' : '4em',
 										fontWeight: 'normal',
 										marginBottom: 0
-										// marginTop: mobile ? '1.5em' : '3em'
 									}}
-								/>
+								>
+									We organize the world's underground music
+								</h1>
 
-								<Header
-									as="h2"
-									content={homePlayDisabled ? 'LOADING...' : '(take a listen)'}
-									// content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
-									inverted
-									style={{
-										fontSize: mobile ? '1.5em' : '1.7em',
-										fontWeight: 'normal',
-										marginTop: mobile ? '0.5em' : '1.5em'
-									}}
-								/>
+								<h3
+									className="Home-take-a-listen"
+								> {homePlayDisabled ? 'LOADING...' : 'TAKE A LISTEN'}
+								</h3>
 							</div>
 						)}
 						{initPlayer ? (
 							this.renderBurnCartelGreeting()
 						) : (
 							<PlayButton
-								size="massive"
+								size="huge"
 								playingTrack={
 									(playingTrack.id && playingTrack) || homePageTrack
 								}

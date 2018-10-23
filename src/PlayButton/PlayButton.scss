@@ -1,9 +1,13 @@
-.PlayButton:hover {
-  cursor: pointer;
-}
-
 .PlayButton-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
+  left: 15px;
+  visibility: hidden;
+  i {
+    opacity: 0.8;
+  }
+}
+
+i {
+  cursor: pointer;
 }
