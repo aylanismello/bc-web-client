@@ -15,7 +15,6 @@
 .TrackList-artist-info {
 	display: flex;
 	align-items: center;
-	justify-content: center;
 
   .TrackList-artist-name {
     @include bc-text();
@@ -36,4 +35,9 @@
       cursor: pointer;
     }
   }
+}
+
+// RAW OVERRIDE
+.ui.items > .item .meta {
+  margin: 0px;
 }

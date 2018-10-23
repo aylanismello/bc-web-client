@@ -4,8 +4,19 @@ body {
   font-family: sans-serif;
 }
 
-//OVERRIDES
+// SEMANTIC GLOBAL OVERRIDES
 
 .ui.segment {
   background: none;
+}
+
+.ui.inverted.vertical.center.aligned.segment {
+    background: none;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
 }

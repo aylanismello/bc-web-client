@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as _ from 'lodash';
 import {
 	Container,
 	Header,
@@ -9,10 +8,8 @@ import {
 	Icon,
 	Divider,
 	Form,
-	Message,
 	Button,
-	Grid,
-	Label
+	Grid
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import BCMap from '../BCMap';
@@ -150,7 +147,6 @@ class Home extends React.Component {
 						}}
 					>
 						<Form.Field inline>
-							{/* <Label pointing="right">Stay in touch?</Label> */}
 							<input
 								value={this.state.email}
 								onChange={e => this.setState({ email: e.currentTarget.value })}
@@ -249,14 +245,9 @@ class Home extends React.Component {
 							<Segment>
 								<div className="Home-widget-header-container">
 									<h3 className="Home-widget-header">Trending releases</h3>
-									<h4 className="Home-widget-sub-header"> More releases </h4>
-								</div>
-								<Divider />
-								{this.props.trackListWidget}
-								<Header as="h3">
-									More on{' '}
 									<Link
 										to="/feed"
+										className="Home-widget-sub-header"
 										onClick={() => {
 											window.amplitude
 												.getInstance()
@@ -265,17 +256,30 @@ class Home extends React.Component {
 												});
 										}}
 									>
-										{' '}
-										Feed{' '}
+										More releases
 									</Link>
-								</Header>
+								</div>
+								<Divider />
+								{this.props.trackListWidget}
 							</Segment>
 						</Grid.Column>
 						<Grid.Column className="Home-widget">
 							<Segment>
 							<div className="Home-widget-header-container">
 								<h3 className="Home-widget-header">Trending curators</h3>
-								<h4 className="Home-widget-sub-header"> More curators </h4>
+								<Link
+									to="/curators"
+									className="Home-widget-sub-header"
+									onClick={() => {
+										window.amplitude
+											.getInstance()
+											.logEvent('Home - Click on Expand Widget', {
+												widget: 'curators'
+											});
+									}}
+								>
+									More curators
+								</Link>
 							</div>
 								<Divider />
 								<BCMap
@@ -283,24 +287,6 @@ class Home extends React.Component {
 									size={80}
 									data={this.props.curators}
 								/>
-								<Header as="h3">
-									More on{' '}
-									<Link
-										to="/curators"
-										onClick={() => {
-											window.amplitude
-												.getInstance()
-												.logEvent('Home - Click on Expand Widget', {
-													widget: 'curators'
-												});
-										}}
-									>
-										{' '}
-										our Curators page{' '}
-									</Link>
-								</Header>
-								{/* <Divider /> */}
-								{/* <CuratorList curators={this.props.curators} view="list" /> */}
 							</Segment>
 						</Grid.Column>
 					</Grid>

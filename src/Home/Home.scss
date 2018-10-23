@@ -41,4 +41,7 @@
 		font-size: 16px;
 		line-height: 22px;
 		margin: 0px;
+		&:hover {
+			color: $bc-purple;
+		}
 }
