@@ -36,7 +36,7 @@ const BottomNav = ({
 			<div className="App-bottom-nav">
 				<div className="App-bottom-nav-track-info-container App-bottom-nav-box">
 					{playingTrack.id ? (
-						<Item>
+						<Item className="App-bottom-nav-track-info">
 							{/* <a */}
 							{/* href={playingTrack.url} */}
 							{/*  find way to return to feed with UI*/}

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
 	Container,
-	Header,
 	Segment,
 	Icon,
 	Divider,
@@ -15,7 +14,7 @@ import PropTypes from 'prop-types';
 import BCMap from '../BCMap';
 import { baseUrl } from '../config';
 import PlayButton from '../PlayButton';
-import CuratorList from '../CuratorList';
+import ExploreNav from '../ExploreNav';
 import './Home.scss';
 
 class Home extends React.Component {
@@ -228,6 +227,8 @@ class Home extends React.Component {
 						)}
 					</Container>
 				</Segment>
+
+				<ExploreNav/>
 
 				<div className="Home-widget-container">
 					<Grid stackable columns={2}>

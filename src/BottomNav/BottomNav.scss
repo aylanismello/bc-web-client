@@ -1,3 +1,10 @@
+@import '../semantic-overides.scss';
+
+.item.App-bottom-nav-track-info {
+	background: $bc-black;
+	width: 400px;
+}
+
 .App-bottom-nav {
 	width: 100%;
 	justify-content: space-between;
@@ -5,7 +12,7 @@
 	position: relative;
 	height: 80px;
 	display: flex;
-	background: black;
+	background: $bc-gray-2;
 	align-items: center;
 }
 
