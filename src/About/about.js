@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Segment, Header, Divider, Item } from 'semantic-ui-react';
-import './about.css';
+import './about.scss';
 
 const About = () => (
 	<Container className="About-container" fluid>

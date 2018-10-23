@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimmer, Loader, Segment, Header } from 'semantic-ui-react';
 
-import './TabbedSegment.css';
+import './TabbedSegment.scss';
 
 const TabbedSegment = ({ loading, children }) => {
 	return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Sidebar, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import './side_menu.css';
+import './side_menu.scss';
 
 const SideMenu = ({ visible, clickedOnMenuItem }) => {
 	return (

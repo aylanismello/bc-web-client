@@ -1,7 +1,7 @@
 import React from 'react';
 import { Header, Item, Icon, Divider } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import './Feed.css';
+import './Feed.scss';
 
 const LocationFeed = ({ locations, children }) => {
 	return (

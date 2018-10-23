@@ -14,7 +14,7 @@ import {
 import axios from 'axios';
 import BCLogo from '../BCLogo';
 import { baseUrl } from '../config';
-import './submit.css';
+import './submit.scss';
 
 const url = `${baseUrl}/submissions`;
 

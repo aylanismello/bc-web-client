@@ -10,7 +10,7 @@ import {
 import ReactChartkick, { LineChart } from 'react-chartkick';
 import Chart from 'chart.js';
 import SeekBar from '../SeekBar';
-import './Track.css';
+import './Track.scss';
 
 ReactChartkick.addAdapter(Chart);
 

@@ -17,7 +17,7 @@ import {
 import MediaQuery from 'react-responsive';
 import { formatSoundcloudUserForMap } from '../helpers';
 import BCMap from '../BCMap';
-import './soundcloud_user.css';
+import './soundcloud_user.scss';
 
 class SoundcloudUser extends React.Component {
 	state = {

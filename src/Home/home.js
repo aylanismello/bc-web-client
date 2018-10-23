@@ -19,7 +19,7 @@ import BCMap from '../BCMap';
 import { baseUrl } from '../config';
 import PlayButton from '../PlayButton';
 import CuratorList from '../CuratorList';
-import './Home.css';
+import './Home.scss';
 
 class Home extends React.Component {
 	state = {

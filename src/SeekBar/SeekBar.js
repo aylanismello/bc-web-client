@@ -1,5 +1,5 @@
 import React from 'react';
-import './SeekBar.css';
+import './SeekBar.scss';
 
 // m.dotdev.co/how-to-build-an-audio-player-with-html5-and-the-progress-element-487cbbbaebfc
 

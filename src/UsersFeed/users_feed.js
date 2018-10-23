@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Card, Image, Header, Divider, Dimmer, Loader } from 'semantic-ui-react';
-import './users_feed.css';
+import './users_feed.scss';
 
 const UsersFeed = ({ users }) => {
 	// const publishers = tracks.map(({ publisher, track }) => {

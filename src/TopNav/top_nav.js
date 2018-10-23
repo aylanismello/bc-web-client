@@ -3,7 +3,7 @@ import { Segment, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import propTypes from 'prop-types';
 import SearchBar from '../SearchBar';
-import './top_nav.css';
+import './top_nav.scss';
 import BCLogo from '../BCLogo';
 
 const { func } = propTypes;

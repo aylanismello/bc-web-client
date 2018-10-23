@@ -17,7 +17,7 @@ import { publisherLocationsToString } from '../helpers';
 import PaginateButton from '../PaginateButton';
 import CuratorList from '../CuratorList';
 import BCMap from '../BCMap';
-import './Curators.css';
+import './Curators.scss';
 
 class Curators extends React.Component {
 	componentWillMount() {

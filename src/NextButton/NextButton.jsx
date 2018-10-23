@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import './NextButton.css';
+import './NextButton.scss';
 
 const NextButton = ({ onClick, size, iconName, className }) => (
 	<div className={className}>

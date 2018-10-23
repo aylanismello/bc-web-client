@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Image } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import superFilterImg from './sample_super_filter.svg';
-import css from './SuperFilterButton.css';
+import css from './SuperFilterButton.scss';
 
 const SuperFilterButton = ({ onClick, name, selected }) => {
 	const color = 'pink';

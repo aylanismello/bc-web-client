@@ -7,7 +7,7 @@ import {
 	Label,
 	Icon
 } from 'semantic-ui-react';
-import './Mixes.css';
+import './Mixes.scss';
 
 class Mixes extends React.Component {
 	componentWillMount() {

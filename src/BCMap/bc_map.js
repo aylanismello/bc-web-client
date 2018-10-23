@@ -6,7 +6,7 @@ import {
 	publisherLocationsToString,
 	formatSoundcloudUserForMap
 } from '../helpers';
-import './BCMap.css';
+import './BCMap.scss';
 
 const MapBox = ReactMapboxGl({
 	accessToken:

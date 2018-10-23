@@ -1,7 +1,7 @@
 import React from 'react';
 import { Item, Label, Popup, Statistic, Icon, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import './TrackItem.css';
+import './TrackItem.scss';
 import {
 	publisherLocationsToString,
 	makeTrackTypeBadge,

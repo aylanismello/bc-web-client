@@ -2,7 +2,7 @@ import React from 'react';
 import { Item, Icon, Divider } from 'semantic-ui-react';
 import PaginateButton from '../PaginateButton';
 import TrackItem from '../TrackItem';
-import './TrackList.css';
+import './TrackList.scss';
 
 class TrackList extends React.Component {
 	render() {

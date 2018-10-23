@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import { Segment } from 'semantic-ui-react';
 import * as _ from 'lodash';
 import SuperFilterButton from '../SuperFilterButton';
-import './SuperFilterPanel.css';
+import './SuperFilterPanel.scss';
 
 const settings = {
 	infinite: false,

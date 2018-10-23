@@ -5,7 +5,7 @@ import FiltersMenu from '../FiltersMenu';
 import PlayButton from '../PlayButton';
 import NextButton from '../NextButton/NextButton';
 import SeekBar from '../SeekBar';
-import './BottomNav.css';
+import './BottomNav.scss';
 
 const BottomNav = ({
 	playing,

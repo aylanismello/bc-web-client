@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import css from './PlayButton.css';
+import css from './PlayButton.scss';
 
 const PlayButton = ({ playing, playingTrack, togglePlay, size, disabled }) => (
 	<div className="PlayButton">

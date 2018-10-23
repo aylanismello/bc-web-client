@@ -21,7 +21,7 @@ import BottomNav from '../BottomNav';
 import TrackList from '../TrackList';
 import ScrollToTop from '../scroll_to_top';
 import { homeFilters } from '../filter_helpers';
-import './App.css';
+import './App.scss';
 
 const queryString = require('query-string');
 
