@@ -23,7 +23,8 @@
     "react-slick": "^0.23.1",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.2",
-    "soundcloud-audio": "^1.2.2"
+    "soundcloud-audio": "^1.2.2",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
