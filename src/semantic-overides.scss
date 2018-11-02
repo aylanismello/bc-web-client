@@ -1,0 +1,13 @@
+$font-1: 'Open Sans', sans-serif;
+$text-color-1: #f3f3f3;
+$bg-color-1: #191925;
+$bc-purple: #6255ff;
+$bc-gray: #626970;
+$bc-gray-2: #262632;
+$bc-black: #22222e;;
+
+@mixin bc-text($font-weight: normal) {
+  font-family: $font-1;
+  color: $text-color-1;
+  font-weight: $font-weight;
+}

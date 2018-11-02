@@ -1,10 +1,13 @@
 import React from 'react';
-import logo from './bc_logo.png';
+import logo from './bc_logo_white.svg';
 import './bc_logo.scss';
 
-const BCLogo = ({ width }) => (
-	<div className="BCLogo-container" style={{ width: `${width}px` }}>
-		<img src={logo} className="App-logo" />
+const BCLogo = () => (
+	<div className="BCLogo">
+		<div className="BCLogo-svg">
+			<img src={logo} className="App-logo" />
+		</div>
+		<span className="BCLogo-text"> BURN CARTEL 	</span>
 	</div>
 );
 

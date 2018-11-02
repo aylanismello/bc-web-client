@@ -1,11 +1,12 @@
 .ui.segment.App-top-nav {
   position: relative;
-  background: black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: none;
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: left;
   border-radius: 0px;
-  padding: 0 1em 0 1em;
+  // padding: 0 1em 0 1em;
+  padding: 32px;
   margin: 0;
   height: 70px;
 }

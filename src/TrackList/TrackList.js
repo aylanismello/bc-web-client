@@ -25,7 +25,7 @@ class TrackList extends React.Component {
 			hasEmptyTracks
 		} = this.props;
 
-		const daTracks = isWidget ? tracks.slice(0, 5) : tracks;
+		const daTracks = isWidget ? tracks.slice(0, 10) : tracks;
 
 		return (
 			<div className="TrackList-container">

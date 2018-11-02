@@ -1,24 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as _ from 'lodash';
 import {
 	Container,
-	Header,
 	Segment,
 	Icon,
 	Divider,
 	Form,
-	Message,
 	Button,
-	Grid,
-	Label
+	Grid
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import BCMap from '../BCMap';
 import { baseUrl } from '../config';
 import PlayButton from '../PlayButton';
-import CuratorList from '../CuratorList';
+import ExploreNav from '../ExploreNav';
 import './Home.scss';
 
 class Home extends React.Component {
@@ -150,7 +146,6 @@ class Home extends React.Component {
 						}}
 					>
 						<Form.Field inline>
-							{/* <Label pointing="right">Stay in touch?</Label> */}
 							<input
 								value={this.state.email}
 								onChange={e => this.setState({ email: e.currentTarget.value })}
@@ -191,9 +186,9 @@ class Home extends React.Component {
 		} = this.props;
 
 		return (
-			<Container>
+			<Container className="Home">
 				<Segment
-					inverted
+					className="Home-BC-greeting-outer-container"
 					textAlign="center"
 					style={{ minHeight: 350, padding: '1em 0em' }}
 					vertical
@@ -201,37 +196,27 @@ class Home extends React.Component {
 					<Container text>
 						{initPlayer || (
 							<div className="Home-BC-greeting-container">
-								<Header
-									as="h1"
-									// content="Welcome to Burn Cartel"
-									content="We organize the world's underground music."
-									inverted
+								<h1
+									className="Home-banner-header"
 									style={{
-										fontSize: mobile ? '2em' : '4em',
 										fontWeight: 'normal',
 										marginBottom: 0
-										// marginTop: mobile ? '1.5em' : '3em'
 									}}
-								/>
+								>
+									We organize the world's underground music
+								</h1>
 
-								<Header
-									as="h2"
-									content={homePlayDisabled ? 'LOADING...' : '(take a listen)'}
-									// content={homePlayDisabled ? 'LOADING...' : 'only fire trax'}
-									inverted
-									style={{
-										fontSize: mobile ? '1.5em' : '1.7em',
-										fontWeight: 'normal',
-										marginTop: mobile ? '0.5em' : '1.5em'
-									}}
-								/>
+								<h3
+									className="Home-take-a-listen"
+								> {homePlayDisabled ? 'LOADING...' : 'TAKE A LISTEN'}
+								</h3>
 							</div>
 						)}
 						{initPlayer ? (
 							this.renderBurnCartelGreeting()
 						) : (
 							<PlayButton
-								size="massive"
+								size="huge"
 								playingTrack={
 									(playingTrack.id && playingTrack) || homePageTrack
 								}
@@ -243,17 +228,17 @@ class Home extends React.Component {
 					</Container>
 				</Segment>
 
+				<ExploreNav/>
+
 				<div className="Home-widget-container">
 					<Grid stackable columns={2}>
 						<Grid.Column className="Home-widget">
 							<Segment>
-								<Header as="h3">Trending DJ mixes, tracks, and remixes</Header>
-								<Divider />
-								{this.props.trackListWidget}
-								<Header as="h3">
-									More on{' '}
+								<div className="Home-widget-header-container">
+									<h3 className="Home-widget-header">Trending releases</h3>
 									<Link
 										to="/feed"
+										className="Home-widget-sub-header"
 										onClick={() => {
 											window.amplitude
 												.getInstance()
@@ -262,39 +247,37 @@ class Home extends React.Component {
 												});
 										}}
 									>
-										{' '}
-										Feed{' '}
+										More releases
 									</Link>
-								</Header>
+								</div>
+								<Divider />
+								{this.props.trackListWidget}
 							</Segment>
 						</Grid.Column>
 						<Grid.Column className="Home-widget">
 							<Segment>
-								<Header as="h3">Trending Curators</Header>
+							<div className="Home-widget-header-container">
+								<h3 className="Home-widget-header">Trending curators</h3>
+								<Link
+									to="/curators"
+									className="Home-widget-sub-header"
+									onClick={() => {
+										window.amplitude
+											.getInstance()
+											.logEvent('Home - Click on Expand Widget', {
+												widget: 'curators'
+											});
+									}}
+								>
+									More curators
+								</Link>
+							</div>
 								<Divider />
 								<BCMap
 									featureType="soundcloudUser"
 									size={80}
 									data={this.props.curators}
 								/>
-								<Header as="h3">
-									More on{' '}
-									<Link
-										to="/curators"
-										onClick={() => {
-											window.amplitude
-												.getInstance()
-												.logEvent('Home - Click on Expand Widget', {
-													widget: 'curators'
-												});
-										}}
-									>
-										{' '}
-										our Curators page{' '}
-									</Link>
-								</Header>
-								{/* <Divider /> */}
-								{/* <CuratorList curators={this.props.curators} view="list" /> */}
 							</Segment>
 						</Grid.Column>
 					</Grid>

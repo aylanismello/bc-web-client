@@ -1,7 +1,19 @@
+@import '../semantic-overides.scss';
+
 .Home-social-links {
 	display: flex;
 	justify-content: space-evenly;
 	margin-bottom: 2rem;
+}
+
+.Home-take-a-listen {
+	@include bc-text();
+  font-size: 12px;
+  letter-spacing: 2.6px;
+}
+
+h3.Home-take-a-listen {
+    margin: 18px;
 }
 
 .Home-BC-greeting-container {
@@ -19,4 +31,28 @@
 
 .Home-widget-container {
 	margin-bottom: 2rem;
+}
+
+// OVERRIDES
+.Home-banner-header {
+	@include bc-text();
+	font-size: 32px;
+}
+
+.Home-widget-header {
+		@include bc-text(600);
+		font-size: 20px;
+		line-height: 27px;
+		margin-bottom: 11px;
+}
+
+.Home-widget-sub-header {
+		@include bc-text();
+		color: $bc-purple;
+		font-size: 16px;
+		line-height: 22px;
+		margin: 0px;
+		&:hover {
+			color: $bc-purple;
+		}
 }

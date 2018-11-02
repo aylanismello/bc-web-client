@@ -1,3 +1,51 @@
+@import '../semantic-overides.scss';
+
 .ui.tiny.statistic.TrackList-selection-count:hover {
     cursor: default;
+}
+
+.ui.items>.item>.content {
+  margin-left: 20px;
+}
+
+.item.TrackList-track-item-container {
+  align-items: center;
+}
+
+.TrackItem-track-name {
+  @include bc-text(600);
+  font-size: 16px;
+  &:hover {
+    @include bc-text(600);
+  }
+}
+
+.TrackList-artist-info {
+	display: flex;
+	align-items: center;
+
+  .TrackList-artist-name {
+    @include bc-text();
+    color: $bc-gray;
+    font-size: 12px;
+  }
+
+  .TrackList-artist-image {
+  	width: 100%;
+  	height: auto;
+  	border-radius: 100px;
+  }
+
+  .TrackList-artist-image-container {
+  	width: 30px;
+  	margin-left: 5px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+// RAW OVERRIDE
+.ui.items > .item .meta {
+  margin: 0px;
 }
