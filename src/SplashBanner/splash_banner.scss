@@ -1,0 +1,44 @@
+@import '../semantic-overides.scss';
+
+.SplashBanner {
+  position: relative;
+
+  .SplashBanner-image-container {
+    .SplashBanner-image {
+      width: 100%;
+      height: auto;
+      opacity: 0.4;
+    }
+  }
+  .SplashBanner-content {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    top: 100px;
+
+    .SplashBanner-message-container {
+      @include bc-text();
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100px;
+      justify-content: space-evenly;
+
+      .SplashBanner-message-header {
+        font-size: 32px;
+      }
+
+      .SplashBanner-message-subheader {
+        letter-spacing: 2.14px;
+        line-height: 14px;
+        font-size: 10px;
+      }
+    }
+
+    .SplashBanner-form-container {
+      // position: absolute;
+    }
+  }
+}

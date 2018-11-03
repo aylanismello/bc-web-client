@@ -1,2 +1,2 @@
-import TopNav from './top_nav';
+import TopNav from './TopNav';
 export default TopNav;
