@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './arrow.svg';
+import arrow from './tail-right.svg';
 import './splash_banner.scss';
 
 const Form = ({ handleSubmit, email, updateEmail }) => (
@@ -13,15 +13,17 @@ const Form = ({ handleSubmit, email, updateEmail }) => (
           className="SplashBanner-email"
           onChange={updateEmail}
         />
-        <img
-          src={logo}
-          className="SplashBanner-arrow"
-          onClick={() => {
-            // why doesnt this work
-            const el = document.getElementById('1');
-            el.submit();
-          }}
-        />
+        <div className="SplashBanner-arrow-container">
+          <img
+            src={arrow}
+            className="SplashBanner-arrow"
+            onClick={() => {
+              // why doesnt this work
+              const el = document.getElementById('1');
+              el.submit();
+            }}
+          />
+        </div>
       </div>
     </form>
   </div>
