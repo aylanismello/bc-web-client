@@ -14,31 +14,60 @@
     position: absolute;
     display: flex;
     width: 100%;
+    align-items: center;
     justify-content: center;
     top: 100px;
+    flex-direction: column;
 
     .SplashBanner-message-container {
       @include bc-text();
       text-align: center;
       display: flex;
-      flex-direction: column;
       align-items: center;
       height: 100px;
       justify-content: space-evenly;
+      flex-direction: column;
 
       .SplashBanner-message-header {
-        font-size: 32px;
+        font-size: 22px;
       }
 
       .SplashBanner-message-subheader {
         letter-spacing: 2.14px;
         line-height: 14px;
-        font-size: 10px;
+        font-size: 13px;
       }
     }
 
+    .SplashBanner-submit-message {
+      @include bc-text();
+      text-align: center;
+    }
+
     .SplashBanner-form-container {
-      // position: absolute;
+      .SplashBanner-email-container {
+        position: relative;
+
+        .SplashBanner-email {
+          @include bc-text();
+          border-radius: 20px;
+          border: none;
+          height: 35px;
+          width: 300px;
+          background: #242a3b;
+          padding-left: 20px;
+        }
+
+        .SplashBanner-arrow {
+          width: 28px;
+          height: 100%;
+          position: absolute;
+          right: 0;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
 }
