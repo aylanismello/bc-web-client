@@ -1,0 +1,25 @@
+@import '../semantic-overides.scss';
+
+.BCWeeklyTracklist {
+  margin-top: 30px;
+
+  .BCWeeklyTracklist-item {
+    @include bc-text();
+    padding: 10px;
+
+
+    .BCWeeklyTracklist-track-info {
+      padding: 3px;
+    }
+
+    .BCWeeklyTracklist-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .BCWeeklyTracklist-artist {
+      font-size: 12px;
+      color: $bc-gray;
+    }
+
+  }
+}

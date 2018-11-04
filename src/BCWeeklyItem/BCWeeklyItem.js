@@ -1,18 +1,17 @@
 import React from 'react';
+import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
+
 const BCWeeklyItem = ({ playlist, active, setAsActiveItem }) => {
-  const { soundcloud_playlist_url, image_url } = playlist;
-  const weekNum = soundcloud_playlist_url
-    .split('/')
-    .reverse()[0]
-    .split('-')
-    .reverse()[0];
+  // description actually has the playlist / soundcloud_url
+  const { description, artwork_url, name } = playlist;
+  const weekNum = name.split(' ').reverse()[0];
 
   return (
     <div className="BCWeeklyItem" onClick={setAsActiveItem}>
       <div className="BCWeeklyItem-cover">
-        <img src={image_url} alt="Cover Art" className="BCWeeklyItem-cover-image" />
+        <img src={artwork_url} alt="Cover Art" className="BCWeeklyItem-cover-image" />
         {active && (
           <div className="BCWeeklyItem-cover-text">
             <h4> BURN CARTEL WEEKLY </h4>
@@ -21,7 +20,7 @@ const BCWeeklyItem = ({ playlist, active, setAsActiveItem }) => {
           </div>
         )}
       </div>
-      {active && <div className="BCWeeklyItem-tracklist" />}
+      {active && playlist.tracks && <BCWeeklyTracklist tracks={playlist.tracks} />}
     </div>
   );
 };

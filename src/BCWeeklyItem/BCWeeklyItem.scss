@@ -1,12 +1,12 @@
 @import '../semantic-overides.scss';
 
-$item-width: 300px;
+$item-width: 800px;
 
 .BCWeeklyItem {
   margin: 40px;
 
   .BCWeeklyItem-cover {
-    width: $item-width;
+    width: 100%;
     position: relative;
     &:hover {
       cursor: pointer;
@@ -21,9 +21,10 @@ $item-width: 300px;
     .BCWeeklyItem-cover-text {
       @include bc-text();
       left: 0;
+      top: 40%;
       position: absolute;
       text-align: center;
-      top: $item-width / 3.5;
+      // top: $item-width / 3.5;
       width: 100%;
       letter-spacing: 2.1px;
 
