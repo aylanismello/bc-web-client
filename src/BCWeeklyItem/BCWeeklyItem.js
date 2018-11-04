@@ -12,7 +12,7 @@ const BCWeeklyItem = ({ playlist, active, setAsActiveItem }) => {
   return (
     <div className="BCWeeklyItem" onClick={setAsActiveItem}>
       <div className="BCWeeklyItem-cover">
-        <img src={image_url} className="BCWeeklyItem-cover-image" />
+        <img src={image_url} alt="Cover Art" className="BCWeeklyItem-cover-image" />
         {active && (
           <div className="BCWeeklyItem-cover-text">
             <h4> BURN CARTEL WEEKLY </h4>

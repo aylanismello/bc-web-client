@@ -15,7 +15,10 @@ class BCWeeklyList extends Component {
           <BCWeeklyItem
             playlist={playlist}
             active={this.state.activeItemIdx === idx}
-            setAsActiveItem={() => this.setState({ activeItemIdx: idx })}
+            key={idx}
+            setAsActiveItem={() => {
+              this.setState({ activeItemIdx: idx });
+            }}
           />
         ))}
       </div>

@@ -14,6 +14,14 @@ const fakeData = [
   {
     soundcloud_playlist_url: 'https://soundcloud.com/hoodedyouth/sets/burn-cartel-radio-episode-72',
     image_url: 'https://s3-us-west-1.amazonaws.com/burn-cartel-content/Mixes_processed_width_600.jpg'
+  },
+  {
+    soundcloud_playlist_url: 'https://soundcloud.com/hoodedyouth/sets/burn-cartel-radio-episode-71',
+    image_url: 'https://s3-us-west-1.amazonaws.com/burn-cartel-content/Atlanta_processed_width_600.jpg'
+  },
+  {
+    soundcloud_playlist_url: 'https://soundcloud.com/hoodedyouth/sets/burn-cartel-radio-episode-70',
+    image_url: 'https://s3-us-west-1.amazonaws.com/burn-cartel-content/Brazil_processed_width_600.jpg'
   }
 ];
 

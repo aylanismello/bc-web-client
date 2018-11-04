@@ -19,6 +19,7 @@ const Form = ({ handleSubmit, email, updateEmail }) => (
           <img
             src={arrow}
             className="SplashBanner-arrow"
+            alt="Submit Email Arrow"
             onClick={() => {
               // why doesnt this work
               handleSubmit();
@@ -83,7 +84,11 @@ class SplashBanner extends React.Component {
     return (
       <div className="SplashBanner">
         <div className="SplashBanner-image-container">
-          <img src="https://source.unsplash.com/FhdC7RGb5Yg/" className="SplashBanner-image" />
+          <img
+            src="https://source.unsplash.com/FhdC7RGb5Yg/"
+            alt="Burn Cartel Weekly Banner"
+            className="SplashBanner-image"
+          />
         </div>
 
         <div className="SplashBanner-content">
