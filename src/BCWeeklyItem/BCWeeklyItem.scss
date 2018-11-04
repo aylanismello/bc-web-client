@@ -1,0 +1,39 @@
+@import '../semantic-overides.scss';
+
+$item-width: 300px;
+
+.BCWeeklyItem {
+  margin: 40px;
+
+  .BCWeeklyItem-cover {
+    width: $item-width;
+    position: relative;
+    &:hover {
+      cursor: pointer;
+    }
+
+    .BCWeeklyItem-cover-image {
+      width: 100%;
+      height: auto;
+      opacity: 0.1;
+    }
+
+    .BCWeeklyItem-cover-text {
+      @include bc-text();
+      left: 0;
+      position: absolute;
+      text-align: center;
+      top: $item-width / 3.5;
+      width: 100%;
+      letter-spacing: 2.1px;
+
+      .BCWeeklyItem-line {
+        width: 15px;
+        height: 2px;
+        background: $bc-pink;
+        border: solid 1px $bc-pink;
+        margin: auto;
+      }
+    }
+  }
+}

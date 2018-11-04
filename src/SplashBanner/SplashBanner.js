@@ -21,8 +21,9 @@ const Form = ({ handleSubmit, email, updateEmail }) => (
             className="SplashBanner-arrow"
             onClick={() => {
               // why doesnt this work
-              const el = document.getElementsByClassName('SplashBanner-form')[0];
-              el.submit();
+              handleSubmit();
+              // const el = document.getElementsByClassName('SplashBanner-form')[0];
+              // el.submit();
             }}
           />
         </div>
