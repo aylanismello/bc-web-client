@@ -11,9 +11,7 @@ const BCWeeklyList = ({ playlists, activePlaylistIdx, updateActivePlaylist }) =>
           active={activePlaylistIdx === idx}
           key={idx}
           idx={idx}
-          setAsActiveItem={() => {
-            updateActivePlaylist(idx);
-          }}
+          setAsActiveItem={updateActivePlaylist}
         />
       ))}
     </div>

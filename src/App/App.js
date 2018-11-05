@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import SoundCloudAudio from 'soundcloud-audio';
-import ScrollToTop from '../scroll_to_top';
 import TopNav from '../TopNav';
-import HomeBCWeekly from '../HomeBCWeekly';
+import BCWeekly from '../BCWeekly';
 import './App.scss';
 
 class App extends Component {
@@ -16,8 +15,8 @@ class App extends Component {
       <Router>
         <div>
           <TopNav />
-          <Route exact path="/" component={HomeBCWeekly} />
-          <Route exact path="/:bc_weekly_num" component={HomeBCWeekly} />
+          <Route exact path="/" component={BCWeekly} />
+          <Route exact path="/:bc_weekly_num" component={BCWeekly} />
         </div>
       </Router>
     );

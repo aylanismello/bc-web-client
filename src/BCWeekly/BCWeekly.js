@@ -8,50 +8,59 @@ import { baseUrl } from '../config';
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
 
-class HomeBCWeekly extends React.Component {
+class BCWeekly extends React.Component {
   static playlistAsHash(arrPlaylists) {
     const playlists = {};
     arrPlaylists.forEach((playlist, idx) => {
-      playlists[playlist.id] = { ...playlist, idx };
+      playlists[playlist.week_num] = { ...playlist, idx };
     });
     return playlists;
   }
 
+  static isValidUrlParam(param) {
+    return /^weekly-[0-9]+$/.test(param);
+  }
+
+  static weekHasBeenReleased(playlists, bc_weekly_num) {
+    const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
+    return BCWeekly.playlistAsHash(playlists)[weekNum];
+  }
+
   state = Object.freeze({
-    playlists: [],
-    activePlaylistIdx: 0
+    playlists: []
   });
 
   componentWillMount() {
+    const { bc_weekly_num } = this.props.match.params;
+
     axios.get(`${baseUrl}/playlists`).then(({ data }) => {
       const { playlists } = data.data;
       this.setState({ playlists });
-      // const activePlaylistIdx = HomeBCWeekly.playlistAsHash(playlists)[
-      //   this.props.params.bc_weekly_num
-      // ].idx;
-      // debugger;
-      // this.setState({ activePlaylistIdx });
-      this.populatePlaylistTracks(this.getActivePlaylistIdx(), playlists);
+
+      const activePlaylistIdx = this.getActivePlaylistIdx(bc_weekly_num, playlists);
+      this.populatePlaylistTracks(activePlaylistIdx, playlists);
     });
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (this.props.match.params.bc_weekly_num !== nextProps.match.params.bc_weekly_num) {
-      this.populatePlaylistTracks(
-        this.getActivePlaylistIdx(nextProps.match.params.bc_weekly_num),
-        nextState.playlists
-      );
+      const idx = this.getActivePlaylistIdx(nextProps.match.params.bc_weekly_num);
+      this.populatePlaylistTracks(idx, nextState.playlists);
     }
   }
 
-  getActivePlaylistIdx(bc_weekly_num = this.props.match.params.bc_weekly_num) {
+  getActivePlaylistIdx(
+    bc_weekly_num = this.props.match.params.bc_weekly_num,
+    playlists = this.state.playlists
+  ) {
     let activePlaylistIdx = 0;
-
-    if (bc_weekly_num) {
-      // this assumes we have corect user input
-      activePlaylistIdx = parseInt(bc_weekly_num.split('-')[1]);
+    if (
+      BCWeekly.isValidUrlParam(bc_weekly_num) &&
+      BCWeekly.weekHasBeenReleased(playlists, bc_weekly_num)
+    ) {
+      // a bit redundant but whatever.
+      activePlaylistIdx = BCWeekly.weekHasBeenReleased(playlists, bc_weekly_num).idx;
     }
-
     return activePlaylistIdx;
   }
   populatePlaylistTracks(playlistIdx, playlists) {
@@ -79,16 +88,16 @@ class HomeBCWeekly extends React.Component {
   }
 
   render() {
-    const { match, location, history } = this.props;
+    const { history } = this.props;
 
     return (
-      <div className="HomeBCWeekly">
+      <div className="BCWeekly">
         <SplashBanner />
         <BCWeeklyList
           playlists={this.state.playlists}
           activePlaylistIdx={this.getActivePlaylistIdx()}
-          updateActivePlaylist={idx => {
-            history.push(`/weekly-${idx}`);
+          updateActivePlaylist={week_num => {
+            history.push(`/weekly-${week_num}`);
           }}
         />
       </div>
@@ -97,4 +106,4 @@ class HomeBCWeekly extends React.Component {
 }
 
 // https://reacttraining.com/react-router/web/api/withRouter
-export default withRouter(HomeBCWeekly);
+export default withRouter(BCWeekly);
