@@ -2,14 +2,18 @@ import React from 'react';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
-
-const BCWeeklyItem = ({ playlist, active, setAsActiveItem }) => {
+const BCWeeklyItem = ({
+ playlist, active, setAsActiveItem, idx
+}) => {
   // description actually has the playlist / soundcloud_url
-  const { description, artwork_url, name } = playlist;
+  // maybe have a choice to listen to mix OR playlist?
+  // maybe like a mix mode?
+
+  const { artwork_url, name } = playlist;
   const weekNum = name.split(' ').reverse()[0];
 
   return (
-    <div className="BCWeeklyItem" onClick={setAsActiveItem}>
+    <div className="BCWeeklyItem" onClick={setAsActiveItem} id={idx}>
       <div className="BCWeeklyItem-cover">
         <img src={artwork_url} alt="Cover Art" className="BCWeeklyItem-cover-image" />
         {active && (
@@ -20,7 +24,7 @@ const BCWeeklyItem = ({ playlist, active, setAsActiveItem }) => {
           </div>
         )}
       </div>
-      {active && playlist.tracks && <BCWeeklyTracklist tracks={playlist.tracks} />}
+      {active && playlist.tracks && <BCWeeklyTracklist idx={idx} tracks={playlist.tracks} />}
     </div>
   );
 };

@@ -14,10 +14,11 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <ScrollToTop>
+        <div>
           <TopNav />
-          <Route exact path="/" render={({ match }) => <HomeBCWeekly params={match.params} />} />
-        </ScrollToTop>
+          <Route exact path="/" component={HomeBCWeekly} />
+          <Route exact path="/:bc_weekly_num" component={HomeBCWeekly} />
+        </div>
       </Router>
     );
   }
