@@ -3,7 +3,7 @@ import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
 const BCWeeklyItem = ({
- playlist, active, setAsActiveItem, idx, playTrack
+ playlist, active, setAsActiveItem, idx, playTrack, activeTrack
 }) => {
   // description actually has the playlist / soundcloud_url
   // maybe have a choice to listen to mix OR playlist?
@@ -28,6 +28,7 @@ const BCWeeklyItem = ({
           <BCWeeklyTracklist
             idx={idx}
             tracks={playlist.tracks}
+            activeTrack={activeTrack}
             playTrack={playTrack}
             playlist={playlist}
           />

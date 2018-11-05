@@ -26,11 +26,15 @@ class BCWeekly extends React.Component {
   }
 
   state = Object.freeze({
-    playlists: []
+    playlists: [],
+    track: {}
   });
 
   componentWillMount() {
-    this.burnCartelPlayer = new BurnCartelPlayer((x, y) => this.switchToPlaylist(x, y));
+    this.burnCartelPlayer = new BurnCartelPlayer(
+      (x, y) => this.switchToPlaylist(x, y),
+      track => this.setState({ track })
+    );
     this.prevLocation = this.props.history.location.pathname;
     this.onLoadPlaylistPlayed = false;
     const { bc_weekly_num } = this.props.match.params;
@@ -112,6 +116,7 @@ class BCWeekly extends React.Component {
         <SplashBanner />
         <BCWeeklyList
           playlists={this.state.playlists}
+          activeTrack={this.state.track}
           activePlaylistIdx={this.getActivePlaylistIdx()}
           playTrack={(track, playlist) =>
             this.burnCartelPlayer.playTrack(track, playlist, this.state.playlists)

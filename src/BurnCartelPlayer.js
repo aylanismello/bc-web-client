@@ -1,10 +1,12 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(switchToPlaylist) {
+  constructor(switchToPlaylist, setActiveTrack) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     window.sc = this.sc;
     this.switchToPlaylist = switchToPlaylist;
+    this.setActiveTrack = setActiveTrack;
+
     this.playlists = [];
     this.playlistIdx = undefined;
     this.trackIdx = undefined;
@@ -13,7 +15,7 @@ class BurnCartelPlayer {
 
   playPlaylist(playlist, playlists) {
     // hmm maybe set this in constructor keep it DRY u kno
-    this.trackIdx = 9;
+    this.trackIdx = 0;
     this.initPlaylists(playlist, playlists);
     this.switchTrack(playlist.tracks[this.trackIdx]);
   }
@@ -47,8 +49,8 @@ class BurnCartelPlayer {
     }
   }
 
-
-  switchTrack({ stream_url }) {
+  switchTrack(track) {
+    const { stream_url } = track;
     if (this.sc.playing) this.sc.stop();
     // out with the old event listeners
     this.sc.unbindAll();
@@ -62,6 +64,7 @@ class BurnCartelPlayer {
       }
     });
 
+    this.setActiveTrack(track);
     this.sc.play({
       streamUrl: stream_url
     });
