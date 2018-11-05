@@ -5,22 +5,29 @@ class BurnCartelPlayer {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     window.sc = this.sc;
     this.switchToPlaylist = switchToPlaylist;
-    this.tracks = [];
     this.playlists = [];
     this.playlistIdx = undefined;
     this.trackIdx = undefined;
-    this.track = undefined;
     this.playlist = undefined;
   }
 
   playPlaylist(playlist, playlists) {
     // hmm maybe set this in constructor keep it DRY u kno
+    this.trackIdx = 9;
+    this.initPlaylists(playlist, playlists);
+    this.switchTrack(playlist.tracks[this.trackIdx]);
+  }
+
+  initPlaylists(playlist, playlists) {
     this.playlists = playlists;
-    this.trackIdx = 0;
-    this.tracks = playlist.tracks;
-    const trackToPlay = playlist.tracks[this.trackIdx];
     this.playlist = playlist;
-    this.switchSong(trackToPlay);
+  }
+  // we can assume, because of how the UI
+  // works, that the track passed here HAS to be in this.playlist
+  playTrack(track, playlist, playlists) {
+    this.initPlaylists(playlist, playlists);
+    this.trackIdx = track.track_number - 1;
+    this.switchTrack(this.playlist.tracks[this.trackIdx]);
   }
 
   initPlaylistIdx() {
@@ -40,15 +47,16 @@ class BurnCartelPlayer {
     }
   }
 
-  switchSong({ stream_url }) {
+
+  switchTrack({ stream_url }) {
     if (this.sc.playing) this.sc.stop();
     // out with the old event listeners
     this.sc.unbindAll();
     // in with the new
     this.sc.on('ended', () => {
       this.trackIdx++;
-      if (this.trackIdx < this.tracks.length) {
-        this.switchSong(this.playlist.tracks[this.trackIdx]);
+      if (this.trackIdx < this.playlist.tracks.length) {
+        this.switchTrack(this.playlist.tracks[this.trackIdx]);
       } else {
         this.goToNextPlaylist();
       }

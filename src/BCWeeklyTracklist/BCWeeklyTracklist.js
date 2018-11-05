@@ -7,11 +7,11 @@ class BCWeeklyTracklist extends React.Component {
   }
 
   render() {
-    const { tracks } = this.props;
+    const { tracks, playTrack, playlist } = this.props;
     return (
       <div className="BCWeeklyTracklist">
         {tracks.map(track => (
-          <div key={track.id} className="BCWeeklyTracklist-item">
+          <div key={track.id} className="BCWeeklyTracklist-item" onClick={() => playTrack(track, playlist)}>
             <div className="BCWeeklyTracklist-title BCWeeklyTracklist-track-info">{track.name}</div>
             <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
               {track.artist_name}

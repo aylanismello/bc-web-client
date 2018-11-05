@@ -113,6 +113,9 @@ class BCWeekly extends React.Component {
         <BCWeeklyList
           playlists={this.state.playlists}
           activePlaylistIdx={this.getActivePlaylistIdx()}
+          playTrack={(track, playlist) =>
+            this.burnCartelPlayer.playTrack(track, playlist, this.state.playlists)
+          }
           updateActivePlaylist={week_num => {
             this.playOnLoadPlaylistIfNeeded(week_num);
             history.push(`/weekly-${week_num}`);
