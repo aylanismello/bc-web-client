@@ -32,7 +32,7 @@ class BCWeekly extends React.Component {
 
   componentWillMount() {
     this.burnCartelPlayer = new BurnCartelPlayer(
-      (x, y) => this.switchToPlaylist(x, y),
+      (playlistIdx, playlists) => this.autoSwitchPlaylists(playlistIdx, playlists),
       track => this.setState({ track })
     );
     this.prevLocation = this.props.history.location.pathname;
@@ -68,6 +68,10 @@ class BCWeekly extends React.Component {
       }
     }
     return activePlaylistIdx;
+  }
+
+  autoSwitchPlaylists(playlistIdx, playlists) {
+    this.props.history.push(`/weekly-${playlists[playlistIdx].week_num}`);
   }
 
   switchToPlaylist(playlistIdx, playlists, playOnLoad = true) {
