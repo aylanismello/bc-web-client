@@ -30,15 +30,18 @@ class BCWeekly extends React.Component {
   });
 
   componentWillMount() {
-    this.burnCartelPlayer = new BurnCartelPlayer();
+    this.burnCartelPlayer = new BurnCartelPlayer((x, y) => this.switchToPlaylist(x, y));
+    this.prevLocation = this.props.history.location.pathname;
+    this.onLoadPlaylistPlayed = false;
     const { bc_weekly_num } = this.props.match.params;
 
     axios.get(`${baseUrl}/playlists`).then(({ data }) => {
       const { playlists } = data.data;
       this.setState({ playlists });
 
-      const activePlaylistIdx = this.getActivePlaylistIdx(bc_weekly_num, playlists);
-      this.switchToPlaylist(activePlaylistIdx, playlists, false);
+      this.onLoadPlaylistIdx = this.getActivePlaylistIdx(bc_weekly_num, playlists);
+      this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
+      this.switchToPlaylist(this.onLoadPlaylistIdx, playlists, false);
     });
   }
 
@@ -66,10 +69,9 @@ class BCWeekly extends React.Component {
   switchToPlaylist(playlistIdx, playlists, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
     if (!playlists[playlistIdx].tracks) {
-      // pass callback here to call playPlaylist when one
       this.fetchPlaylistTracks(playlistIdx, playlists, playOnLoad);
     } else {
-      this.burnCartelPlayer.playPlaylist(playlists[playlistIdx]);
+      this.burnCartelPlayer.playPlaylist(playlists[playlistIdx], playlists);
     }
   }
 
@@ -83,7 +85,7 @@ class BCWeekly extends React.Component {
         tracks: tracks.slice(0, 10)
       };
 
-      if (playOnLoad) this.burnCartelPlayer.playPlaylist(newPlaylist);
+      if (playOnLoad) this.burnCartelPlayer.playPlaylist(newPlaylist, playlists);
 
       const oldPlaylists = this.state.playlists;
       this.setState({
@@ -96,9 +98,15 @@ class BCWeekly extends React.Component {
     });
   }
 
+  playOnLoadPlaylistIfNeeded(week_num) {
+    if (!this.onLoadPlaylistPlayed && this.onLoadPlaylistWeekNum === week_num) {
+      this.onLoadPlaylistPlayed = true;
+      this.switchToPlaylist(this.onLoadPlaylistIdx, this.state.playlists);
+    }
+  }
+
   render() {
     const { history } = this.props;
-
     return (
       <div className="BCWeekly">
         <SplashBanner />
@@ -106,6 +114,7 @@ class BCWeekly extends React.Component {
           playlists={this.state.playlists}
           activePlaylistIdx={this.getActivePlaylistIdx()}
           updateActivePlaylist={week_num => {
+            this.playOnLoadPlaylistIfNeeded(week_num);
             history.push(`/weekly-${week_num}`);
           }}
         />

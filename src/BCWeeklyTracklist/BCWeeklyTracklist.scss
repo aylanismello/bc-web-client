@@ -4,6 +4,9 @@
   margin-top: 30px;
 
   .BCWeeklyTracklist-item {
+    &:hover {
+      cursor: pointer;
+    }
     @include bc-text();
     padding: 10px;
 
