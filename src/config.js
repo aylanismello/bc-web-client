@@ -1,4 +1,3 @@
-// const baseUrl = 'http://the-bc-api.herokuapp.com';
 const baseUrl = process.env.REACT_APP_BASE_URL || 'http://localhost:8000';
 
 const countries = [

@@ -3,12 +3,15 @@
 .SplashBanner {
   position: relative;
 
+  // https://css-tricks.com/tinted-images-multiple-backgrounds/
   .SplashBanner-image-container {
-    .SplashBanner-image {
-      width: 100%;
-      height: auto;
-      opacity: 0.4;
-    }
+    height: 300px;
+    background: linear-gradient(to bottom, rgba(25, 25, 37, 0), #191925),
+      url(https://source.unsplash.com/FhdC7RGb5Yg/);
+      // why don't these work?
+    // background-repeat: no-repeat;
+    // background-position: center center;
+
   }
   .SplashBanner-content {
     position: absolute;

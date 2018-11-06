@@ -1,0 +1,85 @@
+@import '../semantic-overides.scss';
+
+.item.App-bottom-nav-track-info {
+	background: $bc-black;
+	width: 400px;
+}
+
+.App-bottom-nav {
+	width: 100%;
+	justify-content: space-between;
+	bottom: 0;
+	position: relative;
+	height: 80px;
+	display: flex;
+	background: $bc-gray-2;
+	align-items: center;
+}
+
+.App-bottom-nav-container {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
+.App-bottom-nav-track-info-container {
+	color: white;
+	height: 70px;
+}
+
+.App-bottom-nav-track-info-container > .item {
+	display: flex;
+}
+
+.ui.tiny.image.App-bottom-nav-track-image {
+	margin-right: 10px;
+}
+
+.App-bottom-nav-play-button:hover {
+	cursor: pointer;
+}
+
+.App-filters-toggle-icon-container {
+	padding-right: 10px;
+}
+
+.App-filters-toggle-icon-container:hover {
+	cursor: pointer;
+}
+
+.App-logo:hover {
+	cursor: pointer;
+}
+
+.App-sidebar-button:hover {
+	cursor: pointer;
+}
+
+.ui.negative.message.App-error {
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	right: 40%;
+}
+
+/*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
+
+.App-bottom-nav-box:first-child > div {
+	margin-right: auto;
+}
+/*  ino why the box doesn twork here*/
+.App-filters-toggle-icon-container {
+	margin-left: auto;
+}
+/* this would be cleaner, below */
+/* .App-bottom-nav-box:last-child { margin-left: auto; } */
+
+.App-bottom-nav-box {
+	flex: 1;
+	align-items: inherit;
+	display: flex;
+	justify-content: center;
+}
+
+.middle.aligned.content.App-bottom-nav-track-content {
+	max-height: 80px;
+}

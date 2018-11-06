@@ -1,85 +1,54 @@
-@import '../semantic-overides.scss';
+@import "../semantic-overides.scss";
 
-.item.App-bottom-nav-track-info {
-	background: $bc-black;
-	width: 400px;
-}
+$bottom-nav-height: 40px;
 
-.App-bottom-nav {
-	width: 100%;
-	justify-content: space-between;
-	bottom: 0;
-	position: relative;
-	height: 80px;
-	display: flex;
-	background: $bc-gray-2;
-	align-items: center;
-}
+.BottomNav {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  height: $bottom-nav-height;
+  padding: 20px;
+  background: $bc-gray-2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-.App-bottom-nav-container {
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-}
-.App-bottom-nav-track-info-container {
-	color: white;
-	height: 70px;
-}
+  .BottomNav-track-info {
+    display: flex;
+    width: 200px;
+    justify-content: left;
 
-.App-bottom-nav-track-info-container > .item {
-	display: flex;
-}
+    .BottomNav-track-info-artwork-container {
+      width: $bottom-nav-height;
+      .Bottom-track-info-artwork {
+        width: 100%;
+        height: auto;
+        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+    }
+    .BottomNav-track-info-details-container {
+        max-width: 130px;
+        padding-left: 12px;
+        display: flex;
+        flex-direction: column;
 
-.ui.tiny.image.App-bottom-nav-track-image {
-	margin-right: 10px;
-}
+      .BottomNav-track-info-detail {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
 
-.App-bottom-nav-play-button:hover {
-	cursor: pointer;
-}
+      .BottomNav-track-info-name {
+        @include bc-text(600);
+        font-size: 14px;
+      }
 
-.App-filters-toggle-icon-container {
-	padding-right: 10px;
-}
-
-.App-filters-toggle-icon-container:hover {
-	cursor: pointer;
-}
-
-.App-logo:hover {
-	cursor: pointer;
-}
-
-.App-sidebar-button:hover {
-	cursor: pointer;
-}
-
-.ui.negative.message.App-error {
-	position: absolute;
-	z-index: 10;
-	top: 0;
-	right: 40%;
-}
-
-/*  TOP NAV SHIT BEFORE WE REFACTOR OUT INTO ITS OWN COMPNENT */
-
-.App-bottom-nav-box:first-child > div {
-	margin-right: auto;
-}
-/*  ino why the box doesn twork here*/
-.App-filters-toggle-icon-container {
-	margin-left: auto;
-}
-/* this would be cleaner, below */
-/* .App-bottom-nav-box:last-child { margin-left: auto; } */
-
-.App-bottom-nav-box {
-	flex: 1;
-	align-items: inherit;
-	display: flex;
-	justify-content: center;
-}
-
-.middle.aligned.content.App-bottom-nav-track-content {
-	max-height: 80px;
+      .BottomNav-track-info-artist {
+        @include bc-text();
+        font-size: 12px;
+        color: $bc-gray;
+      }
+    }
+  }
 }

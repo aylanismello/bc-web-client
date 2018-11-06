@@ -1,5 +1,5 @@
 $font-1: 'Open Sans', sans-serif;
-$text-color-1: #f3f3f3;
+$bc-white: #f3f3f3;
 $bg-color-1: #191925;
 $bc-purple: #6255ff;
 $bc-gray: #626970;
@@ -9,6 +9,6 @@ $bc-pink: #e54ea3;
 
 @mixin bc-text($font-weight: normal) {
   font-family: $font-1;
-  color: $text-color-1;
+  color: $bc-white;
   font-weight: $font-weight;
 }

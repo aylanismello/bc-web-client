@@ -1,0 +1,14 @@
+.PlayerControls {
+  display: flex;
+  padding-right: 40px;
+  .PlayerControls-btn-container {
+    &:hover {
+      cursor: pointer;
+    }
+    width: 50px;
+    .PlayerControls-btn {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

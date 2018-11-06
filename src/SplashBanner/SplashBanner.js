@@ -131,11 +131,12 @@ class SplashBanner extends React.Component {
     return (
       <div className="SplashBanner">
         <div className="SplashBanner-image-container">
-          <img
+
+          {/* <img
             src="https://source.unsplash.com/FhdC7RGb5Yg/"
             alt="Burn Cartel Weekly Banner"
             className="SplashBanner-image"
-          />
+          /> */}
         </div>
 
         <div className="SplashBanner-content">
