@@ -1,10 +1,12 @@
-import React from "react";
-import axios from "axios";
-import arrow from "./tail-right.svg";
-import { baseUrl } from "../config";
-import "./splash_banner.scss";
+import React from 'react';
+import axios from 'axios';
+import arrow from './tail-right.svg';
+import { baseUrl } from '../config';
+import './splash_banner.scss';
 
-const Form = ({ handleSubmit, email, updateEmail, setStyle, style }) => (
+const Form = ({
+ handleSubmit, email, updateEmail, setStyle, style
+}) => (
   <div className="SplashBanner-form-container">
     <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
       <div className="SplashBanner-email-container">
@@ -15,7 +17,7 @@ const Form = ({ handleSubmit, email, updateEmail, setStyle, style }) => (
           className="SplashBanner-email"
           onChange={updateEmail}
           onFocus={() => {
-            setStyle({ background: "#e54ea3" });
+            setStyle({ background: '#e54ea3' });
           }}
           onBlur={() => setStyle({})}
         />
@@ -23,7 +25,7 @@ const Form = ({ handleSubmit, email, updateEmail, setStyle, style }) => (
           <img
             src={arrow}
             className="SplashBanner-arrow"
-            onFocus={() => this.setState({ style: { background: "white" } })}
+            onFocus={() => this.setState({ style: { background: 'white' } })}
             onBlur={() => this.setState({})}
             alt="Submit Email Arrow"
             onClick={() => {
@@ -47,14 +49,28 @@ const FormSubmitMessage = ({ header, subheader }) => (
   </div>
 );
 
+const SUBMIT_STATES = {
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
+  ALREADY_COMPLETED: 'ALREADY_COMPLETED',
+  UNSUBMITTED: 'UNSUBMITTED'
+};
+
 class SplashBanner extends React.Component {
-  state = {
-    email: "",
-    submitted: false,
-    header: "Thanks for subscribing!",
-    subheader: "Watch your inbox for weekly 🔥!",
-    style: {}
-  };
+  state = Object.freeze({
+    email: '',
+    submitStatus: null,
+    style: {},
+    errorMessage: null
+  });
+
+  componentDidMount() {
+    if (window.localStorage.getItem('dontShowEmailForm')) {
+      this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED });
+    } else {
+      this.setState({ submitStatus: SUBMIT_STATES.UNSUBMITTED });
+    }
+  }
 
   handleSubmit() {
     axios
@@ -66,25 +82,49 @@ class SplashBanner extends React.Component {
 
         if (message) {
           this.setState({
-            submitted: true,
-            header: message,
-            subheader: ""
+            submitStatus: SUBMIT_STATES.FAIL,
+            errorMessage: message
           });
         } else {
-          this.setState({ submitted: true });
+          // successful
+          window.localStorage.setItem('dontShowEmailForm', true);
+          this.setState({ submitStatus: SUBMIT_STATES.SUCCESS });
         }
       })
       .catch(error => {
         this.setState({
-          submitted: true,
-          header: "Something isnt working as expecteed.",
-          subheader: " Sorry, try again later!"
+          submitStatus: SUBMIT_STATES.FAIL,
+          errorMessage: error
         });
       });
   }
 
   updateEmail(e) {
     this.setState({ email: e.target.value });
+  }
+
+  renderBannerContent() {
+    switch (this.state.submitStatus) {
+      case SUBMIT_STATES.ALREADY_COMPLETED:
+        return <div />;
+      case SUBMIT_STATES.UNSUBMITTED:
+        return (
+          <Form
+            email={this.state.email}
+            handleSubmit={() => this.handleSubmit()}
+            updateEmail={e => this.updateEmail(e)}
+            setStyle={style => this.setState({ style })}
+            style={this.state.style}
+          />
+        );
+      case SUBMIT_STATES.FAIL:
+        const header = this.state.errorMessage || "Something isn't working as expected.";
+        return <FormSubmitMessage header={header} subheader="Sorry, try again later!" />;
+      case SUBMIT_STATES.SUCCESS:
+        return <FormSubmitMessage header="Thanks for subscribing!" subheader="Watch your inbox for weekly 🔥!" />;
+      default:
+        return <FormSubmitMessage {...this.state} />;
+    }
   }
 
   render() {
@@ -104,21 +144,11 @@ class SplashBanner extends React.Component {
               Music happens fast
             </div>
             <div className="SplashBanner-message-subheader">
-              {" "}
+              {' '}
               GET THE LATEST TRACKS WEEKLY
             </div>
           </div>
-          {this.state.submitted ? (
-            <FormSubmitMessage {...this.state} />
-          ) : (
-            <Form
-              email={this.state.email}
-              handleSubmit={() => this.handleSubmit()}
-              updateEmail={e => this.updateEmail(e)}
-              setStyle={style => this.setState({ style })}
-              style={this.state.style}
-            />
-          )}
+          {this.renderBannerContent()}
         </div>
       </div>
     );
