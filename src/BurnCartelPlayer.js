@@ -1,12 +1,12 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(switchToPlaylist, setActiveTrack, setPlayerOpen) {
+  constructor(switchToPlaylist, setActiveTrack, setPlaying) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     window.sc = this.sc;
     this.switchToPlaylist = switchToPlaylist;
     this.setActiveTrack = setActiveTrack;
-    this.setPlayerOpen = setPlayerOpen;
+    this.setPlaying = setPlaying;
 
     this.playlists = [];
     this.playlistIdx = undefined;
@@ -39,6 +39,14 @@ class BurnCartelPlayer {
     });
   }
 
+  pause() {
+    this.sc.pause();
+  }
+  
+  resume() {
+    this.sc.play({ streamUrl: this.playlist.tracks[this.trackIdx].stream_url });
+  }
+
   goToNextPlaylist() {
     if (!this.playlistIdx) {
       this.initPlaylistIdx();
@@ -65,11 +73,16 @@ class BurnCartelPlayer {
       }
     });
 
+    // check that play has actually worked...
+    // developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
+    this.sc.on("play", () => {
+      this.setPlaying(true);
+    });
+
     this.setActiveTrack(track);
     this.sc.play({
       streamUrl: stream_url
     });
-    this.setPlayerOpen();
   }
 }
 

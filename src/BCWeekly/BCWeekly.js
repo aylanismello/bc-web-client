@@ -3,7 +3,6 @@ import axios from 'axios';
 import { withRouter } from 'react-router';
 import SplashBanner from '../SplashBanner';
 import BCWeeklyList from '../BCWeeklyList';
-import BurnCartelPlayer from '../BurnCartelPlayer';
 import { baseUrl } from '../config';
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -30,12 +29,6 @@ class BCWeekly extends React.Component {
   });
 
   componentWillMount() {
-    this.burnCartelPlayer = new BurnCartelPlayer(
-      (playlistIdx, playlists) => this.autoSwitchPlaylists(playlistIdx, playlists),
-      track => this.props.setTrack(track),
-      () => this.props.setPlayerOpen()
-    );
-    this.prevLocation = this.props.history.location.pathname;
     this.onLoadPlaylistPlayed = false;
     const { bc_weekly_num } = this.props.match.params;
 
@@ -70,16 +63,12 @@ class BCWeekly extends React.Component {
     return activePlaylistIdx;
   }
 
-  autoSwitchPlaylists(playlistIdx, playlists) {
-    this.props.history.push(`/weekly-${playlists[playlistIdx].week_num}`);
-  }
-
   switchToPlaylist(playlistIdx, playlists, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
     if (!playlists[playlistIdx].tracks) {
       this.fetchPlaylistTracks(playlistIdx, playlists, playOnLoad);
     } else {
-      this.burnCartelPlayer.playPlaylist(playlists[playlistIdx], playlists);
+      this.props.burnCartelPlayer.playPlaylist(playlists[playlistIdx], playlists);
     }
   }
 
@@ -93,7 +82,7 @@ class BCWeekly extends React.Component {
         tracks: tracks.slice(0, 10)
       };
 
-      if (playOnLoad) this.burnCartelPlayer.playPlaylist(newPlaylist, playlists);
+      if (playOnLoad) this.props.burnCartelPlayer.playPlaylist(newPlaylist, playlists);
 
       const oldPlaylists = this.state.playlists;
       this.setState({
@@ -123,7 +112,7 @@ class BCWeekly extends React.Component {
           activeTrack={this.props.track}
           activePlaylistIdx={this.getActivePlaylistIdx()}
           playTrack={(track, playlist) => {
-            this.burnCartelPlayer.playTrack(track, playlist, this.state.playlists);
+            this.props.burnCartelPlayer.playTrack(track, playlist, this.state.playlists, this.props.setPlaying);
           }}
           updateActivePlaylist={week_num => {
             this.playOnLoadPlaylistIfNeeded(week_num);

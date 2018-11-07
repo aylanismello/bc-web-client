@@ -1,11 +1,21 @@
 .PlayerControls {
   display: flex;
   padding-right: 40px;
+
   .PlayerControls-btn-container {
     &:hover {
       cursor: pointer;
     }
-    width: 50px;
+    padding: 10px;
+    display: flex;
+    .next .prev {
+      width: 30px;
+    }
+
+    .play {
+      width: 40px;
+    }
+
     .PlayerControls-btn {
       width: 100%;
       height: auto;

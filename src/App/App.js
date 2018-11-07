@@ -1,31 +1,53 @@
-import React, { Component } from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
-import SoundCloudAudio from "soundcloud-audio";
-import TopNav from "../TopNav";
-import BCWeekly from "../BCWeekly";
-import BottomNav from "../BottomNav";
-import "./App.scss";
+import React, { Component } from 'react';
+import { HashRouter as Router, Route } from 'react-router-dom';
+import SoundCloudAudio from 'soundcloud-audio';
+import BurnCartelPlayer from '../BurnCartelPlayer';
+import TopNav from '../TopNav';
+import BCWeekly from '../BCWeekly';
+import BottomNav from '../BottomNav';
+import './App.scss';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.burnCartelPlayer = new BurnCartelPlayer(
+      (playlistIdx, playlists) =>
+        this.autoSwitchPlaylists(playlistIdx, playlists),
+      track => this.setTrack(track),
+      play => this.setPlaying(play)
+    );
+  }
+
   state = {
     track: {},
-    playerOpen: false
+    playerOpen: false,
+    playing: false
   };
-
-  componentWillMount() {
-    window.scAudio = new SoundCloudAudio("caf73ef1e709f839664ab82bef40fa96");
-  }
 
   setTrack(track) {
     this.setState({ track });
   }
 
-  setPlayerOpen() {
-    if (!this.state.playerOpen) this.setState({ playerOpen: true });
+  setPlaying(playing) {
+    this.setState({ playing, playerOpen: true });
+  }
+
+  togglePlay() {
+    this.setState({ playing: !this.state.playing }, () => {
+      if (this.state.playing) {
+        this.burnCartelPlayer.resume();
+      } else {
+        this.burnCartelPlayer.pause();
+      }
+    });
+  }
+
+  autoSwitchPlaylists(playlistIdx, playlists) {
+    this.props.history.push(`/weekly-${playlists[playlistIdx].week_num}`);
   }
 
   render() {
-    const { track, playerOpen } = this.state;
+    const { track, playerOpen, playing } = this.state;
     return (
       <Router>
         <div className="App">
@@ -36,10 +58,10 @@ class App extends Component {
             render={() => (
               <BCWeekly
                 track={track}
-                setTrack={track => this.setTrack(track)}
+                setPlaying={isPlaying => this.setPlaying(isPlaying)}
+                burnCartelPlayer={this.burnCartelPlayer}
               />
             )}
-            setPlayerOpen={() => this.setPlayerOpen()}
           />
           <Route
             exact
@@ -47,12 +69,12 @@ class App extends Component {
             render={() => (
               <BCWeekly
                 track={track}
-                setTrack={track => this.setTrack(track)}
-                setPlayerOpen={() => this.setPlayerOpen()}
+                setPlaying={isPlaying => this.setPlaying(isPlaying)}
+                burnCartelPlayer={this.burnCartelPlayer}
               />
             )}
           />
-          {playerOpen && <BottomNav track={track} />}
+          {playerOpen && <BottomNav track={track} playing={playing} togglePlay={() => this.togglePlay()} />}
         </div>
       </Router>
     );
