@@ -2,6 +2,15 @@
   display: flex;
   padding-right: 40px;
 
+  .play {
+    width: 40px;
+    .PlayerControls-play-btn {
+      // this is a hack to get the two colors to stay pink
+      // to make gray ->, filter: invert(.5)
+      filter: invert(.5) sepia(1) saturate(19) hue-rotate(300deg);
+    }
+  }
+
   .PlayerControls-btn-container {
     &:hover {
       cursor: pointer;
@@ -10,10 +19,6 @@
     display: flex;
     .next .prev {
       width: 30px;
-    }
-
-    .play {
-      width: 40px;
     }
 
     .PlayerControls-btn {

@@ -1,11 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import arrow from './tail-right.svg';
-import { baseUrl } from '../config';
+import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
 const Form = ({
- handleSubmit, email, updateEmail, setStyle, style
+ handleSubmit, email, updateEmail, setStyle, style 
 }) => (
   <div className="SplashBanner-form-container">
     <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
@@ -103,6 +103,14 @@ class SplashBanner extends React.Component {
     this.setState({ email: e.target.value });
   }
 
+  generateCTA() {
+    if (this.state.submitStatus === SUBMIT_STATES.ALREADY_COMPLETED) {
+      return 'DIVE RIGHT INTO THE LATEST TRACKS';
+    } else {
+      return 'GET THE LATEST TRACKS WEEKLY';
+    }
+  }
+
   renderBannerContent() {
     switch (this.state.submitStatus) {
       case SUBMIT_STATES.ALREADY_COMPLETED:
@@ -118,20 +126,30 @@ class SplashBanner extends React.Component {
           />
         );
       case SUBMIT_STATES.FAIL:
-        const header = this.state.errorMessage || "Something isn't working as expected.";
-        return <FormSubmitMessage header={header} subheader="Sorry, try again later!" />;
+        const header =
+          this.state.errorMessage || "Something isn't working as expected.";
+        return (
+          <FormSubmitMessage
+            header={header}
+            subheader="Sorry, try again later!"
+          />
+        );
       case SUBMIT_STATES.SUCCESS:
-        return <FormSubmitMessage header="Thanks for subscribing!" subheader="Watch your inbox for weekly 🔥!" />;
+        return (
+          <FormSubmitMessage
+            header="Thanks for subscribing!"
+            subheader="Watch your inbox for weekly 🔥!"
+          />
+        );
       default:
         return <FormSubmitMessage {...this.state} />;
     }
   }
-
+  
   render() {
     return (
       <div className="SplashBanner">
         <div className="SplashBanner-image-container">
-
           {/* <img
             src="https://source.unsplash.com/FhdC7RGb5Yg/"
             alt="Burn Cartel Weekly Banner"
@@ -146,7 +164,7 @@ class SplashBanner extends React.Component {
             </div>
             <div className="SplashBanner-message-subheader">
               {' '}
-              GET THE LATEST TRACKS WEEKLY
+              {this.generateCTA()}
             </div>
           </div>
           {this.renderBannerContent()}

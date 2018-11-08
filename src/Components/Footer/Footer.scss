@@ -1,0 +1,14 @@
+@import '../../semantic-overides.scss';
+
+.Footer {
+    text-align: center;
+
+    @include bc-text();
+    .Footer-left {
+        color: $bc-gray;
+    }
+
+    span {
+        padding: 0 15px 0 15px;
+    }
+}

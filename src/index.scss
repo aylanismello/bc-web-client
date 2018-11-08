@@ -6,26 +6,13 @@ body {
   font-family: sans-serif;
 }
 
-// SEMANTIC GLOBAL OVERRIDES
-
-.ui.segment {
-  background: none;
-}
-
-.ui.header, .header {
-  @include bc-text(600);
-}
-
 p, span {
   @include bc-text();
 }
 
-.ui.inverted.vertical.center.aligned.segment {
-    background: none;
-}
-
 a {
   text-decoration: none;
+  color: $bc-white;
   &:hover {
     text-decoration: none;
   }

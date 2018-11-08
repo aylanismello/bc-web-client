@@ -1,6 +1,7 @@
 import React from 'react';
 import './PlayerControls.scss';
 import playButton from './assets/play.svg';
+import pauseButton from './assets/pause.svg';
 import nextButton from './assets/next.svg';
 import prevButton from './assets/prev.svg';
 
@@ -14,9 +15,8 @@ const PlayerControls = ({ playing, togglePlay, goToTrack }) => (
     </div>
     <div className="PlayerControls-btn-container play" onClick={togglePlay}>
       <img
-        src={playButton}
+        src={playing ? pauseButton : playButton}
         className="PlayerControls-btn PlayerControls-play-btn"
-        style={playing ? { background: 'white', borderRadius: '100px' } : {}}
       />
     </div>
     <div className="PlayerControls-btn-container next" onClick={() => goToTrack('next')} >

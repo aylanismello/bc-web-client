@@ -1,10 +1,11 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(switchToPlaylist, setActiveTrack, setPlaying) {
+  constructor(setActiveTrack, setPlaying) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+    // for debugging purposes
     window.sc = this.sc;
-    this.switchToPlaylist = switchToPlaylist;
+    // this.switchToPlaylist = switchToPlaylist;
     this.setActiveTrack = setActiveTrack;
     this.setPlaying = setPlaying;
 
@@ -42,9 +43,35 @@ class BurnCartelPlayer {
   pause() {
     this.sc.pause();
   }
-  
+
   resume() {
     this.sc.play({ streamUrl: this.playlist.tracks[this.trackIdx].stream_url });
+  }
+
+  goToTrack(whichTrack) {
+    if (whichTrack === 'next') {
+      this.goToNextTrack();
+    } else {
+      this.goToPrevTrack();
+    }
+  }
+
+  goToPrevTrack() {
+    if (this.sc.audio.currentTime > 3) {
+      this.sc.audio.currentTime = 0;
+    } else if (this.trackIdx !== 0) {
+      this.trackIdx--;
+      this.switchTrack(this.playlist.tracks[this.trackIdx]);
+    }
+  }
+
+  goToNextTrack() {
+    this.trackIdx++;
+    if (this.trackIdx < this.playlist.tracks.length) {
+      this.switchTrack(this.playlist.tracks[this.trackIdx]);
+    } else {
+      this.goToNextPlaylist();
+    }
   }
 
   goToNextPlaylist() {
@@ -65,17 +92,12 @@ class BurnCartelPlayer {
     this.sc.unbindAll();
     // in with the new
     this.sc.on('ended', () => {
-      this.trackIdx++;
-      if (this.trackIdx < this.playlist.tracks.length) {
-        this.switchTrack(this.playlist.tracks[this.trackIdx]);
-      } else {
-        this.goToNextPlaylist();
-      }
+      this.goToNextTrack();
     });
 
     // check that play has actually worked...
     // developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
-    this.sc.on("play", () => {
+    this.sc.on('play', () => {
       this.setPlaying(true);
     });
 
