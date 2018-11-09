@@ -7,6 +7,10 @@ $bc-gray-2: #262632;
 $bc-black: #22222e;;
 $bc-pink: #e54ea3;
 
+$desktop-width: 1200px;
+$tablet-width: 1200px;
+$phone-width: 950px;
+
 @mixin bc-text($font-weight: normal) {
   font-family: $font-1;
   color: $bc-white;

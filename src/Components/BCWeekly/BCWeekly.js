@@ -69,6 +69,7 @@ class BCWeekly extends React.Component {
     playlists = this.state.playlists
   ) {
     let activePlaylistIdx = 0;
+    
     if (BCWeekly.isValidUrlParam(bc_weekly_num)) {
       const playlistFromWeekNum = BCWeekly.weekHasBeenReleased(
         playlists,

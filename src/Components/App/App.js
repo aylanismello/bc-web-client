@@ -61,7 +61,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <TopNav />
-          <Route
+          {/* <Route
             exact
             path="/"
             render={() => (
@@ -75,7 +75,7 @@ class App extends Component {
                 }
               />
             )}
-          />
+          /> */}
           <Route
             exact
             path="/:bc_weekly_num"

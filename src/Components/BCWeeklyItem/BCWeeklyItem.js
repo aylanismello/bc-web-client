@@ -16,16 +16,19 @@ const BCWeeklyItem = ({
   // probs set this dynamically, responsively
   // all stryle here are computed based on React media queries,
   // so let's reflect that.
-  const width = 400;
-  const top = 150;
-  
+  const width = 600;
+  // const top = 150;
+
   return (
     <div
       className="BCWeeklyItem"
-      onClick={() => setAsActiveItem(week_num)}
+      onClick={() => {
+        // setAsActiveItem(week_num)
+      }
+      }
       id={idx}
     >
-      <div className="BCWeeklyItem-cover" style={{ width: `${width}px`, height: `${width}px`}}>
+      <div className="BCWeeklyItem-cover">
         <Image
           className="BCWeeklyItem-cover-image"
           alt="Cover Art"
@@ -37,7 +40,7 @@ const BCWeeklyItem = ({
           style={style}
         />
         {active && (
-          <div className="BCWeeklyItem-cover-text" style={{ top: `${top}px` }}>
+          <div className="BCWeeklyItem-cover-text" >
             <h4> BURN CARTEL WEEKLY </h4>
             <div className="BCWeeklyItem-line" />
             <h4> WEEK {week_num} </h4>

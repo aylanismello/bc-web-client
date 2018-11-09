@@ -1,9 +1,20 @@
 @import "../../semantic-overides.scss";
 
-$item-width: 800px;
+$item-width: 250px;
 
 .BCWeeklyItem {
-  margin: 40px;
+  // margin: 40px;
+
+  // calculated based on media query
+
+  width: $item-width;
+  height: $item-width;
+
+  @media (max-width: $phone-width) {
+    width: 100%;
+    height: auto;
+    // height: 600px;
+  }
 
   .BCWeeklyItem-cover {
     position: relative;
@@ -14,6 +25,8 @@ $item-width: 800px;
     .BCWeeklyItem-cover-image {
       width: 100%;
       height: auto;
+      border-radius: 4px;
+      box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
     }
 
     .BCWeeklyItem-cover-text {
@@ -21,7 +34,7 @@ $item-width: 800px;
       left: 0;
 
       // moving this to React style
-      // top: 40%;
+      top: 40%;
       position: absolute;
       text-align: center;
       width: 100%;

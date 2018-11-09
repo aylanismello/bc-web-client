@@ -11,18 +11,21 @@ const PlayerControls = ({ playing, togglePlay, goToTrack }) => (
       <img
         src={prevButton}
         className="PlayerControls-btn PlayerControls-prev-btn"
+        alt="prev-btn"
       />
     </div>
     <div className="PlayerControls-btn-container play" onClick={togglePlay}>
       <img
         src={playing ? pauseButton : playButton}
         className="PlayerControls-btn PlayerControls-play-btn"
+        alt="play-btn"
       />
     </div>
     <div className="PlayerControls-btn-container next" onClick={() => goToTrack('next')} >
       <img
         src={nextButton}
         className="PlayerControls-btn PlayerControls-next-btn"
+        alt="next-btn"
       />
     </div>
   </div>
