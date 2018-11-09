@@ -6,7 +6,6 @@ $item-width: 800px;
   margin: 40px;
 
   .BCWeeklyItem-cover {
-    width: 100%;
     position: relative;
     &:hover {
       cursor: pointer;
@@ -20,10 +19,11 @@ $item-width: 800px;
     .BCWeeklyItem-cover-text {
       @include bc-text();
       left: 0;
-      top: 40%;
+
+      // moving this to React style
+      // top: 40%;
       position: absolute;
       text-align: center;
-      // top: $item-width / 3.5;
       width: 100%;
       letter-spacing: 2.1px;
 
