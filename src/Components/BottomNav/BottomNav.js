@@ -3,7 +3,7 @@ import './BottomNav.scss';
 import PlayerControls from './PlayerControls';
 
 const BottomNav = ({
- track, playing, goToTrack, togglePlay 
+ track, playing, goToTrack, togglePlay, repeat, toggleRepeat, visualize, toggleVisualize
 }) => (
   <div className="BottomNav">
     {track.id && (
@@ -25,11 +25,14 @@ const BottomNav = ({
         </div>
       </div>
     )}
-
     <PlayerControls
       playing={playing}
       goToTrack={goToTrack}
       togglePlay={togglePlay}
+      repeat={repeat}
+      visualize={visualize}
+      toggleRepeat={toggleRepeat}
+      toggleVisualize={toggleVisualize}
     />
   </div>
 );

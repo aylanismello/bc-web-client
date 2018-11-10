@@ -1,33 +1,82 @@
 import React from 'react';
+import Responsive from 'react-responsive';
 import './PlayerControls.scss';
-import playButton from './assets/play.svg';
-import pauseButton from './assets/pause.svg';
-import nextButton from './assets/next.svg';
-import prevButton from './assets/prev.svg';
+import playBtn from './assets/play.svg';
+import pauseBtn from './assets/pause.svg';
+import nextBtn from './assets/next.svg';
+import prevBtn from './assets/prev.svg';
+import repeatBtn from './assets/repeat.svg';
+import visualizerBtn from './assets/chart-bars.svg';
 
-const PlayerControls = ({ playing, togglePlay, goToTrack }) => (
+const getActiveStyle = active =>
+  (active
+    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
+    : {});
+
+const PlayerControls = ({
+  playing,
+  togglePlay,
+  goToTrack,
+  repeat,
+  visualize,
+  toggleRepeat,
+  toggleVisualize
+}) => (
   <div className="PlayerControls">
-    <div className="PlayerControls-btn-container prev" onClick={() => goToTrack('prev')}>
+    <Responsive minWidth={950}>
+      <div
+        className="PlayerControls-btn-container visualizer"
+        onClick={toggleVisualize}
+        style={getActiveStyle(visualize)}
+      >
+        <img
+          src={visualizerBtn}
+          className="PlayerControls-btn PlayerControls-visualizer-btn"
+          alt="visualizer-btn"
+        />
+      </div>
+    </Responsive>
+
+    <div
+      className="PlayerControls-btn-container prev"
+      onClick={() => goToTrack('prev')}
+    >
       <img
-        src={prevButton}
+        src={prevBtn}
         className="PlayerControls-btn PlayerControls-prev-btn"
         alt="prev-btn"
       />
     </div>
     <div className="PlayerControls-btn-container play" onClick={togglePlay}>
       <img
-        src={playing ? pauseButton : playButton}
+        src={playing ? pauseBtn : playBtn}
         className="PlayerControls-btn PlayerControls-play-btn"
         alt="play-btn"
       />
     </div>
-    <div className="PlayerControls-btn-container next" onClick={() => goToTrack('next')} >
+    <div
+      className="PlayerControls-btn-container next"
+      onClick={() => goToTrack('next')}
+    >
       <img
-        src={nextButton}
+        src={nextBtn}
         className="PlayerControls-btn PlayerControls-next-btn"
         alt="next-btn"
       />
     </div>
+    <Responsive minWidth={950}>
+      <div
+        className="PlayerControls-btn-container repeat"
+        onClick={toggleRepeat}
+        style={getActiveStyle(repeat)}
+      >
+        <img
+          src={repeatBtn}
+          className="PlayerControls-btn PlayerControls-repeat-btn"
+          alt="repeat-btn"
+        />
+      </div>
+    </Responsive>
   </div>
 );
 

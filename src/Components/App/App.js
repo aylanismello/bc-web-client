@@ -20,6 +20,8 @@ class App extends Component {
     track: {},
     playerOpen: false,
     playing: false,
+    repeat: false,
+    visualize: false,
     loading: {
       playlists: true
     }
@@ -55,6 +57,20 @@ class App extends Component {
     });
   }
 
+  toggleRepeat() {
+    this.setState({ repeat: !this.state.repeat }, () => {
+      if (this.state.repeat) {
+        this.burnCartelPlayer.setRepeat(true);
+      } else {
+        this.burnCartelPlayer.setRepeat(false);
+      }
+    });
+  }
+  
+  toggleVisualize() {
+    this.setState({ visualize: !this.state.visualize });
+  }
+
   render() {
     const { track, playerOpen, playing } = this.state;
     return (
@@ -64,9 +80,7 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() => (
-              <Redirect push to="/weekly-74" />
-            )}
+            render={() => <Redirect push to="/weekly-74" />}
           />
           <Route
             exact
@@ -90,6 +104,10 @@ class App extends Component {
               playing={playing}
               togglePlay={() => this.togglePlay()}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
+              toggleRepeat={() => this.toggleRepeat()}
+              repeat={this.state.repeat}
+              visualize={this.state.visualize}
+              toggleVisualize={() => this.toggleVisualize()}
             />
           )}
         </div>

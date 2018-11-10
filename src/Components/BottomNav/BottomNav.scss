@@ -1,6 +1,6 @@
 @import "../../globals.scss";
 
-$bottom-nav-height: 40px;
+$bottom-nav-height: $bottom-nav-height / 2;
 
 .BottomNav {
   width: 100%;
@@ -8,15 +8,19 @@ $bottom-nav-height: 40px;
   bottom: 0;
   height: $bottom-nav-height;
   padding: 20px;
-  background: $bc-gray-2;
+  background: $bc-black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  
   .BottomNav-track-info {
     display: flex;
     width: 200px;
     justify-content: left;
+
+    //  @media (max-width: $phone-width) {
+       
+    //  }
 
     .BottomNav-track-info-artwork-container {
       width: $bottom-nav-height;

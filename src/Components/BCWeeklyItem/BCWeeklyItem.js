@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image } from 'cloudinary-react';
 import Responsive from 'react-responsive';
-import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import LazyLoad from 'react-lazyload';
+import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
 const BCWeeklyItem = ({

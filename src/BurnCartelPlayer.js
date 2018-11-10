@@ -13,6 +13,7 @@ class BurnCartelPlayer {
     this.playlistIdx = undefined;
     this.trackIdx = undefined;
     this.playlist = undefined;
+    this.repeat = undefined;
   }
 
   playPlaylist(playlist, playlists) {
@@ -56,9 +57,28 @@ class BurnCartelPlayer {
     }
   }
 
+  setRepeat(repeatState) {
+    this.sc.unbindAll();
+
+    this.repeat = repeatState;
+
+    this.sc.on('ended', () => {
+      if (repeatState) {
+        this.restartTrack();
+      } else {
+        this.goToNextTrack();
+      }
+    });
+  }
+
+  restartTrack() {
+    this.sc.audio.currentTime = 0;
+    this.resume();
+  }
+
   goToPrevTrack() {
     if (this.sc.audio.currentTime > 3) {
-      this.sc.audio.currentTime = 0;
+      this.restartTrack();
     } else if (this.trackIdx !== 0) {
       this.trackIdx--;
       this.switchTrack(this.playlist.tracks[this.trackIdx]);
@@ -92,7 +112,11 @@ class BurnCartelPlayer {
     this.sc.unbindAll();
     // in with the new
     this.sc.on('ended', () => {
-      this.goToNextTrack();
+      if (this.repeat) {
+        this.restartTrack();
+      } else {
+        this.goToNextTrack();
+      }
     });
 
     // check that play has actually worked...

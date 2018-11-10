@@ -1,7 +1,19 @@
+@import '../../globals.scss';
+
 .PlayerControls {
   display: flex;
   padding-right: 40px;
+  background: $bc-gray-2;
+  height: $bottom-nav-height;
+  // border: 1px solid red;
 
+  padding-left: 30px;
+  width: 60%;
+
+
+     @media (max-width: $phone-width) {
+       background: $bc-black;
+     }
   .play {
     width: 50px;
     .PlayerControls-play-btn {
@@ -17,7 +29,7 @@
     }
     padding: 10px;
     display: flex;
-    .next .prev {
+    .next .prev .repeat .visualizer{
       width: 30px;
     }
 
