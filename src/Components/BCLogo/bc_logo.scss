@@ -1,22 +1,29 @@
+@import '../../globals.scss';
+
 .BCLogo {
   &:hover{
     cursor: pointer;
   }
 
   display: flex;
-  flex-direction: column;
   align-items: center;
+  margin: 15px 25px;
+
 
   .BCLogo-svg {
     width: 72px;
   }
   .BCLogo-text {
-    // margin-left: 22px;
-    // margin-top: 5px;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: 2.1px;
-    // width: 93px;
-    // height: 14px;
+    margin-left: 20px;
+  }
+
+  @media (max-width: $phone-width) {
+    flex-direction: column;
+    .BCLogo-text {
+      margin: 0;
+    }
   }
 }

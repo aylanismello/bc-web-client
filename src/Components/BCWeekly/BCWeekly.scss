@@ -1,0 +1,12 @@
+@import "../../globals.scss";
+
+.BCWeekly {
+  .BCWeekly-content {
+    margin: auto 100px;
+    margin-bottom: 50px;
+
+    @media (max-width: $phone-width) {
+      margin: auto 20px;
+    }
+  }
+}

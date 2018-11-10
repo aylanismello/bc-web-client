@@ -1,4 +1,4 @@
-@import "../../semantic-overides.scss";
+@import "../../globals.scss";
 
 .SplashBanner {
   position: relative;
@@ -32,7 +32,8 @@
       flex-direction: column;
 
       .SplashBanner-message-header {
-        font-size: 22px;
+        // font-size: 22px;
+        font-size: 2rem;
       }
 
       .SplashBanner-message-subheader {

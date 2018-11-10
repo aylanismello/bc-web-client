@@ -3,11 +3,11 @@
   padding-right: 40px;
 
   .play {
-    width: 40px;
+    width: 50px;
     .PlayerControls-play-btn {
       // this is a hack to get the two colors to stay pink
       // to make gray ->, filter: invert(.5)
-      filter: invert(.5) sepia(1) saturate(19) hue-rotate(300deg);
+      // filter: invert(.5) sepia(1) saturate(19) hue-rotate(300deg);
     }
   }
 

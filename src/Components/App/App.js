@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
 import BCWeekly from '../BCWeekly';
@@ -61,21 +61,13 @@ class App extends Component {
       <Router>
         <div className="App">
           <TopNav />
-          {/* <Route
+          <Route
             exact
             path="/"
             render={() => (
-              <BCWeekly
-                track={track}
-                setPlaying={isPlaying => this.setPlaying(isPlaying)}
-                burnCartelPlayer={this.burnCartelPlayer}
-                loading={this.state.loading}
-                setLoading={(resource, state) =>
-                  this.setLoading(resource, state)
-                }
-              />
+              <Redirect push to="/weekly-74" />
             )}
-          /> */}
+          />
           <Route
             exact
             path="/:bc_weekly_num"

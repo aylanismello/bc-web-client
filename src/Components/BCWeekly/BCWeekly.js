@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from 'axios';
 import { withRouter } from 'react-router';
+import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
 import BCWeeklyList from '../BCWeeklyList';
 import BCLoading from '../BCLoading';
+import BCSpotlightItem from '../BCSpotlightItem';
 import { baseUrl } from '../../config';
+import './BCWeekly.scss';
+
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
 class BCWeekly extends React.Component {
@@ -39,8 +43,11 @@ class BCWeekly extends React.Component {
 
   componentWillMount() {
     const { bc_weekly_num } = this.props.match.params;
+    const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
+    // we need some error handling here
 
-    axios.get(`${baseUrl}/playlists`).then(({ data }) => {
+    
+    axios.get(`${baseUrl}/playlists`, { params: { week_num: weekNum } }).then(({ data }) => {
       const { playlists } = data.data;
       this.setState({ playlists });
       this.props.setLoading('playlists', false);
@@ -69,7 +76,7 @@ class BCWeekly extends React.Component {
     playlists = this.state.playlists
   ) {
     let activePlaylistIdx = 0;
-    
+
     if (BCWeekly.isValidUrlParam(bc_weekly_num)) {
       const playlistFromWeekNum = BCWeekly.weekHasBeenReleased(
         playlists,
@@ -132,29 +139,47 @@ class BCWeekly extends React.Component {
     }
   }
 
+  playTrack(track, playlist) {
+    this.props.burnCartelPlayer.playTrack(
+      track,
+      playlist,
+      this.state.playlists,
+      this.props.setPlaying
+    );
+  }
+
   render() {
-    const { history } = this.props;
+    const { history, track } = this.props;
     return (
       <div className="BCWeekly">
         <SplashBanner />
-        {this.props.loading.playlists ? <BCLoading /> : (
-          <BCWeeklyList
-            playlists={this.state.playlists}
-            activeTrack={this.props.track}
-            activePlaylistIdx={this.getActivePlaylistIdx()}
-            playTrack={(track, playlist) => {
-              this.props.burnCartelPlayer.playTrack(
-                track,
-                playlist,
-                this.state.playlists,
-                this.props.setPlaying
-              );
-            }}
-            updateActivePlaylist={week_num => {
-              this.playOnLoadPlaylistIfNeeded(week_num);
-              history.push(`/weekly-${week_num}`);
-            }}
-          />
+        {this.props.loading.playlists ? (
+          <BCLoading />
+        ) : (
+          <div className="BCWeekly-content">
+            <Responsive minWidth={950}>
+              <BCSpotlightItem
+                playlist={this.state.playlists[this.getActivePlaylistIdx()]}
+                width={600}
+                track={track}
+                playTrack={(track, playlist) => {
+                  this.playTrack(track, playlist);
+                }}
+              />
+            </Responsive>
+            <BCWeeklyList
+              playlists={this.state.playlists}
+              activeTrack={track}
+              activePlaylistIdx={this.getActivePlaylistIdx()}
+              playTrack={(track, playlist) => {
+                this.playTrack(track, playlist);
+              }}
+              updateActivePlaylist={week_num => {
+                this.playOnLoadPlaylistIfNeeded(week_num);
+                history.push(`/weekly-${week_num}`);
+              }}
+            />
+          </div>
         )}
       </div>
     );

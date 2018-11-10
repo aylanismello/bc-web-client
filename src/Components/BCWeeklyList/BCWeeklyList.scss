@@ -1,12 +1,6 @@
-@import '../../semantic-overides.scss';
+@import '../../globals.scss';
 
 .BCWeeklyList {
-  margin: auto 100px;
-  
-  @media (max-width: $phone-width) { 
-    margin: auto 20px;
-  }
-
   .BCWeeklyList-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;

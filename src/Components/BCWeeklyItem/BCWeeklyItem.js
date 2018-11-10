@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image } from 'cloudinary-react';
+import Responsive from 'react-responsive';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
@@ -23,9 +24,8 @@ const BCWeeklyItem = ({
     <div
       className="BCWeeklyItem"
       onClick={() => {
-        // setAsActiveItem(week_num)
-      }
-      }
+        setAsActiveItem(week_num);
+      }}
       id={idx}
     >
       <div className="BCWeeklyItem-cover">
@@ -40,22 +40,24 @@ const BCWeeklyItem = ({
           style={style}
         />
         {active && (
-          <div className="BCWeeklyItem-cover-text" >
+          <div className="BCWeeklyItem-cover-text">
             <h4> BURN CARTEL WEEKLY </h4>
             <div className="BCWeeklyItem-line" />
             <h4> WEEK {week_num} </h4>
           </div>
         )}
       </div>
-      {active && playlist.tracks && (
-        <BCWeeklyTracklist
-          idx={idx}
-          tracks={playlist.tracks}
-          activeTrack={activeTrack}
-          playTrack={playTrack}
-          playlist={playlist}
-        />
-      )}
+      <Responsive maxWidth={950}>
+        {active && playlist.tracks && (
+          <BCWeeklyTracklist
+            idx={idx}
+            tracks={playlist.tracks}
+            activeTrack={activeTrack}
+            playTrack={playTrack}
+            playlist={playlist}
+          />
+        )}
+      </Responsive>
     </div>
   );
 };
