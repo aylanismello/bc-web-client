@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from 'cloudinary-react';
 import Responsive from 'react-responsive';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
+import LazyLoad from 'react-lazyload';
 import './BCWeeklyItem.scss';
 
 const BCWeeklyItem = ({
@@ -29,16 +30,18 @@ const BCWeeklyItem = ({
       id={idx}
     >
       <div className="BCWeeklyItem-cover">
-        <Image
-          className="BCWeeklyItem-cover-image"
-          alt="Cover Art"
-          width={width}
-          crop="fit"
-          quality="70"
-          cloudName="burncartel"
-          publicId={artwork_url}
-          style={style}
-        />
+        <LazyLoad throttle={200} height={width}>
+          <Image
+            className="BCWeeklyItem-cover-image"
+            alt="Cover Art"
+            width={width}
+            crop="fit"
+            quality="70"
+            cloudName="burncartel"
+            publicId={artwork_url}
+            style={style}
+          />
+        </LazyLoad>
         {active && (
           <div className="BCWeeklyItem-cover-text">
             <h4> BURN CARTEL WEEKLY </h4>
