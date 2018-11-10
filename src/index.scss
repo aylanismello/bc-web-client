@@ -1,4 +1,4 @@
-@import './globals';
+@import "./globals";
 
 body {
   margin: 0;
@@ -6,7 +6,8 @@ body {
   font-family: sans-serif;
 }
 
-p, span {
+p,
+span {
   @include bc-text();
 }
 
@@ -15,5 +16,13 @@ a {
   color: $bc-white;
   &:hover {
     text-decoration: none;
+  }
+}
+
+input {
+  &:focus {
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-width: 0px;
   }
 }
