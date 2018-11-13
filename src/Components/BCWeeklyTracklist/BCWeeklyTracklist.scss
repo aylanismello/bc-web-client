@@ -4,12 +4,15 @@
   // margin-top: 30px;
 
   .BCWeeklyTracklist-item {
+    opacity: 0.8;
+    
     &:hover {
+      opacity: 1.0;
       cursor: pointer;
     }
     @include bc-text();
     padding: 10px;
-
+    
 
     .BCWeeklyTracklist-track-info {
       padding: 3px;

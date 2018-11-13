@@ -1,12 +1,6 @@
 .BCLoading {
+    // TODO: make this height adapt to screen height
     height: 1000px;
-    // border: solid 5px red;
     display: flex;
     justify-content: center;
-    .BCLoading-icon-container {
-        .BCLoading-icon {
-            width: 200px;
-        }
-    }
-    
 }

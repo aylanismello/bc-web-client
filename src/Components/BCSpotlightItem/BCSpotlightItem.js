@@ -20,7 +20,7 @@ const BCSpotlightItem = ({
     </div>
     {playlist.tracks && (
       <BCWeeklyTracklist
-        tracks={playlist.tracks.slice(0, 7)}
+        tracks={playlist.tracks.slice(1, 8)}
         activeTrack={track}
         playTrack={playTrack}
         playlist={playlist}

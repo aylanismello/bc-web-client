@@ -18,7 +18,7 @@ class BurnCartelPlayer {
 
   playPlaylist(playlist, playlists) {
     // hmm maybe set this in constructor keep it DRY u kno
-    this.trackIdx = 0;
+    this.trackIdx = 1;
     this.initPlaylists(playlist, playlists);
     this.switchTrack(playlist.tracks[this.trackIdx]);
   }

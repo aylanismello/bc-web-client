@@ -54,7 +54,7 @@ const BCWeeklyItem = ({
         {active && playlist.tracks && (
           <BCWeeklyTracklist
             idx={idx}
-            tracks={playlist.tracks}
+            tracks={playlist.tracks.slice(1)}
             activeTrack={activeTrack}
             playTrack={playTrack}
             playlist={playlist}

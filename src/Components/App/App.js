@@ -91,6 +91,9 @@ class App extends Component {
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
+                playing={this.state.playing}
+                togglePlay={() => this.togglePlay()}
+                playerOpen={this.state.playerOpen}
                 setLoading={(resource, state) =>
                   this.setLoading(resource, state)
                 }

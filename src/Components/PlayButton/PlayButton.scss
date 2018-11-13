@@ -1,0 +1,12 @@
+.PlayButton {
+    width: 40px;
+    padding: 10px;
+    
+    &:hover {
+        cursor: pointer;
+    }
+  .PlayButton-img {
+    width: 100%;
+    height: auto;
+  }
+}

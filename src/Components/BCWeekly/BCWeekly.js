@@ -46,19 +46,20 @@ class BCWeekly extends React.Component {
     const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
     // we need some error handling here
 
-    
-    axios.get(`${baseUrl}/playlists`, { params: { week_num: weekNum } }).then(({ data }) => {
-      const { playlists } = data.data;
-      this.setState({ playlists });
-      this.props.setLoading('playlists', false);
+    axios
+      .get(`${baseUrl}/playlists`, { params: { week_num: weekNum } })
+      .then(({ data }) => {
+        const { playlists } = data.data;
+        this.setState({ playlists });
+        this.props.setLoading('playlists', false);
 
-      this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
-        bc_weekly_num,
-        playlists
-      );
-      this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
-      // this.switchToPlaylist(this.onLoadPlaylistIdx, playlists, false);
-    });
+        this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
+          bc_weekly_num,
+          playlists
+        );
+        this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
+        // this.switchToPlaylist(this.onLoadPlaylistIdx, playlists, false);
+      });
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -152,7 +153,16 @@ class BCWeekly extends React.Component {
     const { history, track } = this.props;
     return (
       <div className="BCWeekly">
-        <SplashBanner />
+        <SplashBanner
+          playing={this.props.playing}
+          togglePlay={() => {
+            if (this.props.playerOpen) {
+              this.props.togglePlay();
+            } else {
+              this.switchToPlaylist(0, this.state.playlists);
+            }
+          }}
+        />
         {this.props.loading.playlists ? (
           <BCLoading />
         ) : (

@@ -1,8 +1,7 @@
 import React from 'react';
 import Responsive from 'react-responsive';
+import PlayButton from '../PlayButton';
 import './PlayerControls.scss';
-import playBtn from './assets/play.svg';
-import pauseBtn from './assets/pause.svg';
 import nextBtn from './assets/next.svg';
 import prevBtn from './assets/prev.svg';
 import repeatBtn from './assets/repeat.svg';
@@ -47,13 +46,15 @@ const PlayerControls = ({
         alt="prev-btn"
       />
     </div>
-    <div className="PlayerControls-btn-container play" onClick={togglePlay}>
+    
+    <PlayButton playing={playing} togglePlay={togglePlay} />
+    {/* <div className="PlayerControls-btn-container play" onClick={togglePlay}>
       <img
         src={playing ? pauseBtn : playBtn}
         className="PlayerControls-btn PlayerControls-play-btn"
         alt="play-btn"
       />
-    </div>
+    </div> */}
     <div
       className="PlayerControls-btn-container next"
       onClick={() => goToTrack('next')}

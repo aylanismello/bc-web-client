@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import arrow from './tail-right.svg';
+import PlayButton from '../PlayButton';
 import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
@@ -114,7 +115,13 @@ class SplashBanner extends React.Component {
   renderBannerContent() {
     switch (this.state.submitStatus) {
       case SUBMIT_STATES.ALREADY_COMPLETED:
-        return <div />;
+        return (
+          <PlayButton
+            playing={this.props.playing}
+            togglePlay={this.props.togglePlay}
+            isBannerButton
+          />
+        );
       case SUBMIT_STATES.UNSUBMITTED:
         return (
           <Form
@@ -145,7 +152,7 @@ class SplashBanner extends React.Component {
         return <FormSubmitMessage {...this.state} />;
     }
   }
-  
+
   render() {
     return (
       <div className="SplashBanner">

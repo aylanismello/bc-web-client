@@ -1,26 +1,17 @@
-@import '../../globals.scss';
+@import "../../globals.scss";
 
 .PlayerControls {
   display: flex;
   padding-right: 40px;
   background: $bc-gray-2;
   height: $bottom-nav-height;
-  // border: 1px solid red;
+  align-items: center;
 
   padding-left: 30px;
   width: 60%;
 
-
-     @media (max-width: $phone-width) {
-       background: $bc-black;
-     }
-  .play {
-    width: 50px;
-    .PlayerControls-play-btn {
-      // this is a hack to get the two colors to stay pink
-      // to make gray ->, filter: invert(.5)
-      // filter: invert(.5) sepia(1) saturate(19) hue-rotate(300deg);
-    }
+  @media (max-width: $phone-width) {
+    background: $bc-black;
   }
 
   .PlayerControls-btn-container {
@@ -29,7 +20,7 @@
     }
     padding: 10px;
     display: flex;
-    .next .prev .repeat .visualizer{
+    .next .prev .repeat .visualizer {
       width: 30px;
     }
 
