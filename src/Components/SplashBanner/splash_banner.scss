@@ -3,6 +3,15 @@
 .SplashBanner {
   position: relative;
 
+  .SplashBanner-next-action-msg {
+    color: $bc-pink;
+    opacity: 0.75;
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+      opacity: 1.0;
+    }
+  }
   // https://css-tricks.com/tinted-images-multiple-backgrounds/
   .SplashBanner-image-container {
     height: 300px;
@@ -32,8 +41,7 @@
       flex-direction: column;
 
       .SplashBanner-message-header {
-        // font-size: 22px;
-        font-size: 2rem;
+        font-size: 3rem;
       }
 
       .SplashBanner-message-subheader {
@@ -45,10 +53,13 @@
 
     .SplashBanner-submit-message {
       @include bc-text();
+      font-size: 1.3rem;
       text-align: center;
     }
 
     .SplashBanner-form-container {
+
+      
       .SplashBanner-email-container {
         position: relative;
 

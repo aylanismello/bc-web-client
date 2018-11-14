@@ -42,11 +42,13 @@ const Form = ({
   </div>
 );
 
-const FormSubmitMessage = ({ header, subheader }) => (
+const FormSubmitMessage = ({ header, subheader, success, nextAction }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
     <br />
     <span> {subheader} </span>
+    <br />
+    <span onClick={nextAction} className="SplashBanner-next-action-msg"> {success ? `Let's go!` : `Try again`} </span>
   </div>
 );
 
@@ -112,6 +114,10 @@ class SplashBanner extends React.Component {
     }
   }
 
+  resetForm() {
+    this.setState({ email: '', submitStatus: SUBMIT_STATES.UNSUBMITTED });
+  }
+
   renderBannerContent() {
     switch (this.state.submitStatus) {
       case SUBMIT_STATES.ALREADY_COMPLETED:
@@ -139,6 +145,8 @@ class SplashBanner extends React.Component {
           <FormSubmitMessage
             header={header}
             subheader="Sorry, try again later!"
+            success={false}
+            nextAction={() => this.resetForm()}
           />
         );
       case SUBMIT_STATES.SUCCESS:
@@ -146,6 +154,8 @@ class SplashBanner extends React.Component {
           <FormSubmitMessage
             header="Thanks for subscribing!"
             subheader="Watch your inbox for weekly 🔥!"
+            success
+            nextAction={() => this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED })}
           />
         );
       default:

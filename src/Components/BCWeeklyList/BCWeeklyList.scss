@@ -1,12 +1,15 @@
 @import '../../globals.scss';
 
+$grid-spacing: 2rem; 
+
 .BCWeeklyList {
   .BCWeeklyList-grid {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: center;
     justify-content: center;
-    grid-row-gap: 30px;
+    grid-row-gap: $grid-spacing;
+    grid-column-gap: $grid-spacing;
     
     @media (max-width: $tablet-width) { 
       grid-template-columns: 1fr 1fr 1fr;
