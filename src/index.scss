@@ -6,6 +6,11 @@ body {
   font-family: sans-serif;
 }
 
+html {
+  // for easier calculation of rem units
+  font-size: 10px;
+}
+
 p,
 span {
   @include bc-text();
