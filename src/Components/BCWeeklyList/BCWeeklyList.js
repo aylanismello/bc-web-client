@@ -7,7 +7,8 @@ const BCWeeklyList = ({
   activePlaylistIdx,
   updateActivePlaylist,
   playTrack,
-  activeTrack
+  activeTrack,
+  playing
 }) => {
   return (
     <div className="BCWeeklyList">
@@ -18,6 +19,7 @@ const BCWeeklyList = ({
             playlist={playlist}
             playTrack={playTrack}
             active={activePlaylistIdx === idx}
+            playing={playing}
             key={idx}
             idx={idx}
             setAsActiveItem={updateActivePlaylist}

@@ -11,7 +11,8 @@ const BCWeeklyItem = ({
   setAsActiveItem,
   idx,
   playTrack,
-  activeTrack
+  activeTrack,
+  playing
 }) => {
   const { artwork_url, week_num } = playlist;
   const style = active ? { opacity: 0.1 } : {};

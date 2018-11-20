@@ -1,12 +1,12 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(setActiveTrack, setPlaying) {
+  constructor(setActiveTrack, setPlaying, setTrackLoading) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     // for debugging purposes
     window.sc = this.sc;
-    // this.switchToPlaylist = switchToPlaylist;
     this.setActiveTrack = setActiveTrack;
+    this.setTrackLoading = setTrackLoading;
     this.setPlaying = setPlaying;
 
     this.playlists = [];
@@ -106,6 +106,7 @@ class BurnCartelPlayer {
   }
 
   switchTrack(track) {
+    this.setTrackLoading(true);
     const { stream_url } = track;
     if (this.sc.playing) this.sc.stop();
     // out with the old event listeners
@@ -119,10 +120,21 @@ class BurnCartelPlayer {
       }
     });
 
-    // check that play has actually worked...
     // developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
-    this.sc.on('play', () => {
-      this.setPlaying(true);
+    this.setPlaying(true);
+
+    // when shit takes forever
+    // this will keep going off   
+    this.sc.on('stalled', () => {
+      this.setTrackLoading(true);
+    });
+
+    this.sc.on('timeupdate', () => {
+      this.setTrackLoading(false);
+    });
+
+    this.sc.on('loadeddata', () => {
+      this.setTrackLoading(false);
     });
 
     this.setActiveTrack(track);

@@ -170,6 +170,8 @@ class BCWeekly extends React.Component {
             <Responsive minWidth={950}>
               <BCSpotlightItem
                 playlist={this.state.playlists[this.getActivePlaylistIdx()]}
+                playing={this.props.playing}
+                trackLoading={this.props.trackLoading}
                 width={600}
                 track={track}
                 playTrack={(track, playlist) => {
@@ -179,6 +181,7 @@ class BCWeekly extends React.Component {
             </Responsive>
             <BCWeeklyList
               playlists={this.state.playlists}
+              playing={this.props.playing}
               activeTrack={track}
               activePlaylistIdx={this.getActivePlaylistIdx()}
               playTrack={(track, playlist) => {

@@ -4,6 +4,8 @@
   .BCWeekly-content {
     margin: auto 100px;
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
 
     @media (max-width: $phone-width) {
       margin: auto 20px;

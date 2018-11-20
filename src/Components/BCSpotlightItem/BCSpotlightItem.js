@@ -4,7 +4,7 @@ import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCSpotlightItem.scss';
 
 const BCSpotlightItem = ({
- width, playlist, playTrack, track 
+ width, playlist, playTrack, track, playing, trackLoading
 }) => (
   <div className="BCSpotlightItem">
     <div className="BCSplotlightItem-cover">
@@ -22,7 +22,9 @@ const BCSpotlightItem = ({
       <BCWeeklyTracklist
         tracks={playlist.tracks.slice(1, 8)}
         activeTrack={track}
+        playing={playing}
         playTrack={playTrack}
+        trackLoading={trackLoading}
         playlist={playlist}
       />
     )}

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Image } from 'cloudinary-react';
 import arrow from './tail-right.svg';
 import PlayButton from '../PlayButton';
 import { baseUrl } from '../../config';
@@ -42,13 +43,18 @@ const Form = ({
   </div>
 );
 
-const FormSubmitMessage = ({ header, subheader, success, nextAction }) => (
+const FormSubmitMessage = ({
+ header, subheader, success, nextAction 
+}) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
     <br />
     <span> {subheader} </span>
     <br />
-    <span onClick={nextAction} className="SplashBanner-next-action-msg"> {success ? `Let's go!` : `Try again`} </span>
+    <span onClick={nextAction} className="SplashBanner-next-action-msg">
+      {' '}
+      {success ? 'Let\'s go!' : 'Try again'}{' '}
+    </span>
   </div>
 );
 
@@ -155,7 +161,9 @@ class SplashBanner extends React.Component {
             header="Thanks for subscribing!"
             subheader="Watch your inbox for weekly 🔥!"
             success
-            nextAction={() => this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED })}
+            nextAction={() =>
+              this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED })
+            }
           />
         );
       default:
@@ -167,9 +175,16 @@ class SplashBanner extends React.Component {
     return (
       <div className="SplashBanner">
         <div className="SplashBanner-image-container">
+          <Image
+            className="SplashBanner-image"
+            alt="Burn Cartel Weekly Banner"
+            crop="fit"
+            quality="90"
+            cloudName="burncartel"
+            publicId="bc_header_1"
+          />
           {/* <img
             src="https://source.unsplash.com/FhdC7RGb5Yg/"
-            alt="Burn Cartel Weekly Banner"
             className="SplashBanner-image"
           /> */}
         </div>

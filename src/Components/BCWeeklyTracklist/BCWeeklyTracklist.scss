@@ -5,7 +5,8 @@
 
   .BCWeeklyTracklist-item {
     opacity: 0.8;
-    
+    position: relative;    
+
     &:hover {
       opacity: 1.0;
       cursor: pointer;
@@ -16,6 +17,11 @@
 
     .BCWeeklyTracklist-track-info {
       padding: 3px;
+    }
+
+    .BCWeeklyTracklist-playing-eq {
+      position: absolute;
+      left: -40px;
     }
 
     .BCWeeklyTracklist-title {

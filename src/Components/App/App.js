@@ -12,7 +12,8 @@ class App extends Component {
     super(props);
     this.burnCartelPlayer = new BurnCartelPlayer(
       track => this.setTrack(track),
-      play => this.setPlaying(play)
+      play => this.setPlaying(play),
+      loading => this.setLoading('track', loading)
     );
   }
 
@@ -23,7 +24,8 @@ class App extends Component {
     repeat: false,
     visualize: false,
     loading: {
-      playlists: true
+      playlists: true,
+      track: true
     }
   });
 
@@ -42,8 +44,10 @@ class App extends Component {
 
     const newResouceLoadingState = {};
     newResouceLoadingState[resource] = state;
+    const newLoading = { ...this.state.loading, ...newResouceLoadingState };
+
     this.setState({
-      loading: { ...this.state.loading, ...newResouceLoadingState }
+      loading: newLoading
     });
   }
 
@@ -80,7 +84,7 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() => <Redirect push to="/weekly-74" />}
+            render={() => <Redirect push to="/weekly-75" />}
           />
           <Route
             exact
@@ -94,6 +98,7 @@ class App extends Component {
                 playing={this.state.playing}
                 togglePlay={() => this.togglePlay()}
                 playerOpen={this.state.playerOpen}
+                trackLoading={this.state.loading.track}
                 setLoading={(resource, state) =>
                   this.setLoading(resource, state)
                 }
@@ -105,6 +110,7 @@ class App extends Component {
             <BottomNav
               track={track}
               playing={playing}
+              trackLoading={this.state.loading.track}
               togglePlay={() => this.togglePlay()}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
               toggleRepeat={() => this.toggleRepeat()}

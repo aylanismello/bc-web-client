@@ -1,16 +1,16 @@
-import React from 'react';
-import Responsive from 'react-responsive';
-import PlayButton from '../PlayButton';
-import './PlayerControls.scss';
-import nextBtn from './assets/next.svg';
-import prevBtn from './assets/prev.svg';
-import repeatBtn from './assets/repeat.svg';
-import visualizerBtn from './assets/chart-bars.svg';
+import React from "react";
+import Responsive from "react-responsive";
+import PlayButton from "../PlayButton";
+import "./PlayerControls.scss";
+import nextBtn from "./assets/next.svg";
+import prevBtn from "./assets/prev.svg";
+import repeatBtn from "./assets/repeat.svg";
+import visualizerBtn from "./assets/chart-bars.svg";
 
 const getActiveStyle = active =>
-  (active
-    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
-    : {});
+  active
+    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
+    : {};
 
 const PlayerControls = ({
   playing,
@@ -19,7 +19,8 @@ const PlayerControls = ({
   repeat,
   visualize,
   toggleRepeat,
-  toggleVisualize
+  toggleVisualize,
+  trackLoading
 }) => (
   <div className="PlayerControls">
     <Responsive minWidth={950}>
@@ -38,7 +39,7 @@ const PlayerControls = ({
 
     <div
       className="PlayerControls-btn-container prev"
-      onClick={() => goToTrack('prev')}
+      onClick={() => goToTrack("prev")}
     >
       <img
         src={prevBtn}
@@ -46,18 +47,16 @@ const PlayerControls = ({
         alt="prev-btn"
       />
     </div>
-    
-    <PlayButton playing={playing} togglePlay={togglePlay} />
-    {/* <div className="PlayerControls-btn-container play" onClick={togglePlay}>
-      <img
-        src={playing ? pauseBtn : playBtn}
-        className="PlayerControls-btn PlayerControls-play-btn"
-        alt="play-btn"
-      />
-    </div> */}
+
+    <PlayButton
+      playing={playing}
+      togglePlay={togglePlay}
+      loading={trackLoading}
+    />
+
     <div
       className="PlayerControls-btn-container next"
-      onClick={() => goToTrack('next')}
+      onClick={() => goToTrack("next")}
     >
       <img
         src={nextBtn}
