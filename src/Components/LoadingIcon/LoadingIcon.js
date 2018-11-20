@@ -16,5 +16,4 @@ LoadingIcon.defaultProps = {
   width: 100
 };
 
-
 export default LoadingIcon;

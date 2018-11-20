@@ -129,7 +129,7 @@ class BurnCartelPlayer {
       this.setTrackLoading(true);
     });
 
-    this.sc.on('timeupdate', () => {
+    this.sc.on('playing', () => {
       this.setTrackLoading(false);
     });
 
