@@ -2,6 +2,7 @@
   "name": "bc-web-client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "burncartel.com",
   "dependencies": {
     "axios": "^0.17.1",
     "cloudinary-react": "^1.0.6",
