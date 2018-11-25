@@ -21,6 +21,7 @@ class EQPlayButton extends React.Component {
       >
         {this.state.hoveringOver ||
         this.props.loading.track ||
+        !this.props.playing ||
         !this.props.playerOpen ? (
           <PlayButton {...theProps} />
         ) : (

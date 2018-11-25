@@ -7,7 +7,7 @@ import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
 const Form = ({
- handleSubmit, email, updateEmail, setStyle, style 
+ handleSubmit, email, updateEmail, setStyle, style
 }) => (
   <div className="SplashBanner-form-container">
     <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
