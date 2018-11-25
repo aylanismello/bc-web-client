@@ -154,7 +154,9 @@ class BCWeekly extends React.Component {
     return (
       <div className="BCWeekly">
         <SplashBanner
+          loading={this.props.loading}
           playing={this.props.playing}
+          playerOpen={this.props.playerOpen}
           togglePlay={() => {
             if (this.props.playerOpen) {
               this.props.togglePlay();
@@ -166,7 +168,8 @@ class BCWeekly extends React.Component {
         {this.props.loading.playlists ? (
           <BCLoading />
         ) : (
-          <div className="BCWeekly-content">
+          <div className="BCWeekly-content-container">
+            <div className="BCWeekly-content">
             <Responsive minWidth={950}>
               <BCSpotlightItem
                 playlist={this.state.playlists[this.getActivePlaylistIdx()]}
@@ -192,6 +195,7 @@ class BCWeekly extends React.Component {
                 history.push(`/weekly-${week_num}`);
               }}
             />
+            </div>
           </div>
         )}
       </div>

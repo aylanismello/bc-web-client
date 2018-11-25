@@ -1,6 +1,6 @@
-import React from "react";
-import EQIcon from "../EQIcon";
-import "./BCWeeklyTracklist.scss";
+import React from 'react';
+import EQIcon from '../EQIcon';
+import './BCWeeklyTracklist.scss';
 
 class BCWeeklyTracklist extends React.Component {
   componentDidMount() {
@@ -11,7 +11,7 @@ class BCWeeklyTracklist extends React.Component {
   getStyle(track) {
     return this.isActive(track)
       ? {
-          color: "#e54ea3"
+          color: '#e54ea3'
         }
       : {};
   }
@@ -21,7 +21,9 @@ class BCWeeklyTracklist extends React.Component {
   }
 
   render() {
-    const { tracks, playTrack, playlist, playing, trackLoading } = this.props;
+    const {
+ tracks, playTrack, playlist, playing, trackLoading 
+} = this.props;
     return (
       <div className="BCWeeklyTracklist">
         {tracks.map(track => (
@@ -32,7 +34,7 @@ class BCWeeklyTracklist extends React.Component {
             onClick={() => playTrack(track, playlist)}
           >
             <div className="BCWeeklyTracklist-playing-eq">
-              {!trackLoading && playing && this.isActive(track) && <EQIcon width={40} />}
+              {!trackLoading && playing && this.isActive(track) && <EQIcon width={24} />}
             </div>
             <div className="BCWeeklyTracklist-title BCWeeklyTracklist-track-info">
               {track.name}

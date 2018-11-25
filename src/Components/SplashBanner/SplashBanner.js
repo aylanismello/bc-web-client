@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Image } from 'cloudinary-react';
 import arrow from './tail-right.svg';
-import PlayButton from '../PlayButton';
+import EQPlayButton from '../EQPlayButton';
 import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
@@ -70,7 +70,8 @@ class SplashBanner extends React.Component {
     email: '',
     submitStatus: null,
     style: {},
-    errorMessage: null
+    errorMessage: null,
+    icon: 'eq'
   });
 
   componentDidMount() {
@@ -127,13 +128,7 @@ class SplashBanner extends React.Component {
   renderBannerContent() {
     switch (this.state.submitStatus) {
       case SUBMIT_STATES.ALREADY_COMPLETED:
-        return (
-          <PlayButton
-            playing={this.props.playing}
-            togglePlay={this.props.togglePlay}
-            isBannerButton
-          />
-        );
+        return <EQPlayButton {...this.props} />;
       case SUBMIT_STATES.UNSUBMITTED:
         return (
           <Form

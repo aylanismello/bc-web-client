@@ -21,10 +21,15 @@ class AnimatedIcon extends React.Component {
     return (
       <div
         className="AnimatedIcon"
+        style={this.props.style}
         dangerouslySetInnerHTML={{ __html: this.svgIcon }}
       />
     );
   }
 }
+
+AnimatedIcon.defaultProps = {
+  style: {}
+};
 
 export default AnimatedIcon;

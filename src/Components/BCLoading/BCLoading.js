@@ -4,7 +4,7 @@ import LoadingIcon from '../LoadingIcon';
 
 const BCLoading = () => (
   <div className="BCLoading">
-    <LoadingIcon />
+    <LoadingIcon width={50}/>
   </div>
 );
 

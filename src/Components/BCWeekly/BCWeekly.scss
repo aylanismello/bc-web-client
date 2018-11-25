@@ -1,14 +1,20 @@
 @import "../../globals.scss";
 
 .BCWeekly {
-  .BCWeekly-content {
-    margin: auto 100px;
-    margin-bottom: 50px;
+  .BCWeekly-content-container {
     display: flex;
-    flex-direction: column;
-
-    @media (max-width: $phone-width) {
-      margin: auto 20px;
+    justify-content: center;
+    .BCWeekly-content {
+      margin: auto 100px;
+      margin-bottom: 50px;
+      flex-direction: column;
+      display: flex;
+      max-width: $desktop-width;
+      
+      @media (max-width: $phone-width) {
+        margin: auto 20px;
+      }
     }
+
   }
 }
