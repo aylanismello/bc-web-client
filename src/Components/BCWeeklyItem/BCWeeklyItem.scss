@@ -1,15 +1,21 @@
 @import "../../globals.scss";
 
-// $item-width: 250px;
+
+.opaque {
+  opacity: 0.1;
+}
+
+.hidden {
+  opacity: 0.0;
+}
+
+.visible {
+  opacity: 1.0;
+}
+
+
 
 .BCWeeklyItem {
-  // margin: 40px;
-
-  // calculated based on media query
-
-  // width: $item-width;
-  // height: $item-width;
-
   @media (max-width: $phone-width) {
     width: 100%;
     height: auto;
@@ -17,8 +23,23 @@
 
   .BCWeeklyItem-cover {
     position: relative;
+
+    .BCWeeklyItem-cover-text { 
+      transition: $transition;
+    }
+    .BCWeeklyItem-cover-image { 
+      transition: $transition;
+    }
+    
     &:hover {
       cursor: pointer;
+      .BCWeeklyItem-cover-image {
+        opacity: 0.1;
+      }
+
+      .BCWeeklyItem-cover-text { 
+        opacity: 1.0;
+      }
     }
 
     .BCWeeklyItem-cover-image {

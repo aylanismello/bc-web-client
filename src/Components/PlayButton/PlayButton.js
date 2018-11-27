@@ -1,23 +1,14 @@
 import React from 'react';
 import LoadingIcon from '../LoadingIcon';
-import EQIcon from '../EQIcon';
 import playBtn from './assets/play.svg';
 import pauseBtn from './assets/pause.svg';
 import './PlayButton.scss';
 
 const PlayButton = ({
- playing, togglePlay, isBannerButton, loading
+ playing, togglePlay, loading
 }) => {
   let button;
 
-  // if (isBannerButton) {
-  //   button = playing ? (
-  //     <EQIcon width={40} />
-  //   ) : (
-  //     <img src={playBtn} className="PlayButton-img" alt="play-btn" />
-  //   );
-  // } else 
-  
   if (loading) {
     button = <div className="PlayButton-img" > <LoadingIcon width={25} color="gray" /> </div>;
   } else {
@@ -35,10 +26,6 @@ const PlayButton = ({
       {button}
     </div>
   );
-};
-
-PlayButton.defaultProps = {
-  isBannerButton: false
 };
 
 export default PlayButton;

@@ -1,12 +1,13 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(setActiveTrack, setPlaying, setTrackLoading) {
+  constructor(setActiveTrack, setPlaying, setTrackLoading, setError) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     // for debugging purposes
     window.sc = this.sc;
     this.setActiveTrack = setActiveTrack;
     this.setTrackLoading = setTrackLoading;
+    this.setError = setError;
     this.setPlaying = setPlaying;
 
     this.playlists = [];
@@ -131,6 +132,12 @@ class BurnCartelPlayer {
 
     this.sc.on('playing', () => {
       this.setTrackLoading(false);
+    });
+
+    this.sc.on('error', (e) => {
+      // debugger;
+      // console.log(`hit error ${e.msg}`);
+      this.setError('Problem loading track, sorry!');
     });
 
     this.sc.on('loadeddata', () => {

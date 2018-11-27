@@ -49,16 +49,16 @@ class BCWeekly extends React.Component {
     axios
       .get(`${baseUrl}/playlists`, { params: { week_num: weekNum } })
       .then(({ data }) => {
-        const { playlists } = data.data;
+        const { playlists, week_num } = data.data;
+        
         this.setState({ playlists });
         this.props.setLoading('playlists', false);
-
+        
         this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
-          bc_weekly_num,
+          `weekly-${week_num}`,
           playlists
         );
         this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
-        // this.switchToPlaylist(this.onLoadPlaylistIdx, playlists, false);
       });
   }
 

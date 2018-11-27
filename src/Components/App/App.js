@@ -13,7 +13,8 @@ class App extends Component {
     this.burnCartelPlayer = new BurnCartelPlayer(
       track => this.setTrack(track),
       play => this.setPlaying(play),
-      loading => this.setLoading('track', loading)
+      loading => this.setLoading('track', loading),
+      error => this.setError(error)
     );
   }
 
@@ -26,11 +27,17 @@ class App extends Component {
     loading: {
       playlists: true,
       track: true
-    }
+    },
+    error: undefined
   });
 
   setTrack(track) {
     this.setState({ track });
+  }
+
+  setError(error) {
+    // implement react toaster or a notification system to handle this
+    this.setState({ error });
   }
 
   setPlaying(playing) {
@@ -70,7 +77,7 @@ class App extends Component {
       }
     });
   }
-  
+
   toggleVisualize() {
     this.setState({ visualize: !this.state.visualize });
   }
@@ -81,11 +88,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <TopNav />
-          <Route
-            exact
-            path="/"
-            render={() => <Redirect push to="/weekly-75" />}
-          />
+          <Route exact path="/" render={() => <Redirect push to="/weekly" />} />
           <Route
             exact
             path="/:bc_weekly_num"

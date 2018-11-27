@@ -6,9 +6,10 @@
   background: $bc-gray-2;
   height: $bottom-nav-height;
   align-items: center;
-
+  min-width: 200px;
   padding-left: 30px;
-  width: 60%;
+  width: 78%;
+
 
   @media (max-width: $phone-width) {
     background: $bc-black;

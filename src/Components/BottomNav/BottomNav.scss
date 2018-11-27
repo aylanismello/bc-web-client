@@ -18,10 +18,6 @@ $bottom-nav-height: $bottom-nav-height / 2;
     width: 200px;
     justify-content: left;
 
-    //  @media (max-width: $phone-width) {
-       
-    //  }
-
     .BottomNav-track-info-artwork-container {
       width: $bottom-nav-height;
       .Bottom-track-info-artwork {
@@ -36,6 +32,10 @@ $bottom-nav-height: $bottom-nav-height / 2;
         padding-left: 12px;
         display: flex;
         flex-direction: column;
+
+        @media(max-width: $tiny-width) {
+          max-width: 70px;
+        }
 
       .BottomNav-track-info-detail {
         text-overflow: ellipsis;
