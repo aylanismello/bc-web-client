@@ -1,15 +1,23 @@
-@import '../../globals.scss';
+@import "../../globals.scss";
 
 .Footer {
-    text-align: center;
-    font-size: 1.4rem;
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 1.4rem;
 
-    @include bc-text();
-    .Footer-left {
-        color: $bc-gray;
-    }
+  @include bc-text();
+  .Footer-left {
+    color: $bc-gray;
+  }
 
-    span {
-        padding: 0 15px 0 15px;
-    }
+  span {
+    padding: 0 15px 0 15px;
+  }
+}
+
+.position-absolute {
+  position: absolute;
+  bottom: 1rem;
+  transform: translate(-50%, -50%);
+  left: 50%;
 }

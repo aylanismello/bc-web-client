@@ -86,7 +86,7 @@ class App extends Component {
     const { track, playerOpen, playing } = this.state;
     return (
       <Router>
-        <div className="App">
+        <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
           <TopNav />
           <Route exact path="/" render={() => <Redirect push to="/weekly" />} />
           <Route
@@ -108,7 +108,7 @@ class App extends Component {
               />
             )}
           />
-          <Footer />
+          <Footer loadingPlaylists={this.state.loading.playlists} />
           {playerOpen && (
             <BottomNav
               track={track}

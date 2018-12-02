@@ -4,17 +4,5 @@
   .BCWeekly-content-container {
     display: flex;
     justify-content: center;
-    .BCWeekly-content {
-      margin: auto 100px;
-      margin-bottom: 50px;
-      flex-direction: column;
-      display: flex;
-      max-width: $desktop-width;
-      
-      @media (max-width: $phone-width) {
-        margin: auto 20px;
-      }
-    }
-
   }
 }

@@ -5,14 +5,17 @@ import LazyLoad from 'react-lazyload';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
+const Placeholder = () => (
+  <div style={{ height: 200, width: 200, background: 'white' }}>YO</div>
+);
+
 const BCWeeklyItem = ({
   playlist,
   active,
   setAsActiveItem,
   idx,
   playTrack,
-  activeTrack,
-  playing
+  activeTrack
 }) => {
   const { artwork_url, week_num } = playlist;
   // const style = active ? { opacity: 0.1 } : {};
@@ -34,10 +37,17 @@ const BCWeeklyItem = ({
       id={idx}
     >
       <div className="BCWeeklyItem-cover">
-        <LazyLoad throttle={200} width={width} height={width}>
+        {/* TODO: somehow make defalt set to whatever */}
+        <LazyLoad
+          width={width}
+          height={width}
+          offset={[-200, 0]}
+          debounce={500}
+          once
+          placeholder={Placeholder}
+        >
           <Image
             className={`BCWeeklyItem-cover-image ${style1}`}
-            alt="Cover Art"
             width={width}
             crop="fit"
             quality="70"

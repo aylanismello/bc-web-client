@@ -1,19 +1,16 @@
 @import "../../globals.scss";
 
-
 .opaque {
   opacity: 0.1;
 }
 
 .hidden {
-  opacity: 0.0;
+  opacity: 0;
 }
 
 .visible {
-  opacity: 1.0;
+  opacity: 1;
 }
-
-
 
 .BCWeeklyItem {
   @media (max-width: $phone-width) {
@@ -24,21 +21,21 @@
   .BCWeeklyItem-cover {
     position: relative;
 
-    .BCWeeklyItem-cover-text { 
+    .BCWeeklyItem-cover-text {
       transition: $transition;
     }
-    .BCWeeklyItem-cover-image { 
+    .BCWeeklyItem-cover-image {
       transition: $transition;
     }
-    
+
     &:hover {
       cursor: pointer;
       .BCWeeklyItem-cover-image {
         opacity: 0.1;
       }
 
-      .BCWeeklyItem-cover-text { 
-        opacity: 1.0;
+      .BCWeeklyItem-cover-text {
+        opacity: 1;
       }
     }
 
@@ -51,11 +48,10 @@
 
     .BCWeeklyItem-cover-text {
       @include bc-text();
-      left: 0;
-
-      // moving this to React style
-      top: 40%;
       position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
       width: 100%;
       letter-spacing: 2.1px;

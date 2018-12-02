@@ -1,6 +1,14 @@
 @import '../../globals.scss';
 
+// this is really the main Container
 .App {
   background: $bc-black-1;
+  // padding-bottom: 90px;
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+.shift-up {
   padding-bottom: 90px;
 }

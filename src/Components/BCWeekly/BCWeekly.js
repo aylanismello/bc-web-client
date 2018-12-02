@@ -5,6 +5,7 @@ import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
 import BCWeeklyList from '../BCWeeklyList';
 import BCLoading from '../BCLoading';
+import Wrapper from '../Wrapper';
 import BCSpotlightItem from '../BCSpotlightItem';
 import { baseUrl } from '../../config';
 import './BCWeekly.scss';
@@ -50,10 +51,10 @@ class BCWeekly extends React.Component {
       .get(`${baseUrl}/playlists`, { params: { week_num: weekNum } })
       .then(({ data }) => {
         const { playlists, week_num } = data.data;
-        
+
         this.setState({ playlists });
         this.props.setLoading('playlists', false);
-        
+
         this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
           `weekly-${week_num}`,
           playlists
@@ -169,33 +170,34 @@ class BCWeekly extends React.Component {
           <BCLoading />
         ) : (
           <div className="BCWeekly-content-container">
-            <div className="BCWeekly-content">
-            <Responsive minWidth={950}>
-              <BCSpotlightItem
-                playlist={this.state.playlists[this.getActivePlaylistIdx()]}
+            {/* <div className="BCWeekly-content"> */}
+            <Wrapper>
+              <Responsive minWidth={950}>
+                <BCSpotlightItem
+                  playlist={this.state.playlists[this.getActivePlaylistIdx()]}
+                  playing={this.props.playing}
+                  trackLoading={this.props.trackLoading}
+                  width={600}
+                  track={track}
+                  playTrack={(track, playlist) => {
+                    this.playTrack(track, playlist);
+                  }}
+                />
+              </Responsive>
+              <BCWeeklyList
+                playlists={this.state.playlists}
                 playing={this.props.playing}
-                trackLoading={this.props.trackLoading}
-                width={600}
-                track={track}
+                activeTrack={track}
+                activePlaylistIdx={this.getActivePlaylistIdx()}
                 playTrack={(track, playlist) => {
                   this.playTrack(track, playlist);
                 }}
+                updateActivePlaylist={week_num => {
+                  this.playOnLoadPlaylistIfNeeded(week_num);
+                  history.push(`/weekly-${week_num}`);
+                }}
               />
-            </Responsive>
-            <BCWeeklyList
-              playlists={this.state.playlists}
-              playing={this.props.playing}
-              activeTrack={track}
-              activePlaylistIdx={this.getActivePlaylistIdx()}
-              playTrack={(track, playlist) => {
-                this.playTrack(track, playlist);
-              }}
-              updateActivePlaylist={week_num => {
-                this.playOnLoadPlaylistIfNeeded(week_num);
-                history.push(`/weekly-${week_num}`);
-              }}
-            />
-            </div>
+            </Wrapper>
           </div>
         )}
       </div>
