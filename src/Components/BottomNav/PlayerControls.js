@@ -6,10 +6,11 @@ import nextBtn from './assets/next.svg';
 import prevBtn from './assets/prev.svg';
 import repeatBtn from './assets/repeat.svg';
 import visualizerBtn from './assets/chart-bars.svg';
+import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
   (active
-    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
+    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
     : {});
 
 const PlayerControls = ({
@@ -20,7 +21,8 @@ const PlayerControls = ({
   visualize,
   toggleRepeat,
   toggleVisualize,
-  trackLoading
+  trackLoading,
+  currentTime
 }) => (
   <div className="PlayerControls">
     <Responsive minWidth={950}>
@@ -76,6 +78,9 @@ const PlayerControls = ({
           alt="repeat-btn"
         />
       </div>
+      <span className="PlayerControls-time">1:45</span>
+      <SeekBar currentTime={currentTime} />
+      <span className="PlayerControls-time">1:45</span>
     </Responsive>
   </div>
 );

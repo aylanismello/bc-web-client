@@ -10,6 +10,12 @@
   padding-left: 30px;
   width: 78%;
 
+  .PlayerControls-time {
+    margin: 0 1rem 0 1rem;
+    font-size: 1.2rem;
+    color: $bc-gray;
+  }
+
 
   @media (max-width: $phone-width) {
     background: $bc-black;

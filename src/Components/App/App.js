@@ -15,12 +15,14 @@ class App extends Component {
       track => this.setTrack(track),
       play => this.setPlaying(play),
       loading => this.setLoading('track', loading),
-      error => this.setError(error)
+      error => this.setError(error),
+      currentTime => this.setState({ currentTime })
     );
   }
 
   state = Object.freeze({
     track: {},
+    currentTime: 0,
     playerOpen: false,
     playing: false,
     repeat: false,
@@ -141,6 +143,7 @@ class App extends Component {
             <BottomNav
               track={track}
               playing={playing}
+              currentTime={this.state.currentTime}
               trackLoading={this.state.loading.track}
               togglePlay={() => this.togglePlay()}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
