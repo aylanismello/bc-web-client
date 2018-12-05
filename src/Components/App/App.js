@@ -16,13 +16,17 @@ class App extends Component {
       play => this.setPlaying(play),
       loading => this.setLoading('track', loading),
       error => this.setError(error),
-      currentTime => this.setState({ currentTime })
+      currentTime => this.setCurrentTime(currentTime)
     );
   }
 
   state = Object.freeze({
     track: {},
-    currentTime: 0,
+    currentTime: {
+      raw: 0,
+      before: '',
+      after: ''
+    },
     playerOpen: false,
     playing: false,
     repeat: false,
@@ -45,6 +49,10 @@ class App extends Component {
         draggable: false
       });
     }
+  }
+
+  setCurrentTime(currentTime) {
+    this.setState({ currentTime });
   }
 
   setTrack(track) {

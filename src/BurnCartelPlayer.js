@@ -1,7 +1,31 @@
 import SoundCloudAudio from 'soundcloud-audio';
 
 class BurnCartelPlayer {
-  constructor(setActiveTrack, setPlaying, setTrackLoading, setError, setCurrentTime) {
+  // https://stackoverflow.com/questions/3733227/javascript-seconds-to-minutes-and-seconds/37770048
+  static timeFormat(seconds) {
+    const hrs = ~~(seconds / 3600);
+    const mins = ~~((seconds % 3600) / 60);
+    const secs = ~~seconds % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    let ret = '';
+
+    if (hrs > 0) {
+      ret += '' + hrs + ':' + (mins < 10 ? '0' : '');
+    }
+
+    ret += '' + mins + ':' + (secs < 10 ? '0' : '');
+    ret += '' + secs;
+    return ret;
+  }
+
+  constructor(
+    setActiveTrack,
+    setPlaying,
+    setTrackLoading,
+    setError,
+    setCurrentTime
+  ) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     // for debugging purposes
     window.sc = this.sc;
@@ -107,6 +131,19 @@ class BurnCartelPlayer {
     }
   }
 
+  updateAllTimes(currentTime) {
+    const raw = currentTime;
+    const { before, after } = this.rawTimeToStr(raw);
+    this.setCurrentTime({ raw, before, after });
+  }
+
+  rawTimeToStr(rawTime) {
+    const { duration } = this.sc.audio;
+    const before = BurnCartelPlayer.timeFormat(Math.floor(rawTime));
+    const after = BurnCartelPlayer.timeFormat(Math.ceil(duration));
+    return { before, after };
+  }
+
   switchTrack(track) {
     this.setTrackLoading(true);
     const { stream_url } = track;
@@ -124,10 +161,10 @@ class BurnCartelPlayer {
 
     // developer.mozilla.org/en-US/docs/Web/Guide/Events/Media_events
     this.setPlaying(true);
-    this.setCurrentTime(0);
+    this.updateAllTimes(0);
 
     // when shit takes forever
-    // this will keep going off   
+    // this will keep going off
     this.sc.on('stalled', () => {
       this.setTrackLoading(true);
     });
@@ -136,7 +173,7 @@ class BurnCartelPlayer {
       this.setTrackLoading(false);
     });
 
-    this.sc.on('error', (e) => {
+    this.sc.on('error', () => {
       this.setError('Problem loading track, sorry!');
     });
 
@@ -144,8 +181,8 @@ class BurnCartelPlayer {
       this.setTrackLoading(false);
     });
 
-    this.sc.on('timeupdate', (e) => {
-      this.setCurrentTime(e.target.currentTime);
+    this.sc.on('timeupdate', e => {
+     this.updateAllTimes(e.target.currentTime);
     });
 
     this.setActiveTrack(track);

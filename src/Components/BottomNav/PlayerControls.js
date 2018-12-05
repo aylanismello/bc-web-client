@@ -78,9 +78,9 @@ const PlayerControls = ({
           alt="repeat-btn"
         />
       </div>
-      <span className="PlayerControls-time">1:45</span>
-      <SeekBar currentTime={currentTime} />
-      <span className="PlayerControls-time">1:45</span>
+      <span className="PlayerControls-time">{currentTime.before}</span>
+      <SeekBar currentTime={currentTime.raw} />
+      <span className="PlayerControls-time">{currentTime.after}</span>
     </Responsive>
   </div>
 );

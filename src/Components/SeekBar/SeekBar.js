@@ -20,7 +20,7 @@ class SeekBar extends React.Component {
     return (
       <div className="SeekBar">
         <div className="player-controls scrubber">
-          <progress id="seek-obj" value={value} max="1" />
+          <progress id="seek-obj" value={value || 0} max="1" />
         </div>
       </div>
     );
