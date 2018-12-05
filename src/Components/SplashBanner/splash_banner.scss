@@ -36,8 +36,6 @@
 
     @media (max-width: $phone-width) {
       top: 45px;
-
-   
     }
 
     .SplashBanner-message-container {
@@ -64,14 +62,14 @@
         justify-content: initial;
         margin-top: 4rem;
         height: 80px;
-        
+
         .SplashBanner-message-header {
           font-size: 2rem;
         }
 
         .SplashBanner-message-subheader {
           font-size: 1rem;
-          letter-spacing: 2.0px;
+          letter-spacing: 2px;
           margin-top: 1rem;
         }
       }
@@ -95,6 +93,10 @@
           width: 300px;
           background: #242a3b;
           padding-left: 20px;
+
+          @media (max-width: $tiny-width) {
+            width: 250px;
+          }
         }
 
         .SplashBanner-arrow-container {
