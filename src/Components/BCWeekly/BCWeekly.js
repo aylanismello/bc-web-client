@@ -60,6 +60,9 @@ class BCWeekly extends React.Component {
           playlists
         );
         this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
+      })
+      .catch(error => {
+        this.props.setError(error.message);
       });
   }
 

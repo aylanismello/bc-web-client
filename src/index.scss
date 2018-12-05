@@ -31,3 +31,10 @@ input {
     outline-width: 0px;
   }
 }
+
+// OVERRIDE LIBRARY
+.Toastify__toast-body {
+  @include bc-text(600);
+  color: $bc-gray-2;
+  font-size: 1.2rem;
+}

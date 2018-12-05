@@ -140,6 +140,7 @@ class SplashBanner extends React.Component {
           />
         );
       case SUBMIT_STATES.FAIL:
+        debugger;
         const header =
           this.state.errorMessage || "Something isn't working as expected.";
         return (

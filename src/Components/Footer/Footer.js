@@ -4,10 +4,7 @@ import './Footer.scss';
 const Footer = ({ loadingPlaylists }) => (
   <footer className={`Footer ${loadingPlaylists ? 'position-absolute' : ''}`}>
     <span className="Footer-left">
-      Made on Earth
-      <span role="img" aria-label="World">
-        🌏
-      </span>
+      Made on Earth <span role="img" aria-label="World"> 🌏 </span>
       (for now)
     </span>
     <span className="Footer-right">

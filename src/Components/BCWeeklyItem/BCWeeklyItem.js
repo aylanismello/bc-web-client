@@ -6,7 +6,12 @@ import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCWeeklyItem.scss';
 
 const Placeholder = () => (
-  <div style={{ height: 200, width: 200, background: 'white' }}>YO</div>
+  <div
+    className="BCWeeklyItem-cover-image"
+    style={{
+      background: '#262632'
+    }}
+  />
 );
 
 const BCWeeklyItem = ({
@@ -37,14 +42,12 @@ const BCWeeklyItem = ({
       id={idx}
     >
       <div className="BCWeeklyItem-cover">
-        {/* TODO: somehow make defalt set to whatever */}
+        {/* TODO: somehow make default set to whatever */}
         <LazyLoad
           width={width}
           height={width}
-          offset={[-200, 0]}
-          debounce={500}
           once
-          placeholder={Placeholder}
+          placeholder={<Placeholder width={width} />}
         >
           <Image
             className={`BCWeeklyItem-cover-image ${style1}`}

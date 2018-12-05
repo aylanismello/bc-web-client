@@ -13,10 +13,11 @@
 }
 
 .BCWeeklyItem {
-  @media (max-width: $phone-width) {
-    width: 100%;
-    height: auto;
-  }
+  // @media (max-width: $phone-width) {
+    // width: 100%;
+    // height: auto;
+    // border: 1px solid red;
+  // }
 
   .BCWeeklyItem-cover {
     position: relative;

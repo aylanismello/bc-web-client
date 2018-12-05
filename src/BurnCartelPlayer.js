@@ -135,8 +135,6 @@ class BurnCartelPlayer {
     });
 
     this.sc.on('error', (e) => {
-      // debugger;
-      // console.log(`hit error ${e.msg}`);
       this.setError('Problem loading track, sorry!');
     });
 

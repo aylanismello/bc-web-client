@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
@@ -28,8 +29,21 @@ class App extends Component {
       playlists: true,
       track: true
     },
-    error: undefined
+    errors: []
   });
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.state.errors.length !== nextState.errors.length) {
+      toast(nextState.errors.reverse()[0], {
+        position: 'top-right',
+        autoClose: 10000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false
+      });
+    }
+  }
 
   setTrack(track) {
     this.setState({ track });
@@ -37,7 +51,9 @@ class App extends Component {
 
   setError(error) {
     // implement react toaster or a notification system to handle this
-    this.setState({ error });
+    const { errors } = this.state;
+    const newErrors = [error, ...errors];
+    this.setState({ errors: newErrors });
   }
 
   setPlaying(playing) {
@@ -87,6 +103,17 @@ class App extends Component {
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
           <TopNav />
           <Route exact path="/" render={() => <Redirect push to="/weekly" />} />
           <Route
@@ -96,6 +123,7 @@ class App extends Component {
               <BCWeekly
                 track={track}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
+                setError={error => this.setError(error)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}
