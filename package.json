@@ -22,7 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:heroku": "REACT_APP_BASE_URL=http://the-bc-api.herokuapp.com react-scripts start",
-    "build": "REACT_APP_BASE_URL=http://the-bc-api.herokuapp.com react-scripts build",
+    "build": "REACT_APP_BASE_URL=https://the-bc-api.herokuapp.com react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
