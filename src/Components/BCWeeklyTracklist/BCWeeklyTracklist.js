@@ -22,10 +22,17 @@ class BCWeeklyTracklist extends React.Component {
 
   render() {
     const {
- tracks, playTrack, playlist, playing, trackLoading 
-} = this.props;
+      tracks,
+      playTrack,
+      playlist,
+      playing,
+      trackLoading,
+      spotlight
+    } = this.props;
     return (
-      <div className="BCWeeklyTracklist">
+      <div
+        className={`BCWeeklyTracklist ${spotlight && 'spotlight'}` }
+      >
         {tracks.map(track => (
           <div
             key={track.id}
@@ -34,7 +41,9 @@ class BCWeeklyTracklist extends React.Component {
             onClick={() => playTrack(track, playlist)}
           >
             <div className="BCWeeklyTracklist-playing-eq">
-              {!trackLoading && playing && this.isActive(track) && <EQIcon width={24} />}
+              {!trackLoading && playing && this.isActive(track) && (
+                <EQIcon width={24} />
+              )}
             </div>
             <div className="BCWeeklyTracklist-title BCWeeklyTracklist-track-info">
               {track.name}
