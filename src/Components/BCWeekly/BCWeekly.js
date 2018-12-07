@@ -52,13 +52,16 @@ class BCWeekly extends React.Component {
       .then(({ data }) => {
         const { playlists, week_num } = data.data;
 
-        this.setState({ playlists });
         this.props.setLoading('playlists', false);
-
         this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
           `weekly-${week_num}`,
           playlists
         );
+
+        this.setState({ playlists }, () => {
+          document.getElementById(this.onLoadPlaylistIdx).scrollIntoView();
+        });
+
         this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
       })
       .catch(error => {
@@ -119,7 +122,8 @@ class BCWeekly extends React.Component {
         const newPlaylist = {
           ...this.state.playlists[playlistIdx],
           // hack to only take in 10 since we don't have the real content on the DB yet
-          tracks: tracks.slice(0, 10)
+          // tracks: tracks.slice(0, 10)
+          tracks
         };
 
         if (playOnLoad) {
@@ -133,7 +137,13 @@ class BCWeekly extends React.Component {
             newPlaylist,
             ...oldPlaylists.slice(playlistIdx + 1, oldPlaylists.length)
           ]
+        }, () => {
+          document.getElementById(`${playlistIdx}`).scrollIntoView();
         });
+
+      })
+      .catch(error => {
+        this.props.setError(error.message);
       });
   }
 
