@@ -8,6 +8,7 @@ const BCSpotlightItem = ({
 }) => (
   <div className="BCSpotlightItem">
     <div className="BCSplotlightItem-cover">
+    {playlist && 
       <Image
         className="BCSplotlightItem-cover-image"
         alt="Cover Art"
@@ -17,8 +18,9 @@ const BCSpotlightItem = ({
         cloudName="burncartel"
         publicId={playlist.artwork_url}
       />
+    }
     </div>
-    {playlist.tracks && (
+    {playlist && playlist.tracks && (
       <BCWeeklyTracklist
         tracks={playlist.tracks.slice(1)}
         spotlight
