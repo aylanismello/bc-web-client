@@ -3,6 +3,7 @@ import { Image } from 'cloudinary-react';
 import Responsive from 'react-responsive';
 import LazyLoad from 'react-lazyload';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
+import ShareButton from '../ShareButton';
 import './BCWeeklyItem.scss';
 
 const Placeholder = () => (
@@ -20,7 +21,8 @@ const BCWeeklyItem = ({
   setAsActiveItem,
   idx,
   playTrack,
-  activeTrack
+  activeTrack,
+  handleModalOpen
 }) => {
   const { artwork_url, week_num } = playlist;
   // const style = active ? { opacity: 0.1 } : {};
@@ -36,8 +38,10 @@ const BCWeeklyItem = ({
   return (
     <div
       className="BCWeeklyItem"
-      onClick={() => {
-        setAsActiveItem(week_num);
+      onClick={(e) => {
+        if (!e.target.className.includes('ShareButton')) {
+          setAsActiveItem(week_num);
+        }
       }}
       id={idx}
     >
@@ -62,6 +66,7 @@ const BCWeeklyItem = ({
           <h4> BURN CARTEL WEEKLY </h4>
           <div className="BCWeeklyItem-line" />
           <h4> WEEK {week_num} </h4>
+          <ShareButton handleModalOpen={handleModalOpen} />
         </div>
       </div>
       <Responsive maxWidth={950}>

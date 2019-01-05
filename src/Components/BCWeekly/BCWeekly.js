@@ -198,6 +198,7 @@ class BCWeekly extends React.Component {
                 />
               </Responsive>
               <BCWeeklyList
+                handleModalOpen={this.props.handleModalOpen}
                 playlists={this.state.playlists}
                 playing={this.props.playing}
                 activeTrack={track}

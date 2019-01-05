@@ -1,6 +1,6 @@
-import React from "react";
-import BCWeeklyItem from "../BCWeeklyItem";
-import "./BCWeeklyList.scss";
+import React from 'react';
+import BCWeeklyItem from '../BCWeeklyItem';
+import './BCWeeklyList.scss';
 
 const BCWeeklyList = ({
   playlists,
@@ -8,13 +8,15 @@ const BCWeeklyList = ({
   updateActivePlaylist,
   playTrack,
   activeTrack,
-  playing
+  playing,
+  handleModalOpen
 }) => {
   return (
     <div className="BCWeeklyList">
       <div className="BCWeeklyList-grid">
         {playlists.map((playlist, idx) => (
           <BCWeeklyItem
+            handleModalOpen={handleModalOpen}
             activeTrack={activeTrack}
             playlist={playlist}
             playTrack={playTrack}

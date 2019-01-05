@@ -131,6 +131,7 @@ class App extends Component {
             path="/:bc_weekly_num"
             render={() => (
               <BCWeekly
+                handleModalOpen={() => alert('god is fake')}
                 track={track}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
