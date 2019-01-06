@@ -10,7 +10,7 @@ const BottomNav = ({
       <div className="BottomNav-track-info">
         <div className="BottomNav-track-info-artwork-container">
           <img
-            src={track.artwork_url}
+            src={track.artwork_url || track.artist_artwork_url}
             className="Bottom-track-info-artwork"
             alt="track-artwork"
           />

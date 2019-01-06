@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
+import BCModal from '../BCModal';
 import TopNav from '../TopNav';
 import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
@@ -31,6 +32,8 @@ class App extends Component {
     playing: false,
     repeat: false,
     visualize: false,
+    modalOpen: false,
+    copiedEpisodeNum: null,
     loading: {
       playlists: true,
       track: true
@@ -113,6 +116,8 @@ class App extends Component {
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
+          <BCModal modalOpen={this.state.modalOpen} copiedEpisodeNum={this.state.copiedEpisodeNum} closeModal={() => this.setState({ modalOpen: false })} />
+
           <ToastContainer
             position="top-right"
             autoClose={5000}
@@ -131,7 +136,12 @@ class App extends Component {
             path="/:bc_weekly_num"
             render={() => (
               <BCWeekly
-                handleModalOpen={() => alert('god is fake')}
+                handleModalOpen={episodeNum =>
+                  this.setState({
+                    modalOpen: true,
+                    copiedEpisodeNum: episodeNum
+                  })
+                }
                 track={track}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}

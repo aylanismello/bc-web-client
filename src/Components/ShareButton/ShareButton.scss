@@ -6,6 +6,11 @@
   justify-content: center;
   flex-direction: column;
   font-size: 1rem;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 160%;
+  
 
   &:hover {
     .ShareButton-text {

@@ -66,7 +66,7 @@ const BCWeeklyItem = ({
           <h4> BURN CARTEL WEEKLY </h4>
           <div className="BCWeeklyItem-line" />
           <h4> WEEK {week_num} </h4>
-          <ShareButton handleModalOpen={handleModalOpen} />
+          <ShareButton handleModalOpen={() => handleModalOpen(week_num)} />
         </div>
       </div>
       <Responsive maxWidth={950}>
