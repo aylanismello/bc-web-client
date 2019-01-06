@@ -44,7 +44,7 @@ const Form = ({
 );
 
 const FormSubmitMessage = ({
- header, subheader, success, nextAction 
+ header, subheader, success, nextAction, isFromEmail
 }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
@@ -75,7 +75,7 @@ class SplashBanner extends React.Component {
   });
 
   componentDidMount() {
-    if (window.localStorage.getItem('dontShowEmailForm')) {
+    if (window.localStorage.getItem('dontShowEmailForm') || this.props.isFromEmail) {
       this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED });
     } else {
       this.setState({ submitStatus: SUBMIT_STATES.UNSUBMITTED });
@@ -140,7 +140,6 @@ class SplashBanner extends React.Component {
           />
         );
       case SUBMIT_STATES.FAIL:
-        debugger;
         const header =
           this.state.errorMessage || "Something isn't working as expected.";
         return (

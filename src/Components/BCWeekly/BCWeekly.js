@@ -9,6 +9,7 @@ import Wrapper from '../Wrapper';
 import BCSpotlightItem from '../BCSpotlightItem';
 import { baseUrl } from '../../config';
 import './BCWeekly.scss';
+const queryString = require("query-string");
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -19,7 +20,7 @@ class BCWeekly extends React.Component {
       document.getElementById(`${playlistIdx}`).scrollIntoView();
     }
   }
-  
+
   static playlistAsHash(arrPlaylists) {
     const playlists = {};
     arrPlaylists.forEach((playlist, idx) => {
@@ -46,11 +47,18 @@ class BCWeekly extends React.Component {
   }
 
   state = Object.freeze({
-    playlists: []
+    playlists: [],
+    isFromEmail: false
   });
 
   componentWillMount() {
     const { bc_weekly_num } = this.props.match.params;
+    const queryParams = queryString.parse(this.props.location.search);
+
+    if (queryParams.from_email) {
+      this.setState({ isFromEmail: true });
+    }
+
     const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
     // we need some error handling here
 
@@ -177,6 +185,7 @@ class BCWeekly extends React.Component {
     return (
       <div className="BCWeekly">
         <SplashBanner
+          isFromEmail={this.state.isFromEmail}
           loading={this.props.loading}
           playing={this.props.playing}
           playerOpen={this.props.playerOpen}

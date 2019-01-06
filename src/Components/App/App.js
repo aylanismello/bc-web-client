@@ -116,7 +116,11 @@ class App extends Component {
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-          <BCModal modalOpen={this.state.modalOpen} copiedEpisodeNum={this.state.copiedEpisodeNum} closeModal={() => this.setState({ modalOpen: false })} />
+          <BCModal 
+            modalOpen={this.state.modalOpen} 
+            copiedEpisodeNum={this.state.copiedEpisodeNum} 
+            closeModal={() => this.setState({ modalOpen: false })} 
+          />
 
           <ToastContainer
             position="top-right"
