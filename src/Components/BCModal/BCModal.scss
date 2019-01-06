@@ -63,9 +63,9 @@
         .BCModal-url {
           font-size: 1.6rem;
           color: $bc-gray;
-          height: inherit;
           width: 460px;
-          border-radius: 2px;
+          border-radius: 2px 0px 0px 2px;
+
           border: none;
           padding-left: 20px;
           &:hover {
@@ -81,7 +81,7 @@
           background: $bc-pink;
           width: 120px;
           height: inherit;
-          border-radius: 2px;
+          border-radius: 0px 2px 2px 0px;
           letter-spacing: 3px;
           color: $bc-white;
           font-size: 1.2rem;
