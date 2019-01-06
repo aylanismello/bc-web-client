@@ -163,31 +163,32 @@ class BurnCartelPlayer {
     this.setPlaying(true);
     this.updateAllTimes(0);
 
-    // when shit takes forever
-    // this will keep going off
     this.sc.on('stalled', () => {
       this.setTrackLoading(true);
-    });
-
-    this.sc.on('playing', () => {
-      this.setTrackLoading(false);
     });
 
     this.sc.on('error', () => {
       this.setError('Problem loading track, sorry!');
     });
 
-    this.sc.on('loadeddata', () => {
-      this.setTrackLoading(false);
+    this.sc.on('timeupdate', e => {
+      const { currentTime } = e.target;
+      if (currentTime) this.setTrackLoading(false);
+
+      this.updateAllTimes(currentTime);
     });
 
-    this.sc.on('timeupdate', e => {
-     this.updateAllTimes(e.target.currentTime);
-    });
+    // this.sc.on('playing', () => {
+    //   this.setTrackLoading(false);
+    // });
+    // this.sc.on('loadeddata', () => {
+    //   this.setTrackLoading(false);
+    // });
 
     this.setActiveTrack(track);
-    this.sc.play({
-      streamUrl: stream_url
+
+    this.sc.play({ streamUrl: stream_url }).catch(err => {
+      console.log(`Error playing track at ${stream_url}: ${err}`);
     });
   }
 }
