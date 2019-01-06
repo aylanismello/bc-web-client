@@ -129,6 +129,9 @@ class BCWeekly extends React.Component {
   }
 
   fetchPlaylistTracks(playlistIdx, playlists, playOnLoad) {
+
+    this.props.setLoading('playlistTracks', true);
+    
     axios
       .get(`${baseUrl}/playlists/${playlists[playlistIdx].id}/tracks`)
       .then(({ data }) => {
@@ -154,11 +157,13 @@ class BCWeekly extends React.Component {
           ]
         }, () => {
           BCWeekly.scrollToPlaylist(playlistIdx);
+          this.props.setLoading('playlistTracks', false);
         });
-
+        
       })
       .catch(error => {
         this.props.setError(error.message);
+        this.props.setLoading('playlistTracks', false);
       });
   }
 
@@ -219,6 +224,7 @@ class BCWeekly extends React.Component {
                 playing={this.props.playing}
                 activeTrack={track}
                 activePlaylistIdx={this.getActivePlaylistIdx()}
+                loadingPlaylistTracks={this.props.loading.playlistTracks}
                 playTrack={(track, playlist) => {
                   this.playTrack(track, playlist);
                 }}

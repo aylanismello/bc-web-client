@@ -36,7 +36,9 @@ class App extends Component {
     copiedEpisodeNum: null,
     loading: {
       playlists: true,
-      track: true
+      track: true,
+      // set to false initally because the API sends you back your first tracks in the /playlists endpoint!
+      playlistTracks: false
     },
     errors: []
   });
