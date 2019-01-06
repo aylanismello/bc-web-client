@@ -15,10 +15,10 @@ const queryString = require("query-string");
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
 class BCWeekly extends React.Component {
   static scrollToPlaylist(playlistIdx) {
-    const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    if (width <= 950) {
-      document.getElementById(`${playlistIdx}`).scrollIntoView();
-    }
+    // const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    // if (width <= 950) {
+    //   document.getElementById(`${playlistIdx}`).scrollIntoView();
+    // }
   }
 
   static playlistAsHash(arrPlaylists) {
@@ -75,7 +75,6 @@ class BCWeekly extends React.Component {
 
         this.setState({ playlists }, () => {
           BCWeekly.scrollToPlaylist(this.onLoadPlaylistIdx);
-          // document.getElementById(this.onLoadPlaylistIdx).scrollIntoView();
         });
 
         this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
@@ -155,7 +154,6 @@ class BCWeekly extends React.Component {
           ]
         }, () => {
           BCWeekly.scrollToPlaylist(playlistIdx);
-          // document.getElementById(`${playlistIdx}`).scrollIntoView();
         });
 
       })

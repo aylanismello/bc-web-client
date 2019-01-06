@@ -38,10 +38,12 @@ const BCWeeklyItem = ({
   return (
     <div
       className="BCWeeklyItem"
-      onClick={(e) => {
-        if (!e.target.className.includes('ShareButton')) {
-          setAsActiveItem(week_num);
-        }
+      onClick={e => {
+        if (
+          !e.target.className.includes('ShareButton') &&
+          !e.target.className.includes('title')
+        )
+          {setAsActiveItem(week_num);}
       }}
       id={idx}
     >
