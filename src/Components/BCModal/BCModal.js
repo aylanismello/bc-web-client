@@ -1,11 +1,11 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
-import closeIcon from './close-x.svg';
+import closeIcon from './i-remove.svg';
 import './BCModal.scss';
 
 let copiedUrl;
 
-const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal }) => {
+const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal, didCopy, setDidCopy }) => {
   if (!modalOpen) {
     return null;
   }
@@ -35,7 +35,7 @@ const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal }) => {
           <div className="BCModal-HowTo">Copy this link to share</div>
           <div className="BCModal-fake-form">
             <input type="text" value={url.split('?')[0]} className="BCModal-url" />
-            <button className="BCModal-button"> COPIED! </button>
+            <button className="BCModal-button" onClick={setDidCopy}> {didCopy ? 'COPIED!' : 'COPY'}</button>
           </div>
         </div>
       </div>
