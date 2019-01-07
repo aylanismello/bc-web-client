@@ -55,7 +55,7 @@ class BCWeekly extends React.Component {
     const { bc_weekly_num } = this.props.match.params;
     const queryParams = queryString.parse(this.props.location.search);
 
-    if (queryParams.from_email) {
+    if (queryParams.from && queryParams.from === 'email') {
       this.setState({ isFromEmail: true });
     }
 
