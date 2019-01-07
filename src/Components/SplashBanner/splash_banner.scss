@@ -82,6 +82,24 @@
     }
 
     .SplashBanner-form-container {
+      .SplashBanner-close-message-container {
+        display: flex;
+        justify-content: center;
+        padding-top: 1rem;
+
+        .SplashBanner-close-message {
+          font-size: 1.1rem;
+          color: $bc-gray;
+          text-align: center;
+          text-decoration: underline;
+          opacity: 0.8;
+          &:hover {
+            opacity: 1.0;
+            cursor: pointer;
+          }
+        }
+      }
+
       .SplashBanner-email-container {
         position: relative;
 

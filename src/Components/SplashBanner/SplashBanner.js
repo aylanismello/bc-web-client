@@ -6,9 +6,7 @@ import EQPlayButton from '../EQPlayButton';
 import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
-const Form = ({
- handleSubmit, email, updateEmail, setStyle, style
-}) => (
+const Form = ({ handleSubmit, email, updateEmail, setStyle, style, hideEmailForm }) => (
   <div className="SplashBanner-form-container">
     <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
       <div className="SplashBanner-email-container">
@@ -19,7 +17,7 @@ const Form = ({
           className="SplashBanner-email"
           onChange={updateEmail}
           onFocus={() => {
-            setStyle({ background: '#e54ea3' });
+            setStyle({ background: "#e54ea3" });
           }}
           onBlur={() => setStyle({})}
         />
@@ -27,7 +25,7 @@ const Form = ({
           <img
             src={arrow}
             className="SplashBanner-arrow"
-            onFocus={() => this.setState({ style: { background: 'white' } })}
+            onFocus={() => this.setState({ style: { background: "white" } })}
             onBlur={() => this.setState({})}
             alt="Submit Email Arrow"
             onClick={() => {
@@ -40,6 +38,9 @@ const Form = ({
         </div>
       </div>
     </form>
+    <div className="SplashBanner-close-message-container" onClick={hideEmailForm}>
+      <span className="SplashBanner-close-message"> I'm good, thanks. </span>
+    </div>
   </div>
 );
 
@@ -80,6 +81,11 @@ class SplashBanner extends React.Component {
     } else {
       this.setState({ submitStatus: SUBMIT_STATES.UNSUBMITTED });
     }
+  }
+
+  hideEmailForm() {
+    window.localStorage.setItem('dontShowEmailForm', true);
+    this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED });
   }
 
   handleSubmit() {
@@ -137,6 +143,7 @@ class SplashBanner extends React.Component {
             updateEmail={e => this.updateEmail(e)}
             setStyle={style => this.setState({ style })}
             style={this.state.style}
+            hideEmailForm={() => this.hideEmailForm()}
           />
         );
       case SUBMIT_STATES.FAIL:
