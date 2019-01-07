@@ -1,15 +1,31 @@
 import React from 'react';
 import share from './share.svg';
+import share_active from './share-pink.svg';
 import './ShareButton.scss';
 
-const ShareButton = ({ handleModalOpen }) => (
-  <div
-    className="ShareButton"
-    onClick={handleModalOpen}
-  >
-    <img className="ShareButton-icon" src={share} />
-    <span className="ShareButton-text"> Share playlist </span>
-  </div>
-);
+class ShareButton extends React.Component {
+  state = {
+    hover: false
+  };
+
+  render() {
+    const { handleModalOpen } = this.props;
+
+    return (
+      <div
+        className="ShareButton"
+        onClick={handleModalOpen}
+        onMouseEnter={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
+      >
+        <img
+          className="ShareButton-icon"
+          src={this.state.hover ? share_active : share}
+        />
+        <span className="ShareButton-text"> Share playlist </span>
+      </div>
+    );
+  }
+}
 
 export default ShareButton;

@@ -9,7 +9,8 @@ import Wrapper from '../Wrapper';
 import BCSpotlightItem from '../BCSpotlightItem';
 import { baseUrl } from '../../config';
 import './BCWeekly.scss';
-const queryString = require("query-string");
+
+const queryString = require('query-string');
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -129,9 +130,8 @@ class BCWeekly extends React.Component {
   }
 
   fetchcollectionTracks(collectionIdx, collections, playOnLoad) {
-
     this.props.setLoading('collectionTracks', true);
-    
+
     axios
       .get(`${baseUrl}/collections/${collections[collectionIdx].id}/tracks`)
       .then(({ data }) => {
@@ -159,7 +159,6 @@ class BCWeekly extends React.Component {
           BCWeekly.scrollTocollection(collectionIdx);
           this.props.setLoading('collectionTracks', false);
         });
-        
       })
       .catch(error => {
         this.props.setError(error.message);
