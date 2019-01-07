@@ -29,12 +29,9 @@ class BCWeeklyTracklist extends React.Component {
       trackLoading,
       spotlight
     } = this.props;
-    // className={`BCWeeklyTracklist ${spotlight && 'spotlight'}` }
-    // TODO: we need to have spotlight AND another class for specifying how to view all tracks on mobile (maybe wtih accordian
-    // https://codepen.io/abergin/pen/ihlDf
     return (
       <div
-        className={`BCWeeklyTracklist spotlight`}
+      className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}
       >
         {tracks.map(track => (
           <div
