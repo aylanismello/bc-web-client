@@ -3,29 +3,29 @@ import BCWeeklyItem from '../BCWeeklyItem';
 import './BCWeeklyList.scss';
 
 const BCWeeklyList = ({
-  playlists,
-  activePlaylistIdx,
-  updateActivePlaylist,
+  collections,
+  activecollectionIdx,
+  updateActivecollection,
   playTrack,
   activeTrack,
   playing,
   handleModalOpen,
-  loadingPlaylistTracks
+  loadingcollectionTracks
 }) => {
   return (
     <div className="BCWeeklyList">
       <div className="BCWeeklyList-grid">
-        {playlists.map((playlist, idx) => (
+        {collections.map((collection, idx) => (
           <BCWeeklyItem
             handleModalOpen={handleModalOpen}
             activeTrack={activeTrack}
-            playlist={playlist}
+            collection={collection}
             playTrack={playTrack}
-            active={activePlaylistIdx === idx}
+            active={activecollectionIdx === idx}
             playing={playing}
             key={idx}
             idx={idx}
-            setAsActiveItem={updateActivePlaylist}
+            setAsActiveItem={updateActivecollection}
           />
         ))}
       </div>

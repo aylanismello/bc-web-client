@@ -24,7 +24,7 @@ class BCWeeklyTracklist extends React.Component {
     const {
       tracks,
       playTrack,
-      playlist,
+      collection,
       playing,
       trackLoading,
       spotlight
@@ -41,7 +41,7 @@ class BCWeeklyTracklist extends React.Component {
             key={track.id}
             style={this.getStyle(track)}
             className="BCWeeklyTracklist-item"
-            onClick={() => playTrack(track, playlist)}
+            onClick={() => playTrack(track, collection)}
           >
             <div className="BCWeeklyTracklist-playing-eq">
               {!trackLoading && playing && this.isActive(track) && (

@@ -4,11 +4,11 @@ import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import './BCSpotlightItem.scss';
 
 const BCSpotlightItem = ({
- width, playlist, playTrack, track, playing, trackLoading
+ width, collection, playTrack, track, playing, trackLoading
 }) => (
   <div className="BCSpotlightItem">
     <div className="BCSplotlightItem-cover">
-    {playlist && 
+    {collection && 
       <Image
         className="BCSplotlightItem-cover-image"
         alt="Cover Art"
@@ -16,19 +16,19 @@ const BCSpotlightItem = ({
         crop="fit"
         quality="70"
         cloudName="burncartel"
-        publicId={playlist.artwork_url}
+        publicId={collection.artwork_url}
       />
     }
     </div>
-    {playlist && playlist.tracks && (
+    {collection && collection.tracks && (
       <BCWeeklyTracklist
-        tracks={playlist.tracks.slice(1)}
+        tracks={collection.tracks.slice(1)}
         spotlight
         activeTrack={track}
         playing={playing}
         playTrack={playTrack}
         trackLoading={trackLoading}
-        playlist={playlist}
+        collection={collection}
       />
     )}
   </div>

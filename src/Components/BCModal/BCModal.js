@@ -9,7 +9,7 @@ const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal }) => {
   if (!modalOpen) {
     return null;
   }
-  const url = `www.burncartel.com/#/weekly-${copiedEpisodeNum}`;
+  const url = `www.burncartel.com/#/weekly-${copiedEpisodeNum}?from=link`;
   if (copiedUrl !== url) {
     copiedUrl = url;
     copy(url);
@@ -29,12 +29,12 @@ const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal }) => {
           onClick={closeModal}
         />
         <div className="BCModal-content-top">
-          <span className="BCModal-MainText">Share Playlist</span>
+          <span className="BCModal-MainText">Share playlist</span>
         </div>
         <div className="BCModal-content-bottom">
           <div className="BCModal-HowTo">Copy this link to share</div>
           <div className="BCModal-fake-form">
-            <input type="text" value={url} className="BCModal-url" />
+            <input type="text" value={url.split('?')[0]} className="BCModal-url" />
             <button className="BCModal-button"> COPIED! </button>
           </div>
         </div>

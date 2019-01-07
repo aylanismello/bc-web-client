@@ -35,10 +35,10 @@ class App extends Component {
     modalOpen: false,
     copiedEpisodeNum: null,
     loading: {
-      playlists: true,
+      collections: true,
       track: true,
-      // set to false initally because the API sends you back your first tracks in the /playlists endpoint!
-      playlistTracks: false
+      // set to false initally because the API sends you back your first tracks in the /collections endpoint!
+      collectionTracks: false
     },
     errors: []
   });
@@ -163,7 +163,7 @@ class App extends Component {
               />
             )}
           />
-          <Footer loadingPlaylists={this.state.loading.playlists} />
+          <Footer loadingcollections={this.state.loading.collections} />
           {playerOpen && (
             <BottomNav
               track={track}

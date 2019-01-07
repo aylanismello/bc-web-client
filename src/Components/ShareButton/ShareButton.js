@@ -8,7 +8,7 @@ const ShareButton = ({ handleModalOpen }) => (
     onClick={handleModalOpen}
   >
     <img className="ShareButton-icon" src={share} />
-    <span className="ShareButton-text"> Share Playlist </span>
+    <span className="ShareButton-text"> Share playlist </span>
   </div>
 );
 

@@ -16,7 +16,7 @@ const Placeholder = () => (
 );
 
 const BCWeeklyItem = ({
-  playlist,
+  collection,
   active,
   setAsActiveItem,
   idx,
@@ -24,7 +24,7 @@ const BCWeeklyItem = ({
   activeTrack,
   handleModalOpen
 }) => {
-  const { artwork_url, week_num } = playlist;
+  const { artwork_url, collection_num } = collection;
   // const style = active ? { opacity: 0.1 } : {};
   const style1 = active ? 'opaque' : '';
   // probs set this dynamically, responsively
@@ -43,7 +43,7 @@ const BCWeeklyItem = ({
           !e.target.className.includes('ShareButton') &&
           !e.target.className.includes('title')
         )
-          {setAsActiveItem(week_num);}
+          {setAsActiveItem(collection_num);}
       }}
       id={idx}
     >
@@ -67,18 +67,18 @@ const BCWeeklyItem = ({
         <div className={`BCWeeklyItem-cover-text ${style2}`}>
           <h4> BURN CARTEL WEEKLY </h4>
           <div className="BCWeeklyItem-line" />
-          <h4> WEEK {week_num} </h4>
-          <ShareButton handleModalOpen={() => handleModalOpen(week_num)} />
+          <h4> WEEK {collection_num} </h4>
+          <ShareButton handleModalOpen={() => handleModalOpen(collection_num)} />
         </div>
       </div>
       <Responsive maxWidth={950}>
-        {active && playlist.tracks && (
+        {active && collection.tracks && (
           <BCWeeklyTracklist
             idx={idx}
-            tracks={playlist.tracks.slice(1)}
+            tracks={collection.tracks.slice(1)}
             activeTrack={activeTrack}
             playTrack={playTrack}
-            playlist={playlist}
+            collection={collection}
           />
         )}
       </Responsive>

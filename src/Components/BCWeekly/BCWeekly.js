@@ -14,40 +14,40 @@ const queryString = require("query-string");
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
 class BCWeekly extends React.Component {
-  static scrollToPlaylist(playlistIdx) {
+  static scrollTocollection(collectionIdx) {
     // const width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     // if (width <= 950) {
-    //   document.getElementById(`${playlistIdx}`).scrollIntoView();
+    //   document.getElementById(`${collectionIdx}`).scrollIntoView();
     // }
   }
 
-  static playlistAsHash(arrPlaylists) {
-    const playlists = {};
-    arrPlaylists.forEach((playlist, idx) => {
-      playlists[playlist.week_num] = { ...playlist, idx };
+  static collectionAsHash(arrcollections) {
+    const collections = {};
+    arrcollections.forEach((collection, idx) => {
+      collections[collection.collection_num] = { ...collection, idx };
     });
-    return playlists;
+    return collections;
   }
 
   static isValidUrlParam(param) {
     return /^weekly-[0-9]+$/.test(param);
   }
 
-  static weekHasBeenReleased(playlists, bc_weekly_num) {
+  static weekHasBeenReleased(collections, bc_weekly_num) {
     const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
-    return BCWeekly.playlistAsHash(playlists)[weekNum];
+    return BCWeekly.collectionAsHash(collections)[weekNum];
   }
 
   constructor(props) {
     super(props);
-    this.props.burnCartelPlayer.switchToPlaylist = (playlistIdx, playlists) =>
-      this.autoSwitchPlaylists(playlistIdx, playlists);
+    this.props.burnCartelPlayer.switchTocollection = (collectionIdx, collections) =>
+      this.autoSwitchcollections(collectionIdx, collections);
 
-    this.onLoadPlaylistPlayed = false;
+    this.onLoadcollectionPlayed = false;
   }
 
   state = Object.freeze({
-    playlists: [],
+    collections: [],
     isFromEmail: false
   });
 
@@ -63,21 +63,21 @@ class BCWeekly extends React.Component {
     // we need some error handling here
 
     axios
-      .get(`${baseUrl}/playlists`, { params: { week_num: weekNum } })
+      .get(`${baseUrl}/collections`, { params: { collection_num: weekNum } })
       .then(({ data }) => {
-        const { playlists, week_num } = data.data;
+        const { collections, collection_num } = data.data;
 
-        this.props.setLoading('playlists', false);
-        this.onLoadPlaylistIdx = this.getActivePlaylistIdx(
-          `weekly-${week_num}`,
-          playlists
+        this.props.setLoading('collections', false);
+        this.onLoadcollectionIdx = this.getActivecollectionIdx(
+          `weekly-${collection_num}`,
+          collections
         );
 
-        this.setState({ playlists }, () => {
-          BCWeekly.scrollToPlaylist(this.onLoadPlaylistIdx);
+        this.setState({ collections }, () => {
+          BCWeekly.scrollTocollection(this.onLoadcollectionIdx);
         });
 
-        this.onLoadPlaylistWeekNum = playlists[this.onLoadPlaylistIdx].week_num;
+        this.onLoadcollectionWeekNum = collections[this.onLoadcollectionIdx].collection_num;
       })
       .catch(error => {
         this.props.setError(error.message);
@@ -89,96 +89,96 @@ class BCWeekly extends React.Component {
       this.props.match.params.bc_weekly_num !==
       nextProps.match.params.bc_weekly_num
     ) {
-      const idx = this.getActivePlaylistIdx(nextProps.match.params.bc_weekly_num);
-      this.switchToPlaylist(idx, nextState.playlists);
+      const idx = this.getActivecollectionIdx(nextProps.match.params.bc_weekly_num);
+      this.switchTocollection(idx, nextState.collections);
     }
   }
 
-  getActivePlaylistIdx(
+  getActivecollectionIdx(
     bc_weekly_num = this.props.match.params.bc_weekly_num,
-    playlists = this.state.playlists
+    collections = this.state.collections
   ) {
-    let activePlaylistIdx = 0;
+    let activecollectionIdx = 0;
 
     if (BCWeekly.isValidUrlParam(bc_weekly_num)) {
-      const playlistFromWeekNum = BCWeekly.weekHasBeenReleased(
-        playlists,
+      const collectionFromWeekNum = BCWeekly.weekHasBeenReleased(
+        collections,
         bc_weekly_num
       );
-      if (playlistFromWeekNum) {
-        activePlaylistIdx = playlistFromWeekNum.idx;
+      if (collectionFromWeekNum) {
+        activecollectionIdx = collectionFromWeekNum.idx;
       }
     }
-    return activePlaylistIdx;
+    return activecollectionIdx;
   }
 
-  autoSwitchPlaylists(playlistIdx, playlists) {
-    this.props.history.push(`/weekly-${playlists[playlistIdx].week_num}`);
+  autoSwitchcollections(collectionIdx, collections) {
+    this.props.history.push(`/weekly-${collections[collectionIdx].collection_num}`);
   }
 
-  switchToPlaylist(playlistIdx, playlists, playOnLoad = true) {
+  switchTocollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
-    if (!playlists[playlistIdx].tracks) {
-      this.fetchPlaylistTracks(playlistIdx, playlists, playOnLoad);
+    if (!collections[collectionIdx].tracks) {
+      this.fetchcollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
-      this.props.burnCartelPlayer.playPlaylist(
-        playlists[playlistIdx],
-        playlists
+      this.props.burnCartelPlayer.playcollection(
+        collections[collectionIdx],
+        collections
       );
     }
   }
 
-  fetchPlaylistTracks(playlistIdx, playlists, playOnLoad) {
+  fetchcollectionTracks(collectionIdx, collections, playOnLoad) {
 
-    this.props.setLoading('playlistTracks', true);
+    this.props.setLoading('collectionTracks', true);
     
     axios
-      .get(`${baseUrl}/playlists/${playlists[playlistIdx].id}/tracks`)
+      .get(`${baseUrl}/collections/${collections[collectionIdx].id}/tracks`)
       .then(({ data }) => {
-        const { tracks } = data.data.playlist;
+        const { tracks } = data.data.collection;
 
-        const newPlaylist = {
-          ...this.state.playlists[playlistIdx],
+        const newcollection = {
+          ...this.state.collections[collectionIdx],
           // hack to only take in 10 since we don't have the real content on the DB yet
           // tracks: tracks.slice(0, 10)
           tracks
         };
 
         if (playOnLoad) {
-          this.props.burnCartelPlayer.playPlaylist(newPlaylist, playlists);
+          this.props.burnCartelPlayer.playcollection(newcollection, collections);
         }
 
-        const oldPlaylists = this.state.playlists;
+        const oldcollections = this.state.collections;
         this.setState({
-          playlists: [
-            ...oldPlaylists.slice(0, playlistIdx),
-            newPlaylist,
-            ...oldPlaylists.slice(playlistIdx + 1, oldPlaylists.length)
+          collections: [
+            ...oldcollections.slice(0, collectionIdx),
+            newcollection,
+            ...oldcollections.slice(collectionIdx + 1, oldcollections.length)
           ]
         }, () => {
-          BCWeekly.scrollToPlaylist(playlistIdx);
-          this.props.setLoading('playlistTracks', false);
+          BCWeekly.scrollTocollection(collectionIdx);
+          this.props.setLoading('collectionTracks', false);
         });
         
       })
       .catch(error => {
         this.props.setError(error.message);
-        this.props.setLoading('playlistTracks', false);
+        this.props.setLoading('collectionTracks', false);
       });
   }
 
-  playOnLoadPlaylistIfNeeded(week_num) {
-    if (!this.onLoadPlaylistPlayed && this.onLoadPlaylistWeekNum === week_num) {
-      this.onLoadPlaylistPlayed = true;
-      this.switchToPlaylist(this.onLoadPlaylistIdx, this.state.playlists);
+  playOnLoadcollectionIfNeeded(collection_num) {
+    if (!this.onLoadcollectionPlayed && this.onLoadcollectionWeekNum === collection_num) {
+      this.onLoadcollectionPlayed = true;
+      this.switchTocollection(this.onLoadcollectionIdx, this.state.collections);
     }
   }
 
-  playTrack(track, playlist) {
+  playTrack(track, collection) {
     this.props.burnCartelPlayer.playTrack(
       track,
-      playlist,
-      this.state.playlists,
+      collection,
+      this.state.collections,
       this.props.setPlaying
     );
   }
@@ -196,11 +196,11 @@ class BCWeekly extends React.Component {
             if (this.props.playerOpen) {
               this.props.togglePlay();
             } else {
-              this.switchToPlaylist(0, this.state.playlists);
+              this.switchTocollection(0, this.state.collections);
             }
           }}
         />
-        {this.props.loading.playlists ? (
+        {this.props.loading.collections ? (
           <BCLoading />
         ) : (
           <div className="BCWeekly-content-container">
@@ -208,29 +208,29 @@ class BCWeekly extends React.Component {
             <Wrapper>
               <Responsive minWidth={950}>
                 <BCSpotlightItem
-                  playlist={this.state.playlists[this.getActivePlaylistIdx()]}
+                  collection={this.state.collections[this.getActivecollectionIdx()]}
                   playing={this.props.playing}
                   trackLoading={this.props.trackLoading}
                   width={600}
                   track={track}
-                  playTrack={(track, playlist) => {
-                    this.playTrack(track, playlist);
+                  playTrack={(track, collection) => {
+                    this.playTrack(track, collection);
                   }}
                 />
               </Responsive>
               <BCWeeklyList
                 handleModalOpen={this.props.handleModalOpen}
-                playlists={this.state.playlists}
+                collections={this.state.collections}
                 playing={this.props.playing}
                 activeTrack={track}
-                activePlaylistIdx={this.getActivePlaylistIdx()}
-                loadingPlaylistTracks={this.props.loading.playlistTracks}
-                playTrack={(track, playlist) => {
-                  this.playTrack(track, playlist);
+                activecollectionIdx={this.getActivecollectionIdx()}
+                loadingcollectionTracks={this.props.loading.collectionTracks}
+                playTrack={(track, collection) => {
+                  this.playTrack(track, collection);
                 }}
-                updateActivePlaylist={week_num => {
-                  this.playOnLoadPlaylistIfNeeded(week_num);
-                  history.push(`/weekly-${week_num}`);
+                updateActivecollection={collection_num => {
+                  this.playOnLoadcollectionIfNeeded(collection_num);
+                  history.push(`/weekly-${collection_num}`);
                 }}
               />
             </Wrapper>

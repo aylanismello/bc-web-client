@@ -35,35 +35,35 @@ class BurnCartelPlayer {
     this.setPlaying = setPlaying;
     this.setCurrentTime = setCurrentTime;
 
-    this.playlists = [];
-    this.playlistIdx = undefined;
+    this.collections = [];
+    this.collectionIdx = undefined;
     this.trackIdx = undefined;
-    this.playlist = undefined;
+    this.collection = undefined;
     this.repeat = undefined;
   }
 
-  playPlaylist(playlist, playlists) {
+  playcollection(collection, collections) {
     // hmm maybe set this in constructor keep it DRY u kno
     this.trackIdx = 1;
-    this.initPlaylists(playlist, playlists);
-    this.switchTrack(playlist.tracks[this.trackIdx]);
+    this.initcollections(collection, collections);
+    this.switchTrack(collection.tracks[this.trackIdx]);
   }
 
-  initPlaylists(playlist, playlists) {
-    this.playlists = playlists;
-    this.playlist = playlist;
+  initcollections(collection, collections) {
+    this.collections = collections;
+    this.collection = collection;
   }
   // we can assume, because of how the UI
-  // works, that the track passed here HAS to be in this.playlist
-  playTrack(track, playlist, playlists) {
-    this.initPlaylists(playlist, playlists);
+  // works, that the track passed here HAS to be in this.collection
+  playTrack(track, collection, collections) {
+    this.initcollections(collection, collections);
     this.trackIdx = track.track_number - 1;
-    this.switchTrack(this.playlist.tracks[this.trackIdx]);
+    this.switchTrack(this.collection.tracks[this.trackIdx]);
   }
 
-  initPlaylistIdx() {
-    this.playlistIdx = this.playlists.findIndex(playlist => {
-      return playlist.id === this.playlist.id;
+  initcollectionIdx() {
+    this.collectionIdx = this.collections.findIndex(collection => {
+      return collection.id === this.collection.id;
     });
   }
 
@@ -72,7 +72,7 @@ class BurnCartelPlayer {
   }
 
   resume() {
-    this.sc.play({ streamUrl: this.playlist.tracks[this.trackIdx].stream_url });
+    this.sc.play({ streamUrl: this.collection.tracks[this.trackIdx].stream_url });
   }
 
   goToTrack(whichTrack) {
@@ -107,27 +107,27 @@ class BurnCartelPlayer {
       this.restartTrack();
     } else if (this.trackIdx !== 0) {
       this.trackIdx--;
-      this.switchTrack(this.playlist.tracks[this.trackIdx]);
+      this.switchTrack(this.collection.tracks[this.trackIdx]);
     }
   }
 
   goToNextTrack() {
     this.trackIdx++;
-    if (this.trackIdx < this.playlist.tracks.length) {
-      this.switchTrack(this.playlist.tracks[this.trackIdx]);
+    if (this.trackIdx < this.collection.tracks.length) {
+      this.switchTrack(this.collection.tracks[this.trackIdx]);
     } else {
-      this.goToNextPlaylist();
+      this.goToNextcollection();
     }
   }
 
-  goToNextPlaylist() {
-    if (!this.playlistIdx) {
-      this.initPlaylistIdx();
+  goToNextcollection() {
+    if (!this.collectionIdx) {
+      this.initcollectionIdx();
     }
-    this.playlistIdx++;
+    this.collectionIdx++;
 
-    if (this.playlistIdx < this.playlists.length) {
-      this.switchToPlaylist(this.playlistIdx, this.playlists);
+    if (this.collectionIdx < this.collections.length) {
+      this.switchTocollection(this.collectionIdx, this.collections);
     }
   }
 
