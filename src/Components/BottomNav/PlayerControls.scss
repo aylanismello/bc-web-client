@@ -6,7 +6,7 @@
   background: $bc-gray-2;
   height: $bottom-nav-height;
   align-items: center;
-  min-width: 200px;
+  // min-width: 200px;
   padding-left: 30px;
   width: 78%;
 
@@ -22,6 +22,12 @@
 
   @media (max-width: $phone-width) {
     background: $bc-black;
+    justify-content: flex-end;
+  }
+
+  .PlayerControls-core-controls {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .PlayerControls-btn-container {
