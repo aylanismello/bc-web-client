@@ -1,17 +1,17 @@
-import React from "react";
-import Responsive from "react-responsive";
-import PlayButton from "../PlayButton";
-import "./PlayerControls.scss";
-import nextBtn from "./assets/next.svg";
-import prevBtn from "./assets/prev.svg";
-import repeatBtn from "./assets/repeat.svg";
-import visualizerBtn from "./assets/chart-bars.svg";
-import SeekBar from "../SeekBar";
+import React from 'react';
+import Responsive from 'react-responsive';
+import PlayButton from '../PlayButton';
+import './PlayerControls.scss';
+import nextBtn from './assets/next.svg';
+import prevBtn from './assets/prev.svg';
+import repeatBtn from './assets/repeat.svg';
+import visualizerBtn from './assets/chart-bars.svg';
+import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
-  active
-    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
-    : {};
+  (active
+    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
+    : {});
 
 const PlayerControls = ({
   playing,
@@ -42,7 +42,7 @@ const PlayerControls = ({
     <div className="PlayerControls-core-controls">
       <div
         className="PlayerControls-btn-container prev"
-        onClick={() => goToTrack("prev")}
+        onClick={() => goToTrack('prev')}
       >
         <img
           src={prevBtn}
@@ -59,7 +59,7 @@ const PlayerControls = ({
 
       <div
         className="PlayerControls-btn-container next"
-        onClick={() => goToTrack("next")}
+        onClick={() => goToTrack('next')}
       >
         <img
           src={nextBtn}

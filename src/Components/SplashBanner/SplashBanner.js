@@ -6,46 +6,57 @@ import EQPlayButton from '../EQPlayButton';
 import { baseUrl } from '../../config';
 import './splash_banner.scss';
 
-const Form = ({ handleSubmit, email, updateEmail, setStyle, style, hideEmailForm }) => (
+const Form = ({
+  handleSubmit,
+  email,
+  updateEmail,
+  setStyle,
+  style,
+  hideEmailForm
+}) => (
   <div className="SplashBanner-form-container">
     <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
       <div className="SplashBanner-email-container">
         <input
           type="email"
           value={email}
-          placeholder="Insert your email..."
+          placeholder="Insert your email"
           className="SplashBanner-email"
           onChange={updateEmail}
           onFocus={() => {
-            setStyle({ background: "#e54ea3" });
+            setStyle({ background: '#e54ea3' });
           }}
           onBlur={() => setStyle({})}
         />
-        <div className="SplashBanner-arrow-container" style={style}>
-          <img
-            src={arrow}
-            className="SplashBanner-arrow"
-            onFocus={() => this.setState({ style: { background: "white" } })}
-            onBlur={() => this.setState({})}
-            alt="Submit Email Arrow"
-            onClick={() => {
-              // why doesnt this work
-              handleSubmit();
-              // const el = document.getElementsByClassName('SplashBanner-form')[0];
-              // el.submit();
-            }}
-          />
-        </div>
+          {/* Fucking genius - https://chodounsky.net/2015/05/12/svg-as-a-submit-button/ */}
+        <label className="SplashBanner-arrow-submit-group">
+          <input type="submit" style={{ display: 'none' }} />
+            <div className="SplashBanner-arrow-container" style={style}>
+            <img
+              src={arrow}
+              className="SplashBanner-arrow"
+              onFocus={() => this.setState({ style: { background: 'white' } })}
+              onBlur={() => this.setState({})}
+              alt="Submit Email Arrow"
+            />
+            </div>
+        </label>
       </div>
     </form>
-    <div className="SplashBanner-close-message-container" onClick={hideEmailForm}>
+    <div
+      className="SplashBanner-close-message-container"
+      onClick={hideEmailForm}
+    >
       <span className="SplashBanner-close-message"> I'm good, thanks. </span>
     </div>
   </div>
 );
 
 const FormSubmitMessage = ({
- header, subheader, success, nextAction, isFromEmail
+  header,
+  subheader,
+  success,
+  nextAction
 }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
@@ -54,7 +65,7 @@ const FormSubmitMessage = ({
     <br />
     <span onClick={nextAction} className="SplashBanner-next-action-msg">
       {' '}
-      {success ? 'Let\'s go!' : 'Try again'}{' '}
+      {success ? "Let's go!" : 'Try again'}{' '}
     </span>
   </div>
 );
@@ -76,7 +87,10 @@ class SplashBanner extends React.Component {
   });
 
   componentDidMount() {
-    if (window.localStorage.getItem('dontShowEmailForm') || this.props.isFromEmail) {
+    if (
+      window.localStorage.getItem('dontShowEmailForm') ||
+      this.props.isFromEmail
+    ) {
       this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED });
     } else {
       this.setState({ submitStatus: SUBMIT_STATES.UNSUBMITTED });
@@ -185,10 +199,6 @@ class SplashBanner extends React.Component {
             cloudName="burncartel"
             publicId="bc_header_1"
           />
-          {/* <img
-            src="https://source.unsplash.com/FhdC7RGb5Yg/"
-            className="SplashBanner-image"
-          /> */}
         </div>
 
         <div className="SplashBanner-content">

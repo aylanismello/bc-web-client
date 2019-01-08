@@ -20,6 +20,7 @@ class ShareButton extends React.Component {
       >
         <img
           className="ShareButton-icon"
+          alt="ShareButton-icon"
           src={this.state.hover ? share_active : share}
         />
         <span className="ShareButton-text"> Share playlist </span>
