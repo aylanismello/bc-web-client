@@ -15,7 +15,13 @@ const Form = ({
   hideEmailForm
 }) => (
   <div className="SplashBanner-form-container">
-    <form className="SplashBanner-form" onSubmit={() => handleSubmit()}>
+    <form
+      className="SplashBanner-form"
+      onSubmit={e => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <div className="SplashBanner-email-container">
         <input
           type="email"
@@ -28,10 +34,10 @@ const Form = ({
           }}
           onBlur={() => setStyle({})}
         />
-          {/* Fucking genius - https://chodounsky.net/2015/05/12/svg-as-a-submit-button/ */}
+        {/* Fucking genius - https://chodounsky.net/2015/05/12/svg-as-a-submit-button/ */}
         <label className="SplashBanner-arrow-submit-group">
           <input type="submit" style={{ display: 'none' }} />
-            <div className="SplashBanner-arrow-container" style={style}>
+          <div className="SplashBanner-arrow-container" style={style}>
             <img
               src={arrow}
               className="SplashBanner-arrow"
@@ -39,7 +45,7 @@ const Form = ({
               onBlur={() => this.setState({})}
               alt="Submit Email Arrow"
             />
-            </div>
+          </div>
         </label>
       </div>
     </form>
@@ -53,10 +59,7 @@ const Form = ({
 );
 
 const FormSubmitMessage = ({
-  header,
-  subheader,
-  success,
-  nextAction
+ header, subheader, success, nextAction 
 }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
