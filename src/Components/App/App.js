@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
+import axios from 'axios';
+import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import BCModal from '../BCModal';
 import TopNav from '../TopNav';
@@ -10,6 +12,23 @@ import Footer from '../Footer';
 import './App.scss';
 
 class App extends Component {
+  static isValidUrlParam(param) {
+    return /^weekly-[0-9]+$/.test(param);
+  }
+
+  static weekHasBeenReleased(collections, bc_weekly_num) {
+    const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
+    return App.collectionAsHash(collections)[weekNum];
+  }
+
+  static collectionAsHash(arrcollections) {
+    const collections = {};
+    arrcollections.forEach((collection, idx) => {
+      collections[collection.collection_num] = { ...collection, idx };
+    });
+    return collections;
+  }
+
   constructor(props) {
     super(props);
     this.burnCartelPlayer = new BurnCartelPlayer(
@@ -23,6 +42,8 @@ class App extends Component {
 
   state = Object.freeze({
     track: {},
+    collections: [],
+    isFromEmail: false,
     currentTime: {
       raw: 0,
       before: '',
@@ -30,6 +51,7 @@ class App extends Component {
     },
     playerOpen: false,
     playerForcedOpen: false,
+    onLoadCollectionIdx: 0,
     playing: false,
     repeat: false,
     visualize: false,
@@ -58,6 +80,29 @@ class App extends Component {
     }
   }
 
+  getActiveCollectionIdx(bc_weekly_num, collections = this.props.collections) {
+    let activeCollectionIdx = 0;
+
+    if (App.isValidUrlParam(bc_weekly_num)) {
+      const collectionFromWeekNum = App.weekHasBeenReleased(
+        collections,
+        bc_weekly_num
+      );
+      if (collectionFromWeekNum) {
+        activeCollectionIdx = collectionFromWeekNum.idx;
+      }
+    }
+    return activeCollectionIdx;
+  }
+
+  setCollections(collections, from, onLoadCollectionIdx) {
+    this.setState({ collections }, () => {
+      if (from) {
+        this.setState({ onLoadCollectionIdx });
+        this.scrollToCollection(onLoadCollectionIdx);
+      }
+    });
+  }
   setCurrentTime(currentTime) {
     this.setState({ currentTime });
   }
@@ -90,6 +135,67 @@ class App extends Component {
       loading: newLoading
     });
   }
+  switchToCollection(collectionIdx, collections, playOnLoad = true) {
+    // this is a combo FETCH + PLAY operation
+    if (!collections[collectionIdx].tracks) {
+      this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
+    } else {
+      this.burnCartelPlayer.playCollection(
+        collections[collectionIdx],
+        collections
+      );
+    }
+  }
+
+  fetchCollectionTracks(collectionIdx, collections, playOnLoad) {
+    this.setLoading('collectionTracks', true);
+
+    axios
+      .get(`${baseUrl}/collections/${collections[collectionIdx].id}/tracks`)
+      .then(({ data }) => {
+        const { tracks } = data.data.collection;
+
+        const newCollection = {
+          ...this.state.collections[collectionIdx],
+          tracks
+        };
+
+        if (playOnLoad) {
+          this.burnCartelPlayer.playCollection(newCollection, collections);
+        }
+
+        const oldCollections = this.state.collections;
+        this.setState(
+          {
+            collections: [
+              ...oldCollections.slice(0, collectionIdx),
+              newCollection,
+              ...oldCollections.slice(collectionIdx + 1, oldCollections.length)
+            ]
+          },
+          () => {
+            // BCWeekly.scrollToCollection(collectionIdx);
+            this.setLoading('collectionTracks', false);
+          }
+        );
+      })
+      .catch(error => {
+        this.setError(error.message);
+        this.setLoading('collectionTracks', false);
+      });
+  }
+
+  scrollToCollection(collectionIdx) {
+    const width = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+    if (width <= 950) {
+      // debugger;
+      this.setState({ playerOpen: true, playerForcedOpen: true });
+      document.getElementById(`${collectionIdx}`).scrollIntoView();
+    }
+  }
 
   togglePlay() {
     this.setState({ playing: !this.state.playing }, () => {
@@ -110,7 +216,6 @@ class App extends Component {
       }
     });
   }
-  
 
   toggleVisualize() {
     this.setState({ visualize: !this.state.visualize });
@@ -155,16 +260,32 @@ class App extends Component {
                     copiedEpisodeNum: episodeNum
                   })
                 }
+                getActiveCollectionIdx={(x, y) =>
+                  this.getActiveCollectionIdx(x, y)
+                }
+                setCollections={(x, y, z) => this.setCollections(x, y, z)}
                 track={track}
+                switchToCollection={(collectionIdx, collections, playOnLoad = true) => this.switchToCollection(collectionIdx, collections, playOnLoad)}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
-                setPlayerOpen={() => this.setState({ playerOpen: true, playerForcedOpen: true })}
                 playing={this.state.playing}
-                disablePlayerForcedOpen={() => this.setState({ playerForcedOpen: false }) }
-                togglePlay={() => this.togglePlay()}
+                disablePlayerForcedOpen={() =>
+                  this.setState({ playerForcedOpen: false })
+                }
+                togglePlay={() => {
+                  if (this.state.playerForcedOpen) {
+                    this.switchToCollection(this.state.onLoadCollectionIdx, this.state.collections);
+                    this.setState({ playerForcedOpen: false });
+                  } else if (this.state.playerOpen) {
+                    this.togglePlay();
+                  } else {
+                    this.switchToCollection(this.state.onLoadCollectionIdx, this.state.collections);
+                  }
+                }}
                 playerOpen={this.state.playerOpen}
+                collections={this.state.collections}
                 playerForcedOpen={this.state.playerForcedOpen}
                 trackLoading={this.state.loading.track}
                 setLoading={(resource, state) =>
@@ -184,7 +305,7 @@ class App extends Component {
               togglePlay={() => {
                 // rewrite this based on new auto open player condition
                 if (this.state.playerForcedOpen) {
-                  // now we need to call something to happen on next level down on collections :(
+                  this.switchToCollection(this.state.onLoadCollectionIdx, this.state.collections);
                   this.setState({ playerForcedOpen: false });
                 } else {
                   this.togglePlay();
