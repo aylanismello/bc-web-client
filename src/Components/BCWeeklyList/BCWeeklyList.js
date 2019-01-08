@@ -4,13 +4,12 @@ import './BCWeeklyList.scss';
 
 const BCWeeklyList = ({
   collections,
-  activecollectionIdx,
-  updateActivecollection,
+  activeCollectionIdx,
+  updateActiveCollection,
   playTrack,
   activeTrack,
   playing,
-  handleModalOpen,
-  loadingcollectionTracks
+  handleModalOpen
 }) => {
   return (
     <div className="BCWeeklyList">
@@ -21,11 +20,11 @@ const BCWeeklyList = ({
             activeTrack={activeTrack}
             collection={collection}
             playTrack={playTrack}
-            active={activecollectionIdx === idx}
+            active={activeCollectionIdx === idx}
             playing={playing}
             key={idx}
             idx={idx}
-            setAsActiveItem={updateActivecollection}
+            setAsActiveItem={updateActiveCollection}
           />
         ))}
       </div>

@@ -59,7 +59,7 @@ const Form = ({
 );
 
 const FormSubmitMessage = ({
- header, subheader, success, nextAction 
+ header, subheader, success, nextAction
 }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>

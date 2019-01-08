@@ -1,11 +1,11 @@
-import React from "react";
-import "./EQPlayButton.scss";
-import PlayButton from "../PlayButton";
-import EQIcon from "../EQIcon";
+import React from 'react';
+import './EQPlayButton.scss';
+import PlayButton from '../PlayButton';
+import EQIcon from '../EQIcon';
 
 class EQPlayButton extends React.Component {
   state = {
-    hoveringOver: false
+    hover: false
   };
 
   render() {
@@ -16,10 +16,10 @@ class EQPlayButton extends React.Component {
     return (
       <div
         className="EQPlayButton"
-        onMouseEnter={() => this.setState({ hoveringOver: true })}
-        onMouseLeave={() => this.setState({ hoveringOver: false })}
+        onMouseEnter={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
       >
-        {this.state.hoveringOver ||
+        {this.state.hover ||
         this.props.loading.track ||
         !this.props.playing ||
         !this.props.playerOpen ? (

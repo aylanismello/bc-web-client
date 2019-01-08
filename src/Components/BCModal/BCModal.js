@@ -5,11 +5,22 @@ import './BCModal.scss';
 
 let copiedUrl;
 
-const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal, didCopy, setDidCopy }) => {
+const BCModal = ({
+  modalOpen,
+  copiedEpisodeNum,
+  closeModal,
+  didCopy,
+  setDidCopy
+}) => {
   if (!modalOpen) {
     return null;
   }
-  const url = `www.burncartel.com/#/weekly-${copiedEpisodeNum}?from=link`;
+
+  let hostname = 'www.burncartel.com';
+  if (!window.location.hostname.includes('burncartel')) {
+    hostname = 'localhost:3000';
+  }
+  const url = `${hostname}/#/weekly-${copiedEpisodeNum}?from=link`;
   if (copiedUrl !== url) {
     copiedUrl = url;
     copy(url);
@@ -35,8 +46,16 @@ const BCModal = ({ modalOpen, copiedEpisodeNum, closeModal, didCopy, setDidCopy 
         <div className="BCModal-content-bottom">
           <div className="BCModal-HowTo">Copy this link to share</div>
           <div className="BCModal-fake-form">
-            <input type="text" value={url.split('?')[0]} className="BCModal-url" readOnly />
-            <button className="BCModal-button" onClick={setDidCopy}> {didCopy ? 'COPIED!' : 'COPY'}</button>
+            <input
+              type="text"
+              value={url.split('?')[0]}
+              className="BCModal-url"
+              readOnly
+            />
+            <button className="BCModal-button" onClick={setDidCopy}>
+              {' '}
+              {didCopy ? 'COPIED!' : 'COPY'}
+            </button>
           </div>
         </div>
       </div>

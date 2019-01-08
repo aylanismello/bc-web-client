@@ -29,6 +29,7 @@ class App extends Component {
       after: ''
     },
     playerOpen: false,
+    playerForcedOpen: false,
     playing: false,
     repeat: false,
     visualize: false,
@@ -37,7 +38,7 @@ class App extends Component {
     copiedEpisodeNum: null,
     loading: {
       collections: true,
-      track: true,
+      track: false,
       // set to false initally because the API sends you back your first tracks in the /collections endpoint!
       collectionTracks: false
     },
@@ -109,6 +110,7 @@ class App extends Component {
       }
     });
   }
+  
 
   toggleVisualize() {
     this.setState({ visualize: !this.state.visualize });
@@ -158,9 +160,12 @@ class App extends Component {
                 setError={error => this.setError(error)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
+                setPlayerOpen={() => this.setState({ playerOpen: true, playerForcedOpen: true })}
                 playing={this.state.playing}
+                disablePlayerForcedOpen={() => this.setState({ playerForcedOpen: false }) }
                 togglePlay={() => this.togglePlay()}
                 playerOpen={this.state.playerOpen}
+                playerForcedOpen={this.state.playerForcedOpen}
                 trackLoading={this.state.loading.track}
                 setLoading={(resource, state) =>
                   this.setLoading(resource, state)
@@ -168,14 +173,23 @@ class App extends Component {
               />
             )}
           />
-          <Footer loadingcollections={this.state.loading.collections} />
+          <Footer loadingCollections={this.state.loading.collections} />
           {playerOpen && (
             <BottomNav
               track={track}
               playing={playing}
+              playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
               trackLoading={this.state.loading.track}
-              togglePlay={() => this.togglePlay()}
+              togglePlay={() => {
+                // rewrite this based on new auto open player condition
+                if (this.state.playerForcedOpen) {
+                  // now we need to call something to happen on next level down on collections :(
+                  this.setState({ playerForcedOpen: false });
+                } else {
+                  this.togglePlay();
+                }
+              }}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
               toggleRepeat={() => this.toggleRepeat()}
               repeat={this.state.repeat}

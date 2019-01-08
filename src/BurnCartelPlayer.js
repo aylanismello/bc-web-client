@@ -42,26 +42,26 @@ class BurnCartelPlayer {
     this.repeat = undefined;
   }
 
-  playcollection(collection, collections) {
+  playCollection(collection, collections) {
     // hmm maybe set this in constructor keep it DRY u kno
     this.trackIdx = 1;
-    this.initcollections(collection, collections);
+    this.initCollections(collection, collections);
     this.switchTrack(collection.tracks[this.trackIdx]);
   }
 
-  initcollections(collection, collections) {
+  initCollections(collection, collections) {
     this.collections = collections;
     this.collection = collection;
   }
   // we can assume, because of how the UI
   // works, that the track passed here HAS to be in this.collection
   playTrack(track, collection, collections) {
-    this.initcollections(collection, collections);
+    this.initCollections(collection, collections);
     this.trackIdx = track.track_number - 1;
     this.switchTrack(this.collection.tracks[this.trackIdx]);
   }
 
-  initcollectionIdx() {
+  initCollectionIdx() {
     this.collectionIdx = this.collections.findIndex(collection => {
       return collection.id === this.collection.id;
     });
@@ -122,12 +122,12 @@ class BurnCartelPlayer {
 
   goToNextcollection() {
     if (!this.collectionIdx) {
-      this.initcollectionIdx();
+      this.initCollectionIdx();
     }
     this.collectionIdx++;
 
     if (this.collectionIdx < this.collections.length) {
-      this.switchTocollection(this.collectionIdx, this.collections);
+      this.switchToCollection(this.collectionIdx, this.collections);
     }
   }
 
