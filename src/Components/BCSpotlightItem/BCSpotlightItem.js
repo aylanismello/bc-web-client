@@ -1,9 +1,10 @@
-import React from 'react';
-import BCWeeklyTracklist from '../BCWeeklyTracklist';
-import BCProgressiveImage from '../BCProgressiveImage';
-import './BCSpotlightItem.scss';
+import React from "react";
+import { Image } from 'cloudinary-react';
+import BCWeeklyTracklist from "../BCWeeklyTracklist";
+import BCProgressiveImage from "../BCProgressiveImage";
+import "./BCSpotlightItem.scss";
 
-  /* <Image
+/* <Image
 className="BCSplotlightItem-cover-image"
 alt="Cover Art"
 width={width}
@@ -12,6 +13,8 @@ quality="70"
 cloudName="burncartel"
 publicId={collection.artwork_url}
 /> */
+        //  <BCProgressiveImage max_width={width} artwork_url={collection.artwork_url} />
+
 
 const BCSpotlightItem = ({
   width,
@@ -25,7 +28,15 @@ const BCSpotlightItem = ({
     <div className="BCSpotlightItem">
       <div className="BCSplotlightItem-cover">
         {collection && (
-         <BCProgressiveImage max_width={width} artwork_url={collection.artwork_url} />
+          <Image
+            className="BCSplotlightItem-cover-image"
+            alt="Cover Art"
+            width={width}
+            crop="fit"
+            quality="70"
+            cloudName="burncartel"
+            publicId={collection.artwork_url}
+          />
         )}
       </div>
       {collection && collection.tracks && (

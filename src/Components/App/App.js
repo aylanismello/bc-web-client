@@ -51,7 +51,7 @@ class App extends Component {
     },
     playerOpen: false,
     playerForcedOpen: false,
-    onLoadCollectionIdx: 0,
+    preselectedCollectionIdx: null,
     playing: false,
     repeat: false,
     visualize: false,
@@ -95,11 +95,10 @@ class App extends Component {
     return activeCollectionIdx;
   }
 
-  setCollections(collections, from, onLoadCollectionIdx) {
+  setCollections(collections, isPreselectedCollection, preselectedCollectionIdx) {
     this.setState({ collections }, () => {
-      if (from) {
-        this.setState({ onLoadCollectionIdx });
-        this.scrollToCollection(onLoadCollectionIdx);
+      if (isPreselectedCollection) {
+        this.setState({ preselectedCollectionIdx });
       }
     });
   }
@@ -195,14 +194,9 @@ class App extends Component {
       // debugger;
     this.setState({ playerOpen: true, playerForcedOpen: true });
 
-      // doScrolling(500, 1000);
-      // wait till pictures have loaded to scroll down initially
-      // setTimeout(
-      //   () => {
-      //     document.getElementById(`${collectionIdx}`).scrollIntoView();
-      //   }, 0
-      // );
-    // }
+    // document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
+    console.log('begin scrolling action');
+    document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
   }
 
   togglePlay() {
@@ -268,6 +262,7 @@ class App extends Component {
                     copiedEpisodeNum: episodeNum
                   })
                 }
+                scrollToPreselectedItem={this.state.preselectedCollectionIdx !== null}
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
@@ -286,6 +281,7 @@ class App extends Component {
                 }
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
+                scrollToCollection={idx => this.scrollToCollection(idx)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}
@@ -295,14 +291,14 @@ class App extends Component {
                 togglePlay={() => {
                   if (this.state.playerForcedOpen) {
                     this.switchToCollection(
-                      this.state.onLoadCollectionIdx,
+                      this.state.preselectedCollectionIdx,
                       this.state.collections
                     );
                   } else if (this.state.playerOpen) {
                     this.togglePlay();
                   } else {
                     this.switchToCollection(
-                      this.state.onLoadCollectionIdx,
+                      this.state.preselectedCollectionIdx,
                       this.state.collections
                     );
                   }
@@ -320,7 +316,7 @@ class App extends Component {
           <Footer loadingCollections={this.state.loading.collections} />
           {playerOpen && (
             <BottomNav
-              track={this.state.playerForcedOpen ? (this.state.collections[this.state.onLoadCollectionIdx].tracks[1]) : track}
+              track={this.state.playerForcedOpen ? (this.state.collections[this.state.preselectedCollectionIdx].tracks[1]) : track}
               playing={playing}
               playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
@@ -329,7 +325,7 @@ class App extends Component {
                 // rewrite this based on new auto open player condition
                 if (this.state.playerForcedOpen) {
                   this.switchToCollection(
-                    this.state.onLoadCollectionIdx,
+                    this.state.preselectedCollectionIdx,
                     this.state.collections
                   );
                   this.setState({ playerForcedOpen: false });

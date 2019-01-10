@@ -21,7 +21,7 @@ class BCWeekly extends React.Component {
     this.props.burnCartelPlayer.switchToCollection = (collectionIdx, collections) =>
       this.autoSwitchCollections(collectionIdx, collections);
 
-    this.onLoadCollectionPlayed = false;
+    this.preselectedCollectionPlayed = false;
   }
 
   state = Object.freeze({
@@ -44,14 +44,16 @@ class BCWeekly extends React.Component {
         const { collections, collection_num } = data.data;
 
         this.props.setLoading('collections', false);
-        // this.onLoadCollectionIdx = this.getActiveCollectionIdx(
-        this.onLoadCollectionIdx = this.props.getActiveCollectionIdx(
+        this.preselectedCollectionIdx = this.props.getActiveCollectionIdx(
           `weekly-${collection_num}`,
           collections
         );
 
-        this.props.setCollections(collections, queryParams.from, this.onLoadCollectionIdx);
-        this.onLoadCollectionWeekNum = collections[this.onLoadCollectionIdx].collection_num;
+        const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
+        
+        this.props.setCollections(collections, isPreselectedCollection, this.preselectedCollectionIdx);
+        console.log('set initial collections to state');
+        this.preselectedCollectionWeekNum = collections[this.preselectedCollectionIdx].collection_num;
       })
       .catch(error => {
         this.props.setError(error.message);
@@ -81,9 +83,9 @@ class BCWeekly extends React.Component {
   }
 
   playOnLoadCollectionIfNeeded(collection_num) {
-    if (!this.onLoadCollectionPlayed && this.onLoadCollectionWeekNum === collection_num) {
-      this.onLoadCollectionPlayed = true;
-      this.props.switchToCollection(this.onLoadCollectionIdx, this.props.collections);
+    if (!this.preselectedCollectionPlayed && this.preselectedCollectionWeekNum === collection_num) {
+      this.preselectedCollectionPlayed = true;
+      this.props.switchToCollection(this.preselectedCollectionIdx, this.props.collections);
     }
   }
 
@@ -125,6 +127,7 @@ class BCWeekly extends React.Component {
                 />
               </Responsive>
               <BCWeeklyList
+                scrollToCollection={this.props.scrollToCollection}
                 handleModalOpen={this.props.handleModalOpen}
                 collections={this.props.collections}
                 playing={this.props.playing}
