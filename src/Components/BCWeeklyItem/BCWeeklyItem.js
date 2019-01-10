@@ -1,8 +1,7 @@
 import React from 'react';
-import { Image } from 'cloudinary-react';
-import LazyLoad from 'react-lazyload';
 import Responsive from 'react-responsive';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
+import BCProgressiveImage from '../BCProgressiveImage';
 import ShareButton from '../ShareButton';
 import './BCWeeklyItem.scss';
 
@@ -19,15 +18,12 @@ class BCWeeklyItem extends React.Component {
       idx,
       playTrack,
       activeTrack,
-      handleModalOpen, 
+      handleModalOpen,
       scrollToCollection
     } = this.props;
     const { artwork_url, collection_num } = collection;
-    const style1 = active ? 'opaque' : '';
 
-    const width = 600;
     const style2 = active || this.state.hover ? 'visible' : 'hidden';
-    const src = `http://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${width}/${artwork_url}`;
     return (
       <div
         className="BCWeeklyItem"
@@ -48,19 +44,17 @@ class BCWeeklyItem extends React.Component {
           onMouseLeave={() => this.setState({ hover: false })}
         >
           {/* <LazyLoad width={width} height={width} once> */}
-            <img // god this is ugly but whatever
-              className={`BCWeeklyItem-cover-image ${style1}`}
-              alt={artwork_url}
-              src={src}
-              onLoad={() => {
-                if (active) {
-                  console.log('active collection loaded!');
-                  scrollToCollection(idx);
-                }
-              }}
-            />
-            /> */}
-          {/* </LazyLoad> */}
+          {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
+          <BCProgressiveImage
+            showText={active || this.state.hover}
+            artwork_url={artwork_url}
+            onLoad={() => {
+              if (active) {
+                scrollToCollection(idx);
+              }
+            }}
+            max_width={600}
+          />
           <div className={`BCWeeklyItem-cover-text ${style2}`}>
             <h4> BURN CARTEL WEEKLY </h4>
             <div className="BCWeeklyItem-line" />

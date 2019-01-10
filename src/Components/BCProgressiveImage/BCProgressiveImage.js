@@ -1,58 +1,97 @@
 import React from 'react';
-import ProgressiveImage from 'react-progressive-image';
 import './BCProgressiveImage.scss';
+import placeholder from './placeholder.svg';
 
-const BCProgressiveImage = ({
-  max_width,
-  artwork_url,
-  children,
-  active,
-  isCollectionItem
-}) => {
-  // THERE IS THE MAX_WIDTH that we load, just in case
-  // and the width we use
+class BCProgressiveImage extends React.Component {
+  state = {
+    loaded: false
+  };
 
-  // max width is what
+  render() {
+    const {
+      max_width,
+      artwork_url,
+      showText,
+      onLoad,
+      isCollectionItem
+    } = this.props;
+    const { loaded } = this.state;
+    const opaque = showText ? 'opaque' : '';
 
-  const opaque = active ? 'opaque' : '';
+    const src = `http://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
 
-  const src = `http://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
-  const IMAGE_COLOR = '#626970';
-  // const IMAGE_COLOR = 'red';
+    // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
+    return (
+      <div>
+        {!loaded ? (
+          <img
+            className={`BCProgressiveImage ${opaque} ${
+              isCollectionItem
+                ? 'BCWeeklyItem-cover-image'
+                : 'BCSplotlightItem-cover-image'
+            }`}
+            alt={artwork_url}
+            src={placeholder}
+          />
+        ) : null}
+        <img
+          className={`BCProgressiveImage ${opaque} ${
+            isCollectionItem
+              ? 'BCWeeklyItem-cover-image'
+              : 'BCSplotlightItem-cover-image'
+          }`}
+          alt={artwork_url}
+          style={loaded ? {} : { visibility: 'hidden' }}
+          src={src}
+          onLoad={() => {
+            this.setState({ loaded: true });
+            onLoad();
+          }}
+        />
+      </div>
+    );
+  }
+}
 
-  return (
-    // this needs to be the responsive part
-
-    <div className="BCProgressiveImage">
-      <ProgressiveImage
-        className="BCProgressiveImage-img"
-        src={src}
-        placeholder=""
-      >
-        {(loadedSrc, loading) => {
-          return loading ? (
-            <div
-              className="placeholder"
-              style={{
-                backgroundColor: IMAGE_COLOR,
-                width: '100%',
-                height: '100%'
-              }}
-            />
-          ) : (
-            <img
-              // god this is ugly but whatever
-              className={`BCProgressiveImage-img ${opaque} ${isCollectionItem &&
-                'BCWeeklyItem-cover-image'}`}
-              alt={artwork_url}
-              src={loadedSrc}
-            />
-          );
-        }}
-      </ProgressiveImage>
-      {children}
-    </div>
-  );
+BCProgressiveImage.defaultProps = {
+  onLoad: () => {},
+  isCollectionItem: false,
+  showText: false
 };
+
+//   return (
+//     // this needs to be the responsive part
+
+//     <div className="BCProgressiveImage">
+//       <ProgressiveImage
+//         className="BCProgressiveImage-img"
+//         src={src}
+//         placeholder=""
+//       >
+//         {(loadedSrc, loading) => {
+//           return loading ? (
+//             <div
+//               className="placeholder"
+//               style={{
+//                 backgroundColor: IMAGE_COLOR,
+//                 width: '100%',
+//                 height: '100%'
+//               }}
+//             />
+//           ) : (
+//             <img
+//               // god this is ugly but whatever
+//               className={`BCProgressiveImage-img ${opaque} ${isCollectionItem &&
+//                 'BCWeeklyItem-cover-image'}`}
+//               alt={artwork_url}
+//               src={loadedSrc}
+//             />
+//           );
+//         }}
+//       </ProgressiveImage>
+//       {children}
+//     </div>
+//   );
+// };
 
 export default BCProgressiveImage;

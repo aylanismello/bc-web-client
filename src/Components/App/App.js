@@ -190,19 +190,28 @@ class App extends Component {
   }
 
   scrollToCollection(collectionIdx) {
-    // const width = Math.max(
-    //   document.documentElement.clientWidth,
-    //   window.innerWidth || 0
-    // );
-    // if (width <= 950) {
+    const width = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+    const isMobile = width <= 950;
     // debugger;
-    this.setState({ playerOpen: true, playerForcedOpen: true });
+    this.setState({
+      playerOpen: true,
+      playerForcedOpen: true
+    });
+
+    if (this.state.preselectedCollectionIdx !== null && isMobile) {
+      console.log('begin scrolling action');
+      document
+        .getElementById(`${collectionIdx}`)
+        .scrollIntoView({ behavior: 'smooth' });
+        // .scrollIntoView(true);
+    }
+
+    // this.setState({ playerOpen: true, playerForcedOpen: true });
 
     // document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
-    console.log('begin scrolling action');
-    document
-      .getElementById(`${collectionIdx}`)
-      .scrollIntoView({ behavior: 'smooth' });
   }
 
   togglePlay() {
@@ -274,9 +283,6 @@ class App extends Component {
                     modalOpen: true,
                     copiedEpisodeNum: episodeNum
                   })
-                }
-                scrollToPreselectedItem={
-                  this.state.preselectedCollectionIdx !== null
                 }
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
