@@ -108,7 +108,7 @@ class App extends Component {
   }
 
   setTrack(track) {
-    this.setState({ track });
+    this.setState({ track, playerForcedOpen: false });
   }
 
   setError(error) {
@@ -137,6 +137,7 @@ class App extends Component {
   }
   switchToCollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
+    this.setState({ playerForcedOpen: false });
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
@@ -186,13 +187,13 @@ class App extends Component {
   }
 
   scrollToCollection(collectionIdx) {
-    const width = Math.max(
-      document.documentElement.clientWidth,
-      window.innerWidth || 0
-    );
-    if (width <= 950) {
+    // const width = Math.max(
+    //   document.documentElement.clientWidth,
+    //   window.innerWidth || 0
+    // );
+    // if (width <= 950) {
       // debugger;
-      this.setState({ playerOpen: true, playerForcedOpen: true });
+    this.setState({ playerOpen: true, playerForcedOpen: true });
 
       // doScrolling(500, 1000);
       // wait till pictures have loaded to scroll down initially
@@ -201,11 +202,11 @@ class App extends Component {
       //     document.getElementById(`${collectionIdx}`).scrollIntoView();
       //   }, 0
       // );
-    }
+    // }
   }
 
   togglePlay() {
-    this.setState({ playing: !this.state.playing }, () => {
+    this.setState({ playing: !this.state.playing, playerForcedOpen: false }, () => {
       if (this.state.playing) {
         this.burnCartelPlayer.resume();
       } else {
@@ -297,7 +298,6 @@ class App extends Component {
                       this.state.onLoadCollectionIdx,
                       this.state.collections
                     );
-                    this.setState({ playerForcedOpen: false });
                   } else if (this.state.playerOpen) {
                     this.togglePlay();
                   } else {

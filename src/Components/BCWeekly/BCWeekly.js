@@ -117,7 +117,7 @@ class BCWeekly extends React.Component {
                   collection={this.props.collections[this.getActiveCollectionIdx()]}
                   playing={this.props.playing}
                   trackLoading={this.props.trackLoading}
-                  width={600}
+                  width={450}
                   track={track}
                   playTrack={(track, collection) => {
                     this.playTrack(track, collection);

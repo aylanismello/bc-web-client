@@ -87,6 +87,7 @@ class BurnCartelPlayer {
     this.sc.unbindAll();
 
     this.repeat = repeatState;
+    this.attachDefaultTrackEventListeners();
 
     this.sc.on('ended', () => {
       if (repeatState) {
@@ -144,6 +145,23 @@ class BurnCartelPlayer {
     return { before, after };
   }
 
+  attachDefaultTrackEventListeners() {
+    this.sc.on('stalled', () => {
+      this.setTrackLoading(true);
+    });
+
+    this.sc.on('error', () => {
+      this.setError('Problem loading track, sorry!');
+    });
+
+    this.sc.on('timeupdate', e => {
+      const { currentTime } = e.target;
+      if (currentTime) this.setTrackLoading(false);
+
+      this.updateAllTimes(currentTime);
+    });
+  }
+
   switchTrack(track) {
     this.setTrackLoading(true);
     const { stream_url } = track;
@@ -163,27 +181,7 @@ class BurnCartelPlayer {
     this.setPlaying(true);
     this.updateAllTimes(0);
 
-    this.sc.on('stalled', () => {
-      this.setTrackLoading(true);
-    });
-
-    this.sc.on('error', () => {
-      this.setError('Problem loading track, sorry!');
-    });
-
-    this.sc.on('timeupdate', e => {
-      const { currentTime } = e.target;
-      if (currentTime) this.setTrackLoading(false);
-
-      this.updateAllTimes(currentTime);
-    });
-
-    // this.sc.on('playing', () => {
-    //   this.setTrackLoading(false);
-    // });
-    // this.sc.on('loadeddata', () => {
-    //   this.setTrackLoading(false);
-    // });
+    this.attachDefaultTrackEventListeners();
 
     this.setActiveTrack(track);
 
