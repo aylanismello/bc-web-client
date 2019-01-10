@@ -95,7 +95,11 @@ class App extends Component {
     return activeCollectionIdx;
   }
 
-  setCollections(collections, isPreselectedCollection, preselectedCollectionIdx) {
+  setCollections(
+    collections,
+    isPreselectedCollection,
+    preselectedCollectionIdx
+  ) {
     this.setState({ collections }, () => {
       if (isPreselectedCollection) {
         this.setState({ preselectedCollectionIdx });
@@ -191,22 +195,27 @@ class App extends Component {
     //   window.innerWidth || 0
     // );
     // if (width <= 950) {
-      // debugger;
+    // debugger;
     this.setState({ playerOpen: true, playerForcedOpen: true });
 
     // document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
     console.log('begin scrolling action');
-    document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
+    document
+      .getElementById(`${collectionIdx}`)
+      .scrollIntoView({ behavior: 'smooth' });
   }
 
   togglePlay() {
-    this.setState({ playing: !this.state.playing, playerForcedOpen: false }, () => {
-      if (this.state.playing) {
-        this.burnCartelPlayer.resume();
-      } else {
-        this.burnCartelPlayer.pause();
+    this.setState(
+      { playing: !this.state.playing, playerForcedOpen: false },
+      () => {
+        if (this.state.playing) {
+          this.burnCartelPlayer.resume();
+        } else {
+          this.burnCartelPlayer.pause();
+        }
       }
-    });
+    );
   }
 
   toggleRepeat() {
@@ -234,7 +243,11 @@ class App extends Component {
             closeModal={() =>
               this.setState({ modalOpen: false, didCopy: false })
             }
-            setDidCopy={() => this.setState({ didCopy: true })}
+            setDidCopy={() =>
+              this.setState({
+                didCopy: true
+              })
+            }
             didCopy={this.state.didCopy}
           />
 
@@ -262,7 +275,9 @@ class App extends Component {
                     copiedEpisodeNum: episodeNum
                   })
                 }
-                scrollToPreselectedItem={this.state.preselectedCollectionIdx !== null}
+                scrollToPreselectedItem={
+                  this.state.preselectedCollectionIdx !== null
+                }
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
@@ -316,7 +331,13 @@ class App extends Component {
           <Footer loadingCollections={this.state.loading.collections} />
           {playerOpen && (
             <BottomNav
-              track={this.state.playerForcedOpen ? (this.state.collections[this.state.preselectedCollectionIdx].tracks[1]) : track}
+              track={
+                this.state.playerForcedOpen &&
+                this.state.preselectedCollectionIdx !== null
+                  ? this.state.collections[this.state.preselectedCollectionIdx]
+                      .tracks[1]
+                  : track
+              }
               playing={playing}
               playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
