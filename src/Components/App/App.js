@@ -49,9 +49,9 @@ class App extends Component {
       before: '',
       after: ''
     },
-    playerOpen: false,
-    playerForcedOpen: false,
-    preselectedCollectionIdx: null,
+    playerOpen: true,
+    initialCollectionIdx: 0,
+    hasBeenPlayed: false,
     playing: false,
     repeat: false,
     visualize: false,
@@ -98,11 +98,11 @@ class App extends Component {
   setCollections(
     collections,
     isPreselectedCollection,
-    preselectedCollectionIdx
+    initialCollectionIdx
   ) {
     this.setState({ collections }, () => {
       if (isPreselectedCollection) {
-        this.setState({ preselectedCollectionIdx });
+        this.setState({ initialCollectionIdx });
       }
     });
   }
@@ -111,7 +111,7 @@ class App extends Component {
   }
 
   setTrack(track) {
-    this.setState({ track });
+    this.setState({ track, hasBeenPlayed: true });
   }
 
   setError(error) {
@@ -140,6 +140,7 @@ class App extends Component {
   }
   switchToCollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
+    this.setState({ hasBeenPlayed: true });
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
@@ -189,13 +190,8 @@ class App extends Component {
   }
 
   autoFocusPreselectedCollection(collectionIdx) {
-    // we onlu run this if this this.state.preselectedCollection !== null
     const hasPreslectedCollection = this.state.preselectedCollection !== null;
     if (hasPreslectedCollection) {
-      this.setState({
-        playerOpen: true,
-        playerForcedOpen: true
-      });
       this.scrollToCollection(collectionIdx);
     }
   }
@@ -215,16 +211,23 @@ class App extends Component {
   }
 
   togglePlay() {
-    this.setState(
-      { playing: !this.state.playing, playerForcedOpen: false },
-      () => {
-        if (this.state.playing) {
-          this.burnCartelPlayer.resume();
-        } else {
-          this.burnCartelPlayer.pause();
+    if (!this.state.hasBeenPlayed) {
+      this.switchToCollection(
+        this.state.initialCollectionIdx,
+        this.state.collections
+      );
+    } else {
+      this.setState(
+        { playing: !this.state.playing },
+        () => {
+          if (this.state.playing) {
+            this.burnCartelPlayer.resume();
+          } else {
+            this.burnCartelPlayer.pause();
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   toggleRepeat() {
@@ -241,8 +244,18 @@ class App extends Component {
     this.setState({ visualize: !this.state.visualize });
   }
 
+  getCurrentTrack() {
+    let currentTrack = this.state.track;
+    const { initialCollectionIdx, collections } = this.state;
+    if (!this.state.hasBeenPlayed && collections[initialCollectionIdx] && collections[initialCollectionIdx].tracks) {
+      currentTrack = collections[initialCollectionIdx].tracks[1];
+    }
+    return currentTrack;
+  }
+
   render() {
-    const { track, playerOpen, playing } = this.state;
+    const track = this.getCurrentTrack();
+    const { playerOpen, playing } = this.state;
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
@@ -308,27 +321,10 @@ class App extends Component {
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}
-                disablePlayerForcedOpen={() =>
-                  this.setState({ playerForcedOpen: false })
-                }
-                togglePlay={() => {
-                  if (this.state.playerForcedOpen) {
-                    this.switchToCollection(
-                      this.state.preselectedCollectionIdx,
-                      this.state.collections
-                    );
-                  } else if (this.state.playerOpen) {
-                    this.togglePlay();
-                  } else {
-                    this.switchToCollection(
-                      this.state.preselectedCollectionIdx,
-                      this.state.collections
-                    );
-                  }
-                }}
+                disablePlayerForcedOpen={() => {}}
+                togglePlay={() => this.togglePlay()}
                 playerOpen={this.state.playerOpen}
                 collections={this.state.collections}
-                playerForcedOpen={this.state.playerForcedOpen}
                 trackLoading={this.state.loading.track}
                 setLoading={(resource, state) =>
                   this.setLoading(resource, state)
@@ -345,16 +341,7 @@ class App extends Component {
               currentTime={this.state.currentTime}
               trackLoading={this.state.loading.track}
               togglePlay={() => {
-                // rewrite this based on new auto open player condition
-                if (this.state.playerForcedOpen) {
-                  this.switchToCollection(
-                    this.state.preselectedCollectionIdx,
-                    this.state.collections
-                  );
-                  this.setState({ playerForcedOpen: false });
-                } else {
-                  this.togglePlay();
-                }
+                this.togglePlay();
               }}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
               toggleRepeat={() => this.toggleRepeat()}
