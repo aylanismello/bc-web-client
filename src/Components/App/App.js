@@ -111,7 +111,7 @@ class App extends Component {
   }
 
   setTrack(track) {
-    this.setState({ track, playerForcedOpen: false });
+    this.setState({ track });
   }
 
   setError(error) {
@@ -140,7 +140,6 @@ class App extends Component {
   }
   switchToCollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
-    this.setState({ playerForcedOpen: false });
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
@@ -189,29 +188,30 @@ class App extends Component {
       });
   }
 
+  autoFocusPreselectedCollection(collectionIdx) {
+    // we onlu run this if this this.state.preselectedCollection !== null
+    const hasPreslectedCollection = this.state.preselectedCollection !== null;
+    if (hasPreslectedCollection) {
+      this.setState({
+        playerOpen: true,
+        playerForcedOpen: true
+      });
+      this.scrollToCollection(collectionIdx);
+    }
+  }
+
   scrollToCollection(collectionIdx) {
     const width = Math.max(
       document.documentElement.clientWidth,
       window.innerWidth || 0
     );
     const isMobile = width <= 950;
-    // debugger;
-    this.setState({
-      playerOpen: true,
-      playerForcedOpen: true
-    });
 
-    if (this.state.preselectedCollectionIdx !== null && isMobile) {
-      console.log('begin scrolling action');
+    if (isMobile) {
       document
         .getElementById(`${collectionIdx}`)
         .scrollIntoView({ behavior: 'smooth' });
-        // .scrollIntoView(true);
     }
-
-    // this.setState({ playerOpen: true, playerForcedOpen: true });
-
-    // document.getElementById(`${collectionIdx}`).scrollIntoView({ behavior: 'smooth' });
   }
 
   togglePlay() {
@@ -302,7 +302,9 @@ class App extends Component {
                 }
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
-                scrollToCollection={idx => this.scrollToCollection(idx)}
+                scrollToCollection={idx =>
+                  this.autoFocusPreselectedCollection(idx)
+                }
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}
@@ -337,13 +339,7 @@ class App extends Component {
           <Footer loadingCollections={this.state.loading.collections} />
           {playerOpen && (
             <BottomNav
-              track={
-                this.state.playerForcedOpen &&
-                this.state.preselectedCollectionIdx !== null
-                  ? this.state.collections[this.state.preselectedCollectionIdx]
-                      .tracks[1]
-                  : track
-              }
+              track={track}
               playing={playing}
               playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
