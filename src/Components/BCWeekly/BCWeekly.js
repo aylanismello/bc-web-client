@@ -156,7 +156,6 @@ class BCWeekly extends React.Component {
                 playTrack={(track, collection) => {
                   this.playTrack(track, collection);
                 }}
-                turnOffCanSwitchCollection={this.props.turnOffCanSwitchCollection}
                 incrementCollectionImagesLoaded={() =>
                   this.setState(
                     {

@@ -307,9 +307,6 @@ class App extends Component {
                   )
                 }
                 canShowTracklist={this.state.canShowTracklist}
-                turnOffCanSwitchCollection={() => {
-                  this.setState({ canShowTracklist: false });
-                }}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}

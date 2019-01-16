@@ -17,14 +17,6 @@ class BCWeeklyItem extends React.Component {
     this.currentTracklist = [];
   }
 
-  componentWillUpdate(nextProps) {
-    if (!this.props.canShowTracklist && nextProps.canShowTracklist) {
-      console.log('NOW WE CAN SWITCH COLLECTION TRACKSLISTS BECAUSE THEY HAVE BEEN SCROLLED TO');
-      // this.currentTracklist = collection.tracks.slice(1);
-      // this.props.turnOffCanSwitchCollection();
-    }
-  }
-
   render() {
     const {
       collection,
@@ -40,9 +32,7 @@ class BCWeeklyItem extends React.Component {
     const { artwork_url, collection_num } = collection;
 
     const style2 = active || this.state.hover ? 'visible' : 'hidden';
-    if (active && collection.tracks) {
-      // console.log('collection tracks are now available');
-    }
+
     return (
       <div
         className="BCWeeklyItem"
@@ -80,18 +70,7 @@ class BCWeeklyItem extends React.Component {
             />
           </div>
         </div>
-
-        {/* <Responsive maxWidth={950}>
-          {active && this.state.currentTracklist && canShowTracklist && (
-            <BCWeeklyTracklist
-              idx={idx}
-              tracks={this.state.currentTracklist.slice(1)}
-              activeTrack={activeTrack}
-              playTrack={playTrack}
-              collection={collection}
-            />
-          )}
-        </Responsive> */}
+        
         <Responsive maxWidth={950}>
           {active && collection.tracks && canShowTracklist && (
             <BCWeeklyTracklist
