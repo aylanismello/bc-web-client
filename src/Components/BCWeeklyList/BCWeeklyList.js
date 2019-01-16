@@ -11,7 +11,7 @@ const BCWeeklyList = ({
   playing,
   handleModalOpen,
   incrementCollectionImagesLoaded,
-  canShowTracklist
+  showTracklist
 }) => {
   return (
     <div className="BCWeeklyList">
@@ -24,7 +24,7 @@ const BCWeeklyList = ({
             playTrack={playTrack}
             active={activeCollectionIdx === idx}
             playing={playing}
-            canShowTracklist={canShowTracklist}
+            showTracklist={showTracklist}
             key={idx}
             idx={idx}
             incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}

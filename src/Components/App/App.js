@@ -58,7 +58,7 @@ class App extends Component {
     modalOpen: false,
     didCopy: false,
     copiedEpisodeNum: null,
-    canShowTracklist: false,
+    showTracklist: false,
     loading: {
       collections: true,
       track: false,
@@ -138,7 +138,7 @@ class App extends Component {
   switchToCollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
     this.setState({
-      hasBeenPlayed: true, canShowTracklist: false
+      hasBeenPlayed: true
     });
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
@@ -196,9 +196,10 @@ class App extends Component {
     );
     const isMobile = width <= 950;
 
-    if (isMobile) {
+    if (isMobile && window.location.href.includes('-')) {
+      console.log('do shit');
       document.getElementById(`${collectionIdx}`).scrollIntoView();
-      this.setState({ canShowTracklist: true });
+      this.setState({ showTracklist: true });
     }
   }
 
@@ -306,7 +307,7 @@ class App extends Component {
                     playOnLoad
                   )
                 }
-                canShowTracklist={this.state.canShowTracklist}
+                showTracklist={this.state.showTracklist}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}

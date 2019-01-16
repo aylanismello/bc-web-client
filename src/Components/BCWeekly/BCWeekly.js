@@ -168,7 +168,7 @@ class BCWeekly extends React.Component {
                     }
                   )
                 }
-                canShowTracklist={this.props.canShowTracklist}
+                showTracklist={this.props.showTracklist}
                 updateActiveCollection={collection_num => {
                   this.playOnLoadCollectionIfNeeded(collection_num);
                   history.push(`/weekly-${collection_num}`);

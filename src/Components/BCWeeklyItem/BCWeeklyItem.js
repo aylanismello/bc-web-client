@@ -25,7 +25,7 @@ class BCWeeklyItem extends React.Component {
       idx,
       playTrack,
       activeTrack,
-      canShowTracklist,
+      showTracklist,
       handleModalOpen,
       incrementCollectionImagesLoaded
     } = this.props;
@@ -72,7 +72,7 @@ class BCWeeklyItem extends React.Component {
         </div>
         
         <Responsive maxWidth={950}>
-          {active && collection.tracks && canShowTracklist && (
+          {active && collection.tracks && showTracklist && (
             <BCWeeklyTracklist
               idx={idx}
               tracks={collection.tracks.slice(1)}
