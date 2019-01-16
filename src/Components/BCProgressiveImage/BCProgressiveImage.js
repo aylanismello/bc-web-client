@@ -56,7 +56,7 @@ class BCProgressiveImage extends React.Component {
 {/* you dont want to lazy load the banner image :( */}
         {/* {isCollectionItem ? (<LazyLoad> {lazyLoadImage()} </LazyLoad>) : lazyLoadImage() } */}
         {/* {lazyLoadImage()} */}
-        <LazyLoad>
+        <LazyLoad offset={200}>
           {lazyLoadImage()}
         </LazyLoad>
       </div>
