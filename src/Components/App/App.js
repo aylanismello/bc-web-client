@@ -140,10 +140,14 @@ class App extends Component {
     this.setState({
       hasBeenPlayed: true
     });
+    // WE ALWAYS scroll to collection
+    // when we're waiting for the tracks and when they're available,
+    // because we need to recenter the track item after the tracks rende
+    this.scrollToCollection(collectionIdx);
+    
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
-      this.scrollToCollection(collectionIdx);
       this.burnCartelPlayer.playCollection(
         collections[collectionIdx],
         collections
