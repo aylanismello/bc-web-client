@@ -18,7 +18,7 @@ class BCProgressiveImage extends React.Component {
     const { loaded } = this.state;
     const opaque = showText ? 'opaque' : '';
 
-    const src = `http://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
+    const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
 
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
