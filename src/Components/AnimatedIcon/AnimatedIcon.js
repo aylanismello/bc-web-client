@@ -14,6 +14,7 @@ class AnimatedIcon extends React.Component {
   }
 
   componentDidMount() {
+    // eslint-disable-next-line
     if (this.svgScript) window.eval(this.svgScript[1]);
   }
 

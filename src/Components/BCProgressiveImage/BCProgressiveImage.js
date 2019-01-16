@@ -1,4 +1,5 @@
 import React from 'react';
+import LazyLoad from 'react-lazyload';
 import './BCProgressiveImage.scss';
 import placeholder from './placeholder.svg';
 
@@ -20,6 +21,23 @@ class BCProgressiveImage extends React.Component {
 
     const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
 
+    const lazyLoadImage = () => (
+      <img
+        className={`BCProgressiveImage ${opaque} ${
+          isCollectionItem
+            ? 'BCWeeklyItem-cover-image'
+            : 'BCSplotlightItem-cover-image'
+        }`}
+        alt={artwork_url}
+        style={loaded ? {} : { visibility: 'hidden' }}
+        src={src}
+        onLoad={() => {
+          this.setState({ loaded: true });
+          onLoad();
+        }}
+      />
+    );
+
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
       <div>
@@ -34,20 +52,13 @@ class BCProgressiveImage extends React.Component {
             src={placeholder}
           />
         ) : null}
-        <img
-          className={`BCProgressiveImage ${opaque} ${
-            isCollectionItem
-              ? 'BCWeeklyItem-cover-image'
-              : 'BCSplotlightItem-cover-image'
-          }`}
-          alt={artwork_url}
-          style={loaded ? {} : { visibility: 'hidden' }}
-          src={src}
-          onLoad={() => {
-            this.setState({ loaded: true });
-            onLoad();
-          }}
-        />
+
+{/* you dont want to lazy load the banner image :( */}
+        {/* {isCollectionItem ? (<LazyLoad> {lazyLoadImage()} </LazyLoad>) : lazyLoadImage() } */}
+        {/* {lazyLoadImage()} */}
+        <LazyLoad>
+          {lazyLoadImage()}
+        </LazyLoad>
       </div>
     );
   }
@@ -58,40 +69,5 @@ BCProgressiveImage.defaultProps = {
   isCollectionItem: false,
   showText: false
 };
-
-//   return (
-//     // this needs to be the responsive part
-
-//     <div className="BCProgressiveImage">
-//       <ProgressiveImage
-//         className="BCProgressiveImage-img"
-//         src={src}
-//         placeholder=""
-//       >
-//         {(loadedSrc, loading) => {
-//           return loading ? (
-//             <div
-//               className="placeholder"
-//               style={{
-//                 backgroundColor: IMAGE_COLOR,
-//                 width: '100%',
-//                 height: '100%'
-//               }}
-//             />
-//           ) : (
-//             <img
-//               // god this is ugly but whatever
-//               className={`BCProgressiveImage-img ${opaque} ${isCollectionItem &&
-//                 'BCWeeklyItem-cover-image'}`}
-//               alt={artwork_url}
-//               src={loadedSrc}
-//             />
-//           );
-//         }}
-//       </ProgressiveImage>
-//       {children}
-//     </div>
-//   );
-// };
 
 export default BCProgressiveImage;

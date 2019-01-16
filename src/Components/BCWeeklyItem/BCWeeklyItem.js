@@ -47,6 +47,7 @@ class BCWeeklyItem extends React.Component {
           {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
           <BCProgressiveImage
             showText={active || this.state.hover}
+            isCollectionItem
             artwork_url={artwork_url}
             onLoad={() => {
               if (active) {

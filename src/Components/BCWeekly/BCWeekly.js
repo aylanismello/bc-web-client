@@ -52,7 +52,6 @@ class BCWeekly extends React.Component {
         const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
         
         this.props.setCollections(collections, isPreselectedCollection, this.preselectedCollectionIdx);
-        console.log('set initial collections to state');
         this.preselectedCollectionWeekNum = collections[this.preselectedCollectionIdx].collection_num;
       })
       .catch(error => {
