@@ -13,30 +13,13 @@ class BCProgressiveImage extends React.Component {
       max_width,
       artwork_url,
       showText,
-      onLoad,
+      incrementCollectionImagesLoaded,
       isCollectionItem
     } = this.props;
     const { loaded } = this.state;
     const opaque = showText ? 'opaque' : '';
 
     const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
-
-    const lazyLoadImage = () => (
-      <img
-        className={`BCProgressiveImage ${opaque} ${
-          isCollectionItem
-            ? 'BCWeeklyItem-cover-image'
-            : 'BCSplotlightItem-cover-image'
-        }`}
-        alt={artwork_url}
-        style={loaded ? {} : { visibility: 'hidden' }}
-        src={src}
-        onLoad={() => {
-          this.setState({ loaded: true });
-          onLoad();
-        }}
-      />
-    );
 
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
@@ -48,16 +31,27 @@ class BCProgressiveImage extends React.Component {
                 ? 'BCWeeklyItem-cover-image'
                 : 'BCSplotlightItem-cover-image'
             }`}
+            onLoad={incrementCollectionImagesLoaded}
             alt={artwork_url}
             src={placeholder}
           />
         ) : null}
 
-{/* you dont want to lazy load the banner image :( */}
-        {/* {isCollectionItem ? (<LazyLoad> {lazyLoadImage()} </LazyLoad>) : lazyLoadImage() } */}
-        {/* {lazyLoadImage()} */}
-        <LazyLoad offset={200}>
-          {lazyLoadImage()}
+        <LazyLoad height="auto" offset={200}>
+          <img
+            className={`BCProgressiveImage ${opaque} ${
+              isCollectionItem
+                ? 'BCWeeklyItem-cover-image'
+                : 'BCSplotlightItem-cover-image'
+            }`}
+            alt={artwork_url}
+            style={loaded ? {} : { visibility: 'hidden' }}
+            src={src}
+            onLoad={() => {
+              this.setState({ loaded: true });
+              incrementCollectionImagesLoaded();
+            }}
+          />
         </LazyLoad>
       </div>
     );
@@ -65,9 +59,9 @@ class BCProgressiveImage extends React.Component {
 }
 
 BCProgressiveImage.defaultProps = {
-  onLoad: () => {},
   isCollectionItem: false,
-  showText: false
+  showText: false,
+  incrementCollectionImagesLoaded: () => {}
 };
 
 export default BCProgressiveImage;

@@ -5,10 +5,25 @@ import BCProgressiveImage from '../BCProgressiveImage';
 import ShareButton from '../ShareButton';
 import './BCWeeklyItem.scss';
 
+// we have to remove the old tracklist and add the new one at exactly the same time.
+
 class BCWeeklyItem extends React.Component {
   state = {
     hover: false
   };
+
+  constructor(props) {
+    super(props);
+    this.currentTracklist = [];
+  }
+
+  componentWillUpdate(nextProps) {
+    if (!this.props.canShowTracklist && nextProps.canShowTracklist) {
+      console.log('NOW WE CAN SWITCH COLLECTION TRACKSLISTS BECAUSE THEY HAVE BEEN SCROLLED TO');
+      // this.currentTracklist = collection.tracks.slice(1);
+      // this.props.turnOffCanSwitchCollection();
+    }
+  }
 
   render() {
     const {
@@ -18,12 +33,16 @@ class BCWeeklyItem extends React.Component {
       idx,
       playTrack,
       activeTrack,
+      canShowTracklist,
       handleModalOpen,
-      scrollToCollection
+      incrementCollectionImagesLoaded
     } = this.props;
     const { artwork_url, collection_num } = collection;
 
     const style2 = active || this.state.hover ? 'visible' : 'hidden';
+    if (active && collection.tracks) {
+      // console.log('collection tracks are now available');
+    }
     return (
       <div
         className="BCWeeklyItem"
@@ -49,11 +68,7 @@ class BCWeeklyItem extends React.Component {
             showText={active || this.state.hover}
             isCollectionItem
             artwork_url={artwork_url}
-            onLoad={() => {
-              if (active) {
-                scrollToCollection(idx);
-              }
-            }}
+            incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
             max_width={600}
           />
           <div className={`BCWeeklyItem-cover-text ${style2}`}>
@@ -66,8 +81,19 @@ class BCWeeklyItem extends React.Component {
           </div>
         </div>
 
+        {/* <Responsive maxWidth={950}>
+          {active && this.state.currentTracklist && canShowTracklist && (
+            <BCWeeklyTracklist
+              idx={idx}
+              tracks={this.state.currentTracklist.slice(1)}
+              activeTrack={activeTrack}
+              playTrack={playTrack}
+              collection={collection}
+            />
+          )}
+        </Responsive> */}
         <Responsive maxWidth={950}>
-          {active && collection.tracks && (
+          {active && collection.tracks && canShowTracklist && (
             <BCWeeklyTracklist
               idx={idx}
               tracks={collection.tracks.slice(1)}

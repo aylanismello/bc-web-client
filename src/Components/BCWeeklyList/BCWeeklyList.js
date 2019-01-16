@@ -10,22 +10,26 @@ const BCWeeklyList = ({
   activeTrack,
   playing,
   handleModalOpen,
-  scrollToCollection
+  incrementCollectionImagesLoaded,
+  canShowTracklist,
+  turnOffCanSwitchCollection
 }) => {
   return (
     <div className="BCWeeklyList">
       <div className="BCWeeklyList-grid">
         {collections.map((collection, idx) => (
           <BCWeeklyItem
-            scrollToCollection={scrollToCollection}
+            turnOffCanSwitchCollection={turnOffCanSwitchCollection}
             handleModalOpen={handleModalOpen}
             activeTrack={activeTrack}
             collection={collection}
             playTrack={playTrack}
             active={activeCollectionIdx === idx}
             playing={playing}
+            canShowTracklist={canShowTracklist}
             key={idx}
             idx={idx}
+            incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
             setAsActiveItem={updateActiveCollection}
           />
         ))}

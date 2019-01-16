@@ -15,17 +15,19 @@ const queryString = require('query-string');
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
 class BCWeekly extends React.Component {
-
   constructor(props) {
     super(props);
-    this.props.burnCartelPlayer.switchToCollection = (collectionIdx, collections) =>
-      this.autoSwitchCollections(collectionIdx, collections);
+    this.props.burnCartelPlayer.switchToCollection = (
+      collectionIdx,
+      collections
+    ) => this.autoSwitchCollections(collectionIdx, collections);
 
     this.preselectedCollectionPlayed = false;
   }
 
   state = Object.freeze({
-    isFromEmail: false
+    isFromEmail: false,
+    collectionImagesLoaded: 0
   });
 
   componentWillMount() {
@@ -50,9 +52,14 @@ class BCWeekly extends React.Component {
         );
 
         const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
-        
-        this.props.setCollections(collections, isPreselectedCollection, this.preselectedCollectionIdx);
-        this.preselectedCollectionWeekNum = collections[this.preselectedCollectionIdx].collection_num;
+
+        this.props.setCollections(
+          collections,
+          isPreselectedCollection,
+          this.preselectedCollectionIdx
+        );
+        this.preselectedCollectionWeekNum =
+          collections[this.preselectedCollectionIdx].collection_num;
       })
       .catch(error => {
         this.props.setError(error.message);
@@ -82,9 +89,15 @@ class BCWeekly extends React.Component {
   }
 
   playOnLoadCollectionIfNeeded(collection_num) {
-    if (!this.preselectedCollectionPlayed && this.preselectedCollectionWeekNum === collection_num) {
+    if (
+      !this.preselectedCollectionPlayed &&
+      this.preselectedCollectionWeekNum === collection_num
+    ) {
       this.preselectedCollectionPlayed = true;
-      this.props.switchToCollection(this.preselectedCollectionIdx, this.props.collections);
+      this.props.switchToCollection(
+        this.preselectedCollectionIdx,
+        this.props.collections
+      );
     }
   }
 
@@ -95,6 +108,12 @@ class BCWeekly extends React.Component {
       this.props.collections,
       this.props.setPlaying
     );
+  }
+
+  scrollToCollectionOnImagesLoad() {
+    if (this.state.collectionImagesLoaded === this.props.collections.length) {
+      this.props.scrollToCollection(this.getActiveCollectionIdx());
+    }
   }
 
   render() {
@@ -115,7 +134,9 @@ class BCWeekly extends React.Component {
             <Wrapper>
               <Responsive minWidth={950}>
                 <BCSpotlightItem
-                  collection={this.props.collections[this.getActiveCollectionIdx()]}
+                  collection={
+                    this.props.collections[this.getActiveCollectionIdx()]
+                  }
                   playing={this.props.playing}
                   trackLoading={this.props.trackLoading}
                   width={450}
@@ -126,7 +147,6 @@ class BCWeekly extends React.Component {
                 />
               </Responsive>
               <BCWeeklyList
-                scrollToCollection={this.props.scrollToCollection}
                 handleModalOpen={this.props.handleModalOpen}
                 collections={this.props.collections}
                 playing={this.props.playing}
@@ -136,6 +156,20 @@ class BCWeekly extends React.Component {
                 playTrack={(track, collection) => {
                   this.playTrack(track, collection);
                 }}
+                turnOffCanSwitchCollection={this.props.turnOffCanSwitchCollection}
+                incrementCollectionImagesLoaded={() =>
+                  this.setState(
+                    {
+                      collectionImagesLoaded:
+                        this.state.collectionImagesLoaded + 1
+                    },
+                    () => {
+                      // console.log(`${this.state.collectionImagesLoaded} / ${this.props.collections.length} done`);
+                      this.scrollToCollectionOnImagesLoad();
+                    }
+                  )
+                }
+                canShowTracklist={this.props.canShowTracklist}
                 updateActiveCollection={collection_num => {
                   this.playOnLoadCollectionIfNeeded(collection_num);
                   history.push(`/weekly-${collection_num}`);

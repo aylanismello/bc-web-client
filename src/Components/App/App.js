@@ -58,6 +58,7 @@ class App extends Component {
     modalOpen: false,
     didCopy: false,
     copiedEpisodeNum: null,
+    canShowTracklist: false,
     loading: {
       collections: true,
       track: false,
@@ -95,11 +96,7 @@ class App extends Component {
     return activeCollectionIdx;
   }
 
-  setCollections(
-    collections,
-    isPreselectedCollection,
-    initialCollectionIdx
-  ) {
+  setCollections(collections, isPreselectedCollection, initialCollectionIdx) {
     this.setState({ collections }, () => {
       if (isPreselectedCollection) {
         this.setState({ initialCollectionIdx });
@@ -140,10 +137,13 @@ class App extends Component {
   }
   switchToCollection(collectionIdx, collections, playOnLoad = true) {
     // this is a combo FETCH + PLAY operation
-    this.setState({ hasBeenPlayed: true });
+    this.setState({
+      hasBeenPlayed: true, canShowTracklist: false
+    });
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else {
+      this.scrollToCollection(collectionIdx);
       this.burnCartelPlayer.playCollection(
         collections[collectionIdx],
         collections
@@ -178,8 +178,8 @@ class App extends Component {
             ]
           },
           () => {
-            // BCWeekly.scrollToCollection(collectionIdx);
             this.setLoading('collectionTracks', false);
+            this.scrollToCollection(collectionIdx);
           }
         );
       })
@@ -187,13 +187,6 @@ class App extends Component {
         this.setError(error.message);
         this.setLoading('collectionTracks', false);
       });
-  }
-
-  autoFocusPreselectedCollection(collectionIdx) {
-    const hasPreslectedCollection = this.state.preselectedCollection !== null;
-    if (hasPreslectedCollection) {
-      this.scrollToCollection(collectionIdx);
-    }
   }
 
   scrollToCollection(collectionIdx) {
@@ -204,9 +197,8 @@ class App extends Component {
     const isMobile = width <= 950;
 
     if (isMobile) {
-      document
-        .getElementById(`${collectionIdx}`)
-        .scrollIntoView({ behavior: 'smooth' });
+      document.getElementById(`${collectionIdx}`).scrollIntoView();
+      this.setState({ canShowTracklist: true });
     }
   }
 
@@ -217,16 +209,13 @@ class App extends Component {
         this.state.collections
       );
     } else {
-      this.setState(
-        { playing: !this.state.playing },
-        () => {
-          if (this.state.playing) {
-            this.burnCartelPlayer.resume();
-          } else {
-            this.burnCartelPlayer.pause();
-          }
+      this.setState({ playing: !this.state.playing }, () => {
+        if (this.state.playing) {
+          this.burnCartelPlayer.resume();
+        } else {
+          this.burnCartelPlayer.pause();
         }
-      );
+      });
     }
   }
 
@@ -247,7 +236,11 @@ class App extends Component {
   getCurrentTrack() {
     let currentTrack = this.state.track;
     const { initialCollectionIdx, collections } = this.state;
-    if (!this.state.hasBeenPlayed && collections[initialCollectionIdx] && collections[initialCollectionIdx].tracks) {
+    if (
+      !this.state.hasBeenPlayed &&
+      collections[initialCollectionIdx] &&
+      collections[initialCollectionIdx].tracks
+    ) {
       currentTrack = collections[initialCollectionIdx].tracks[1];
     }
     return currentTrack;
@@ -313,11 +306,13 @@ class App extends Component {
                     playOnLoad
                   )
                 }
+                canShowTracklist={this.state.canShowTracklist}
+                turnOffCanSwitchCollection={() => {
+                  this.setState({ canShowTracklist: false });
+                }}
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
-                scrollToCollection={idx =>
-                  this.autoFocusPreselectedCollection(idx)
-                }
+                scrollToCollection={idx => this.scrollToCollection(idx)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}
