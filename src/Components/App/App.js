@@ -311,20 +311,7 @@ class App extends Component {
   }
 
   setModalOpen(modalOpen) {
-
-    this.setState({ modalOpen }, () => {
-      if (modalOpen) {
-        this.targetElement = document.querySelector('.CollectionModal-content');
-        if (this.targetElement) disableBodyScroll(this.targetElement);
-        // document.body.classList.add('modal-open');
-      } else {
-        // debugger;
-        // this.targetElement = document.querySelector('.CollectionModal');
-        clearAllBodyScrollLocks();
-        // enableBodyScroll(this.targetElement);
-        // document.body.classList.remove('modal-open');
-      }
-    });
+    this.setState({ modalOpen });
     // https://stackoverflow.com/questions/9538868/prevent-body-from-scrolling-when-a-modal-is-opened
   }
 
