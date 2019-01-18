@@ -3,6 +3,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Responsive from 'react-responsive';
 import axios from 'axios';
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks
+} from 'body-scroll-lock';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import CollectionModal from '../CollectionModal';
@@ -112,9 +117,9 @@ class App extends Component {
       if (isPreselectedCollection && this.isMobile()) {
         this.setState({
           initialCollectionIdx,
-          openCollection: { idx: initialCollectionIdx, num: collectionNum },
-          modalOpen: true
+          openCollection: { idx: initialCollectionIdx, num: collectionNum }
         });
+        this.setModalOpen(true);
       } else if (isPreselectedCollection) {
         this.setState({
           initialCollectionIdx,
@@ -306,13 +311,18 @@ class App extends Component {
   }
 
   setModalOpen(modalOpen) {
-    this.setState({ modalOpen });
+    this.setState({ modalOpen }, () => {
+      if (modalOpen) {
+        this.targetElement = document.querySelector('.CollectionModal');
+        disableBodyScroll(this.targetElement);
+        // document.body.classList.add('modal-open');
+      } else {
+        // this.targetElement = document.querySelector('.CollectionModal');
+        enableBodyScroll(this.targetElement);
+        // document.body.classList.remove('modal-open');
+      }
+    });
     // https://stackoverflow.com/questions/9538868/prevent-body-from-scrolling-when-a-modal-is-opened
-    if (modalOpen) {
-      document.body.classList.add('modal-open');
-    } else {
-      document.body.classList.remove('modal-open');
-    }
   }
 
   render() {
