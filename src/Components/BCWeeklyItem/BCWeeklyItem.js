@@ -1,5 +1,6 @@
 import React from 'react';
 import Responsive from 'react-responsive';
+import LoadingIcon from '../LoadingIcon';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './BCWeeklyItem.scss';
@@ -26,6 +27,7 @@ class BCWeeklyItem extends React.Component {
       activeTrack,
       showTracklist,
       handleModalOpen,
+      loadingCollectionTracks,
       incrementCollectionImagesLoaded
     } = this.props;
     const { artwork_url, collection_num } = collection;
@@ -62,14 +64,18 @@ class BCWeeklyItem extends React.Component {
           />
           <div className={`BCWeeklyItem-cover-text ${style2}`}>
             <h4> BURN CARTEL WEEKLY </h4>
+            {loadingCollectionTracks ?
+            <LoadingIcon width={20} />
+            :
             <div className="BCWeeklyItem-line" />
+            }
             <h4> WEEK {collection_num} </h4>
             {/* <ShareButton
               handleModalOpen={() => handleModalOpen(collection_num)}
             /> */}
           </div>
         </div>
-        
+
         {/* <Responsive maxWidth={950}>
           {active && collection.tracks && showTracklist && (
             <BCWeeklyTracklist

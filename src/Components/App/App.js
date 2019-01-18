@@ -324,7 +324,7 @@ class App extends Component {
           <Responsive maxWidth={950}>
             {/* maybe don't open this until this.state.loading.collectionTracks is true, and show loading icon in the meantime */}
             <CollectionModal
-              modalOpen={this.state.modalOpen}
+              modalOpen={this.state.modalOpen && !this.state.loading.collectionTracks}
               collectionNum={this.state.openCollection.num}
               closeModal={() => this.setModalOpen(false)}
               collection={this.state.collections[this.state.openCollection.idx]}

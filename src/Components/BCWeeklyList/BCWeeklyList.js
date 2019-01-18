@@ -1,6 +1,6 @@
-import React from 'react';
-import BCWeeklyItem from '../BCWeeklyItem';
-import './BCWeeklyList.scss';
+import React from "react";
+import BCWeeklyItem from "../BCWeeklyItem";
+import "./BCWeeklyList.scss";
 
 const BCWeeklyList = ({
   collections,
@@ -11,7 +11,8 @@ const BCWeeklyList = ({
   playing,
   handleModalOpen,
   incrementCollectionImagesLoaded,
-  showTracklist
+  showTracklist,
+  loadingCollectionTracks
 }) => {
   return (
     <div className="BCWeeklyList">
@@ -29,6 +30,7 @@ const BCWeeklyList = ({
             idx={idx}
             incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
             updateActiveCollection={updateActiveCollection}
+            loadingCollectionTracks={loadingCollectionTracks}
           />
         ))}
       </div>
