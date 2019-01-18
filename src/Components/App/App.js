@@ -315,13 +315,13 @@ class App extends Component {
     this.setState({ modalOpen }, () => {
       if (modalOpen) {
         this.targetElement = document.querySelector('.CollectionModal-content');
-        disableBodyScroll(this.targetElement);
+        if (this.targetElement) disableBodyScroll(this.targetElement);
         // document.body.classList.add('modal-open');
       } else {
         // debugger;
         // this.targetElement = document.querySelector('.CollectionModal');
         clearAllBodyScrollLocks();
-        enableBodyScroll(this.targetElement);
+        // enableBodyScroll(this.targetElement);
         // document.body.classList.remove('modal-open');
       }
     });
