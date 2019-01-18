@@ -12,7 +12,9 @@ html {
 }
 
 .modal-open {
-  overflow: hidden;
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
 }
 
 p,
