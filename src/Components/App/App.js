@@ -32,6 +32,7 @@ class App extends Component {
 
   constructor(props) {
     super(props);
+    this.setInitialCollections = this.setInitialCollections.bind(this);
     this.burnCartelPlayer = new BurnCartelPlayer(
       track => this.setTrack(track),
       play => this.setPlaying(play),
@@ -44,11 +45,14 @@ class App extends Component {
   state = Object.freeze({
     track: {},
     collections: [],
-    isFromEmail: false,
     currentTime: {
       raw: 0,
       before: '',
       after: ''
+    },
+    openCollection: {
+      idx: 0,
+      num: null
     },
     playerOpen: true,
     initialCollectionIdx: 0,
@@ -101,11 +105,21 @@ class App extends Component {
   setInitialCollections(
     collections,
     isPreselectedCollection,
-    initialCollectionIdx
+    initialCollectionIdx,
+    collectionNum
   ) {
     this.setState({ collections }, () => {
-      if (isPreselectedCollection) {
-        this.setState({ initialCollectionIdx });
+      if (isPreselectedCollection && this.isMobile()) {
+        this.setState({
+          initialCollectionIdx,
+          openCollection: { idx: initialCollectionIdx, num: collectionNum },
+          modalOpen: true
+        });
+      } else if (isPreselectedCollection) {
+        this.setState({
+          initialCollectionIdx,
+          openCollection: { idx: initialCollectionIdx, num: collectionNum }
+        });
       }
     });
   }
@@ -142,19 +156,18 @@ class App extends Component {
     });
   }
 
-  switchCollectionMobile(collectionIdx, collections) {
-    // const collectionNum = this.state.collections[collectionIdx] && this.state.collections[collectionIdx].collection_num;
+  switchCollectionMobile(collectionIdx, collections, playOnLoad) {
+    const collectionNum =
+      collections[collectionIdx] && collections[collectionIdx].collection_num;
+    this.setState({
+      openCollection: { idx: collectionIdx, num: collectionNum }
+    });
 
     this.setModalOpen(true);
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
-      this.fetchCollectionTracks(collectionIdx, collections, false);
-    } else {
-      this.burnCartelPlayer.playCollection(
-        collections[collectionIdx],
-        collections
-      );
-    }
+      this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
+    } 
   }
 
   switchCollectionDesktop(collectionIdx, collections) {
@@ -177,16 +190,13 @@ class App extends Component {
   }
 
   // this is called on url change from BCWeekly
-  switchToCollection(collectionIdx, collections, playOnLoad = true) {
-    const collectionNum =
-      collections[collectionIdx] && collections[collectionIdx].collection_num;
+  switchToCollection(collectionIdx, collections, playOnLoad = false) {
     this.setState({
-      hasBeenPlayed: true,
-      collectionNum
+      hasBeenPlayed: true
     });
 
     if (this.isMobile()) {
-      this.switchCollectionMobile(collectionIdx, collections);
+      this.switchCollectionMobile(collectionIdx, collections, playOnLoad);
     } else {
       this.switchCollectionDesktop(collectionIdx, collections);
     }
@@ -312,15 +322,15 @@ class App extends Component {
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
           <Responsive maxWidth={950}>
+            {/* maybe don't open this until this.state.loading.collectionTracks is true, and show loading icon in the meantime */}
             <CollectionModal
               modalOpen={this.state.modalOpen}
-              collectionNum={this.state.collectionNum}
+              collectionNum={this.state.openCollection.num}
               closeModal={() => this.setModalOpen(false)}
-              collection={
-                this.state.collections[this.state.initialCollectionIdx]
-              }
-              idx={this.state.initialCollectionIdx}
+              collection={this.state.collections[this.state.openCollection.idx]}
+              idx={this.state.openCollection.idx}
               activeTrack={this.state.track}
+              loadingCollectionTracks={this.state.loading.collectionTracks}
               playTrack={(track, collection) =>
                 this.playTrack(track, collection)
               }
@@ -368,9 +378,7 @@ class App extends Component {
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
-                setInitialCollections={(x, y, z) =>
-                  this.setInitialCollections(x, y, z)
-                }
+                setInitialCollections={this.setInitialCollections}
                 track={track}
                 switchToCollection={(
                   collectionIdx,

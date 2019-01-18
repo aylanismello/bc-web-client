@@ -12,7 +12,8 @@ const CollectionModal = ({
   activeTrack,
   playTrack,
   collection,
-  idx
+  idx,
+  loadingCollectionTracks
 }) => {
   if (!modalOpen) {
     return null;
@@ -55,13 +56,15 @@ const CollectionModal = ({
           </div>
         </div>
         <div className="CollectionModal-content-bottom">
-          <BCWeeklyTracklist
-            idx={idx}
-            tracks={collection.tracks.slice(1)}
-            activeTrack={activeTrack}
-            playTrack={playTrack}
-            collection={collection}
-          />
+          {loadingCollectionTracks ? null : (
+            <BCWeeklyTracklist
+              idx={idx}
+              tracks={collection.tracks.slice(1)}
+              activeTrack={activeTrack}
+              playTrack={playTrack}
+              collection={collection}
+            />
+          )}
           <div className="CollectionModal-explore-more-container">
             <button
               className="CollectionModal-explore-more"

@@ -3,6 +3,7 @@
 $bottom-nav-height: $bottom-nav-height / 2;
 
 .BottomNav {
+  z-index: 101;
   width: 100%;
   position: fixed;
   bottom: 0;

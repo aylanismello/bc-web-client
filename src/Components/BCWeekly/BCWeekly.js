@@ -56,7 +56,8 @@ class BCWeekly extends React.Component {
         this.props.setInitialCollections(
           collections,
           isPreselectedCollection,
-          this.preselectedCollectionIdx
+          this.preselectedCollectionIdx,
+          collection_num
         );
         this.preselectedCollectionWeekNum =
           collections[this.preselectedCollectionIdx].collection_num;
@@ -96,7 +97,8 @@ class BCWeekly extends React.Component {
       this.preselectedCollectionPlayed = true;
       this.props.switchToCollection(
         this.preselectedCollectionIdx,
-        this.props.collections
+        this.props.collections,
+        true
       );
     }
   }
@@ -108,8 +110,6 @@ class BCWeekly extends React.Component {
   }
 
   updateActiveCollection(collection_num) {
-    // if (collection_num === this.props.collectionNum) {
-    // }
     this.props.handleModalOpen(collection_num);
     this.playOnLoadCollectionIfNeeded(collection_num);
     this.props.history.push(`/weekly-${collection_num}`);
