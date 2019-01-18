@@ -1,5 +1,6 @@
 import React from 'react';
 import closeIcon from './i-remove.svg';
+import BCLogo from '../BCLogo';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionModal.scss';
@@ -25,15 +26,21 @@ const CollectionModal = ({
       }}
     >
       <div className="CollectionModal-content">
-        <div className="CollectionModal-close-icon-container">
-          <img
-            src={closeIcon}
-            alt="CloseIcon"
-            className="CollectionModal-close-icon"
-            onClick={closeModal}
-          />
-        </div>
         <div className="CollectionModal-content-top">
+          <div className="CollectionModal-close-icon-container">
+            <img
+              src={closeIcon}
+              alt="CloseIcon"
+              className="CollectionModal-close-icon"
+              onClick={closeModal}
+            />
+          </div>
+          <div className="CollectionModal-content-header">
+            <BCLogo />
+          </div>
+        </div>
+
+        <div className="CollectionModal-content-middle">
           <div className="CollectionModal-cover-text">
             <h4> BURN CARTEL WEEKLY </h4>
             <div className="CollectionModal-line" />
@@ -55,9 +62,14 @@ const CollectionModal = ({
             playTrack={playTrack}
             collection={collection}
           />
-          <button className="CollectionModal-explore-more" onClick={closeModal}>
-            DISCOVER MORE MIXES
-          </button>
+          <div className="CollectionModal-explore-more-container">
+            <button
+              className="CollectionModal-explore-more"
+              onClick={closeModal}
+            >
+              DISCOVER MORE MIXES
+            </button>
+          </div>
         </div>
       </div>
     </div>
