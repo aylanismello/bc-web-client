@@ -145,7 +145,7 @@ class App extends Component {
   switchCollectionMobile(collectionIdx, collections) {
     // const collectionNum = this.state.collections[collectionIdx] && this.state.collections[collectionIdx].collection_num;
 
-    this.setState({ modalOpen: true });
+    this.setModalOpen(true);
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, false);
@@ -295,6 +295,16 @@ class App extends Component {
     return currentTrack;
   }
 
+  setModalOpen(modalOpen) {
+    this.setState({ modalOpen });
+    // https://stackoverflow.com/questions/9538868/prevent-body-from-scrolling-when-a-modal-is-opened
+    if (modalOpen) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }
+
   render() {
     const track = this.getCurrentTrack();
     const { playerOpen, playing } = this.state;
@@ -305,12 +315,15 @@ class App extends Component {
             <CollectionModal
               modalOpen={this.state.modalOpen}
               collectionNum={this.state.collectionNum}
-              closeModal={() => this.setState({ modalOpen: false })}
-              collection={this.state.collections[this.state.initialCollectionIdx]}
+              closeModal={() => this.setModalOpen(false)}
+              collection={
+                this.state.collections[this.state.initialCollectionIdx]
+              }
               idx={this.state.initialCollectionIdx}
               activeTrack={this.state.track}
-              playTrack={(track, collection) => this.playTrack(track, collection)}
-
+              playTrack={(track, collection) =>
+                this.playTrack(track, collection)
+              }
             />
           </Responsive>
 
@@ -346,13 +359,12 @@ class App extends Component {
             path="/:bc_weekly_num"
             render={() => (
               <BCWeekly
-                handleModalOpen={episodeNum =>
+                handleModalOpen={episodeNum => {
                   this.setState({
-                    modalOpen: true,
                     collectionNum: episodeNum
-                    // copiedEpisodeNum: episodeNum
-                  })
-                }
+                  });
+                  this.setModalOpen(true);
+                }}
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
@@ -375,7 +387,9 @@ class App extends Component {
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}
-                playTrack={(track, collection) => this.playTrack(track, collection)}
+                playTrack={(track, collection) =>
+                  this.playTrack(track, collection)
+                }
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}

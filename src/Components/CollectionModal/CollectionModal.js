@@ -1,6 +1,7 @@
 import React from 'react';
 import closeIcon from './i-remove.svg';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
+import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionModal.scss';
 
 const CollectionModal = ({
@@ -33,7 +34,18 @@ const CollectionModal = ({
           />
         </div>
         <div className="CollectionModal-content-top">
-          <span className="CollectionModal-MainText">WEEK {collectionNum}</span>
+          <div className="CollectionModal-cover-text">
+            <h4> BURN CARTEL WEEKLY </h4>
+            <div className="CollectionModal-line" />
+            <h4> WEEK {collectionNum} </h4>
+          </div>
+          <div className="CollectionModal-image-container">
+            <BCProgressiveImage
+              isCollectionItem
+              artwork_url={collection.artwork_url}
+              max_width={600}
+            />
+          </div>
         </div>
         <div className="CollectionModal-content-bottom">
           <BCWeeklyTracklist
@@ -43,6 +55,9 @@ const CollectionModal = ({
             playTrack={playTrack}
             collection={collection}
           />
+          <button className="CollectionModal-explore-more" onClick={closeModal}>
+            DISCOVER MORE MIXES
+          </button>
         </div>
       </div>
     </div>

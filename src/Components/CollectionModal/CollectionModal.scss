@@ -6,13 +6,16 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: $bc-black-1;
+  // background-color: rgba(0, 0, 0, 0.7);
   padding: 50;
   z-index: 100;
 
   .CollectionModal-content {
+    padding: 0 32px 0 32px;
     background-color: $bc-black-1;
 
+    border-top: 1px solid white;
     overflow: auto;
     max-height: 48rem;
 
@@ -24,6 +27,18 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    .CollectionModal-explore-more {
+      width: 280px;
+      height: 52px;
+      border-radius: 26px;
+      background-color: #6255ff;
+      border: none;
+
+      @include bc-text(600);
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+    }
 
     .CollectionModal-close-icon-container {
       position: absolute;
@@ -42,11 +57,28 @@
     }
 
     .CollectionModal-content-top {
-      height: 80px;
+      .CollectionModal-cover-text {
+        @include bc-text();
+        text-align: center;
+        width: 100%;
+        letter-spacing: 2.1px;
 
-      justify-content: center;
-      display: flex;
-      align-items: center;
+        h4 {
+          margin: 0.7rem;
+        }
+        
+        .CollectionModal-line {
+          width: 15px;
+          height: 1px;
+          background: $bc-pink;
+          margin: auto;
+        }
+      }
+
+      margin-top: 8rem;
+      .CollectionModal-image-container {
+        margin: 2rem 0 2rem 0;
+      }
 
       .CollectionModal-MainText {
         font-size: 2rem;
@@ -55,11 +87,6 @@
       }
     }
 
-    .CollectionModal-content-bottom {
-      // background: #f3f3f3;
-      // padding: 40px 60px;
-      padding: 0 32px 0 32px;
-    }
     @media (max-width: $phone-width) {
       // width: 85%;
     }
