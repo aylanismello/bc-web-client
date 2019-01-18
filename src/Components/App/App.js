@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
+import Responsive from 'react-responsive';
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
-import BCModal from '../BCModal';
+import CollectionModal from '../CollectionModal';
 import TopNav from '../TopNav';
 import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
@@ -21,9 +22,9 @@ class App extends Component {
     return App.collectionAsHash(collections)[weekNum];
   }
 
-  static collectionAsHash(arrcollections) {
+  static collectionAsHash(arrCollections) {
     const collections = {};
-    arrcollections.forEach((collection, idx) => {
+    arrCollections.forEach((collection, idx) => {
       collections[collection.collection_num] = { ...collection, idx };
     });
     return collections;
@@ -57,6 +58,7 @@ class App extends Component {
     visualize: false,
     modalOpen: false,
     didCopy: false,
+    collectionNum: null,
     copiedEpisodeNum: null,
     showTracklist: false,
     loading: {
@@ -96,7 +98,11 @@ class App extends Component {
     return activeCollectionIdx;
   }
 
-  setCollections(collections, isPreselectedCollection, initialCollectionIdx) {
+  setInitialCollections(
+    collections,
+    isPreselectedCollection,
+    initialCollectionIdx
+  ) {
     this.setState({ collections }, () => {
       if (isPreselectedCollection) {
         this.setState({ initialCollectionIdx });
@@ -135,23 +141,54 @@ class App extends Component {
       loading: newLoading
     });
   }
-  switchToCollection(collectionIdx, collections, playOnLoad = true) {
-    // this is a combo FETCH + PLAY operation
-    this.setState({
-      hasBeenPlayed: true
-    });
-    // WE ALWAYS scroll to collection
-    // when we're waiting for the tracks and when they're available,
-    // because we need to recenter the track item after the tracks rende
-    this.scrollToCollection(collectionIdx);
-    
+
+  switchCollectionMobile(collectionIdx, collections) {
+    // const collectionNum = this.state.collections[collectionIdx] && this.state.collections[collectionIdx].collection_num;
+
+    this.setState({ modalOpen: true });
     if (!collections[collectionIdx].tracks) {
-      this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
+      // add loading icon to track item
+      this.fetchCollectionTracks(collectionIdx, collections, false);
     } else {
       this.burnCartelPlayer.playCollection(
         collections[collectionIdx],
         collections
       );
+    }
+  }
+
+  switchCollectionDesktop(collectionIdx, collections) {
+    if (!collections[collectionIdx].tracks) {
+      this.fetchCollectionTracks(collectionIdx, collections, true);
+    } else {
+      this.burnCartelPlayer.playCollection(
+        collections[collectionIdx],
+        collections
+      );
+    }
+  }
+
+  isMobile() {
+    const width = Math.max(
+      document.documentElement.clientWidth,
+      window.innerWidth || 0
+    );
+    return width <= 950;
+  }
+
+  // this is called on url change from BCWeekly
+  switchToCollection(collectionIdx, collections, playOnLoad = true) {
+    const collectionNum =
+      collections[collectionIdx] && collections[collectionIdx].collection_num;
+    this.setState({
+      hasBeenPlayed: true,
+      collectionNum
+    });
+
+    if (this.isMobile()) {
+      this.switchCollectionMobile(collectionIdx, collections);
+    } else {
+      this.switchCollectionDesktop(collectionIdx, collections);
     }
   }
 
@@ -183,7 +220,6 @@ class App extends Component {
           },
           () => {
             this.setLoading('collectionTracks', false);
-            this.scrollToCollection(collectionIdx);
           }
         );
       })
@@ -201,7 +237,6 @@ class App extends Component {
     const isMobile = width <= 950;
 
     if (isMobile && window.location.href.includes('-')) {
-      console.log('do shit');
       document.getElementById(`${collectionIdx}`).scrollIntoView();
       this.setState({ showTracklist: true });
     }
@@ -234,6 +269,15 @@ class App extends Component {
     });
   }
 
+  playTrack(track, collection) {
+    this.burnCartelPlayer.playTrack(
+      track,
+      collection,
+      this.state.collections,
+      this.state.setPlaying
+    );
+  }
+
   toggleVisualize() {
     this.setState({ visualize: !this.state.visualize });
   }
@@ -257,9 +301,22 @@ class App extends Component {
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-          <BCModal
+          <Responsive maxWidth={950}>
+            <CollectionModal
+              modalOpen={this.state.modalOpen}
+              collectionNum={this.state.collectionNum}
+              closeModal={() => this.setState({ modalOpen: false })}
+              collection={this.state.collections[this.state.initialCollectionIdx]}
+              idx={this.state.initialCollectionIdx}
+              activeTrack={this.state.track}
+              playTrack={(track, collection) => this.playTrack(track, collection)}
+
+            />
+          </Responsive>
+
+          {/* <ShareModal
             modalOpen={this.state.modalOpen}
-            copiedEpisodeNum={this.state.copiedEpisodeNum}
+            collectionNum={this.state.collectionNum}
             closeModal={() =>
               this.setState({ modalOpen: false, didCopy: false })
             }
@@ -269,7 +326,7 @@ class App extends Component {
               })
             }
             didCopy={this.state.didCopy}
-          />
+          /> */}
 
           <ToastContainer
             position="top-right"
@@ -292,13 +349,16 @@ class App extends Component {
                 handleModalOpen={episodeNum =>
                   this.setState({
                     modalOpen: true,
-                    copiedEpisodeNum: episodeNum
+                    collectionNum: episodeNum
+                    // copiedEpisodeNum: episodeNum
                   })
                 }
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
-                setCollections={(x, y, z) => this.setCollections(x, y, z)}
+                setInitialCollections={(x, y, z) =>
+                  this.setInitialCollections(x, y, z)
+                }
                 track={track}
                 switchToCollection={(
                   collectionIdx,
@@ -315,6 +375,7 @@ class App extends Component {
                 setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}
+                playTrack={(track, collection) => this.playTrack(track, collection)}
                 burnCartelPlayer={this.burnCartelPlayer}
                 loading={this.state.loading}
                 playing={this.state.playing}

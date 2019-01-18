@@ -2,7 +2,6 @@ import React from 'react';
 import Responsive from 'react-responsive';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
-import ShareButton from '../ShareButton';
 import './BCWeeklyItem.scss';
 
 // we have to remove the old tracklist and add the new one at exactly the same time.
@@ -21,7 +20,7 @@ class BCWeeklyItem extends React.Component {
     const {
       collection,
       active,
-      setAsActiveItem,
+      updateActiveCollection,
       idx,
       playTrack,
       activeTrack,
@@ -42,7 +41,7 @@ class BCWeeklyItem extends React.Component {
             !e.target.className.includes('ShareButton') &&
             !e.target.className.includes('title')
           ) {
-            setAsActiveItem(collection_num);
+            updateActiveCollection(collection_num);
           }
         }}
         id={idx}
@@ -65,13 +64,13 @@ class BCWeeklyItem extends React.Component {
             <h4> BURN CARTEL WEEKLY </h4>
             <div className="BCWeeklyItem-line" />
             <h4> WEEK {collection_num} </h4>
-            <ShareButton
+            {/* <ShareButton
               handleModalOpen={() => handleModalOpen(collection_num)}
-            />
+            /> */}
           </div>
         </div>
         
-        <Responsive maxWidth={950}>
+        {/* <Responsive maxWidth={950}>
           {active && collection.tracks && showTracklist && (
             <BCWeeklyTracklist
               idx={idx}
@@ -81,7 +80,7 @@ class BCWeeklyItem extends React.Component {
               collection={collection}
             />
           )}
-        </Responsive>
+        </Responsive> */}
       </div>
     );
   }

@@ -53,7 +53,7 @@ class BCWeekly extends React.Component {
 
         const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
 
-        this.props.setCollections(
+        this.props.setInitialCollections(
           collections,
           isPreselectedCollection,
           this.preselectedCollectionIdx
@@ -71,7 +71,8 @@ class BCWeekly extends React.Component {
       this.props.match.params.bc_weekly_num !==
       nextProps.match.params.bc_weekly_num
     ) {
-      const idx = this.getActiveCollectionIdx(nextProps.match.params.bc_weekly_num);
+      const { bc_weekly_num } = nextProps.match.params;
+      const idx = this.getActiveCollectionIdx(bc_weekly_num);
       this.props.switchToCollection(idx, nextProps.collections);
     }
   }
@@ -80,8 +81,7 @@ class BCWeekly extends React.Component {
     bc_weekly_num = this.props.match.params.bc_weekly_num,
     collections = this.props.collections
   ) {
-    const yo = this.props.getActiveCollectionIdx(bc_weekly_num, collections);
-    return yo;
+    return this.props.getActiveCollectionIdx(bc_weekly_num, collections);
   }
 
   autoSwitchCollections(collectionIdx, collections) {
@@ -101,23 +101,22 @@ class BCWeekly extends React.Component {
     }
   }
 
-  playTrack(track, collection) {
-    this.props.burnCartelPlayer.playTrack(
-      track,
-      collection,
-      this.props.collections,
-      this.props.setPlaying
-    );
-  }
-
   scrollToCollectionOnImagesLoad() {
     if (this.state.collectionImagesLoaded === this.props.collections.length) {
       this.props.scrollToCollection(this.getActiveCollectionIdx());
     }
   }
 
+  updateActiveCollection(collection_num) {
+    // if (collection_num === this.props.collectionNum) {
+    // }
+    this.props.handleModalOpen(collection_num);
+    this.playOnLoadCollectionIfNeeded(collection_num);
+    this.props.history.push(`/weekly-${collection_num}`);
+  }
+
   render() {
-    const { history, track } = this.props;
+    const { track } = this.props;
     return (
       <div className="BCWeekly">
         <SplashBanner
@@ -141,9 +140,7 @@ class BCWeekly extends React.Component {
                   trackLoading={this.props.trackLoading}
                   width={450}
                   track={track}
-                  playTrack={(track, collection) => {
-                    this.playTrack(track, collection);
-                  }}
+                  playTrack={this.props.playTrack}
                 />
               </Responsive>
               <BCWeeklyList
@@ -153,9 +150,7 @@ class BCWeekly extends React.Component {
                 activeTrack={track}
                 activeCollectionIdx={this.getActiveCollectionIdx()}
                 loadingCollectionTracks={this.props.loading.collectionTracks}
-                playTrack={(track, collection) => {
-                  this.playTrack(track, collection);
-                }}
+                playTrack={this.props.playTrack}
                 incrementCollectionImagesLoaded={() =>
                   this.setState(
                     {
@@ -169,10 +164,9 @@ class BCWeekly extends React.Component {
                   )
                 }
                 showTracklist={this.props.showTracklist}
-                updateActiveCollection={collection_num => {
-                  this.playOnLoadCollectionIfNeeded(collection_num);
-                  history.push(`/weekly-${collection_num}`);
-                }}
+                updateActiveCollection={collection_num =>
+                  this.updateActiveCollection(collection_num)
+                }
               />
             </Wrapper>
           </div>

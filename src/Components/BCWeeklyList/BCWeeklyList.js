@@ -28,7 +28,7 @@ const BCWeeklyList = ({
             key={idx}
             idx={idx}
             incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
-            setAsActiveItem={updateActiveCollection}
+            updateActiveCollection={updateActiveCollection}
           />
         ))}
       </div>

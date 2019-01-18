@@ -1,11 +1,11 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
 import closeIcon from './i-remove.svg';
-import './BCModal.scss';
+import './ShareModal.scss';
 
 let copiedUrl;
 
-const BCModal = ({
+const ShareModal = ({
   modalOpen,
   copiedEpisodeNum,
   closeModal,
@@ -28,31 +28,31 @@ const BCModal = ({
 
   return (
     <div
-      className="BCModal"
+      className="ShareModal"
       onClick={e => {
-        if (e.target.className === 'BCModal') closeModal();
+        if (e.target.className === 'ShareModal') closeModal();
       }}
     >
-      <div className="BCModal-content">
+      <div className="ShareModal-content">
         <img
           src={closeIcon}
           alt="CloseIcon"
-          className="BCModal-close-icon"
+          className="ShareModal-close-icon"
           onClick={closeModal}
         />
-        <div className="BCModal-content-top">
-          <span className="BCModal-MainText">Share playlist</span>
+        <div className="ShareModal-content-top">
+          <span className="ShareModal-MainText">Share playlist</span>
         </div>
-        <div className="BCModal-content-bottom">
-          <div className="BCModal-HowTo">Copy this link to share</div>
-          <div className="BCModal-fake-form">
+        <div className="ShareModal-content-bottom">
+          <div className="ShareModal-HowTo">Copy this link to share</div>
+          <div className="ShareModal-fake-form">
             <input
               type="text"
               value={url.split('?')[0]}
-              className="BCModal-url"
+              className="ShareModal-url"
               readOnly
             />
-            <button className="BCModal-button" onClick={setDidCopy}>
+            <button className="ShareModal-button" onClick={setDidCopy}>
               {' '}
               {didCopy ? 'COPIED!' : 'COPY'}
             </button>
@@ -63,4 +63,4 @@ const BCModal = ({
   );
 };
 
-export default BCModal;
+export default ShareModal;

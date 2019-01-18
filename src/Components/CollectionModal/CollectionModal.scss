@@ -1,0 +1,67 @@
+@import "../../globals.scss";
+
+.CollectionModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 50;
+  z-index: 100;
+
+  .CollectionModal-content {
+    background-color: $bc-black-1;
+
+    overflow: auto;
+    max-height: 48rem;
+
+    border-radius: 3px;
+    max-width: 600px;
+    min-height: 240px;
+    margin: 0px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .CollectionModal-close-icon-container {
+      position: absolute;
+      width: 1.4rem;
+      display: flex;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      width: 32px;
+      height: 32px;
+      border-radius: 100px;
+      top: 3rem;
+      right: 3rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .CollectionModal-content-top {
+      height: 80px;
+
+      justify-content: center;
+      display: flex;
+      align-items: center;
+
+      .CollectionModal-MainText {
+        font-size: 2rem;
+        color: $bc-gray;
+        font-weight: 600;
+      }
+    }
+
+    .CollectionModal-content-bottom {
+      // background: #f3f3f3;
+      // padding: 40px 60px;
+      padding: 0 32px 0 32px;
+    }
+    @media (max-width: $phone-width) {
+      // width: 85%;
+    }
+  }
+}

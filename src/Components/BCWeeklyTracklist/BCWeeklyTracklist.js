@@ -3,11 +3,6 @@ import EQIcon from '../EQIcon';
 import './BCWeeklyTracklist.scss';
 
 class BCWeeklyTracklist extends React.Component {
-  componentDidMount() {
-    // document.getElementById(this.props.idx).scrollIntoView({ behavior: 'smooth' });
-    // document.getElementById(this.props.idx).scrollIntoView();
-  }
-
   getStyle(track) {
     return this.isActive(track)
       ? {

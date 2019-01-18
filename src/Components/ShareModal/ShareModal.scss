@@ -1,6 +1,6 @@
 @import "../../globals.scss";
 
-.BCModal {
+.ShareModal {
   position: fixed;
   top: 0;
   bottom: 0;
@@ -10,8 +10,9 @@
   padding: 50;
   z-index: 100;
 
-  .BCModal-content {
+  .ShareModal-content {
     background-color: #fff;
+    
     border-radius: 3px;
     max-width: 600px;
     min-height: 240px;
@@ -21,7 +22,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
 
-    .BCModal-close-icon {
+    .ShareModal-close-icon {
       position: absolute;
       width: 1.4rem;
       top: 3rem;
@@ -31,32 +32,32 @@
       }
     }
 
-    .BCModal-content-top {
+    .ShareModal-content-top {
       height: 80px;
 
       justify-content: center;
       display: flex;
       align-items: center;
 
-      .BCModal-MainText {
+      .ShareModal-MainText {
         font-size: 2rem;
         color: $bc-gray;
         font-weight: 600;
       }
     }
 
-    .BCModal-content-bottom {
+    .ShareModal-content-bottom {
       background: #f3f3f3;
       padding: 40px 60px;
-      .BCModal-HowTo {
+      .ShareModal-HowTo {
         color: #a4a4a4;
         font-size: 1.6rem;
         padding-bottom: 1rem;
       }
-      .BCModal-fake-form {
+      .ShareModal-fake-form {
         height: 5.2rem;
         display: flex;
-        .BCModal-url {
+        .ShareModal-url {
           border-radius: 2px 0px 0px 2px;
           border: none;
           height: inherit;
@@ -74,7 +75,7 @@
           }
         }
 
-        .BCModal-button {
+        .ShareModal-button {
           border: none;
           border-radius: 0px 2px 2px 0px;
           height: inherit;
