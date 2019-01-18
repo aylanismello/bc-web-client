@@ -117,18 +117,20 @@ class BurnCartelPlayer {
     if (this.trackIdx < this.collection.tracks.length) {
       this.switchTrack(this.collection.tracks[this.trackIdx]);
     } else {
-      this.goToNextcollection();
+      this.goToNextCollection();
     }
   }
 
-  goToNextcollection() {
+  goToNextCollection() {
     if (!this.collectionIdx) {
       this.initCollectionIdx();
     }
     this.collectionIdx++;
 
     if (this.collectionIdx < this.collections.length) {
-      this.switchToCollection(this.collectionIdx, this.collections);
+      // playOnLoad always (mobile + desktop) if tracks have changed thru
+      this.autoSwitchCollections(this.collectionIdx, this.collections, true);
+      // this.autoSwitchCollections(this.collectionIdx, this.collections);
     }
   }
 

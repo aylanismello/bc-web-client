@@ -167,7 +167,7 @@ class App extends Component {
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
-    } 
+    }
   }
 
   switchCollectionDesktop(collectionIdx, collections) {
@@ -383,7 +383,7 @@ class App extends Component {
                 switchToCollection={(
                   collectionIdx,
                   collections,
-                  playOnLoad = true
+                  playOnLoad
                 ) =>
                   this.switchToCollection(
                     collectionIdx,

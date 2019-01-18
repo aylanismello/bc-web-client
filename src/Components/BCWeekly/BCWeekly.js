@@ -17,10 +17,11 @@ const queryString = require('query-string');
 class BCWeekly extends React.Component {
   constructor(props) {
     super(props);
-    this.props.burnCartelPlayer.switchToCollection = (
+    this.props.burnCartelPlayer.autoSwitchCollections = (
       collectionIdx,
-      collections
-    ) => this.autoSwitchCollections(collectionIdx, collections);
+      collections,
+      playOnLoad
+    ) => this.autoSwitchCollections(collectionIdx, collections, playOnLoad);
 
     this.preselectedCollectionPlayed = false;
   }
@@ -97,8 +98,7 @@ class BCWeekly extends React.Component {
       this.preselectedCollectionPlayed = true;
       this.props.switchToCollection(
         this.preselectedCollectionIdx,
-        this.props.collections,
-        true
+        this.props.collections
       );
     }
   }
