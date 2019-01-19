@@ -29,7 +29,7 @@ class CollectionModal extends React.Component {
   componentDidMount() {
     this.targetElement = document.querySelector('.CollectionModal-content');
   }
-
+  
   componentWillUpdate(nextProps) {
     // on open
     if (!this.props.modalOpen && nextProps.modalOpen) {

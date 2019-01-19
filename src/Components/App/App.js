@@ -3,11 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Responsive from 'react-responsive';
 import axios from 'axios';
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks
-} from 'body-scroll-lock';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import CollectionModal from '../CollectionModal';
@@ -312,7 +307,6 @@ class App extends Component {
 
   setModalOpen(modalOpen) {
     this.setState({ modalOpen });
-    // https://stackoverflow.com/questions/9538868/prevent-body-from-scrolling-when-a-modal-is-opened
   }
 
   render() {

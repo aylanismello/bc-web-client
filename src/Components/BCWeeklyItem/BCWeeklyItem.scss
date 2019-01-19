@@ -29,17 +29,17 @@
       transition: $transition;
     }
 
-    &:hover {
-      cursor: pointer;
+    @include hover-supported() {
+     cursor: pointer;
       .BCWeeklyItem-cover-image {
         opacity: 0.1;
       }
 
       .BCWeeklyItem-cover-text {
         opacity: 1;
-      }
+      } 
     }
-
+    
     .BCWeeklyItem-cover-image {
       width: 100%;
       height: auto;

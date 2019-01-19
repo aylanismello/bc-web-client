@@ -25,3 +25,12 @@ $transition: opacity 0.2s ease-in-out;
   color: $bc-white;
   font-weight: $font-weight;
 }
+
+// https://medium.com/@djpjgj/css-magic-pt-1-prevent-css-hover-on-touch-devices-56b3f8a44240
+@mixin hover-supported {    
+  @media not all and (pointer: coarse) {
+    &:hover {
+      @content;
+    }
+  }
+}
