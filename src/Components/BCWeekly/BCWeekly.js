@@ -110,9 +110,11 @@ class BCWeekly extends React.Component {
   }
 
   updateActiveCollection(collection_num) {
-    this.props.handleModalOpen(collection_num);
-    this.playOnLoadCollectionIfNeeded(collection_num);
-    this.props.history.push(`/weekly-${collection_num}`);
+    if (!this.props.loading.collectionTracks) {
+      this.props.handleModalOpen(collection_num);
+      this.playOnLoadCollectionIfNeeded(collection_num);
+      this.props.history.push(`/weekly-${collection_num}`);
+    }
   }
 
   render() {

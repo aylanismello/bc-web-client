@@ -48,12 +48,7 @@ class BCWeeklyItem extends React.Component {
         }}
         id={idx}
       >
-        <div
-          className="BCWeeklyItem-cover"
-          onMouseEnter={() => this.setState({ hover: true })}
-          onMouseLeave={() => this.setState({ hover: false })}
-        >
-          {/* <LazyLoad width={width} height={width} once> */}
+        <div className="BCWeeklyItem-cover" >
           {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
           <BCProgressiveImage
             showText={active || this.state.hover}
