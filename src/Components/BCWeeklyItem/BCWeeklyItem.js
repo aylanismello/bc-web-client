@@ -23,9 +23,6 @@ class BCWeeklyItem extends React.Component {
       active,
       updateActiveCollection,
       idx,
-      playTrack,
-      activeTrack,
-      showTracklist,
       handleModalOpen,
       loadingCollectionTracks,
       incrementCollectionImagesLoaded
@@ -70,18 +67,6 @@ class BCWeeklyItem extends React.Component {
             /> */}
           </div>
         </div>
-
-        {/* <Responsive maxWidth={950}>
-          {active && collection.tracks && showTracklist && (
-            <BCWeeklyTracklist
-              idx={idx}
-              tracks={collection.tracks.slice(1)}
-              activeTrack={activeTrack}
-              playTrack={playTrack}
-              collection={collection}
-            />
-          )}
-        </Responsive> */}
       </div>
     );
   }
