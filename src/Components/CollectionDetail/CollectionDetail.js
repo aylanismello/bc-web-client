@@ -1,4 +1,5 @@
 import React from 'react';
+import copy from 'copy-to-clipboard';
 import closeIcon from './i-remove.svg';
 import BCLogo from '../BCLogo';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
@@ -17,6 +18,12 @@ class CollectionDetail extends React.Component {
       loadingCollectionTracks
     } = this.props;
 
+    let hostname = 'www.burncartel.com';
+    if (!window.location.hostname.includes('burncartel')) {
+      hostname = 'localhost:3000';
+    }
+
+    const url = `${hostname}/#/weekly-${collectionNum}?from=link`;
     return (
       <div
         className="CollectionDetail"
@@ -70,6 +77,9 @@ class CollectionDetail extends React.Component {
               >
                 DISCOVER MORE MIXES
               </button>
+            </div>
+            <div className="CollectionDetail-copy">
+              <span onClick={() => copy(url)}>COPY LINK</span>
             </div>
           </div>
         </div>

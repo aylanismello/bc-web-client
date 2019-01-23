@@ -1,5 +1,11 @@
 @import "../../globals.scss";
 
+.CollectionDetail-copy {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 .CollectionDetail {
   // position: fixed;
   // top: 0;
@@ -99,7 +105,7 @@
     }
 
     .CollectionDetail-content-bottom {
-      padding: 0 32px 10rem 32px;
+      padding: 0 32px 2rem 32px;
     }
 
     @media (max-width: $phone-width) {
