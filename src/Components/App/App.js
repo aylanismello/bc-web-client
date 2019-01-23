@@ -59,6 +59,7 @@ class App extends Component {
       idx: 0,
       num: null
     },
+    collectionAcive: false,
     playerOpen: true,
     initialCollectionIdx: 0,
     hasBeenPlayed: false,
@@ -120,7 +121,7 @@ class App extends Component {
           initialCollectionIdx,
           openCollection: { idx: initialCollectionIdx, num: collectionNum }
         });
-        this.setModalOpen(true);
+        this.setState({ collectionActive: true });
       } else if (isPreselectedCollection) {
         this.setState({
           initialCollectionIdx,
@@ -166,10 +167,9 @@ class App extends Component {
     const collectionNum =
       collections[collectionIdx] && collections[collectionIdx].collection_num;
     this.setState({
-      openCollection: { idx: collectionIdx, num: collectionNum }
+      openCollection: { idx: collectionIdx, num: collectionNum },
+      collectionActive: true
     });
-
-    this.setModalOpen(true);
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
@@ -311,10 +311,6 @@ class App extends Component {
     return currentTrack;
   }
 
-  setModalOpen(modalOpen) {
-    this.setState({ modalOpen });
-  }
-
   render() {
     const track = this.getCurrentTrack();
     const { playerOpen, playing } = this.state;
@@ -322,22 +318,6 @@ class App extends Component {
       <Router>
         <ScrollToTop>
           <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-            <Responsive maxWidth={950}>
-              {/* maybe don't open this until this.state.loading.collectionTracks is true, and show loading icon in the meantime */}
-              {/* <CollectionModal
-              modalOpen={this.state.modalOpen && !this.state.loading.collectionTracks}
-              collectionNum={this.state.openCollection.num}
-              closeModal={() => this.setModalOpen(false)}
-              collection={this.state.collections[this.state.openCollection.idx]}
-              idx={this.state.openCollection.idx}
-              activeTrack={this.state.track}
-              loadingCollectionTracks={this.state.loading.collectionTracks}
-              playTrack={(track, collection) =>
-                this.playTrack(track, collection)
-              }
-            /> */}
-            </Responsive>
-
             {/* <ShareModal
             modalOpen={this.state.modalOpen}
             collectionNum={this.state.collectionNum}
@@ -363,7 +343,7 @@ class App extends Component {
               draggable
               pauseOnHover
             />
-            <TopNav />
+            {!this.state.collectionActive && <TopNav />}
             <Route
               exact
               path="/"
@@ -375,8 +355,7 @@ class App extends Component {
               render={() => (
                 <BCWeekly
                   handleModalOpen={episodeNum => {
-                    this.setState({ collectionNum: episodeNum });
-                    this.setModalOpen(true);
+                    this.setState({ collectionActive: true });
                   }}
                   getActiveCollectionIdx={(x, y) =>
                     this.getActiveCollectionIdx(x, y)
@@ -385,7 +364,7 @@ class App extends Component {
                     this.state.collections[this.state.openCollection.idx]
                   }
                   idx={this.state.openCollection.idx}
-                  closeModal={() => this.setModalOpen(false)}
+                  closeModal={() => this.setState({ collectionActive: false })}
                   collectionNum={this.state.openCollection.num}
                   setInitialCollections={this.setInitialCollections}
                   track={track}
@@ -408,7 +387,7 @@ class App extends Component {
                   playTrack={(track, collection) =>
                     this.playTrack(track, collection)
                   }
-                  modalOpen={this.state.modalOpen}
+                  modalOpen={this.state.collectionActive}
                   burnCartelPlayer={this.burnCartelPlayer}
                   loading={this.state.loading}
                   playing={this.state.playing}
@@ -424,7 +403,10 @@ class App extends Component {
                 />
               )}
             />
-            <Footer loadingCollections={this.state.loading.collections} />
+            {!this.state.collectionActive && (
+              <Footer loadingCollections={this.state.loading.collections} />
+            )}
+
             {playerOpen && (
               <BottomNav
                 track={track}

@@ -122,17 +122,19 @@ class BCWeekly extends React.Component {
     const { track } = this.props;
 
     const showDetail =
-        this.props.modalOpen && !this.props.loadingCollectionTracks;
+      this.props.modalOpen && !this.props.loadingCollectionTracks;
 
     return (
       <div className="BCWeekly">
-        <SplashBanner
-          isFromEmail={this.state.isFromEmail}
-          loading={this.props.loading}
-          playing={this.props.playing}
-          playerOpen={this.props.playerOpen}
-          togglePlay={this.props.togglePlay}
-        />
+        {showDetail ? null : (
+          <SplashBanner
+            isFromEmail={this.state.isFromEmail}
+            loading={this.props.loading}
+            playing={this.props.playing}
+            playerOpen={this.props.playerOpen}
+            togglePlay={this.props.togglePlay}
+          />
+        )}
         {this.props.loading.collections ? (
           <BCLoading />
         ) : (
@@ -154,9 +156,7 @@ class BCWeekly extends React.Component {
                 <CollectionDetail
                   collectionNum={this.props.collectionNum}
                   closeModal={this.props.closeModal}
-                  collection={
-                    this.props.collection
-                  }
+                  collection={this.props.collection}
                   idx={this.props.idx}
                   activeTrack={this.props.activeTrack}
                   loadingCollectionTracks={this.props.loadingCollectionTracks}
