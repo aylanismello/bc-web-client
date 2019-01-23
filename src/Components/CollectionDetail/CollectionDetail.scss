@@ -1,0 +1,109 @@
+@import "../../globals.scss";
+
+.CollectionDetail {
+  // position: fixed;
+  // top: 0;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
+  background-color: $bc-black-1;
+  // background-color: rgba(0, 0, 0, 0.7);
+  // padding: 50;
+  // z-index: 100;
+
+  .CollectionDetail-content {
+    background-color: $bc-black-1;
+
+    // border-top: 1px solid white;
+    // overflow: auto;
+
+    border-radius: 3px;
+    margin: 0px;
+    // position: relative;
+    // top: 50%;
+    // left: 50%;
+    // transform: translate(-50%, -50%);
+    // border: 1px solid white;
+    // height: -moz-available;          /* WebKit-based browsers will ignore this. */
+    // height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+    // height: fill-available;
+
+    .CollectionDetail-content-top {
+
+    }
+
+    .CollectionDetail-explore-more-container {
+      display: flex;
+      justify-content: center;
+
+      .CollectionDetail-explore-more {
+        width: 280px;
+        height: 52px;
+        border-radius: 26px;
+        background-color: #6255ff;
+        border: none;
+
+        @include bc-text(600);
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+      }
+    }
+
+    .CollectionDetail-close-icon-container {
+      position: absolute;
+      width: 1.4rem;
+      display: flex;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      width: 4rem;
+      height: 4rem;
+      border-radius: 100px;
+      top: 3rem;
+      right: 3rem;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .CollectionDetail-content-middle {
+      padding: 0 32px 0 32px;
+
+      .CollectionDetail-cover-text {
+        @include bc-text();
+        text-align: center;
+        width: 100%;
+        letter-spacing: 2.1px;
+
+        h4 {
+          margin: 0.7rem;
+        }
+
+        .CollectionDetail-line {
+          width: 15px;
+          height: 1px;
+          background: $bc-pink;
+          margin: auto;
+        }
+      }
+
+      margin-top: 4rem;
+      .CollectionDetail-image-container {
+        margin: 2rem 0 2rem 0;
+      }
+
+      .CollectionDetail-MainText {
+        font-size: 2rem;
+        color: $bc-gray;
+        font-weight: 600;
+      }
+    }
+
+    .CollectionDetail-content-bottom {
+      padding: 0 32px 10rem 32px;
+    }
+
+    @media (max-width: $phone-width) {
+      // width: 85%;
+    }
+  }
+}

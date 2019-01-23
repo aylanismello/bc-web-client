@@ -4,6 +4,7 @@ import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
 import BCWeeklyList from '../BCWeeklyList';
+import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
 import Wrapper from '../Wrapper';
 import BCSpotlightItem from '../BCSpotlightItem';
@@ -119,6 +120,10 @@ class BCWeekly extends React.Component {
 
   render() {
     const { track } = this.props;
+
+    const showDetail =
+        this.props.modalOpen && !this.props.loadingCollectionTracks;
+
     return (
       <div className="BCWeekly">
         <SplashBanner
@@ -145,31 +150,47 @@ class BCWeekly extends React.Component {
                   playTrack={this.props.playTrack}
                 />
               </Responsive>
-              <BCWeeklyList
-                handleModalOpen={this.props.handleModalOpen}
-                collections={this.props.collections}
-                playing={this.props.playing}
-                activeTrack={track}
-                activeCollectionIdx={this.getActiveCollectionIdx()}
-                loadingCollectionTracks={this.props.loading.collectionTracks}
-                playTrack={this.props.playTrack}
-                incrementCollectionImagesLoaded={() =>
-                  this.setState(
-                    {
-                      collectionImagesLoaded:
-                        this.state.collectionImagesLoaded + 1
-                    },
-                    () => {
-                      // console.log(`${this.state.collectionImagesLoaded} / ${this.props.collections.length} done`);
-                      this.scrollToCollectionOnImagesLoad();
-                    }
-                  )
-                }
-                showTracklist={this.props.showTracklist}
-                updateActiveCollection={collection_num =>
-                  this.updateActiveCollection(collection_num)
-                }
-              />
+              {showDetail ? (
+                <CollectionDetail
+                  collectionNum={this.props.collectionNum}
+                  closeModal={this.props.closeModal}
+                  collection={
+                    this.props.collection
+                  }
+                  idx={this.props.idx}
+                  activeTrack={this.props.activeTrack}
+                  loadingCollectionTracks={this.props.loadingCollectionTracks}
+                  playTrack={(track, collection) =>
+                    this.props.playTrack(track, collection)
+                  }
+                />
+              ) : (
+                <BCWeeklyList
+                  handleModalOpen={this.props.handleModalOpen}
+                  collections={this.props.collections}
+                  playing={this.props.playing}
+                  activeTrack={track}
+                  activeCollectionIdx={this.getActiveCollectionIdx()}
+                  loadingCollectionTracks={this.props.loading.collectionTracks}
+                  playTrack={this.props.playTrack}
+                  incrementCollectionImagesLoaded={() =>
+                    this.setState(
+                      {
+                        collectionImagesLoaded:
+                          this.state.collectionImagesLoaded + 1
+                      },
+                      () => {
+                        // console.log(`${this.state.collectionImagesLoaded} / ${this.props.collections.length} done`);
+                        this.scrollToCollectionOnImagesLoad();
+                      }
+                    )
+                  }
+                  showTracklist={this.props.showTracklist}
+                  updateActiveCollection={collection_num =>
+                    this.updateActiveCollection(collection_num)
+                  }
+                />
+              )}
             </Wrapper>
           </div>
         )}
