@@ -25,6 +25,7 @@ class BCWeekly extends React.Component {
     ) => this.autoSwitchCollections(collectionIdx, collections, playOnLoad);
 
     this.preselectedCollectionPlayed = false;
+    this.count = 0;
   }
 
   state = Object.freeze({
@@ -119,14 +120,11 @@ class BCWeekly extends React.Component {
   }
 
   render() {
-    const { track } = this.props;
-
-    const showDetail =
-      this.props.modalOpen && !this.props.loadingCollectionTracks;
+    const { track, pageReadyForFakeModal } = this.props;
 
     return (
       <div className="BCWeekly">
-        {showDetail ? null : (
+        {pageReadyForFakeModal ? null : (
           <SplashBanner
             isFromEmail={this.state.isFromEmail}
             loading={this.props.loading}
@@ -152,7 +150,7 @@ class BCWeekly extends React.Component {
                   playTrack={this.props.playTrack}
                 />
               </Responsive>
-              {showDetail ? (
+              {pageReadyForFakeModal ? (
                 <CollectionDetail
                   collectionNum={this.props.collectionNum}
                   closeModal={this.props.closeModal}

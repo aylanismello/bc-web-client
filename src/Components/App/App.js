@@ -5,7 +5,6 @@ import Responsive from 'react-responsive';
 import axios from 'axios';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
-import CollectionModal from '../CollectionModal';
 import TopNav from '../TopNav';
 import ScrollToTop from '../../scroll_to_top';
 import BCWeekly from '../BCWeekly';
@@ -65,6 +64,7 @@ class App extends Component {
     hasBeenPlayed: false,
     playing: false,
     repeat: false,
+    pageReadyForFakeModal: false,
     isMobile: undefined,
     visualize: false,
     modalOpen: false,
@@ -119,9 +119,10 @@ class App extends Component {
       if (isPreselectedCollection && this.state.isMobile) {
         this.setState({
           initialCollectionIdx,
-          openCollection: { idx: initialCollectionIdx, num: collectionNum }
+          openCollection: { idx: initialCollectionIdx, num: collectionNum }, 
+          collectionActive: true,
+          pageReadyForFakeModal: true
         });
-        this.setState({ collectionActive: true });
       } else if (isPreselectedCollection) {
         this.setState({
           initialCollectionIdx,
@@ -173,6 +174,9 @@ class App extends Component {
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
+    } else {
+      this.setState({ pageReadyForFakeModal: true });
+      window.scrollTo(0, 0);
     }
   }
 
@@ -236,6 +240,10 @@ class App extends Component {
           },
           () => {
             this.setLoading('collectionTracks', false);
+            if (this.state.isMobile) {
+              this.setState({ pageReadyForFakeModal: true });
+              window.scrollTo(0, 0);
+            }
           }
         );
       })
@@ -314,11 +322,12 @@ class App extends Component {
   render() {
     const track = this.getCurrentTrack();
     const { playerOpen, playing } = this.state;
+    const showDetail =
+      this.state.collectionActive && !this.state.loading.collectionTracks;
     return (
       <Router>
-        <ScrollToTop>
-          <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-            {/* <ShareModal
+        <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
+          {/* <ShareModal
             modalOpen={this.state.modalOpen}
             collectionNum={this.state.collectionNum}
             closeModal={() =>
@@ -332,102 +341,94 @@ class App extends Component {
             didCopy={this.state.didCopy}
           /> */}
 
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnVisibilityChange
-              draggable
-              pauseOnHover
-            />
-            {!this.state.collectionActive && <TopNav />}
-            <Route
-              exact
-              path="/"
-              render={() => <Redirect push to="/weekly" />}
-            />
-            <Route
-              exact
-              path="/:bc_weekly_num"
-              render={() => (
-                <BCWeekly
-                  handleModalOpen={episodeNum => {
-                    this.setState({ collectionActive: true });
-                  }}
-                  getActiveCollectionIdx={(x, y) =>
-                    this.getActiveCollectionIdx(x, y)
-                  }
-                  collection={
-                    this.state.collections[this.state.openCollection.idx]
-                  }
-                  idx={this.state.openCollection.idx}
-                  closeModal={() => this.setState({ collectionActive: false })}
-                  collectionNum={this.state.openCollection.num}
-                  setInitialCollections={this.setInitialCollections}
-                  track={track}
-                  switchToCollection={(
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
+          {this.state.pageReadyForFakeModal ? null : <TopNav />}
+          <Route exact path="/" render={() => <Redirect push to="/weekly" />} />
+          <Route
+            exact
+            path="/:bc_weekly_num"
+            render={() => (
+              <BCWeekly
+                pageReadyForFakeModal={this.state.pageReadyForFakeModal}
+                handleModalOpen={episodeNum => {
+                  this.setState({ collectionActive: true });
+                }}
+                getActiveCollectionIdx={(x, y) =>
+                  this.getActiveCollectionIdx(x, y)
+                }
+                collection={
+                  this.state.collections[this.state.openCollection.idx]
+                }
+                idx={this.state.openCollection.idx}
+                closeModal={() => this.setState({ collectionActive: false, pageReadyForFakeModal: false })}
+                collectionNum={this.state.openCollection.num}
+                setInitialCollections={this.setInitialCollections}
+                track={track}
+                switchToCollection={(collectionIdx, collections, playOnLoad) =>
+                  this.switchToCollection(
                     collectionIdx,
                     collections,
                     playOnLoad
-                  ) =>
-                    this.switchToCollection(
-                      collectionIdx,
-                      collections,
-                      playOnLoad
-                    )
-                  }
-                  activeTrack={this.state.track}
-                  showTracklist={this.state.showTracklist}
-                  setPlaying={isPlaying => this.setPlaying(isPlaying)}
-                  setError={error => this.setError(error)}
-                  scrollToCollection={idx => this.scrollToCollection(idx)}
-                  playTrack={(track, collection) =>
-                    this.playTrack(track, collection)
-                  }
-                  modalOpen={this.state.collectionActive}
-                  burnCartelPlayer={this.burnCartelPlayer}
-                  loading={this.state.loading}
-                  playing={this.state.playing}
-                  disablePlayerForcedOpen={() => {}}
-                  loadingCollectionTracks={this.state.loading.collectionTracks}
-                  togglePlay={() => this.togglePlay()}
-                  playerOpen={this.state.playerOpen}
-                  collections={this.state.collections}
-                  trackLoading={this.state.loading.track}
-                  setLoading={(resource, state) =>
-                    this.setLoading(resource, state)
-                  }
-                />
-              )}
-            />
-            {!this.state.collectionActive && (
-              <Footer loadingCollections={this.state.loading.collections} />
-            )}
-
-            {playerOpen && (
-              <BottomNav
-                track={track}
-                playing={playing}
-                playerOpen={this.state.playerOpen}
-                currentTime={this.state.currentTime}
-                trackLoading={this.state.loading.track}
-                togglePlay={() => {
-                  this.togglePlay();
-                }}
-                goToTrack={whichOne =>
-                  this.burnCartelPlayer.goToTrack(whichOne)
+                  )
                 }
-                toggleRepeat={() => this.toggleRepeat()}
-                repeat={this.state.repeat}
-                visualize={this.state.visualize}
-                toggleVisualize={() => this.toggleVisualize()}
+                activeTrack={this.state.track}
+                showTracklist={this.state.showTracklist}
+                setPlaying={isPlaying => this.setPlaying(isPlaying)}
+                setError={error => this.setError(error)}
+                scrollToCollection={idx => this.scrollToCollection(idx)}
+                playTrack={(track, collection) =>
+                  this.playTrack(track, collection)
+                }
+                modalOpen={this.state.collectionActive}
+                burnCartelPlayer={this.burnCartelPlayer}
+                loading={this.state.loading}
+                playing={this.state.playing}
+                disablePlayerForcedOpen={() => {}}
+                loadingCollectionTracks={this.state.loading.collectionTracks}
+                togglePlay={() => this.togglePlay()}
+                collectionActive={this.state.collectionActive}
+                playerOpen={this.state.playerOpen}
+                showDetail={showDetail}
+                collections={this.state.collections}
+                trackLoading={this.state.loading.track}
+                setLoading={(resource, state) =>
+                  this.setLoading(resource, state)
+                }
               />
             )}
-          </div>
-        </ScrollToTop>
+          />
+          {this.state.pageReadyForFakeModal ?  null : (
+            <Footer loadingCollections={this.state.loading.collections} />
+          )}
+
+          {playerOpen && (
+            <BottomNav
+              track={track}
+              playing={playing}
+              playerOpen={this.state.playerOpen}
+              currentTime={this.state.currentTime}
+              trackLoading={this.state.loading.track}
+              togglePlay={() => {
+                this.togglePlay();
+              }}
+              goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
+              toggleRepeat={() => this.toggleRepeat()}
+              repeat={this.state.repeat}
+              visualize={this.state.visualize}
+              toggleVisualize={() => this.toggleVisualize()}
+            />
+          )}
+        </div>
       </Router>
     );
   }
