@@ -7,10 +7,18 @@ import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
 
 class CollectionDetail extends React.Component {
+  state = {
+    clickedCopy: false
+  };
+
+  closeModal() {
+    this.setState({ clickedCopy: false });
+    this.props.closeModal();
+  }
+
   render() {
     const {
       collectionNum,
-      closeModal,
       activeTrack,
       playTrack,
       collection,
@@ -34,7 +42,7 @@ class CollectionDetail extends React.Component {
         className="CollectionDetail"
         style={style}
         onClick={e => {
-          if (e.target.className === 'CollectionDetail') closeModal();
+          if (e.target.className === 'CollectionDetail') this.closeModal();
         }}
       >
         <div className="CollectionDetail-content">
@@ -44,7 +52,7 @@ class CollectionDetail extends React.Component {
                 src={closeIcon}
                 alt="CloseIcon"
                 className="CollectionDetail-close-icon"
-                onClick={closeModal}
+                onClick={() => this.closeModal()}
               />
             </div>
             <div className="CollectionDetail-content-header">
@@ -79,13 +87,25 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-explore-more-container">
               <button
                 className="CollectionDetail-explore-more"
-                onClick={closeModal}
+                onClick={() => this.closeModal()}
               >
                 DISCOVER MORE MIXES
               </button>
             </div>
             <div className="CollectionDetail-copy">
-              <span onClick={() => copy(url)}>Copy playlist link</span>
+              <span
+                style={
+                  this.state.clickedCopy ? {} : { textDecoration: 'underline' }
+                }
+                onClick={() => {
+                  if (!this.state.clickedCopy) {
+                    copy(url);
+                    this.setState({ clickedCopy: true });
+                  }
+                }}
+              >
+                {this.state.clickedCopy ? 'Link copied!' : 'Copy playlist link'}
+              </span>
             </div>
           </div>
         </div>

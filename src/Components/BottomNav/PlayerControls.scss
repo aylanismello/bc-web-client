@@ -10,6 +10,11 @@
   padding-left: 30px;
   width: 78%;
 
+  .PlayerControls-time-and-seek {
+    width: 80%;
+    display: flex;
+  }
+
   .PlayerControls-time {
     margin: 0 1rem 0 1rem;
     font-size: 1.2rem;

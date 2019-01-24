@@ -10,7 +10,7 @@ import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
   (active
-    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
+    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
     : {});
 
 const PlayerControls = ({
@@ -80,9 +80,11 @@ const PlayerControls = ({
           alt="repeat-btn"
         />
       </div>
-      <span className="PlayerControls-time">{currentTime.before}</span>
-      <SeekBar currentTime={currentTime.raw} />
-      <span className="PlayerControls-time">{currentTime.after}</span>
+      <div className="PlayerControls-time-and-seek">
+        <span className="PlayerControls-time">{currentTime.before}</span>
+        <SeekBar currentTime={currentTime.raw} />
+        <span className="PlayerControls-time">{currentTime.after}</span>
+      </div>
     </Responsive>
   </div>
 );
