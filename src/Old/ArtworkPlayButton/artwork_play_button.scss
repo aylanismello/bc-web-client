@@ -1,9 +1,0 @@
-.ArtworkPlayButton {
-  position: relative;
-  &:hover {
-    // border: 5px solid red;
-    .PlayButton-overlay {
-      visibility: visible;
-    }
-  }
-}

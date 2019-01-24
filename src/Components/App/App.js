@@ -254,8 +254,13 @@ class App extends Component {
       });
   }
 
-  scrollToCollection(collectionIdx) {
-    document.getElementById(`${collectionIdx}`).scrollIntoView();
+  scrollToCollection() {
+    const { idx } = window;
+    if (idx) {
+      document.getElementById(idx).scrollIntoView();
+    } else {
+      window.scrollTo(0, 0);
+    }
     // this.setState({ showTracklist: true });
 
     // const width = Math.max(
@@ -389,7 +394,7 @@ class App extends Component {
                       pageReadyForFakeModal: false
                     },
                     () => {
-                      this.scrollToCollection(window.idx || 0);
+                      this.scrollToCollection();
                     }
                   );
                 }}
