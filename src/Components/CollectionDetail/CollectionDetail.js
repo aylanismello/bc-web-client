@@ -19,8 +19,10 @@ class CollectionDetail extends React.Component {
       show
     } = this.props;
 
-    if (!show) return null;
-    
+    if (!(collection && collection.tracks)) return null;
+
+    const style = show ? {} : { display: 'none' };
+
     let hostname = 'www.burncartel.com';
     if (!window.location.hostname.includes('burncartel')) {
       hostname = 'localhost:3000';
@@ -30,6 +32,7 @@ class CollectionDetail extends React.Component {
     return (
       <div
         className="CollectionDetail"
+        style={style}
         onClick={e => {
           if (e.target.className === 'CollectionDetail') closeModal();
         }}

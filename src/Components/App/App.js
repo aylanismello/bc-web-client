@@ -255,16 +255,19 @@ class App extends Component {
   }
 
   scrollToCollection(collectionIdx) {
-    const width = Math.max(
-      document.documentElement.clientWidth,
-      window.innerWidth || 0
-    );
-    const isMobile = width <= 950;
+    document.getElementById(`${collectionIdx}`).scrollIntoView();
+    // this.setState({ showTracklist: true });
 
-    if (isMobile && window.location.href.includes('-')) {
-      document.getElementById(`${collectionIdx}`).scrollIntoView();
-      this.setState({ showTracklist: true });
-    }
+    // const width = Math.max(
+    //   document.documentElement.clientWidth,
+    //   window.innerWidth || 0
+    // );
+    // const isMobile = width <= 950;
+
+    // if (isMobile && window.location.href.includes('-')) {
+    //   document.getElementById(`${collectionIdx}`).scrollIntoView();
+    //   this.setState({ showTracklist: true });
+    // }
   }
 
   togglePlay() {
@@ -326,7 +329,7 @@ class App extends Component {
     // TODO:
     // what's the diff between current track and this.state.track?
     const { playerOpen, playing } = this.state;
-    
+
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
@@ -386,8 +389,7 @@ class App extends Component {
                       pageReadyForFakeModal: false
                     },
                     () => {
-                      window.scrollTo(0, 10000000);
-                      // scroll
+                      this.scrollToCollection(window.idx || 0);
                     }
                   );
                 }}

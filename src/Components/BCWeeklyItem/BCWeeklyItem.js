@@ -41,6 +41,7 @@ class BCWeeklyItem extends React.Component {
             !e.target.className.includes('ShareButton') &&
             !e.target.className.includes('title')
           ) {
+            window.idx = idx;
             updateActiveCollection(collection_num);
           }
         }}
