@@ -4,6 +4,9 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  span {
+    text-decoration: underline;
+  }
 }
 
 .CollectionDetail {
@@ -41,6 +44,7 @@
     .CollectionDetail-explore-more-container {
       display: flex;
       justify-content: center;
+      margin: 2rem 0 2rem 0;
 
       .CollectionDetail-explore-more {
         width: 280px;
@@ -52,6 +56,9 @@
         @include bc-text(600);
         font-size: 1.2rem;
         letter-spacing: 3px;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
 

@@ -1,6 +1,10 @@
 @import '../../globals.scss';
 
-$grid-spacing: 4rem; 
+$grid-spacing: 2rem; 
+
+@media (max-width: $phone-width) {
+  $grid-spacing: 4rem;
+}
 
 .BCWeeklyList {
   .BCWeeklyList-grid {

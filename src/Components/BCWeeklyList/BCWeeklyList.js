@@ -12,10 +12,15 @@ const BCWeeklyList = ({
   handleModalOpen,
   incrementCollectionImagesLoaded,
   showTracklist,
-  loadingCollectionTracks
+  loadingCollectionTracks,
+  show
 }) => {
+  let style = {};
+  if (!show) {
+    style = { display: 'none' };
+  }
   return (
-    <div className="BCWeeklyList">
+    <div className="BCWeeklyList" style={style}>
       <div className="BCWeeklyList-grid">
         {collections.map((collection, idx) => (
           <BCWeeklyItem

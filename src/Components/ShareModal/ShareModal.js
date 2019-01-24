@@ -20,6 +20,7 @@ const ShareModal = ({
   if (!window.location.hostname.includes('burncartel')) {
     hostname = 'localhost:3000';
   }
+
   const url = `${hostname}/#/weekly-${copiedEpisodeNum}?from=link`;
   if (copiedUrl !== url) {
     copiedUrl = url;

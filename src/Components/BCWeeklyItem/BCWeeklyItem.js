@@ -1,6 +1,7 @@
 import React from 'react';
 import Responsive from 'react-responsive';
 import LoadingIcon from '../LoadingIcon';
+import ShareButton from '../ShareButton';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './BCWeeklyItem.scss';
@@ -62,9 +63,11 @@ class BCWeeklyItem extends React.Component {
             <div className="BCWeeklyItem-line" />
             }
             <h4> WEEK {collection_num} </h4>
-            {/* <ShareButton
+            <Responsive minWidth={950}>
+            <ShareButton
               handleModalOpen={() => handleModalOpen(collection_num)}
-            /> */}
+            />
+            </Responsive>
           </div>
         </div>
       </div>

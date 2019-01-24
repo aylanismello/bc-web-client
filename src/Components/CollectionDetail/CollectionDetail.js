@@ -15,9 +15,12 @@ class CollectionDetail extends React.Component {
       playTrack,
       collection,
       idx,
-      loadingCollectionTracks
+      loadingCollectionTracks,
+      show
     } = this.props;
 
+    if (!show) return null;
+    
     let hostname = 'www.burncartel.com';
     if (!window.location.hostname.includes('burncartel')) {
       hostname = 'localhost:3000';
@@ -79,7 +82,7 @@ class CollectionDetail extends React.Component {
               </button>
             </div>
             <div className="CollectionDetail-copy">
-              <span onClick={() => copy(url)}>COPY LINK</span>
+              <span onClick={() => copy(url)}>Copy playlist link</span>
             </div>
           </div>
         </div>

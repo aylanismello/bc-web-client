@@ -37,7 +37,7 @@ class BCProgressiveImage extends React.Component {
           />
         ) : null}
 
-        <LazyLoad height="auto" offset={200}>
+        <LazyLoad height="auto" offset={200} once>
           <img
             className={`BCProgressiveImage ${opaque} ${
               isCollectionItem

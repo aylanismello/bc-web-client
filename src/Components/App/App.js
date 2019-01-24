@@ -6,6 +6,7 @@ import axios from 'axios';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
+import ShareModal from '../ShareModal';
 import ScrollToTop from '../../scroll_to_top';
 import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
@@ -58,7 +59,7 @@ class App extends Component {
       idx: 0,
       num: null
     },
-    collectionAcive: false,
+    collectionActive: false,
     playerOpen: true,
     initialCollectionIdx: 0,
     hasBeenPlayed: false,
@@ -119,7 +120,7 @@ class App extends Component {
       if (isPreselectedCollection && this.state.isMobile) {
         this.setState({
           initialCollectionIdx,
-          openCollection: { idx: initialCollectionIdx, num: collectionNum }, 
+          openCollection: { idx: initialCollectionIdx, num: collectionNum },
           collectionActive: true,
           pageReadyForFakeModal: true
         });
@@ -308,6 +309,7 @@ class App extends Component {
 
   getCurrentTrack() {
     let currentTrack = this.state.track;
+
     const { initialCollectionIdx, collections } = this.state;
     if (
       !this.state.hasBeenPlayed &&
@@ -321,25 +323,28 @@ class App extends Component {
 
   render() {
     const track = this.getCurrentTrack();
+    // TODO:
+    // what's the diff between current track and this.state.track?
     const { playerOpen, playing } = this.state;
-    const showDetail =
-      this.state.collectionActive && !this.state.loading.collectionTracks;
+    
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-          {/* <ShareModal
-            modalOpen={this.state.modalOpen}
-            collectionNum={this.state.collectionNum}
-            closeModal={() =>
-              this.setState({ modalOpen: false, didCopy: false })
-            }
-            setDidCopy={() =>
-              this.setState({
-                didCopy: true
-              })
-            }
-            didCopy={this.state.didCopy}
-          /> */}
+          <Responsive minWidth={950}>
+            <ShareModal
+              modalOpen={this.state.modalOpen}
+              copiedEpisodeNum={this.state.copiedEpisodeNum}
+              closeModal={() =>
+                this.setState({ modalOpen: false, didCopy: false })
+              }
+              setDidCopy={() =>
+                this.setState({
+                  didCopy: true
+                })
+              }
+              didCopy={this.state.didCopy}
+            />
+          </Responsive>
 
           <ToastContainer
             position="top-right"
@@ -361,7 +366,10 @@ class App extends Component {
               <BCWeekly
                 pageReadyForFakeModal={this.state.pageReadyForFakeModal}
                 handleModalOpen={episodeNum => {
-                  this.setState({ collectionActive: true });
+                  this.setState({
+                    copiedEpisodeNum: episodeNum,
+                    modalOpen: true
+                  });
                 }}
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
@@ -370,7 +378,19 @@ class App extends Component {
                   this.state.collections[this.state.openCollection.idx]
                 }
                 idx={this.state.openCollection.idx}
-                closeModal={() => this.setState({ collectionActive: false, pageReadyForFakeModal: false })}
+                loading={this.state.loading}
+                closeModal={() => {
+                  this.setState(
+                    {
+                      collectionActive: false,
+                      pageReadyForFakeModal: false
+                    },
+                    () => {
+                      window.scrollTo(0, 10000000);
+                      // scroll
+                    }
+                  );
+                }}
                 collectionNum={this.state.openCollection.num}
                 setInitialCollections={this.setInitialCollections}
                 track={track}
@@ -383,22 +403,16 @@ class App extends Component {
                 }
                 activeTrack={this.state.track}
                 showTracklist={this.state.showTracklist}
-                setPlaying={isPlaying => this.setPlaying(isPlaying)}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}
                 playTrack={(track, collection) =>
                   this.playTrack(track, collection)
                 }
-                modalOpen={this.state.collectionActive}
                 burnCartelPlayer={this.burnCartelPlayer}
-                loading={this.state.loading}
                 playing={this.state.playing}
-                disablePlayerForcedOpen={() => {}}
                 loadingCollectionTracks={this.state.loading.collectionTracks}
                 togglePlay={() => this.togglePlay()}
-                collectionActive={this.state.collectionActive}
                 playerOpen={this.state.playerOpen}
-                showDetail={showDetail}
                 collections={this.state.collections}
                 trackLoading={this.state.loading.track}
                 setLoading={(resource, state) =>
@@ -407,7 +421,7 @@ class App extends Component {
               />
             )}
           />
-          {this.state.pageReadyForFakeModal ?  null : (
+          {this.state.pageReadyForFakeModal ? null : (
             <Footer loadingCollections={this.state.loading.collections} />
           )}
 
