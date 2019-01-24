@@ -1,111 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-<script type="text/javascript">
-// (function(e, t) {
-// 	var n = e.amplitude || { _q: [], _iq: {} };
-// 	var r = t.createElement('script');
-// 	r.type = 'text/javascript';
-// 	r.async = true;
-// 	r.src = 'https://cdn.amplitude.com/libs/amplitude-4.2.1-min.gz.js';
-// 	r.onload = function() {
-// 		if (e.amplitude.runQueuedFunctions) {
-// 			e.amplitude.runQueuedFunctions();
-// 		} else {
-// 			console.log('[Amplitude] Error: could not load SDK');
-// 		}
-// 	};
-// 	var i = t.getElementsByTagName('script')[0];
-// 	i.parentNode.insertBefore(r, i);
-// 	function s(e, t) {
-// 		e.prototype[t] = function() {
-// 			this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
-// 			return this;
-// 		};
-// 	}
-// 	var o = function() {
-// 		this._q = [];
-// 		return this;
-// 	};
-// 	var a = ['add', 'append', 'clearAll', 'prepend', 'set', 'setOnce', 'unset'];
-// 	for (var u = 0; u < a.length; u++) {
-// 		s(o, a[u]);
-// 	}
-// 	n.Identify = o;
-// 	var c = function() {
-// 		this._q = [];
-// 		return this;
-// 	};
-// 	var l = [
-// 		'setProductId',
-// 		'setQuantity',
-// 		'setPrice',
-// 		'setRevenueType',
-// 		'setEventProperties'
-// 	];
-// 	for (var p = 0; p < l.length; p++) {
-// 		s(c, l[p]);
-// 	}
-// 	n.Revenue = c;
-// 	var d = [
-// 		'init',
-// 		'logEvent',
-// 		'logRevenue',
-// 		'setUserId',
-// 		'setUserProperties',
-// 		'setOptOut',
-// 		'setVersionName',
-// 		'setDomain',
-// 		'setDeviceId',
-// 		'setGlobalUserProperties',
-// 		'identify',
-// 		'clearUserProperties',
-// 		'setGroup',
-// 		'logRevenueV2',
-// 		'regenerateDeviceId',
-// 		'logEventWithTimestamp',
-// 		'logEventWithGroups',
-// 		'setSessionId',
-// 		'resetSessionId'
-// 	];
-// 	function v(e) {
-// 		function t(t) {
-// 			e[t] = function() {
-// 				e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
-// 			};
-// 		}
-// 		for (var n = 0; n < d.length; n++) {
-// 			t(d[n]);
-// 		}
-// 	}
-// 	v(n);
-// 	n.getInstance = function(e) {
-// 		e = (!e || e.length === 0 ? '$default_instance' : e).toLowerCase();
-// 		if (!n._iq.hasOwnProperty(e)) {
-// 			n._iq[e] = { _q: [] };
-// 			v(n._iq[e]);
-// 		}
-// 		return n._iq[e];
-// 	};
-// 	e.amplitude = n;
-// })(window, document);
+  <script type="text/javascript">
+        (function(h,o,t,j,a,r){
+            h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
+          h._hjSettings={hjid:1172097,hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 
-// amplitude.getInstance().init('431fb52692455f460ef51ece3db53a61');
-// window.amplitude = amplitude;
-</script>
+    // (function(e, t) {
+    // 	var n = e.amplitude || { _q: [], _iq: {} };
+    // 	var r = t.createElement('script');
+    // 	r.type = 'text/javascript';
+    // 	r.async = true;
+    // 	r.src = 'https://cdn.amplitude.com/libs/amplitude-4.2.1-min.gz.js';
+    // 	r.onload = function() {
+    // 		if (e.amplitude.runQueuedFunctions) {
+    // 			e.amplitude.runQueuedFunctions();
+    // 		} else {
+    // 			console.log('[Amplitude] Error: could not load SDK');
+    // 		}
+    // 	};
+    // 	var i = t.getElementsByTagName('script')[0];
+    // 	i.parentNode.insertBefore(r, i);
+    // 	function s(e, t) {
+    // 		e.prototype[t] = function() {
+    // 			this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+    // 			return this;
+    // 		};
+    // 	}
+    // 	var o = function() {
+    // 		this._q = [];
+    // 		return this;
+    // 	};
+    // 	var a = ['add', 'append', 'clearAll', 'prepend', 'set', 'setOnce', 'unset'];
+    // 	for (var u = 0; u < a.length; u++) {
+    // 		s(o, a[u]);
+    // 	}
+    // 	n.Identify = o;
+    // 	var c = function() {
+    // 		this._q = [];
+    // 		return this;
+    // 	};
+    // 	var l = [
+    // 		'setProductId',
+    // 		'setQuantity',
+    // 		'setPrice',
+    // 		'setRevenueType',
+    // 		'setEventProperties'
+    // 	];
+    // 	for (var p = 0; p < l.length; p++) {
+    // 		s(c, l[p]);
+    // 	}
+    // 	n.Revenue = c;
+    // 	var d = [
+    // 		'init',
+    // 		'logEvent',
+    // 		'logRevenue',
+    // 		'setUserId',
+    // 		'setUserProperties',
+    // 		'setOptOut',
+    // 		'setVersionName',
+    // 		'setDomain',
+    // 		'setDeviceId',
+    // 		'setGlobalUserProperties',
+    // 		'identify',
+    // 		'clearUserProperties',
+    // 		'setGroup',
+    // 		'logRevenueV2',
+    // 		'regenerateDeviceId',
+    // 		'logEventWithTimestamp',
+    // 		'logEventWithGroups',
+    // 		'setSessionId',
+    // 		'resetSessionId'
+    // 	];
+    // 	function v(e) {
+    // 		function t(t) {
+    // 			e[t] = function() {
+    // 				e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+    // 			};
+    // 		}
+    // 		for (var n = 0; n < d.length; n++) {
+    // 			t(d[n]);
+    // 		}
+    // 	}
+    // 	v(n);
+    // 	n.getInstance = function(e) {
+    // 		e = (!e || e.length === 0 ? '$default_instance' : e).toLowerCase();
+    // 		if (!n._iq.hasOwnProperty(e)) {
+    // 			n._iq[e] = { _q: [] };
+    // 			v(n._iq[e]);
+    // 		}
+    // 		return n._iq[e];
+    // 	};
+    // 	e.amplitude = n;
+    // })(window, document);
+
+    // amplitude.getInstance().init('431fb52692455f460ef51ece3db53a61');
+    // window.amplitude = amplitude;
+  </script>
   <head>
-		<meta charset="utf-8">
-		<title>Burn Cartel</title>
-		<meta name="keywords" content="music, electronic, weekly, mixes, playlists, soulection, soundcloud, new music, spotify">
-		<meta name="description" description="Weekly new music playlists, emailed straight to you.">
+    <meta charset="utf-8" />
+    <title>Burn Cartel</title>
+    <meta
+      name="keywords"
+      content="music, electronic, weekly, mixes, playlists, soulection, soundcloud, new music, spotify"
+    />
+    <meta
+      name="description"
+      description="Weekly new music playlists, emailed straight to you."
+    />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon_2.ico">
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon_2.ico" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -115,12 +133,9 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
     <div id="root"></div>
     <!--
       This HTML file is a template.

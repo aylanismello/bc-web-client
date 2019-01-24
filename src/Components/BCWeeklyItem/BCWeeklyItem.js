@@ -2,7 +2,6 @@ import React from 'react';
 import Responsive from 'react-responsive';
 import LoadingIcon from '../LoadingIcon';
 import ShareButton from '../ShareButton';
-import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './BCWeeklyItem.scss';
 
