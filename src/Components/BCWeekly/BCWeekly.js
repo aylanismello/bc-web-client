@@ -183,11 +183,11 @@ class BCWeekly extends React.Component {
                         this.state.collectionImagesLoaded + 1
                     },
                     () => {
-                      console.log(
-                        `${this.state.collectionImagesLoaded} / ${
-                          this.props.collections.length
-                        } done`
-                      );
+                      // console.log(
+                      //   `${this.state.collectionImagesLoaded} / ${
+                      //     this.props.collections.length
+                      //   } done`
+                      // );
                       // this.scrollToCollectionOnImagesLoad();
                     }
                   )

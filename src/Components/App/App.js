@@ -7,7 +7,6 @@ import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
 import ShareModal from '../ShareModal';
-import ScrollToTop from '../../scroll_to_top';
 import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
