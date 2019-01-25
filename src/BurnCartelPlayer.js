@@ -44,7 +44,7 @@ class BurnCartelPlayer {
 
   playCollection(collection, collections) {
     // hmm maybe set this in constructor keep it DRY u kno
-    this.trackIdx = 1;
+    this.trackIdx = 0;
     this.initCollections(collection, collections);
     this.switchTrack(collection.tracks[this.trackIdx]);
   }

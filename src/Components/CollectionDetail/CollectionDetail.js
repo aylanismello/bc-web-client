@@ -78,7 +78,7 @@ class CollectionDetail extends React.Component {
             {loadingCollectionTracks ? null : (
               <BCWeeklyTracklist
                 idx={idx}
-                tracks={collection.tracks.slice(1)}
+                tracks={collection.tracks}
                 activeTrack={activeTrack}
                 playTrack={playTrack}
                 collection={collection}

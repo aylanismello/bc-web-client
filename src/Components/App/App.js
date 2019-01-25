@@ -262,18 +262,6 @@ class App extends Component {
     } else {
       window.scrollTo(0, 0);
     }
-    // this.setState({ showTracklist: true });
-
-    // const width = Math.max(
-    //   document.documentElement.clientWidth,
-    //   window.innerWidth || 0
-    // );
-    // const isMobile = width <= 950;
-
-    // if (isMobile && window.location.href.includes('-')) {
-    //   document.getElementById(`${collectionIdx}`).scrollIntoView();
-    //   this.setState({ showTracklist: true });
-    // }
   }
 
   togglePlay() {
@@ -325,7 +313,7 @@ class App extends Component {
       collections[initialCollectionIdx] &&
       collections[initialCollectionIdx].tracks
     ) {
-      currentTrack = collections[initialCollectionIdx].tracks[1];
+      currentTrack = collections[initialCollectionIdx].tracks[0];
     }
     return currentTrack;
   }
