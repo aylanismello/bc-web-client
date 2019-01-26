@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
+import PlayButton from '../PlayButton';
 import closeIcon from './i-remove.svg';
 import BCLogo from '../BCLogo';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
@@ -24,7 +25,10 @@ class CollectionDetail extends React.Component {
       collection,
       idx,
       loadingCollectionTracks,
-      show
+      show,
+      trackLoading,
+      togglePlay,
+      playing
     } = this.props;
 
     if (!(collection && collection.tracks)) return null;
@@ -72,6 +76,14 @@ class CollectionDetail extends React.Component {
                 artwork_url={collection.artwork_url}
                 max_width={600}
               />
+              <div className="CollectionDetail-play-button-container">
+                <PlayButton
+                  playing={playing}
+                  togglePlay={togglePlay}
+                  loading={trackLoading}
+                  width={60}
+                />
+              </div>
             </div>
           </div>
           <div className="CollectionDetail-content-bottom">

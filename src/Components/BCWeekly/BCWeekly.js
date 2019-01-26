@@ -155,7 +155,10 @@ class BCWeekly extends React.Component {
 
               <CollectionDetail
                 show={pageReadyForFakeModal}
+                playing={this.props.playing}
+                togglePlay={this.props.togglePlay}
                 collectionNum={this.props.collectionNum}
+                trackLoading={this.props.trackLoading}
                 closeModal={this.props.closeModal}
                 collection={this.props.collection}
                 idx={this.props.idx}

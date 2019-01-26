@@ -40,21 +40,24 @@ const PlayerControls = ({
     </Responsive>
 
     <div className="PlayerControls-core-controls">
-      <div
-        className="PlayerControls-btn-container prev"
-        onClick={() => goToTrack('prev')}
-      >
-        <img
-          src={prevBtn}
-          className="PlayerControls-btn PlayerControls-prev-btn"
-          alt="prev-btn"
-        />
-      </div>
+      <Responsive minWidth={950}>
+        <div
+          className="PlayerControls-btn-container prev"
+          onClick={() => goToTrack('prev')}
+        >
+          <img
+            src={prevBtn}
+            className="PlayerControls-btn PlayerControls-prev-btn"
+            alt="prev-btn"
+          />
+        </div>
+      </Responsive>
 
       <PlayButton
         playing={playing}
         togglePlay={togglePlay}
         loading={trackLoading}
+        width={35}
       />
 
       <div
