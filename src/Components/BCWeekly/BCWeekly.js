@@ -114,7 +114,13 @@ class BCWeekly extends React.Component {
   updateActiveCollection(collection_num) {
     if (!this.props.loadingCollectionTracks) {
       this.playOnLoadCollectionIfNeeded(collection_num);
-      this.props.history.push(`/weekly-${collection_num}`);
+      const newUrl = `/weekly-${collection_num}`;
+      
+      if (window.location.hash && window.location.hash.includes(newUrl)) {
+        this.props.forceReopenCollectionDetail();
+      } else {
+        this.props.history.push(newUrl);
+      }
     }
   }
 
@@ -136,7 +142,7 @@ class BCWeekly extends React.Component {
         ) : (
           <div className="BCWeekly-content-container">
             <Wrapper>
-              <Responsive minWidth={950}>
+              <Responsive minDeviceWidth={950}>
                 <BCSpotlightItem
                   collection={
                     this.props.collections[this.getActiveCollectionIdx()]
@@ -151,7 +157,7 @@ class BCWeekly extends React.Component {
 
               <CollectionDetail
                 show={pageReadyForFakeModal}
-                playing={this.props.playingCollection}
+                playingCollection={this.props.playingCollection}
                 togglePlay={this.props.togglePlay}
                 collectionNum={this.props.collectionNum}
                 trackLoading={this.props.trackLoading}

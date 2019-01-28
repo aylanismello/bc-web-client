@@ -28,7 +28,7 @@ class CollectionDetail extends React.Component {
       show,
       trackLoading,
       togglePlay,
-      playing
+      playingCollection
     } = this.props;
 
     if (!(collection && collection.tracks)) return null;
@@ -78,7 +78,7 @@ class CollectionDetail extends React.Component {
               />
               <div className="CollectionDetail-play-button-container">
                 <PlayButton
-                  playing={playing}
+                  playing={playingCollection}
                   togglePlay={togglePlay}
                   loading={trackLoading}
                   width={60}

@@ -10,7 +10,7 @@ import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
   (active
-    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
+    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
     : {});
 
 const PlayerControls = ({

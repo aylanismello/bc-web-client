@@ -186,6 +186,11 @@ class App extends Component {
     }
   }
 
+  forceReopenCollectionDetail() {
+    this.setState({ pageReadyForFakeModal: true });
+    window.scrollTo(0, 0);
+  }
+
   switchCollectionDesktop(collectionIdx, collections) {
     if (!collections[collectionIdx].tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, true);
@@ -198,11 +203,12 @@ class App extends Component {
   }
 
   isMobile() {
-    const width = Math.max(
-      document.documentElement.clientWidth,
-      window.innerWidth || 0
-    );
-    return width <= 950;
+    return window.screen.width < 950;
+    // const width = Math.max(
+    //   document.documentElement.clientWidth,
+    //   window.innerWidth || 0
+    // );
+    // return width <= 950;
   }
 
   // this is called on url change from BCWeekly
@@ -332,7 +338,7 @@ class App extends Component {
   }
 
   togglePlay(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail) {
-    if (this.isMobile()) {
+    if (this.state.isMobile) {
       this.togglePlayMobile(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail);
     } else {
       this.togglePlayDesktop();
@@ -385,7 +391,7 @@ class App extends Component {
     return (
       <Router>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
-          <Responsive minWidth={950}>
+          <Responsive minDeviceWidth={950}>
             <ShareModal
               modalOpen={this.state.modalOpen}
               copiedEpisodeNum={this.state.copiedEpisodeNum}
@@ -429,6 +435,7 @@ class App extends Component {
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
+                forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()}
                 collection={
                   this.state.collections[this.state.openCollection.idx]
                 }

@@ -63,7 +63,7 @@ class BCWeeklyItem extends React.Component {
             <div className="BCWeeklyItem-line" />
             }
             <h4> WEEK {collection_num} </h4>
-            <Responsive minWidth={950}>
+            <Responsive minDeviceWidth={950}>
             <ShareButton
               handleModalOpen={() => handleModalOpen(collection_num)}
             />
