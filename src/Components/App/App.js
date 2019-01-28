@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Responsive from 'react-responsive';
 import axios from 'axios';
+import { forceCheck } from 'react-lazyload';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
@@ -93,6 +94,10 @@ class App extends Component {
         draggable: false
       });
     }
+
+    if (!this.state.pageReadyForFakeModal && nextState.pageReadyForFakeModal) {
+      forceCheck();
+    }
   }
 
   getActiveCollectionIdx(bc_weekly_num, collections = this.props.collections) {
@@ -176,7 +181,6 @@ class App extends Component {
       openCollection: { idx: collectionIdx, num: collectionNum }
     });
 
-
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
@@ -204,11 +208,6 @@ class App extends Component {
 
   isMobile() {
     return window.screen.width < 950;
-    // const width = Math.max(
-    //   document.documentElement.clientWidth,
-    //   window.innerWidth || 0
-    // );
-    // return width <= 950;
   }
 
   // this is called on url change from BCWeekly
@@ -267,7 +266,10 @@ class App extends Component {
   scrollToCollection() {
     const { idx } = window;
     if (idx) {
-      const viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const viewportHeight = Math.max(
+        document.documentElement.clientHeight,
+        window.innerHeight || 0
+      );
       document.getElementById(idx).scrollIntoView();
       window.scrollBy(0, -(viewportHeight / 10));
     } else {
@@ -292,17 +294,29 @@ class App extends Component {
     }
   }
 
-  togglePlayMobile(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail) {
+  togglePlayMobile(
+    isTogglingFromPlayingCollection,
+    isTogglingFromCollectionDetail
+  ) {
     // Playlist detail is open
-    if (!this.state.playButtonHasBeenPressed && this.state.pageReadyForFakeModal) {
+    if (
+      !this.state.playButtonHasBeenPressed &&
+      this.state.pageReadyForFakeModal
+    ) {
       this.burnCartelPlayer.playCollection(
         this.state.collections[this.state.openCollection.idx],
         this.state.collections
-      );  
+      );
       // Playlist detail is closed
-    } else if (!this.state.playButtonHasBeenPressed && !this.state.pageReadyForFakeModal) {
+    } else if (
+      !this.state.playButtonHasBeenPressed &&
+      !this.state.pageReadyForFakeModal
+    ) {
       // should we autoplay this?
-      this.switchToCollection(this.state.initialCollectionIdx, this.state.collections);
+      this.switchToCollection(
+        this.state.initialCollectionIdx,
+        this.state.collections
+      );
     } else if (!this.state.pageReadyForFakeModal) {
       // CASE WHERE WE JUST WANT TO PAUSE / PLAY GLOBALLY
       this.setState({ playing: !this.state.playing }, () => {
@@ -321,7 +335,11 @@ class App extends Component {
         }
       });
       // WE WANT TO PLAY OR PAUSE THE CURRENT COLLECTION OPENED
-    } else if (!isTogglingFromPlayingCollection && this.state.pageReadyForFakeModal && isTogglingFromCollectionDetail) {
+    } else if (
+      !isTogglingFromPlayingCollection &&
+      this.state.pageReadyForFakeModal &&
+      isTogglingFromCollectionDetail
+    ) {
       this.burnCartelPlayer.playCollection(
         this.state.collections[this.state.openCollection.idx],
         this.state.collections
@@ -339,7 +357,10 @@ class App extends Component {
 
   togglePlay(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail) {
     if (this.state.isMobile) {
-      this.togglePlayMobile(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail);
+      this.togglePlayMobile(
+        isTogglingFromPlayingCollection,
+        isTogglingFromCollectionDetail
+      );
     } else {
       this.togglePlayDesktop();
     }
@@ -435,7 +456,9 @@ class App extends Component {
                 getActiveCollectionIdx={(x, y) =>
                   this.getActiveCollectionIdx(x, y)
                 }
-                forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()}
+                forceReopenCollectionDetail={() =>
+                  this.forceReopenCollectionDetail()
+                }
                 collection={
                   this.state.collections[this.state.openCollection.idx]
                 }
@@ -470,9 +493,19 @@ class App extends Component {
                 }
                 burnCartelPlayer={this.burnCartelPlayer}
                 playing={this.state.playing}
-                playingCollection={this.state.playing && this.state.openCollection.num === this.state.playingCollectionNum}
+                playingCollection={
+                  this.state.playing &&
+                  this.state.openCollection.num ===
+                    this.state.playingCollectionNum
+                }
                 loadingCollectionTracks={this.state.loading.collectionTracks}
-                togglePlay={() => this.togglePlay(this.state.openCollection.num === this.state.playingCollectionNum, true)}
+                togglePlay={() =>
+                  this.togglePlay(
+                    this.state.openCollection.num ===
+                      this.state.playingCollectionNum,
+                    true
+                  )
+                }
                 playerOpen={this.state.playerOpen}
                 collections={this.state.collections}
                 trackLoading={this.state.loading.track}
