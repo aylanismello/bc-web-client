@@ -187,6 +187,12 @@ class App extends Component {
     } else {
       this.setState({ pageReadyForFakeModal: true });
       window.scrollTo(0, 0);
+      if (playOnLoad) {
+        this.burnCartelPlayer.playCollection(
+          collections[collectionIdx],
+          collections
+        );
+      }
     }
   }
 
@@ -300,6 +306,16 @@ class App extends Component {
   ) {
     // Playlist detail is open
     if (
+      !this.state.playButtonHasBeenPressed &&
+      !this.state.pageReadyForFakeModal &&
+      !isTogglingFromCollectionDetail
+    ) {
+      this.switchToCollection(
+        this.state.initialCollectionIdx,
+        this.state.collections,
+        true
+      );
+    } else if (
       !this.state.playButtonHasBeenPressed &&
       this.state.pageReadyForFakeModal
     ) {
@@ -499,11 +515,11 @@ class App extends Component {
                     this.state.playingCollectionNum
                 }
                 loadingCollectionTracks={this.state.loading.collectionTracks}
-                togglePlay={() =>
+                togglePlay={(isTogglingFromCollectionDetail) =>
                   this.togglePlay(
                     this.state.openCollection.num ===
                       this.state.playingCollectionNum,
-                    true
+                    isTogglingFromCollectionDetail
                   )
                 }
                 playerOpen={this.state.playerOpen}

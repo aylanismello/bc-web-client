@@ -134,7 +134,7 @@ class BCWeekly extends React.Component {
             loading={this.props.loading}
             playing={this.props.playing}
             playerOpen={this.props.playerOpen}
-            togglePlay={this.props.togglePlay}
+            togglePlay={() => this.props.togglePlay(false)}
           />
         )}
         {this.props.loading.collections ? (
@@ -158,7 +158,7 @@ class BCWeekly extends React.Component {
               <CollectionDetail
                 show={pageReadyForFakeModal}
                 playingCollection={this.props.playingCollection}
-                togglePlay={this.props.togglePlay}
+                togglePlay={() => this.props.togglePlay(true)}
                 collectionNum={this.props.collectionNum}
                 trackLoading={this.props.trackLoading}
                 closeModal={this.props.closeModal}
