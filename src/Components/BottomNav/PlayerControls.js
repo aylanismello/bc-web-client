@@ -10,7 +10,7 @@ import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
   (active
-    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
+    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
     : {});
 
 const PlayerControls = ({
@@ -40,18 +40,16 @@ const PlayerControls = ({
     </Responsive>
 
     <div className="PlayerControls-core-controls">
-      <Responsive minWidth={950}>
-        <div
-          className="PlayerControls-btn-container prev"
-          onClick={() => goToTrack('prev')}
-        >
-          <img
-            src={prevBtn}
-            className="PlayerControls-btn PlayerControls-prev-btn"
-            alt="prev-btn"
-          />
-        </div>
-      </Responsive>
+      <div
+        className="PlayerControls-btn-container prev"
+        onClick={() => goToTrack('prev')}
+      >
+        <img
+          src={prevBtn}
+          className="PlayerControls-btn PlayerControls-prev-btn"
+          alt="prev-btn"
+        />
+      </div>
 
       <PlayButton
         playing={playing}

@@ -101,7 +101,7 @@ class CollectionDetail extends React.Component {
                 className="CollectionDetail-explore-more"
                 onClick={() => this.closeModal()}
               >
-                DISCOVER MORE MIXES
+                DISCOVER MORE MUSIC
               </button>
             </div>
             <div className="CollectionDetail-copy">
