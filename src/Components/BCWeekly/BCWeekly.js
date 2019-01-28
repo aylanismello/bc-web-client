@@ -25,7 +25,6 @@ class BCWeekly extends React.Component {
     ) => this.autoSwitchCollections(collectionIdx, collections, playOnLoad);
 
     this.preselectedCollectionPlayed = false;
-    this.count = 0;
   }
 
   state = Object.freeze({
