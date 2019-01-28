@@ -38,7 +38,8 @@ class App extends Component {
       play => this.setPlaying(play),
       loading => this.setLoading('track', loading),
       error => this.setError(error),
-      currentTime => this.setCurrentTime(currentTime)
+      currentTime => this.setCurrentTime(currentTime),
+      playingCollectionNum => this.setPlayingCollectionNum(playingCollectionNum)
     );
   }
 
@@ -58,10 +59,10 @@ class App extends Component {
       idx: 0,
       num: null
     },
-    collectionActive: false,
+    playingCollectionNum: null,
     playerOpen: true,
     initialCollectionIdx: 0,
-    hasBeenPlayed: false,
+    playButtonHasBeenPressed: false,
     playing: false,
     repeat: false,
     pageReadyForFakeModal: false,
@@ -120,7 +121,6 @@ class App extends Component {
         this.setState({
           initialCollectionIdx,
           openCollection: { idx: initialCollectionIdx, num: collectionNum },
-          collectionActive: true,
           pageReadyForFakeModal: true
         });
       } else if (isPreselectedCollection) {
@@ -136,7 +136,11 @@ class App extends Component {
   }
 
   setTrack(track) {
-    this.setState({ track, hasBeenPlayed: true });
+    this.setState({ track, playButtonHasBeenPressed: true });
+  }
+
+  setPlayingCollectionNum(playingCollectionNum) {
+    this.setState({ playingCollectionNum });
   }
 
   setError(error) {
@@ -167,10 +171,12 @@ class App extends Component {
   switchCollectionMobile(collectionIdx, collections, playOnLoad) {
     const collectionNum =
       collections[collectionIdx] && collections[collectionIdx].collection_num;
+
     this.setState({
-      openCollection: { idx: collectionIdx, num: collectionNum },
-      collectionActive: true
+      openCollection: { idx: collectionIdx, num: collectionNum }
     });
+
+
     if (!collections[collectionIdx].tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
@@ -201,14 +207,13 @@ class App extends Component {
 
   // this is called on url change from BCWeekly
   switchToCollection(collectionIdx, collections, playOnLoad = false) {
-    this.setState({
-      hasBeenPlayed: true
-    });
-
     if (this.state.isMobile) {
       this.switchCollectionMobile(collectionIdx, collections, playOnLoad);
     } else {
       this.switchCollectionDesktop(collectionIdx, collections);
+      this.setState({
+        playButtonHasBeenPressed: true
+      });
     }
   }
 
@@ -264,8 +269,8 @@ class App extends Component {
     }
   }
 
-  togglePlay() {
-    if (!this.state.hasBeenPlayed) {
+  togglePlayDesktop() {
+    if (!this.state.playButtonHasBeenPressed) {
       this.switchToCollection(
         this.state.initialCollectionIdx,
         this.state.collections
@@ -278,6 +283,59 @@ class App extends Component {
           this.burnCartelPlayer.pause();
         }
       });
+    }
+  }
+
+  togglePlayMobile(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail) {
+    // Playlist detail is open
+    if (!this.state.playButtonHasBeenPressed && this.state.pageReadyForFakeModal) {
+      this.burnCartelPlayer.playCollection(
+        this.state.collections[this.state.openCollection.idx],
+        this.state.collections
+      );  
+      // Playlist detail is closed
+    } else if (!this.state.playButtonHasBeenPressed && !this.state.pageReadyForFakeModal) {
+      // should we autoplay this?
+      this.switchToCollection(this.state.initialCollectionIdx, this.state.collections);
+    } else if (!this.state.pageReadyForFakeModal) {
+      // CASE WHERE WE JUST WANT TO PAUSE / PLAY GLOBALLY
+      this.setState({ playing: !this.state.playing }, () => {
+        if (this.state.playing) {
+          this.burnCartelPlayer.resume();
+        } else {
+          this.burnCartelPlayer.pause();
+        }
+      });
+    } else if (isTogglingFromPlayingCollection) {
+      this.setState({ playing: !this.state.playing }, () => {
+        if (this.state.playing) {
+          this.burnCartelPlayer.resume();
+        } else {
+          this.burnCartelPlayer.pause();
+        }
+      });
+      // WE WANT TO PLAY OR PAUSE THE CURRENT COLLECTION OPENED
+    } else if (!isTogglingFromPlayingCollection && this.state.pageReadyForFakeModal && isTogglingFromCollectionDetail) {
+      this.burnCartelPlayer.playCollection(
+        this.state.collections[this.state.openCollection.idx],
+        this.state.collections
+      );
+    } else {
+      this.setState({ playing: !this.state.playing }, () => {
+        if (this.state.playing) {
+          this.burnCartelPlayer.resume();
+        } else {
+          this.burnCartelPlayer.pause();
+        }
+      });
+    }
+  }
+
+  togglePlay(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail) {
+    if (this.isMobile()) {
+      this.togglePlayMobile(isTogglingFromPlayingCollection, isTogglingFromCollectionDetail);
+    } else {
+      this.togglePlayDesktop();
     }
   }
 
@@ -309,7 +367,7 @@ class App extends Component {
 
     const { initialCollectionIdx, collections } = this.state;
     if (
-      !this.state.hasBeenPlayed &&
+      !this.state.playButtonHasBeenPressed &&
       collections[initialCollectionIdx] &&
       collections[initialCollectionIdx].tracks
     ) {
@@ -379,7 +437,6 @@ class App extends Component {
                 closeModal={() => {
                   this.setState(
                     {
-                      collectionActive: false,
                       pageReadyForFakeModal: false
                     },
                     () => {
@@ -401,13 +458,14 @@ class App extends Component {
                 showTracklist={this.state.showTracklist}
                 setError={error => this.setError(error)}
                 scrollToCollection={idx => this.scrollToCollection(idx)}
-                playTrack={(track, collection) =>
-                  this.playTrack(track, collection)
+                playTrack={(playingTrack, collection) =>
+                  this.playTrack(playingTrack, collection)
                 }
                 burnCartelPlayer={this.burnCartelPlayer}
                 playing={this.state.playing}
+                playingCollection={this.state.playing && this.state.openCollection.num === this.state.playingCollectionNum}
                 loadingCollectionTracks={this.state.loading.collectionTracks}
-                togglePlay={() => this.togglePlay()}
+                togglePlay={() => this.togglePlay(this.state.openCollection.num === this.state.playingCollectionNum, true)}
                 playerOpen={this.state.playerOpen}
                 collections={this.state.collections}
                 trackLoading={this.state.loading.track}

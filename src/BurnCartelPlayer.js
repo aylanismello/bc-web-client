@@ -24,7 +24,8 @@ class BurnCartelPlayer {
     setPlaying,
     setTrackLoading,
     setError,
-    setCurrentTime
+    setCurrentTime,
+    setPlayingCollectionNum
   ) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     // for debugging purposes
@@ -34,6 +35,7 @@ class BurnCartelPlayer {
     this.setError = setError;
     this.setPlaying = setPlaying;
     this.setCurrentTime = setCurrentTime;
+    this.setPlayingCollectionNum = setPlayingCollectionNum;
 
     this.collections = [];
     this.collectionIdx = undefined;
@@ -45,6 +47,7 @@ class BurnCartelPlayer {
   playCollection(collection, collections) {
     // hmm maybe set this in constructor keep it DRY u kno
     this.trackIdx = 0;
+    this.setPlayingCollectionNum(collection.collection_num);
     this.initCollections(collection, collections);
     this.switchTrack(collection.tracks[this.trackIdx]);
   }
@@ -56,6 +59,7 @@ class BurnCartelPlayer {
   // we can assume, because of how the UI
   // works, that the track passed here HAS to be in this.collection
   playTrack(track, collection, collections) {
+    this.setPlayingCollectionNum(collection.collection_num);
     this.initCollections(collection, collections);
     this.trackIdx = track.track_number - 1;
     this.switchTrack(this.collection.tracks[this.trackIdx]);
