@@ -10,7 +10,7 @@ import SeekBar from '../SeekBar';
 
 const getActiveStyle = active =>
   (active
-    ? { filter: "invert(.5) sepia(1) saturate(19) hue-rotate(300deg)" }
+    ? { filter: 'invert(.5) sepia(1) saturate(19) hue-rotate(300deg)' }
     : {});
 
 const PlayerControls = ({
@@ -25,7 +25,7 @@ const PlayerControls = ({
   currentTime
 }) => (
   <div className="PlayerControls">
-    <Responsive minWidth={950}>
+    {/* <Responsive minWidth={950}>
       <div
         className="PlayerControls-btn-container visualizer"
         onClick={toggleVisualize}
@@ -37,7 +37,7 @@ const PlayerControls = ({
           alt="visualizer-btn"
         />
       </div>
-    </Responsive>
+    </Responsive> */}
 
     <div className="PlayerControls-core-controls">
       <div
