@@ -1,5 +1,5 @@
 import React from 'react';
-import LazyLoad from 'react-lazyload';
+import LazyLoad, { forceCheck } from 'react-lazyload';
 import './BCProgressiveImage.scss';
 import placeholder from './placeholder.svg';
 
@@ -14,13 +14,14 @@ class BCProgressiveImage extends React.Component {
       artwork_url,
       showText,
       incrementCollectionImagesLoaded,
-      isCollectionItem
+      isCollectionItem,
+      isCollectionDetailImage
     } = this.props;
     const { loaded } = this.state;
     const opaque = showText ? 'opaque' : '';
 
     const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
-
+    
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
       <div>
@@ -31,7 +32,10 @@ class BCProgressiveImage extends React.Component {
                 ? 'BCWeeklyItem-cover-image'
                 : 'BCSplotlightItem-cover-image'
             }`}
-            onLoad={incrementCollectionImagesLoaded}
+            onLoad={() => {
+              if (isCollectionDetailImage) forceCheck();
+              incrementCollectionImagesLoaded();
+            }}
             alt={artwork_url}
             src={placeholder}
           />
@@ -61,7 +65,8 @@ class BCProgressiveImage extends React.Component {
 BCProgressiveImage.defaultProps = {
   isCollectionItem: false,
   showText: false,
-  incrementCollectionImagesLoaded: () => {}
+  incrementCollectionImagesLoaded: () => {},
+  isCollectionDetailImage: false
 };
 
 export default BCProgressiveImage;
