@@ -73,6 +73,7 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-image-container">
               <BCProgressiveImage
                 isCollectionItem
+                isVisible={show}
                 artwork_url={collection.artwork_url}
                 max_width={600}
                 isCollectionDetailImage

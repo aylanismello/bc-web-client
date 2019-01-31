@@ -8,6 +8,15 @@ class BCProgressiveImage extends React.Component {
     loaded: false
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isVisible && nextProps.isVisible) {
+      setTimeout(() => {
+        forceCheck();
+      }, 100);
+    }
+  }
+
+
   render() {
     const {
       max_width,
@@ -20,8 +29,11 @@ class BCProgressiveImage extends React.Component {
     const { loaded } = this.state;
     const opaque = showText ? 'opaque' : '';
 
-    const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_70,w_${max_width}/${artwork_url}`;
-    
+
+    const q = isCollectionDetailImage ? 80 : 70;
+
+    const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_${q},w_${max_width}/${artwork_url}`;
+  
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
       <div>
@@ -33,7 +45,11 @@ class BCProgressiveImage extends React.Component {
                 : 'BCSplotlightItem-cover-image'
             }`}
             onLoad={() => {
-              if (isCollectionDetailImage) forceCheck();
+              if (isCollectionDetailImage) {
+                // console.log('going to force check');
+                // forceCheck();
+              }
+
               incrementCollectionImagesLoaded();
             }}
             alt={artwork_url}
@@ -66,7 +82,8 @@ BCProgressiveImage.defaultProps = {
   isCollectionItem: false,
   showText: false,
   incrementCollectionImagesLoaded: () => {},
-  isCollectionDetailImage: false
+  isCollectionDetailImage: false,
+  isVisible: false
 };
 
 export default BCProgressiveImage;
