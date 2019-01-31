@@ -198,7 +198,7 @@ class SplashBanner extends React.Component {
             className="SplashBanner-image"
             alt="Burn Cartel Weekly Banner"
             crop="fit"
-            quality="90"
+            quality="50"
             cloudName="burncartel"
             publicId="bc_header_1"
           />
