@@ -3,7 +3,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Responsive from 'react-responsive';
 import axios from 'axios';
-import { forceCheck } from 'react-lazyload';
+import createHashHistory from 'history/createHashHistory';
+import ReactGA from 'react-ga';
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
@@ -12,6 +13,15 @@ import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
 import './App.scss';
+
+const history = createHashHistory();
+
+// medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
+if (!document.location.href.includes('localhost')) {
+  history.listen(location => {
+    ReactGA.pageview(location.pathname);
+  });
+}
 
 class App extends Component {
   static isValidUrlParam(param) {
@@ -93,10 +103,6 @@ class App extends Component {
         pauseOnHover: true,
         draggable: false
       });
-    }
-
-    if (!this.state.pageReadyForFakeModal && nextState.pageReadyForFakeModal) {
-      forceCheck();
     }
   }
 
@@ -426,7 +432,7 @@ class App extends Component {
     const { playerOpen, playing } = this.state;
 
     return (
-      <Router>
+      <Router history={history}>
         <div className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}>
           <Responsive minDeviceWidth={950}>
             <ShareModal
@@ -515,7 +521,7 @@ class App extends Component {
                     this.state.playingCollectionNum
                 }
                 loadingCollectionTracks={this.state.loading.collectionTracks}
-                togglePlay={(isTogglingFromCollectionDetail) =>
+                togglePlay={isTogglingFromCollectionDetail =>
                   this.togglePlay(
                     this.state.openCollection.num ===
                       this.state.playingCollectionNum,
