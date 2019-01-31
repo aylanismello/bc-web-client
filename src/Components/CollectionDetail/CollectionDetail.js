@@ -88,7 +88,7 @@ class CollectionDetail extends React.Component {
             </div>
           </div>
           <div className="CollectionDetail-content-bottom">
-            {loadingCollectionTracks ? null : (
+            {!loadingCollectionTracks && (
               <BCWeeklyTracklist
                 idx={idx}
                 tracks={collection.tracks}

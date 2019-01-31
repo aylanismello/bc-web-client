@@ -159,7 +159,7 @@ class BCWeekly extends React.Component {
                 playingCollection={this.props.playingCollection}
                 togglePlay={() => this.props.togglePlay(true)}
                 collectionNum={this.props.collectionNum}
-                trackLoading={this.props.trackLoading}
+                trackLoading={this.props.trackLoadingInCollectionDetail}
                 closeModal={this.props.closeModal}
                 collection={this.props.collection}
                 idx={this.props.idx}

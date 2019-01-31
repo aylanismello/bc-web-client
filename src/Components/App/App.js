@@ -534,6 +534,11 @@ class App extends Component {
                 playerOpen={this.state.playerOpen}
                 collections={this.state.collections}
                 trackLoading={this.state.loading.track}
+                trackLoadingInCollectionDetail={
+                  this.state.loading.track &&
+                  this.state.openCollection.num ===
+                    this.state.playingCollectionNum
+                }
                 setLoading={(resource, state) =>
                   this.setLoading(resource, state)
                 }

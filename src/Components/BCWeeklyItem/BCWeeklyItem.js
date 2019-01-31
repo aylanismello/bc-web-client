@@ -57,7 +57,7 @@ class BCWeeklyItem extends React.Component {
           />
           <div className={`BCWeeklyItem-cover-text ${style2}`}>
             <h4> BURN CARTEL WEEKLY </h4>
-            {loadingCollectionTracks ?
+            {(loadingCollectionTracks && active) ?
             <LoadingIcon width={20} />
             :
             <div className="BCWeeklyItem-line" />
