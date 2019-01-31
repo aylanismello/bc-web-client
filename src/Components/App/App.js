@@ -18,10 +18,10 @@ const history = createHashHistory();
 
 // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
 if (!document.location.href.includes('localhost')) {
-  console.log(window.location.pathname);
-  ReactGA.pageview(window.location.pathname);
+  const landingPath = window.location.hash.replace('#', '');
+  ReactGA.pageview(landingPath);
+
   history.listen(location => {
-    console.log(location.pathname);
     ReactGA.pageview(location.pathname);
   });
 }
