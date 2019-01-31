@@ -76,7 +76,6 @@ class CollectionDetail extends React.Component {
                 isVisible={show}
                 artwork_url={collection.artwork_url}
                 max_width={600}
-                isCollectionDetailImage
               />
               <div className="CollectionDetail-play-button-container">
                 <PlayButton
