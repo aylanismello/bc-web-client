@@ -17,7 +17,7 @@ import Footer from '../Footer';
 import './App.scss';
 
 const history = createHashHistory();
-const isProd = process.env.NODE_ENV !== 'development';
+const isProd = process.env.NODE_ENV === 'production';
 
 const initProdServices = () => {
   // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
