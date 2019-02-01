@@ -5,6 +5,8 @@ import Responsive from 'react-responsive';
 import axios from 'axios';
 import createHashHistory from 'history/createHashHistory';
 import ReactGA from 'react-ga';
+import * as Sentry from '@sentry/browser';
+
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 import TopNav from '../TopNav';
@@ -15,16 +17,26 @@ import Footer from '../Footer';
 import './App.scss';
 
 const history = createHashHistory();
+const isProd = process.env.NODE_ENV !== 'development';
 
-// medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
-if (!document.location.href.includes('localhost')) {
+const initProdServices = () => {
+  // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
+  console.log('initializing prod services');
+  // GOOGLE ANALYTICS
   const landingPath = window.location.hash.replace('#', '');
   ReactGA.pageview(landingPath);
 
   history.listen(location => {
     ReactGA.pageview(location.pathname);
   });
-}
+
+  // SENTRY BUG TRACKING
+  Sentry.init({
+    dsn: 'https://26268e6a955e474095d156b1cc6069ab@sentry.io/1384208'
+  });
+};
+
+if (isProd) initProdServices();
 
 class App extends Component {
   static isValidUrlParam(param) {
@@ -98,15 +110,21 @@ class App extends Component {
 
   componentWillUpdate(nextProps, nextState) {
     if (this.state.errors.length !== nextState.errors.length) {
-      toast(nextState.errors.reverse()[0], {
-        position: 'top-right',
-        autoClose: 10000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false
-      });
+      this.logNewError(nextState.errors.reverse()[0]);
     }
+  }
+
+  logNewError(newError) {
+    if (isProd) Sentry.captureMessage(newError);
+
+    toast(newError, {
+      position: 'top-right',
+      autoClose: 10000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false
+    });
   }
 
   getActiveCollectionIdx(bc_weekly_num, collections = this.props.collections) {

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@sentry/browser": "^4.5.3",
     "axios": "^0.17.1",
     "body-scroll-lock": "^2.6.1",
     "cloudinary-react": "^1.0.6",
