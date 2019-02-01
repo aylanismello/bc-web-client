@@ -23,6 +23,7 @@ const initProdServices = () => {
   // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
   console.log('initializing prod services');
   // GOOGLE ANALYTICS
+  ReactGA.initialize('UA-84947411-1');
   const landingPath = window.location.hash.replace('#', '');
   ReactGA.pageview(landingPath);
 
