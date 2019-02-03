@@ -201,23 +201,18 @@ class App extends Component {
     });
   }
 
-  switchCollectionMobile(collectionIdx, collections, playOnLoad) {
-    const collectionNum =
-      collections[collectionIdx] && collections[collectionIdx].collection_num;
+  switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad) {
+    const currentCollection = collections[collectionIdx];
 
-    this.setState({
-      openCollection: { idx: collectionIdx, num: collectionNum }
-    });
-
-    if (!collections[collectionIdx].tracks) {
+    if (currentCollection && !currentCollection.tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
-    } else {
+    } else if (collectionNum) {
       this.setState({ pageReadyForFakeModal: true });
       window.scrollTo(0, 0);
       if (playOnLoad) {
         this.burnCartelPlayer.playCollection(
-          collections[collectionIdx],
+          currentCollection,
           collections
         );
       }
@@ -229,12 +224,14 @@ class App extends Component {
     window.scrollTo(0, 0);
   }
 
-  switchCollectionDesktop(collectionIdx, collections) {
-    if (!collections[collectionIdx].tracks) {
+  switchCollectionDesktop(collectionNum, collectionIdx, collections) {
+    const currentCollection = collections[collectionIdx];
+
+    if (currentCollection && !currentCollection.tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, true);
-    } else {
+    } else if (collectionNum) {
       this.burnCartelPlayer.playCollection(
-        collections[collectionIdx],
+        currentCollection,
         collections
       );
     }
@@ -246,10 +243,20 @@ class App extends Component {
 
   // this is called on url change from BCWeekly
   switchToCollection(collectionIdx, collections, playOnLoad = false) {
+    const currentCollection = collections[collectionIdx];
+
+    const collectionNum =
+      currentCollection && currentCollection.collection_num;
+
+    if (!currentCollection) return;
+    this.setState({
+      openCollection: { idx: collectionIdx, num: collectionNum }
+    });
+
     if (this.state.isMobile) {
-      this.switchCollectionMobile(collectionIdx, collections, playOnLoad);
+      this.switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad);
     } else {
-      this.switchCollectionDesktop(collectionIdx, collections);
+      this.switchCollectionDesktop(collectionNum, collectionIdx, collections);
       this.setState({
         playButtonHasBeenPressed: true
       });
