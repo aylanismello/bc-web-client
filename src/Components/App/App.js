@@ -204,7 +204,7 @@ class App extends Component {
   switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad) {
     const currentCollection = collections[collectionIdx];
 
-    if (currentCollection && !currentCollection.tracks) {
+    if (!currentCollection.tracks) {
       // add loading icon to track item
       this.fetchCollectionTracks(collectionIdx, collections, playOnLoad);
     } else if (collectionNum) {
@@ -248,10 +248,13 @@ class App extends Component {
     const collectionNum =
       currentCollection && currentCollection.collection_num;
 
-    if (!currentCollection) return;
-    this.setState({
-      openCollection: { idx: collectionIdx, num: collectionNum }
-    });
+    if (!currentCollection) {
+      return;
+    } else {
+      this.setState({
+        openCollection: { idx: collectionIdx, num: collectionNum }
+      });
+    }
 
     if (this.state.isMobile) {
       this.switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad);
