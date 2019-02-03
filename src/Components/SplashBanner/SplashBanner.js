@@ -41,8 +41,6 @@ const Form = ({
             <img
               src={arrow}
               className="SplashBanner-arrow"
-              onFocus={() => this.setState({ style: { background: 'white' } })}
-              onBlur={() => this.setState({})}
               alt="Submit Email Arrow"
             />
           </div>
@@ -89,7 +87,7 @@ class SplashBanner extends React.Component {
     icon: 'eq'
   });
 
-  componentDidMount() {
+  componentWillMount() {
     if (
       window.localStorage.getItem('dontShowEmailForm') ||
       this.props.isFromEmail
