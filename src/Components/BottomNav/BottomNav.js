@@ -6,7 +6,7 @@ const BottomNav = ({
  track, playing, goToTrack, togglePlay, repeat, toggleRepeat, visualize, toggleVisualize, trackLoading, currentTime
 }) => (
   <div className="BottomNav">
-    {track.id && (
+    {track && track.id && (
       <div className="BottomNav-track-info">
         <div className="BottomNav-track-info-artwork-container">
           <img
