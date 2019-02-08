@@ -169,7 +169,20 @@ class App extends Component {
   }
 
   setTrack(track) {
-    this.setState({ track, playButtonHasBeenPressed: true });
+    this.setState({ track, playButtonHasBeenPressed: true }, () => {
+      this.updateTrackPlay(track.id);
+    });
+  }
+
+  updateTrackPlay(id) {
+    axios
+      .post(`${baseUrl}/tracks/play`, { id })
+      .then(results => {
+        // this.setState({ loadingUpdatePlayCount: false });
+      })
+      .catch(error => {
+        this.setError(error.message);
+      });
   }
 
   setPlayingCollectionNum(playingCollectionNum) {
@@ -201,7 +214,12 @@ class App extends Component {
     });
   }
 
-  switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad) {
+  switchCollectionMobile(
+    collectionNum,
+    collectionIdx,
+    collections,
+    playOnLoad
+  ) {
     const currentCollection = collections[collectionIdx];
 
     if (!currentCollection.tracks) {
@@ -211,10 +229,7 @@ class App extends Component {
       this.setState({ pageReadyForFakeModal: true });
       window.scrollTo(0, 0);
       if (playOnLoad) {
-        this.burnCartelPlayer.playCollection(
-          currentCollection,
-          collections
-        );
+        this.burnCartelPlayer.playCollection(currentCollection, collections);
       }
     }
   }
@@ -230,10 +245,7 @@ class App extends Component {
     if (currentCollection && !currentCollection.tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, true);
     } else if (collectionNum) {
-      this.burnCartelPlayer.playCollection(
-        currentCollection,
-        collections
-      );
+      this.burnCartelPlayer.playCollection(currentCollection, collections);
     }
   }
 
@@ -245,8 +257,7 @@ class App extends Component {
   switchToCollection(collectionIdx, collections, playOnLoad = false) {
     const currentCollection = collections[collectionIdx];
 
-    const collectionNum =
-      currentCollection && currentCollection.collection_num;
+    const collectionNum = currentCollection && currentCollection.collection_num;
 
     if (!currentCollection) {
       return;
@@ -257,7 +268,12 @@ class App extends Component {
     }
 
     if (this.state.isMobile) {
-      this.switchCollectionMobile(collectionNum, collectionIdx, collections, playOnLoad);
+      this.switchCollectionMobile(
+        collectionNum,
+        collectionIdx,
+        collections,
+        playOnLoad
+      );
     } else {
       this.switchCollectionDesktop(collectionNum, collectionIdx, collections);
       this.setState({
