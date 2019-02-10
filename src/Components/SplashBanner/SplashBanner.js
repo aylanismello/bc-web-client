@@ -136,7 +136,8 @@ class SplashBanner extends React.Component {
 
   generateCTA() {
     if (this.state.submitStatus === SUBMIT_STATES.ALREADY_COMPLETED) {
-      return 'DIVE RIGHT INTO THE LATEST TRACKS';
+      return 'DISCOVER OUR HAND-CURATED TRACKS';
+      // return 'DIVE RIGHT INTO THE LATEST TRACKS';
     } else {
       return 'GET THE LATEST TRACKS WEEKLY';
     }

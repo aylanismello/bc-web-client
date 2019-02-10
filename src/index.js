@@ -7,7 +7,7 @@ import App from './Components/App/';
 
 WebFont.load({
   google: {
-    families: ['Open Sans']
+    families: ['Poppins']
   }
 });
 
