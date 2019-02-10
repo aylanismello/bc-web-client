@@ -23,6 +23,7 @@ const PlayButton = ({
         style={{ width: `${width}px`, height: `${width}px` }}
         className="PlayButton-img"
         alt="play-btn"
+        draggable={false}
       />
     );
   }

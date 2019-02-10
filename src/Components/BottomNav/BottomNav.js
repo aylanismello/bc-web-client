@@ -13,6 +13,7 @@ const BottomNav = ({
             src={track.artwork_url || track.artist_artwork_url}
             className="Bottom-track-info-artwork"
             alt="track-artwork"
+            draggable={false}
           />
         </div>
         <div className="BottomNav-track-info-details-container">

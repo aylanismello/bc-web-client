@@ -42,6 +42,7 @@ const Form = ({
               src={arrow}
               className="SplashBanner-arrow"
               alt="Submit Email Arrow"
+              draggable={false}
             />
           </div>
         </label>

@@ -83,11 +83,11 @@ class PlayerControls extends React.Component {
               src={prevBtn}
               className="PlayerControls-btn PlayerControls-prev-btn"
               alt="prev-btn"
+              draggable={false}
             />
           </div>
 
           <div
-            className="balls"
             onMouseDown={() => this.setBtnClicked('play', true)}
             onTouchStart={() => this.setBtnClicked('play', true)}
             onMouseUp={() => this.setBtnClicked('play', false)}
@@ -119,6 +119,7 @@ class PlayerControls extends React.Component {
               src={nextBtn}
               className="PlayerControls-btn PlayerControls-next-btn"
               alt="next-btn"
+              draggable={false}
             />
           </div>
         </div>
@@ -132,6 +133,7 @@ class PlayerControls extends React.Component {
               src={repeatBtn}
               className="PlayerControls-btn PlayerControls-repeat-btn"
               alt="repeat-btn"
+              draggable={false}
             />
           </div>
           <div className="PlayerControls-time-and-seek">

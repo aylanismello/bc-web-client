@@ -46,6 +46,7 @@ class BCProgressiveImage extends React.Component {
             }}
             alt={artwork_url}
             src={placeholder}
+            draggable={false}
           />
         ) : null}
 
@@ -58,6 +59,7 @@ class BCProgressiveImage extends React.Component {
             }`}
             alt={artwork_url}
             style={loaded ? {} : { visibility: 'hidden' }}
+            draggable={false}
             src={src}
             onLoad={() => {
               this.setState({ loaded: true });

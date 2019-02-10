@@ -5,7 +5,7 @@ import './bc_logo.scss';
 const BCLogo = () => (
   <div className="BCLogo">
     <div className="BCLogo-svg">
-      <img src={logo} className="App-logo" alt="Burn Cartel Logo" />
+      <img src={logo} className="App-logo" alt="Burn Cartel Logo" draggable={false} />
     </div>
     <span className="BCLogo-text"> BURN CARTEL </span>
   </div>
