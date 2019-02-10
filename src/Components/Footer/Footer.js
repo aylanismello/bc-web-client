@@ -4,8 +4,9 @@ import './Footer.scss';
 const Footer = ({ loadingCollections }) => (
   <footer className={`Footer ${loadingCollections ? 'position-absolute' : ''}`}>
     <span className="Footer-left">
-      Made on Earth <span role="img" aria-label="World"> 🌏 </span>
-      (for now)
+    Follow us on
+      {/* Made on Earth <span role="img" aria-label="World"> 🌏 </span>
+      (for now) */}
     </span>
     <span className="Footer-right">
       <a
@@ -13,7 +14,7 @@ const Footer = ({ loadingCollections }) => (
         target="_blank"
         rel="noopener noreferrer"
       >
-        Follow us on Soundcloud
+        Soundcloud
       </a>
     </span>
   </footer>

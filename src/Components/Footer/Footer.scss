@@ -7,17 +7,24 @@
 
   @include bc-text();
   .Footer-left {
-    color: $bc-gray;
+    color: $bc-white;
+  }
+
+  .Footer-right {
+   a {
+     color: $bc-pink;
+     text-decoration: underline;
+   }
   }
 
   .Footer-left, .Footer-right {
-    padding: 0 1rem 0 1rem;
+    padding: 0 0.3rem 0 0.3rem;
   }
 }
 
-.position-absolute {
-  position: absolute;
-  bottom: 1rem;
-  transform: translate(-50%, -50%);
-  left: 50%;
-}
+// .position-absolute {
+//   position: absolute;
+//   bottom: 1rem;
+//   transform: translate(-50%, -50%);
+//   left: 50%;
+// }

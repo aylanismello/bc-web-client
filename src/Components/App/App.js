@@ -590,7 +590,7 @@ class App extends Component {
               />
             )}
           />
-          {this.state.pageReadyForFakeModal ? null : (
+          {this.state.pageReadyForFakeModal || this.state.loading.collections ? null : (
             <Footer loadingCollections={this.state.loading.collections} />
           )}
 
