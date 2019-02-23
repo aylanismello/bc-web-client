@@ -20,12 +20,12 @@ class BCProgressiveImage extends React.Component {
     const {
       max_width,
       artwork_url,
-      showText,
+      showOpaqueLayer,
       incrementCollectionImagesLoaded,
       isCollectionItem
     } = this.props;
     const { loaded } = this.state;
-    const opaque = showText ? 'opaque' : '';
+    const opaque = showOpaqueLayer ? 'opaque' : '';
 
 
     const q = 70;
@@ -74,7 +74,7 @@ class BCProgressiveImage extends React.Component {
 
 BCProgressiveImage.defaultProps = {
   isCollectionItem: false,
-  showText: false,
+  showOpaqueLayer: false,
   incrementCollectionImagesLoaded: () => {},
   isVisible: false
 };

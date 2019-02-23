@@ -142,7 +142,7 @@ class BCWeekly extends React.Component {
           <div className="BCWeekly-content-container">
             <Wrapper>
               <Responsive minDeviceWidth={950}>
-                <BCSpotlightItem
+                {/* <BCSpotlightItem
                   collection={
                     this.props.collections[this.getActiveCollectionIdx()]
                   }
@@ -151,7 +151,7 @@ class BCWeekly extends React.Component {
                   width={450}
                   track={track}
                   playTrack={this.props.playTrack}
-                />
+                /> */}
               </Responsive>
 
               <CollectionDetail
