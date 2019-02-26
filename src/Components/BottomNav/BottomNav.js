@@ -21,13 +21,11 @@ const BottomNav = ({
   let collectionLink;
   if (playingCollectionNum) {
     collectionLink = `/weekly-${playingCollectionNum}`;
-  } else if (window.location.hash !== '#/weekly') {
-    collectionLink = `/${window.location.hash}`;
-  } else {
+  } else if (window.location.hash === '#/weekly') {
     collectionLink = `/weekly-${defaultCollectionNum}`;
+  } else {
+    collectionLink = `/${window.location.hash.split('?')[0]}`;
   }
-
-  console.log(collectionLink);
 
   return (
     <div className="BottomNav">
