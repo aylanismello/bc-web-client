@@ -114,7 +114,7 @@ class BCWeekly extends React.Component {
       this.playOnLoadCollectionIfNeeded(collection_num);
       const newUrl = `/weekly-${collection_num}`;
 
-      if (window.location.hash && window.location.hash.includes(newUrl) && this.props.isMobile) {
+      if (window.location.hash && window.location.hash.includes(newUrl)) {
         this.props.forceReopenCollectionDetail();
       } else {
         this.props.history.push(newUrl);

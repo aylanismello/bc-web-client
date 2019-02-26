@@ -251,8 +251,12 @@ class App extends Component {
   }
 
   forceReopenCollectionDetail() {
-    this.setState({ pageReadyForFakeModal: true });
-    window.scrollTo(0, 0);
+    if (this.state.isMobile) {
+      this.setState({ pageReadyForFakeModal: true });
+      window.scrollTo(0, 0);
+    } else {
+      this.setState({ sideMenuOpen: true });
+    }
   }
 
   switchCollectionDesktop(collectionNum, collectionIdx, collections) {
