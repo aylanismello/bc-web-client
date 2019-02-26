@@ -19,6 +19,9 @@ $bottom-nav-height: $bottom-nav-height / 2;
     display: flex;
     width: 200px;
     justify-content: left;
+    &:hover {
+      cursor: pointer;
+    }
 
     .BottomNav-track-info-artwork-container {
       width: $bottom-nav-height;

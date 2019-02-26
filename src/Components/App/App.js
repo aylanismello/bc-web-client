@@ -177,6 +177,11 @@ class App extends Component {
           openCollection: { idx: initialCollectionIdx, num: collectionNum },
           sideMenuOpen: true
         });
+      } else {
+        this.setState({
+          initialCollectionIdx,
+          openCollection: { idx: initialCollectionIdx, num: collectionNum }
+        });
       }
     });
   }
@@ -699,12 +704,15 @@ class App extends Component {
             <BottomNav
               track={track}
               playing={playing}
+              defaultCollectionNum={this.state.openCollection.num}
+              forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()}
               playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
               trackLoading={this.state.loading.track}
               togglePlay={() => {
                 this.togglePlay();
               }}
+              playingCollectionNum={this.state.playingCollectionNum}
               goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
               toggleRepeat={() => this.toggleRepeat()}
               repeat={this.state.repeat}
