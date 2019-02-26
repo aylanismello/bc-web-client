@@ -141,7 +141,7 @@ class BCWeekly extends React.Component {
         ) : (
           <div className="BCWeekly-content-container">
             <Wrapper>
-              <Responsive minDeviceWidth={950}>
+              {/* <Responsive minDeviceWidth={950}>
                 <BCSpotlightItem
                   collection={
                     this.props.collections[this.getActiveCollectionIdx()]
@@ -152,23 +152,25 @@ class BCWeekly extends React.Component {
                   track={track}
                   playTrack={this.props.playTrack}
                 />
-              </Responsive>
+              </Responsive> */}
 
-              <CollectionDetail
-                show={pageReadyForFakeModal}
-                playingCollection={this.props.playingCollection}
-                togglePlay={() => this.props.togglePlay(true)}
-                collectionNum={this.props.collectionNum}
-                trackLoading={this.props.trackLoadingInCollectionDetail}
-                closeModal={this.props.closeModal}
-                collection={this.props.collection}
-                idx={this.props.idx}
-                activeTrack={this.props.activeTrack}
-                loadingCollectionTracks={this.props.loadingCollectionTracks}
-                playTrack={(track, collection) =>
-                  this.props.playTrack(track, collection)
-                }
-              />
+              <Responsive maxDeviceWidth={767}>
+                <CollectionDetail
+                  show={pageReadyForFakeModal}
+                  playingCollection={this.props.playingCollection}
+                  togglePlay={() => this.props.togglePlay(true)}
+                  collectionNum={this.props.collectionNum}
+                  trackLoading={this.props.trackLoadingInCollectionDetail}
+                  closeModal={this.props.closeModal}
+                  collection={this.props.collection}
+                  idx={this.props.idx}
+                  activeTrack={this.props.activeTrack}
+                  loadingCollectionTracks={this.props.loadingCollectionTracks}
+                  playTrack={(track, collection) =>
+                    this.props.playTrack(track, collection)
+                  }
+                />
+              </Responsive>
 
               <BCWeeklyList
                 show={!pageReadyForFakeModal}

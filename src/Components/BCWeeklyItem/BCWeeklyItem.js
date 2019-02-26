@@ -13,7 +13,7 @@ import './BCWeeklyItem.scss';
 
 const BCWeeklyItemWrapper = styled.div`
   border-radius: 4px;
-  border: ${props => (props.active ? '1px solid #e54ea3' : '')};
+  border: ${props => (props.active ? '1px solid #e54ea3' : '1px solid transparent')};
   position: relative;
 `;
 

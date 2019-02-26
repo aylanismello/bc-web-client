@@ -3,7 +3,8 @@
 $bottom-nav-height: $bottom-nav-height / 2;
 
 .BottomNav {
-  z-index: 101;
+  // one more than the Menu from react-burger-menu
+  z-index: 10001;
   width: 100%;
   position: fixed;
   bottom: 0;

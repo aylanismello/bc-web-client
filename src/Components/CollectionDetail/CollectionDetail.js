@@ -28,7 +28,8 @@ class CollectionDetail extends React.Component {
       show,
       trackLoading,
       togglePlay,
-      playingCollection
+      playingCollection,
+      isSideMenu
     } = this.props;
 
     if (!(collection && collection.tracks)) return null;
@@ -49,14 +50,16 @@ class CollectionDetail extends React.Component {
           if (e.target.className === 'CollectionDetail') this.closeModal();
         }}
       >
-        <div className="CollectionDetail-content">
+        <div
+          className="CollectionDetail-content"
+          style={isSideMenu ? { marginBottom: '10rem' } : {}}
+        >
           <div className="CollectionDetail-content-top">
-            <div className="CollectionDetail-close-icon-container">
+            <div className="CollectionDetail-close-icon-container" onClick={() => this.closeModal()}>
               <img
                 src={closeIcon}
                 alt="CloseIcon"
                 className="CollectionDetail-close-icon"
-                onClick={() => this.closeModal()}
               />
             </div>
             <div className="CollectionDetail-content-header">
