@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { Image } from 'cloudinary-react';
 import arrow from './tail-right.svg';
 import EQPlayButton from '../EQPlayButton';
 import { baseUrl } from '../../config';
@@ -58,7 +57,7 @@ const Form = ({
 );
 
 const FormSubmitMessage = ({
- header, subheader, success, nextAction
+ header, subheader, success, nextAction 
 }) => (
   <div className="SplashBanner-submit-message">
     <span> {header} </span>
@@ -191,16 +190,15 @@ class SplashBanner extends React.Component {
   }
 
   render() {
+    const q = 50;
+
     return (
       <div className="SplashBanner">
         <div className="SplashBanner-image-container">
-          <Image
+          <img
             className="SplashBanner-image"
             alt="Burn Cartel Weekly Banner"
-            crop="fit"
-            quality="50"
-            cloudName="burncartel"
-            publicId="bc_header_1"
+            src={`https://res.cloudinary.com/burncartel/image/upload/c_fit,q_${q}/bc_header_1.jpg`}
           />
         </div>
 

@@ -6,7 +6,7 @@ import axios from 'axios';
 import createHashHistory from 'history/createHashHistory';
 import ReactGA from 'react-ga';
 import * as Sentry from '@sentry/browser';
-import { push as Menu } from 'react-burger-menu';
+import BurgerMenu from 'react-burger-menu/lib/menus/push';
 
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
@@ -556,7 +556,7 @@ class App extends Component {
             />
           </Responsive> */}
           <Responsive minDeviceWidth={768}>
-            <Menu
+            <BurgerMenu
               isOpen={this.state.sideMenuOpen}
               styles={menuStyles}
               animation="push"
@@ -584,7 +584,7 @@ class App extends Component {
                 }
               />
               }
-            </Menu>
+            </BurgerMenu>
           </Responsive>
           <div id="page-wrap">
             <ToastContainer

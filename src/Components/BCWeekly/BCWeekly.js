@@ -7,7 +7,6 @@ import BCWeeklyList from '../BCWeeklyList';
 import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
 import Wrapper from '../Wrapper';
-import BCSpotlightItem from '../BCSpotlightItem';
 import { baseUrl } from '../../config';
 import './BCWeekly.scss';
 
