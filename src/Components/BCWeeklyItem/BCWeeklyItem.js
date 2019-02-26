@@ -1,28 +1,31 @@
 import React from 'react';
-import Responsive from 'react-responsive';
-import LoadingIcon from '../LoadingIcon';
-import ShareButton from '../ShareButton';
+import styled from 'styled-components';
+// import styled from 'styled-components';
+// import Responsive from 'react-responsive';
+// import LoadingIcon from '../LoadingIcon';
+// import ShareButton from '../ShareButton';
+import Play from './Play';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './BCWeeklyItem.scss';
 
-// we have to remove the old tracklist and add the new one at exactly the same time.
+// ORGANIZING WITH STYLED COMPONENTSs
+// https://stackoverflow.com/questions/42987939/styled-components-organization
 
+const BCWeeklyItemWrapper = styled.div`
+  border-radius: 4px;
+  border: ${props => (props.active ? '1px solid #e54ea3' : '')};
+  position: relative;
+`;
 
-const BCWeeklyItemOverlay = ({ num }) => (
+const BCWeeklyItemText = ({ num }) => (
   <div className="BCWeeklyItem-cover-text visible">
-    <div className="BCWeeklyItem-cover-text-title">
-      {' '}
-      Week {num}{' '}
-    </div>
+    <div className="BCWeeklyItem-cover-text-title"> Week {num} </div>
     {/* {(loadingCollectionTracks && active) ?
             <LoadingIcon width={20} />
             :
           } */}
     <div className="BCWeeklyItem-line" />
-    <div className="BCWeeklyItem-cover-text-subtitle">
-      {' '}
-      Burn Cartel Weekly{' '}
-    </div>
+    <div className="BCWeeklyItem-cover-text-subtitle"> Burn Cartel Weekly </div>
     {/* <Responsive minDeviceWidth={950}>
             <ShareButton
               handleModalOpen={() => handleModalOpen(collection_num)}
@@ -32,9 +35,20 @@ const BCWeeklyItemOverlay = ({ num }) => (
 );
 
 class BCWeeklyItem extends React.Component {
+  state = {
+    hover: false,
+    isTabletOrPhone: false
+  }
+
   constructor(props) {
     super(props);
     this.currentTracklist = [];
+  }
+
+  componentWillMount() {
+    if (window.screen.width < 768) {
+      this.setState({ isTabletOrPhone: true });
+    }
   }
 
   render() {
@@ -45,22 +59,19 @@ class BCWeeklyItem extends React.Component {
       idx,
       handleModalOpen,
       loadingCollectionTracks,
-      incrementCollectionImagesLoaded
+      incrementCollectionImagesLoaded,
+      playing
     } = this.props;
     const { artwork_url, collection_num } = collection;
 
-    // const style2 = active  ? 'visible' : 'hidden';
-    // const style2 = active || this.state.hover ? 'visible' : 'hidden';
-    // const style2 = 'visible';
-
-    const style = active
-      ? { borderRadius: '4px', border: '1px solid #e54ea3' }
-      : {};
+    const showPlay = this.state.hover || active || this.state.isTabletOrPhone;
 
     return (
-      <div
+      <BCWeeklyItemWrapper
+        active={active}
         className="BCWeeklyItem"
-        style={style}
+        onMouseEnter={() => this.setState({ hover: true })}
+        onMouseLeave={() => this.setState({ hover: false })}
         onClick={e => {
           if (
             e.target.className.includes &&
@@ -73,19 +84,19 @@ class BCWeeklyItem extends React.Component {
         }}
         id={idx}
       >
-        <div className="BCWeeklyItem-cover">
-          {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
-          {/* https://peter.coffee/how-to-use-css-pseudo-elements-to-add-a-gradient-to-images */}
-          <BCProgressiveImage
-            isActive={active}
-            isCollectionItem
-            artwork_url={artwork_url}
-            incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
-            max_width={600}
-          />
-          <BCWeeklyItemOverlay num={collection_num} />
-        </div>
-      </div>
+        {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
+        {/* https://peter.coffee/how-to-use-css-pseudo-elements-to-add-a-gradient-to-images */}
+        <BCProgressiveImage
+          isActive={active}
+          isCollectionItem
+          artwork_url={artwork_url}
+          incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
+          max_width={600}
+        />
+
+        <Play show={showPlay} playing={playing && active} />
+        <BCWeeklyItemText num={collection_num} />
+      </BCWeeklyItemWrapper>
     );
   }
 }

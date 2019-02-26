@@ -15,6 +15,7 @@
   // To give you an idea how to override rule options:
   "rules": {
     "no-tabs": 0,
+    "no-confusing-arrow": 0,
     "camelcase": 0,
     "arrow-parens": 0,
     'arrow-body-style': 0,

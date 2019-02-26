@@ -13,80 +13,73 @@
 }
 
 .BCWeeklyItem {
-  .BCWeeklyItem-cover {
+  &::after {
+    display: block;
     position: relative;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
+    margin-top: -150px;
+    height: 150px;
+    width: 100%;
+    content: "";
+  }
 
-    // max-width: 100%;
-    // margin: auto;
 
-    &::after {
-      display: block;
-      position: relative;
-      background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), #000000);
-      margin-top: -150px;
-      height: 150px;
-      width: 100%;
-      content: "";
+  .BCWeeklyItem-cover-text {
+    transition: $transition;
+    .BCWeeklyItem-cover-text-title {
+      font-weight: bold;
+      font-size: 2rem;
+      line-height: 1.3;
+      letter-spacing: normal;
+    }
+    .BCWeeklyItem-cover-text-subtitle {
+      line-height: 1.33;
+      color: $bc-gray;
+      letter-spacing: normal;
+      font-size: 1.2rem;
+    }
+  }
+  .BCWeeklyItem-cover-image {
+    transition: $transition;
+  }
+
+  @include hover-supported() {
+    cursor: pointer;
+    .BCWeeklyItem-cover-image {
+      opacity: 0.5;
     }
 
     .BCWeeklyItem-cover-text {
-      transition: $transition;
-      .BCWeeklyItem-cover-text-title {
-        font-weight: bold;
-        font-size: 2rem;
-        line-height: 1.3;
-        letter-spacing: normal;
-        
-      }
-      .BCWeeklyItem-cover-text-subtitle {
-        line-height: 1.33;
-        color: $bc-gray;
-        letter-spacing: normal;
-        font-size: 1.2rem;
-      }
+      opacity: 1;
     }
-    .BCWeeklyItem-cover-image {
-      transition: $transition;
-    }
+  }
 
-    @include hover-supported() {
-      cursor: pointer;
-      .BCWeeklyItem-cover-image {
-        opacity: 0.1;
-      }
+  .BCWeeklyItem-cover-image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
+  }
 
-      .BCWeeklyItem-cover-text {
-        opacity: 1;
-      }
-    }
+  .BCWeeklyItem-cover-text {
+    @include bc-text();
+    position: absolute;
+    // left: 50%;
+    // top: 50%;
+    padding: 2rem;
+    z-index: 100;
+    bottom: 0;
+    // transform: translate(-50%, -50%);
+    // text-align: center;
+    // width: 100%;
+    letter-spacing: 2.1px;
 
-    .BCWeeklyItem-cover-image {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-      box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
-    }
-
-    .BCWeeklyItem-cover-text {
-      @include bc-text();
-      position: absolute;
-      // left: 50%;
-      // top: 50%;
-      padding: 2rem;
-      z-index: 100;
-      bottom: 0;
-      // transform: translate(-50%, -50%);
-      // text-align: center;
-      // width: 100%;
-      letter-spacing: 2.1px;
-
-      .BCWeeklyItem-line {
-        width: 2.5rem;
-        width: 1.5rem;
-        height: 0.2rem;
-        margin: .5rem 0 .5rem 0;
-        background: $bc-pink;
-      }
+    .BCWeeklyItem-line {
+      width: 2.5rem;
+      width: 1.5rem;
+      height: 0.2rem;
+      margin: 0.5rem 0 0.5rem 0;
+      background: $bc-pink;
     }
   }
 }
