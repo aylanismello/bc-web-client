@@ -69,9 +69,9 @@ class CollectionDetail extends React.Component {
 
           <div className="CollectionDetail-content-middle">
             <div className="CollectionDetail-cover-text">
-              <h4> BURN CARTEL WEEKLY </h4>
+              <span className="CollectionDetail-cover-text-header"> Week {collectionNum} </span>
               <div className="CollectionDetail-line" />
-              <h4> WEEK {collectionNum} </h4>
+              <span className="CollectionDetail-cover-text-subheader"> Burn Cartel Weekly </span>
             </div>
             <div className="CollectionDetail-image-container">
               <BCProgressiveImage

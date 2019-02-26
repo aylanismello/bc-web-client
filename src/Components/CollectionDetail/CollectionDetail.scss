@@ -62,19 +62,24 @@
 
       .CollectionDetail-cover-text {
         @include bc-text();
-        text-align: center;
         width: 100%;
-        letter-spacing: 2.1px;
+        letter-spacing: normal;
 
-        h4 {
-          margin: 0.7rem;
+        .CollectionDetail-cover-text-header {
+          font-size: 3.1rem;
+          font-weight: bold;
+        }
+        .CollectionDetail-cover-text-subheader {
+          font-size: 1.3rem;
+          font-weight: normal;
+          line-height: 1.25;
         }
 
         .CollectionDetail-line {
           width: 15px;
-          height: 1px;
+          height: 2px;
           background: $bc-pink;
-          margin: auto;
+          margin: 1rem 0 1rem 0;
         }
       }
 
