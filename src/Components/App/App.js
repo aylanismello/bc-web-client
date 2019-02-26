@@ -174,7 +174,8 @@ class App extends Component {
       } else if (isPreselectedCollection) {
         this.setState({
           initialCollectionIdx,
-          openCollection: { idx: initialCollectionIdx, num: collectionNum }
+          openCollection: { idx: initialCollectionIdx, num: collectionNum },
+          sideMenuOpen: true
         });
       }
     });
