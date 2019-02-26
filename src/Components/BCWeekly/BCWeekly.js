@@ -124,9 +124,9 @@ class BCWeekly extends React.Component {
   }
 
   render() {
-    const { track, pageReadyForFakeModal } = this.props;
+    const { track, pageReadyForFakeModal, contentWidthShrunk } = this.props;
     return (
-      <div className="BCWeekly">
+      <div className="BCWeekly" style={contentWidthShrunk ? { width: '70%' } : {} } >
         {pageReadyForFakeModal ? null : (
           <SplashBanner
             isFromEmail={this.state.isFromEmail}

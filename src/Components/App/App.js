@@ -78,6 +78,15 @@ class App extends Component {
     this.setState({ isMobile: this.isMobile() });
   }
 
+  componentDidMount() {
+    // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/transitionend_event
+    document.getElementById('page-wrap').addEventListener('transitionend', () => {
+        if (this.state.sideMenuOpen) {
+          this.setState({ contentWidthShrunk: true });
+        }
+    });
+  }
+
   state = Object.freeze({
     track: {},
     collections: [],
@@ -91,6 +100,7 @@ class App extends Component {
       num: null
     },
     sideMenuOpen: false,
+    contentWidthShrunk: false,
     playingCollectionNum: null,
     playerOpen: true,
     initialCollectionIdx: 0,
@@ -558,7 +568,7 @@ class App extends Component {
                 togglePlay={this.toggleFromCollectionDetail}
                 collectionNum={this.state.openCollection.num}
                 trackLoading={this.state.loading.track}
-                closeModal={() => this.setState({ sideMenuOpen: false })}
+                closeModal={() => this.setState({ sideMenuOpen: false, contentWidthShrunk: false })}
                 collection={this.state.collections[this.state.openCollection.idx]}
                 idx={this.state.openCollection.idx}
                 activeTrack={this.state.track}
@@ -595,6 +605,7 @@ class App extends Component {
               path="/:bc_weekly_num"
               render={() => (
                 <BCWeekly
+                  contentWidthShrunk={this.state.contentWidthShrunk}
                   pageReadyForFakeModal={this.state.pageReadyForFakeModal}
                   handleModalOpen={episodeNum => {
                     this.setState({
