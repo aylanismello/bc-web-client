@@ -21,6 +21,7 @@
     "react-responsive": "^4.1.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "2.0.3",
+    "react-sizes": "^1.0.4",
     "react-toastify": "^4.4.3",
     "soundcloud-audio": "^1.4.0",
     "styled-components": "^4.1.3",

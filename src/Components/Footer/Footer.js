@@ -1,8 +1,8 @@
 import React from 'react';
 import './Footer.scss';
 
-const Footer = ({ loadingCollections }) => (
-  <footer className={`Footer ${loadingCollections ? 'position-absolute' : ''}`}>
+const Footer = ({ loadingCollections, width }) => (
+  <footer className={`Footer ${loadingCollections ? 'position-absolute' : ''}`} style={{ width }}>
     <span className="Footer-left">
     Follow us on
       {/* Made on Earth <span role="img" aria-label="World"> 🌏 </span>

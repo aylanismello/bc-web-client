@@ -52,7 +52,7 @@ class CollectionDetail extends React.Component {
       >
         <div
           className="CollectionDetail-content"
-          style={isSideMenu ? { marginBottom: '10rem' } : {}}
+          style={isSideMenu ? { paddingBottom: '10rem' } : {}}
         >
           <div className="CollectionDetail-content-top">
             <div className="CollectionDetail-close-icon-container" onClick={() => this.closeModal()}>

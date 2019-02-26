@@ -509,7 +509,12 @@ class App extends Component {
     // TODO:
     // what's the diff between current track and this.state.track?
     const { playerOpen, playing } = this.state;
+    // const { menuShouldBeFixed } = this.props;
+    const menuShouldBeFixed = false;
+    const menuWidth = menuShouldBeFixed ? '320px' : '30%';
+    const contentWidth = menuShouldBeFixed ? 'auto' : '70%';
 
+    // update menu's width value based on current width
     const menuStyles = {
       bmMenuWrap: {
         position: 'fixed',
@@ -557,7 +562,7 @@ class App extends Component {
               animation="push"
               noOverlay
               disableOverlayClick
-              width="30%"
+              width={menuWidth}
               pageWrapId="page-wrap"
               outerContainerId="outer-container"
             >
@@ -607,6 +612,8 @@ class App extends Component {
               render={() => (
                 <BCWeekly
                   contentWidthShrunk={this.state.contentWidthShrunk}
+                  contentWidth={contentWidth}
+                  isMobile={this.state.isMobile}
                   pageReadyForFakeModal={this.state.pageReadyForFakeModal}
                   handleModalOpen={episodeNum => {
                     this.setState({
@@ -681,7 +688,7 @@ class App extends Component {
             />
             {this.state.pageReadyForFakeModal ||
             this.state.loading.collections ? null : (
-              <Footer loadingCollections={this.state.loading.collections} />
+              <Footer loadingCollections={this.state.loading.collections} width={this.state.contentWidthShrunk ? '70%' : ''} />
             )}
           </div>
           {playerOpen && (
@@ -707,4 +714,9 @@ class App extends Component {
   }
 }
 
+// const mapSizesToProps = ({ width }) => ({
+//   menuShouldBeFixed: width < 1000
+// });
+
+// export default withSizes(mapSizesToProps)(App);
 export default App;

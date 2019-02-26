@@ -114,8 +114,8 @@ class BCWeekly extends React.Component {
     if (!this.props.loadingCollectionTracks) {
       this.playOnLoadCollectionIfNeeded(collection_num);
       const newUrl = `/weekly-${collection_num}`;
-      
-      if (window.location.hash && window.location.hash.includes(newUrl)) {
+
+      if (window.location.hash && window.location.hash.includes(newUrl) && this.props.isMobile) {
         this.props.forceReopenCollectionDetail();
       } else {
         this.props.history.push(newUrl);
@@ -124,10 +124,11 @@ class BCWeekly extends React.Component {
   }
 
   render() {
-    const { track, pageReadyForFakeModal, contentWidthShrunk } = this.props;
+    const { track, pageReadyForFakeModal, contentWidthShrunk, isMobile, contentWidth } = this.props;
+    const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
     return (
-      <div className="BCWeekly" style={contentWidthShrunk ? { width: '70%' } : {} } >
-        {pageReadyForFakeModal ? null : (
+      <div className="BCWeekly" style={contentWidthShrunk ? { width: contentWidth } : {} } >
+        {!showList ? null : (
           <SplashBanner
             isFromEmail={this.state.isFromEmail}
             loading={this.props.loading}
@@ -173,7 +174,7 @@ class BCWeekly extends React.Component {
               </Responsive>
 
               <BCWeeklyList
-                show={!pageReadyForFakeModal}
+                show={showList}
                 handleModalOpen={this.props.handleModalOpen}
                 collections={this.props.collections}
                 playing={this.props.playing}
