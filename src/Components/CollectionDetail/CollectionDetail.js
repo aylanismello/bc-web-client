@@ -2,6 +2,7 @@ import React from 'react';
 import copy from 'copy-to-clipboard';
 import PlayButton from '../PlayButton';
 import closeIcon from './i-remove.svg';
+import chevronIcon from './ic_chevron.svg';
 import BCLogo from '../BCLogo';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
@@ -57,7 +58,7 @@ class CollectionDetail extends React.Component {
           <div className="CollectionDetail-content-top">
             <div className="CollectionDetail-close-icon-container" onClick={() => this.closeModal()}>
               <img
-                src={closeIcon}
+                src={isSideMenu ? chevronIcon : closeIcon}
                 alt="CloseIcon"
                 className="CollectionDetail-close-icon"
               />

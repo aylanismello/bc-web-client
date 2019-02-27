@@ -6,13 +6,13 @@ import axios from 'axios';
 import createHashHistory from 'history/createHashHistory';
 import ReactGA from 'react-ga';
 import * as Sentry from '@sentry/browser';
-import BurgerMenu from 'react-burger-menu/lib/menus/push';
 
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
+import SideMenu from '../SideMenu';
 import TopNav from '../TopNav';
 import CollectionDetail from '../CollectionDetail';
-import ShareModal from '../ShareModal';
+// import ShareModal from '../ShareModal';
 import BCWeekly from '../BCWeekly';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
@@ -80,11 +80,13 @@ class App extends Component {
 
   componentDidMount() {
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/transitionend_event
-    document.getElementById('page-wrap').addEventListener('transitionend', () => {
+    document
+      .getElementById('page-wrap')
+      .addEventListener('transitionend', () => {
         if (this.state.sideMenuOpen) {
           this.setState({ contentWidthShrunk: true });
         }
-    });
+      });
   }
 
   state = Object.freeze({
@@ -500,17 +502,17 @@ class App extends Component {
   }
 
   playingCollection() {
-    return this.state.playing &&
-      this.state.openCollection.num ===
-      this.state.playingCollectionNum;
+    return (
+      this.state.playing &&
+      this.state.openCollection.num === this.state.playingCollectionNum
+    );
   }
 
   toggleFromCollectionDetail() {
-      this.togglePlay(
-        this.state.openCollection.num ===
-        this.state.playingCollectionNum,
-        true
-      );
+    this.togglePlay(
+      this.state.openCollection.num === this.state.playingCollectionNum,
+      true
+    );
   }
 
   render() {
@@ -522,26 +524,6 @@ class App extends Component {
     const menuShouldBeFixed = false;
     const menuWidth = menuShouldBeFixed ? '320px' : '30%';
     const contentWidth = menuShouldBeFixed ? 'auto' : '70%';
-
-    // update menu's width value based on current width
-    const menuStyles = {
-      bmMenuWrap: {
-        position: 'fixed',
-        height: '100%'
-      },
-      bmMenu: {
-        background: '#191925',
-        padding: '2.5em 1.5em 0',
-        fontSize: '1.15em',
-        boxShadow: '0 2px 20px 0 rgba(0, 0, 0, 0.2)'
-      },
-      bmMorphShape: {
-        fill: '#373a47'
-      },
-      bmOverlay: {
-        background: 'rgba(0, 0, 0, 0.3)'
-      }
-    };
 
     return (
       <Router history={history}>
@@ -565,17 +547,11 @@ class App extends Component {
             />
           </Responsive> */}
           <Responsive minDeviceWidth={768}>
-            <BurgerMenu
-              isOpen={this.state.sideMenuOpen}
-              styles={menuStyles}
-              animation="push"
-              noOverlay
-              disableOverlayClick
-              width={menuWidth}
-              pageWrapId="page-wrap"
-              outerContainerId="outer-container"
+            <SideMenu
+              sideMenuOpen={this.state.sideMenuOpen}
+              menuWidth={menuWidth}
+              loading={this.state.loading.collections}
             >
-            {this.state.loading.collections ? null :
               <CollectionDetail
                 show
                 isSideMenu
@@ -583,8 +559,15 @@ class App extends Component {
                 togglePlay={this.toggleFromCollectionDetail}
                 collectionNum={this.state.openCollection.num}
                 trackLoading={this.state.loading.track}
-                closeModal={() => this.setState({ sideMenuOpen: false, contentWidthShrunk: false })}
-                collection={this.state.collections[this.state.openCollection.idx]}
+                closeModal={() =>
+                  this.setState({
+                    sideMenuOpen: false,
+                    contentWidthShrunk: false
+                  })
+                }
+                collection={
+                  this.state.collections[this.state.openCollection.idx]
+                }
                 idx={this.state.openCollection.idx}
                 activeTrack={this.state.track}
                 loadingCollectionTracks={this.state.loading.collectionTracks}
@@ -592,8 +575,7 @@ class App extends Component {
                   this.playTrack(track, collection)
                 }
               />
-              }
-            </BurgerMenu>
+            </SideMenu>
           </Responsive>
           <div id="page-wrap">
             <ToastContainer
@@ -607,7 +589,8 @@ class App extends Component {
               draggable
               pauseOnHover
             />
-            {this.state.pageReadyForFakeModal || this.state.sideMenuOpen ? null : (
+            {this.state.pageReadyForFakeModal ||
+            this.state.sideMenuOpen ? null : (
               <TopNav />
             )}
             <Route
@@ -674,13 +657,9 @@ class App extends Component {
                   }
                   burnCartelPlayer={this.burnCartelPlayer}
                   playing={this.state.playing}
-                  playingCollection={
-                    this.playingCollection()
-                  }
+                  playingCollection={this.playingCollection()}
                   loadingCollectionTracks={this.state.loading.collectionTracks}
-                  togglePlay={
-                    this.toggleFromCollectionDetail
-                  }
+                  togglePlay={this.toggleFromCollectionDetail}
                   playerOpen={this.state.playerOpen}
                   collections={this.state.collections}
                   trackLoading={this.state.loading.track}
@@ -697,7 +676,10 @@ class App extends Component {
             />
             {this.state.pageReadyForFakeModal ||
             this.state.loading.collections ? null : (
-              <Footer loadingCollections={this.state.loading.collections} width={this.state.contentWidthShrunk ? '70%' : ''} />
+              <Footer
+                loadingCollections={this.state.loading.collections}
+                width={this.state.contentWidthShrunk ? '70%' : ''}
+              />
             )}
           </div>
           {playerOpen && (
@@ -705,7 +687,9 @@ class App extends Component {
               track={track}
               playing={playing}
               defaultCollectionNum={this.state.openCollection.num}
-              forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()}
+              forceReopenCollectionDetail={() =>
+                this.forceReopenCollectionDetail()
+              }
               playerOpen={this.state.playerOpen}
               currentTime={this.state.currentTime}
               trackLoading={this.state.loading.track}
