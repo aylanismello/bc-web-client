@@ -13,6 +13,7 @@ class EQPlayButton extends React.Component {
       ...this.props,
       loading: (this.props.playerOpen && this.props.loading.track)
     };
+
     return (
       <div
         className="EQPlayButton"

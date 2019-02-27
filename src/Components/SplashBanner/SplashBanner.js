@@ -137,7 +137,6 @@ class SplashBanner extends React.Component {
   generateCTA() {
     if (this.state.submitStatus === SUBMIT_STATES.ALREADY_COMPLETED) {
       return 'Discover our hand-curated tracks';
-      // return 'DIVE RIGHT INTO THE LATEST TRACKS';
     } else {
       return 'Get the latest tracks weekly';
     }
@@ -150,7 +149,7 @@ class SplashBanner extends React.Component {
   renderBannerContent() {
     switch (this.state.submitStatus) {
       case SUBMIT_STATES.ALREADY_COMPLETED:
-        return <EQPlayButton {...this.props} />;
+        return <EQPlayButton {...this.props} isBannerButton />;
       case SUBMIT_STATES.UNSUBMITTED:
         return (
           <Form

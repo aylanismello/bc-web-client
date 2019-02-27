@@ -4,6 +4,11 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+  span {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .CollectionDetail {
@@ -24,12 +29,17 @@
       justify-content: center;
       margin: 2rem 0 2rem 0;
 
+
+
       .CollectionDetail-explore-more {
         width: 280px;
         height: 52px;
         border-radius: 26px;
         background-color: #6255ff;
         border: none;
+        &:focus {
+          outline: none;
+        }
 
         @include bc-text(600);
         font-size: 1.2rem;

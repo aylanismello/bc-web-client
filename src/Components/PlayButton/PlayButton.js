@@ -1,11 +1,12 @@
 import React from 'react';
 import LoadingIcon from '../LoadingIcon';
+import ExploreButton from '../ExploreButton';
 import playBtn from './assets/play.svg';
 import pauseBtn from './assets/pause.svg';
 import './PlayButton.scss';
 
 const PlayButton = ({
- playing, togglePlay, loading, width
+ playing, togglePlay, loading, width, isBannerButton
 }) => {
   let button;
 
@@ -15,6 +16,10 @@ const PlayButton = ({
         {' '}
         <LoadingIcon width={width} color="gray" />{' '}
       </div>
+    );
+  } else if (isBannerButton) {
+    button = (
+      <ExploreButton />
     );
   } else {
     button = (
@@ -32,7 +37,7 @@ const PlayButton = ({
     <div
       className="PlayButton"
       onClick={togglePlay}
-      style={{ width: `${width}px` }}
+      style={{ width: isBannerButton ? '' : `${width}px` }}
     >
       {button}
     </div>
