@@ -8,7 +8,9 @@ class TopNav extends React.Component {
     return (
       <div className="TopNav">
         <Link to="/#">
-          <BCLogo />
+          <div className="TopNavLogo" style={{ margin: '1.5em 2.5em' }}>
+            <BCLogo />
+          </div>
         </Link>
       </div>
     );

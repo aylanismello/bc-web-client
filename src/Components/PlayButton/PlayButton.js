@@ -17,7 +17,7 @@ const PlayButton = ({
         <LoadingIcon width={width} color="gray" />{' '}
       </div>
     );
-  } else if (isBannerButton) {
+  } else if (isBannerButton && !playing) {
     button = (
       <ExploreButton />
     );

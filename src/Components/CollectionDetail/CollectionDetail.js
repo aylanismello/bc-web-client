@@ -43,6 +43,21 @@ class CollectionDetail extends React.Component {
     }
 
     const url = `${hostname}/#/weekly-${collectionNum}?from=link`;
+    const contentTop = isSideMenu
+      ? {
+          height: '5rem',
+          boxShadow: '0 2px 20px 0 rgba(0, 0, 0, 0.2)',
+          padding: '1.5rem 1.2rem',
+          display: 'flex'
+        }
+      : { height: '10rem' };
+    const contentMiddle = isSideMenu
+      ? { padding: '0 3rem', marginTop: '1.5rem' }
+      : { padding: '0 1rem 0 1rem' };
+    const contentBottom = isSideMenu
+      ? { padding: '0 3rem 2rem 3rem ' }
+      : { padding: '0 16px 2rem 16px' };
+
     return (
       <div
         className="CollectionDetail"
@@ -55,8 +70,12 @@ class CollectionDetail extends React.Component {
           className="CollectionDetail-content"
           style={isSideMenu ? { paddingBottom: '10rem' } : {}}
         >
-          <div className="CollectionDetail-content-top">
-            <div className="CollectionDetail-close-icon-container" onClick={() => this.closeModal()}>
+          <div className="CollectionDetail-content-top" style={contentTop}>
+            <div
+              className="CollectionDetail-close-icon-container"
+              onClick={() => this.closeModal()}
+              style={isSideMenu ? { marginRight: '2.5rem' } : {}}
+            >
               <img
                 src={isSideMenu ? chevronIcon : closeIcon}
                 alt="CloseIcon"
@@ -68,11 +87,20 @@ class CollectionDetail extends React.Component {
             </div>
           </div>
 
-          <div className="CollectionDetail-content-middle">
+          <div
+            className="CollectionDetail-content-middle"
+            style={contentMiddle}
+          >
             <div className="CollectionDetail-cover-text">
-              <span className="CollectionDetail-cover-text-header"> Week {collectionNum} </span>
+              <span className="CollectionDetail-cover-text-header">
+                {' '}
+                Week {collectionNum}{' '}
+              </span>
               <div className="CollectionDetail-line" />
-              <span className="CollectionDetail-cover-text-subheader"> Burn Cartel Weekly </span>
+              <span className="CollectionDetail-cover-text-subheader">
+                {' '}
+                Burn Cartel Weekly{' '}
+              </span>
             </div>
             <div className="CollectionDetail-image-container">
               <BCProgressiveImage
@@ -91,7 +119,10 @@ class CollectionDetail extends React.Component {
               </div>
             </div>
           </div>
-          <div className="CollectionDetail-content-bottom">
+          <div
+            className="CollectionDetail-content-bottom"
+            style={contentBottom}
+          >
             {!loadingCollectionTracks && (
               <BCWeeklyTracklist
                 idx={idx}

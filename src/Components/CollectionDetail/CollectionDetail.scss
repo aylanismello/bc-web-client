@@ -20,9 +20,6 @@
     border-radius: 3px;
     margin: 0px;
 
-    .CollectionDetail-content-top {
-      height: 100px;
-    }
 
     .CollectionDetail-explore-more-container {
       display: flex;
@@ -66,9 +63,12 @@
         cursor: pointer;
       }
     }
+    .CollectionDetail-content-top {
+      align-items: center;
+    }
 
     .CollectionDetail-content-middle {
-      padding: 0 1rem 0 1rem;
+      // padding: 0 1rem 0 1rem;
 
       .CollectionDetail-cover-text {
         @include bc-text();
@@ -109,10 +109,6 @@
         color: $bc-gray;
         font-weight: 600;
       }
-    }
-
-    .CollectionDetail-content-bottom {
-      padding: 0 16px 2rem 16px;
     }
 
     @media (max-width: $phone-width) {

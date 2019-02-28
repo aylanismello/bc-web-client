@@ -16,7 +16,7 @@ const menuStyles = sideMenuOpen => ({
   },
   bmMenu: {
     background: '#191925',
-    padding: '0 1.5em 0 1.5rem',
+    // padding: '0 2.0em 0 2.0rem',
     fontSize: '1.15em',
     boxShadow: '0 2px 20px 0 rgba(0, 0, 0, 0.2)',
     minWidth: sideMenuOpen && MIN_SIDEBAR_WIDTH
