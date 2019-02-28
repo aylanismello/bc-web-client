@@ -25,7 +25,7 @@ export default () => (
     <span className="explore-text">
     START LISTENING
     </span>
-    <div className="explore-play" style={{ width: '1rem', marginLeft: '1rem' }}>
+    <div className="explore-play" style={{ width: '1rem', marginLeft: '1.5rem', display: 'flex' }}>
       <img src={play} style={{ width: '100%', height: 'auto' }} />
     </div>
   </ExploreBtnWrapper>
