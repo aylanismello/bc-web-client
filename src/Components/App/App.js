@@ -266,10 +266,19 @@ class App extends Component {
     }
   }
 
+  scrollSideMenu() {
+    const sideMenu = document.getElementsByClassName('bm-item-list')[0];
+    // TODO: need to scroll up just a bit more
+    if (sideMenu) sideMenu.scrollIntoView();
+  }
+
   switchCollectionDesktop(collectionNum, collectionIdx, collections) {
     const currentCollection = collections[collectionIdx];
 
-    this.setState({ sideMenuOpen: true });
+    this.setState({ sideMenuOpen: true }, () => {
+      this.scrollSideMenu();
+    });
+
     if (currentCollection && !currentCollection.tracks) {
       this.fetchCollectionTracks(collectionIdx, collections, true);
     } else if (collectionNum) {

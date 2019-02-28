@@ -14,7 +14,6 @@ const ExploreBtnWrapper = styled.div`
   font-family: 'sofia-pro', sans-serif;
   font-weight: bold;
   letter-spacing: 2px;
-  line-height: 1.33;
   font-size: 1.2rem;
   &:hover {
     cursor: pointer;
