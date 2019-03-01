@@ -5,6 +5,7 @@ import Responsive from 'react-responsive';
 import axios from 'axios';
 import createHashHistory from 'history/createHashHistory';
 import ReactGA from 'react-ga';
+import withSizes from 'react-sizes'
 import * as Sentry from '@sentry/browser';
 
 import { baseUrl } from '../../config';
@@ -530,9 +531,12 @@ class App extends Component {
     // what's the diff between current track and this.state.track?
     const { playerOpen, playing } = this.state;
     // const { menuShouldBeFixed } = this.props;
-    const menuShouldBeFixed = false;
-    const menuWidth = menuShouldBeFixed ? '320px' : '30%';
-    const contentWidth = menuShouldBeFixed ? 'auto' : '70%';
+    // const menuShouldBeFixed = true;
+    // const menuWidth = menuShouldBeFixed ? '320px' : '30%';
+    // const contentWidth = menuShouldBeFixed ? 'auto' : '70%';
+    const menuWidthRaw = 350;
+    const menuWidth = `${menuWidthRaw}px`;
+    const contentWidth = `${this.props.currentWidth - menuWidthRaw}px`;
 
     return (
       <Router history={history}>
@@ -720,9 +724,9 @@ class App extends Component {
   }
 }
 
-// const mapSizesToProps = ({ width }) => ({
-//   menuShouldBeFixed: width < 1000
-// });
+const mapSizesToProps = ({ width }) => ({
+    currentWidth: width
+});
 
-// export default withSizes(mapSizesToProps)(App);
-export default App;
+export default withSizes(mapSizesToProps)(App);
+// export default App;
