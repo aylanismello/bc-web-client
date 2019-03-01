@@ -123,7 +123,7 @@ class BCWeekly extends React.Component {
   }
 
   render() {
-    const { track, pageReadyForFakeModal, contentWidthShrunk, isMobile, contentWidth } = this.props;
+    const { track, pageReadyForFakeModal, contentWidthShrunk, isMobile, contentWidth, playingCollectionNum } = this.props;
     const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
     return (
       <div className="BCWeekly" style={contentWidthShrunk ? { width: contentWidth } : {} } >
@@ -176,6 +176,7 @@ class BCWeekly extends React.Component {
                 show={showList}
                 handleModalOpen={this.props.handleModalOpen}
                 collections={this.props.collections}
+                playingCollectionNum={playingCollectionNum}
                 playing={this.props.playing}
                 activeTrack={track}
                 activeCollectionIdx={this.getActiveCollectionIdx()}

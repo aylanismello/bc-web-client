@@ -613,6 +613,7 @@ class App extends Component {
               render={() => (
                 <BCWeekly
                   contentWidthShrunk={this.state.contentWidthShrunk}
+                  playingCollectionNum={this.state.playingCollectionNum}
                   contentWidth={contentWidth}
                   isMobile={this.state.isMobile}
                   pageReadyForFakeModal={this.state.pageReadyForFakeModal}

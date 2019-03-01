@@ -13,7 +13,7 @@ import './BCWeeklyItem.scss';
 
 const BCWeeklyItemWrapper = styled.div`
   border-radius: 4px;
-  border: ${props => (props.active ? '1px solid #e54ea3' : '1px solid transparent')};
+  border: ${props => (props.isPlayingCollection ? '1px solid #e54ea3' : '1px solid transparent')};
   position: relative;
 `;
 
@@ -60,15 +60,18 @@ class BCWeeklyItem extends React.Component {
       handleModalOpen,
       loadingCollectionTracks,
       incrementCollectionImagesLoaded,
-      playing
+      playing,
+      playingCollectionNum
     } = this.props;
     const { artwork_url, collection_num } = collection;
 
     const showPlay = this.state.hover || active || this.state.isTabletOrPhone;
 
+    const isPlayingCollection = playingCollectionNum === collection_num;
+
     return (
       <BCWeeklyItemWrapper
-        active={active}
+        isPlayingCollection={isPlayingCollection}
         className="BCWeeklyItem"
         onMouseEnter={() => this.setState({ hover: true })}
         onMouseLeave={() => this.setState({ hover: false })}

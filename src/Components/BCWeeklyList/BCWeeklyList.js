@@ -13,7 +13,8 @@ const BCWeeklyList = ({
   incrementCollectionImagesLoaded,
   showTracklist,
   loadingCollectionTracks,
-  show
+  show,
+  playingCollectionNum
 }) => {
   let style = {};
   if (!show) {
@@ -32,6 +33,7 @@ const BCWeeklyList = ({
             playing={playing}
             showTracklist={showTracklist}
             key={idx}
+            playingCollectionNum={playingCollectionNum}
             idx={idx}
             incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
             updateActiveCollection={updateActiveCollection}
