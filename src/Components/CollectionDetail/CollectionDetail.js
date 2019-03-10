@@ -124,13 +124,17 @@ class CollectionDetail extends React.Component {
             style={contentBottom}
           >
             {!loadingCollectionTracks && (
-              <BCWeeklyTracklist
-                idx={idx}
-                tracks={collection.tracks}
-                activeTrack={activeTrack}
-                playTrack={playTrack}
-                collection={collection}
-              />
+              <div>
+                <BCWeeklyTracklist
+                  idx={idx}
+                  hasMix
+                  playing={playingCollection}
+                  tracks={collection.tracks}
+                  activeTrack={activeTrack}
+                  playTrack={playTrack}
+                  collection={collection}
+                />
+              </div>
             )}
             <div className="CollectionDetail-explore-more-container">
               <button
