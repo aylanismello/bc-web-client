@@ -131,6 +131,7 @@ class BCWeekly extends React.Component {
           <SplashBanner
             isFromEmail={this.state.isFromEmail}
             loading={this.props.loading}
+            playButtonHasBeenPressed={this.props.playButtonHasBeenPressed}
             playing={this.props.playing}
             playerOpen={this.props.playerOpen}
             togglePlay={() => this.props.togglePlay(false)}

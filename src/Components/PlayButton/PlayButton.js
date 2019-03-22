@@ -6,7 +6,7 @@ import pauseBtn from './assets/pause.svg';
 import './PlayButton.scss';
 
 const PlayButton = ({
- playing, togglePlay, loading, width, isBannerButton
+ playing, togglePlay, loading, width, isBannerButton, playButtonHasBeenPressed
 }) => {
   let button;
 
@@ -17,7 +17,7 @@ const PlayButton = ({
         <LoadingIcon width={width} color="gray" />{' '}
       </div>
     );
-  } else if (isBannerButton && !playing) {
+  } else if (isBannerButton && !playing && !playButtonHasBeenPressed) {
     button = (
       <ExploreButton />
     );

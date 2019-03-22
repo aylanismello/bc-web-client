@@ -101,7 +101,7 @@ class BCWeeklyTracklist extends React.Component {
                   </PlayingEqWrapper>
                   <img
                     src={track.artwork_url || track.artist_artwork_url}
-                    style={{ width: "100%", height: "auto" }}
+                    style={{ width: "100%", height: "auto", borderRadius: '4px' }}
                   />
                 </ImageContainer>
                 <DetailsText>

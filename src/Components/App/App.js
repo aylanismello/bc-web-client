@@ -616,6 +616,7 @@ class App extends Component {
               path="/:bc_weekly_num"
               render={() => (
                 <BCWeekly
+                  playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}
                   contentWidth={contentWidth}
