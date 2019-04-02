@@ -22,6 +22,19 @@ const HeaderText = styled.span`
   color: #f3f3f3;
 `;
 
+const Title = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -moz-box-orient: vertical;    /* Mozilla 8*/
+  -webkit-box-orient: vertical; /* WebKit */
+  box-orient: vertical !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 const ImageContainer = styled.div`
   width: 50px;
   min-width: 50px;
@@ -101,13 +114,15 @@ class BCWeeklyTracklist extends React.Component {
                   </PlayingEqWrapper>
                   <img
                     src={track.artwork_url || track.artist_artwork_url}
-                    style={{ width: "100%", height: "auto", borderRadius: '4px' }}
+                    style={{
+                      width: "100%",
+                      height: "auto",
+                      borderRadius: "4px"
+                    }}
                   />
                 </ImageContainer>
                 <DetailsText>
-                  <div className="BCWeeklyTracklist-title BCWeeklyTracklist-track-info">
-                    {track.name}
-                  </div>
+                  <Title>{track.name}</Title>
                   <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
                     {track.artist_name}
                   </div>
