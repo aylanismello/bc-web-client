@@ -4,8 +4,8 @@ import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 import Responsive from 'react-responsive';
 import axios from 'axios';
 import createHashHistory from 'history/createHashHistory';
-import ReactGA from 'react-ga';
-import withSizes from 'react-sizes'
+// import ReactGA from 'react-ga';
+import withSizes from 'react-sizes';
 import * as Sentry from '@sentry/browser';
 
 import { baseUrl } from '../../config';
@@ -24,15 +24,15 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const initProdServices = () => {
   // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
-  console.log('initializing prod services');
   // GOOGLE ANALYTICS
-  ReactGA.initialize('UA-84947411-1');
-  const landingPath = window.location.hash.replace('#', '');
-  ReactGA.pageview(landingPath);
+  // console.log('initializing prod services');
+  // ReactGA.initialize('UA-84947411-1');
+  // const landingPath = window.location.hash.replace('#', '');
+  // ReactGA.pageview(landingPath);
 
-  history.listen(location => {
-    ReactGA.pageview(location.pathname);
-  });
+  // history.listen(location => {
+  //   ReactGA.pageview(location.pathname);
+  // });
 
   // SENTRY BUG TRACKING
   Sentry.init({
