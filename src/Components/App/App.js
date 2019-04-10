@@ -27,8 +27,12 @@ const initProdServices = () => {
   // GOOGLE ANALYTICS
   // console.log('initializing prod services');
   // ReactGA.initialize('UA-84947411-1');
-  // const landingPath = window.location.hash.replace('#', '');
+  const landingPath = window.location.hash.replace('#', '');
   // ReactGA.pageview(landingPath);
+
+  window.amplitude.getInstance().logEvent('LANDED', {
+    landingPath
+  });
 
   // history.listen(location => {
   //   ReactGA.pageview(location.pathname);
