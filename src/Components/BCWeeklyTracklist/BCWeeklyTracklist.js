@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import './BCWeeklyTracklist.scss';
 
@@ -40,15 +41,17 @@ const ImageContainer = styled.div`
   min-width: 50px;
   height: 50px;
   margin-right: 1.6rem;
-  display: relative;
+  position: relative;
 `;
 
 const DetailsText = styled.div`
-  /* max-width: 200px; */
 `;
 
 const PlayingEqWrapper = styled.div`
   position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Item = styled.div`
@@ -79,6 +82,16 @@ class BCWeeklyTracklist extends React.Component {
     );
   }
 
+  getPlayOverlay(isActive) {
+    if (isActive && this.props.trackLoading) {
+      return <LoadingIcon width={24} />;
+    } else if (isActive && this.props.playing) {
+      return <EQIcon width={24} />;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const {
       tracks,
@@ -89,8 +102,9 @@ class BCWeeklyTracklist extends React.Component {
       spotlight,
       hasMix
     } = this.props;
+
     return (
-      <div className={`BCWeeklyTracklist ${spotlight && "spotlight"}`}>
+      <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
         {tracks.map(track => (
           <div>
             {this.showDivider(track) && <Divider />}
@@ -108,16 +122,14 @@ class BCWeeklyTracklist extends React.Component {
               <Item style={this.getStyle(track)}>
                 <ImageContainer>
                   <PlayingEqWrapper>
-                    {!trackLoading && playing && this.isActive(track) && (
-                      <EQIcon width={24} />
-                    )}
+                    {this.getPlayOverlay(this.isActive(track))}
                   </PlayingEqWrapper>
                   <img
                     src={track.artwork_url || track.artist_artwork_url}
                     style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "4px"
+                      width: '100%',
+                      height: 'auto',
+                      borderRadius: '4px'
                     }}
                   />
                 </ImageContainer>

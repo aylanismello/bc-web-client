@@ -128,6 +128,7 @@ class CollectionDetail extends React.Component {
                 <BCWeeklyTracklist
                   idx={idx}
                   hasMix
+                  trackLoading={trackLoading}
                   playing={playingCollection}
                   tracks={collection.tracks}
                   activeTrack={activeTrack}
