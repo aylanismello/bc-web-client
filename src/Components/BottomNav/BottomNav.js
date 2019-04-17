@@ -2,6 +2,7 @@ import React from 'react';
 import Responsive from 'react-responsive';
 import { Link } from 'react-router-dom';
 import './BottomNav.scss';
+import blankImg from './assets/blank_img.svg';
 import PlayerControls from './PlayerControls';
 import SeekBar from '../SeekBar';
 
@@ -35,36 +36,38 @@ const BottomNav = ({
         <SeekBar currentTime={currentTime.raw} showTopSeekBar />
       </Responsive>
       <div className="BottomNav">
-      {/* TODO: make the content of this invisible when loading, not the whole div */}
-        {track && track.id && (
-          <Link
-            onClick={() => {
-              if (window.location.hash.includes(playingCollectionNum)) {
-                forceReopenCollectionDetail();
-              }
-            }}
-            to={collectionLink}
-          >
-            <div className="BottomNav-track-info">
-              <div className="BottomNav-track-info-artwork-container">
-                <img
-                  src={track.artwork_url || track.artist_artwork_url}
-                  className="Bottom-track-info-artwork"
-                  alt="track-artwork"
-                  draggable={false}
-                />
-              </div>
-              <div className="BottomNav-track-info-details-container">
-                <span className="BottomNav-track-info-detail BottomNav-track-info-name">
-                  {track.name}
-                </span>
-                <span className="BottomNav-track-info-detail BottomNav-track-info-artist">
-                  {track.artist_name}
-                </span>
-              </div>
+        <Link
+          onClick={() => {
+            if (window.location.hash.includes(playingCollectionNum)) {
+              forceReopenCollectionDetail();
+            }
+          }}
+          to={collectionLink}
+        >
+          <div className="BottomNav-track-info">
+            <div className="BottomNav-track-info-artwork-container">
+              <img
+                src={
+                  track.artwork_url ||
+                  track.artist_artwork_url ||
+                  blankImg
+                }
+                className="Bottom-track-info-artwork"
+                alt="track-artwork"
+                draggable={false}
+              />
             </div>
-          </Link>
-        )}
+            <div className="BottomNav-track-info-details-container">
+              <span className="BottomNav-track-info-detail BottomNav-track-info-name">
+                {track.name}
+              </span>
+              <span className="BottomNav-track-info-detail BottomNav-track-info-artist">
+                {track.artist_name}
+              </span>
+            </div>
+          </div>
+        </Link>
+
         <PlayerControls
           playing={playing}
           trackLoading={trackLoading}
