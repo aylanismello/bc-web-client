@@ -2,61 +2,63 @@
 
 $bottom-nav-height: $bottom-nav-height / 2;
 
-.BottomNav {
-  // one more than the Menu from react-burger-menu
+.BottomNav-Container {
   z-index: 10001;
   width: 100%;
   position: fixed;
   bottom: 0;
-  height: $bottom-nav-height;
-  padding: 20px;
-  background: $bc-black;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  
-  .BottomNav-track-info {
+
+  .BottomNav {
+    height: $bottom-nav-height;
+    padding: 20px 0 20px 20px;
+    background: $bc-black;
     display: flex;
-    width: 200px;
-    justify-content: left;
-    &:hover {
-      cursor: pointer;
-    }
-
-    .BottomNav-track-info-artwork-container {
-      width: $bottom-nav-height;
-      .Bottom-track-info-artwork {
-        width: 100%;
-        height: auto;
-        box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
+    justify-content: space-between;
+    align-items: center;
+    
+    .BottomNav-track-info {
+      display: flex;
+      width: 200px;
+      justify-content: left;
+      &:hover {
+        cursor: pointer;
       }
-    }
-    .BottomNav-track-info-details-container {
-        max-width: 130px;
-        padding-left: 12px;
-        display: flex;
-        flex-direction: column;
 
-        @media(max-width: $tiny-width) {
-          max-width: 70px;
+      .BottomNav-track-info-artwork-container {
+        width: $bottom-nav-height;
+        .Bottom-track-info-artwork {
+          width: 100%;
+          height: auto;
+          box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+          border-radius: 4px;
+        }
+      }
+      .BottomNav-track-info-details-container {
+          max-width: 130px;
+          padding-left: 12px;
+          display: flex;
+          flex-direction: column;
+
+          @media(max-width: $tiny-width) {
+            max-width: 70px;
+          }
+
+        .BottomNav-track-info-detail {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
 
-      .BottomNav-track-info-detail {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
+        .BottomNav-track-info-name {
+          @include bc-text(600);
+          font-size: 14px;
+        }
 
-      .BottomNav-track-info-name {
-        @include bc-text(600);
-        font-size: 14px;
-      }
-
-      .BottomNav-track-info-artist {
-        @include bc-text();
-        font-size: 12px;
-        color: $bc-gray;
+        .BottomNav-track-info-artist {
+          @include bc-text();
+          font-size: 12px;
+          color: $bc-gray;
+        }
       }
     }
   }

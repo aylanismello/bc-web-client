@@ -52,38 +52,9 @@ $border-radius: 300px;
     @include progress-bar();
   }
 
-
-  // progress {
-  //   width: 100%;
-  //   background: $bc-gray;
-  //   color: $bc-pink;
-  //   border: none;
-  //   height: 0.5rem;
-  //   border-radius: $border-radius;
-  // }
-
   progress:hover {
     cursor: pointer;
   }
-
-  // // firefox support
-  // progress::-moz-progress-bar {
-  //   @include progress-bar();
-  // }
-
-
-
-
-  // // chrome support
-  // progress[value]::-webkit-progress-bar {
-  //   @include progress-bar();
-  // }
-
-  // progress[value] {
-  // }
-
-  // progress::-webkit-progress-value {
-  // }
 
   @media only screen and (max-width: 767px) {
     progress[value] {
