@@ -1,8 +1,8 @@
 import React from 'react';
-import EQIcon from '../EQIcon';
-// if we want this...
-import LoadingIcon from '../LoadingIcon';
 import styled from 'styled-components';
+import EQIcon from '../EQIcon';
+import LoadingIcon from "../LoadingIcon";
+// if we want this...
 import play from './play.svg';
 
 // either playing, loading, or paused
@@ -28,14 +28,22 @@ const BCWeeklyItemPlayWrapper = styled.div`
   }
 `;
 
-const BCWeeklyItemPlay = ({ show, playing }) => (
-  <BCWeeklyItemPlayWrapper show={show}>
-    {playing ? (
-      <EQIcon width={40} />
-    ) : (
-      <img src={play} className="BCWeeklyItemPlayImg" />
-    )}
-  </BCWeeklyItemPlayWrapper>
-);
+const BCWeeklyItemPlay = ({ show, playing, loading }) => {
+  let playImg;
+
+  if (loading) {
+    playImg = <LoadingIcon width={40} />;
+  } else if (playing) {
+    playImg = <EQIcon width={40} />;
+  } else {
+    playImg = <img src={play} className="BCWeeklyItemPlayImg" />;
+  }
+
+  return (
+    <BCWeeklyItemPlayWrapper show={show}>
+      {playImg}
+    </BCWeeklyItemPlayWrapper>
+  );
+};
 
 export default BCWeeklyItemPlay;

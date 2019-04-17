@@ -182,6 +182,7 @@ class BCWeekly extends React.Component {
                 activeTrack={track}
                 activeCollectionIdx={this.getActiveCollectionIdx()}
                 loadingCollectionTracks={this.props.loadingCollectionTracks}
+                loadingTrack={this.props.loading.track}
                 playTrack={this.props.playTrack}
                 incrementCollectionImagesLoaded={() =>
                   this.setState(

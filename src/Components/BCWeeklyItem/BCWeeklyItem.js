@@ -61,7 +61,8 @@ class BCWeeklyItem extends React.Component {
       loadingCollectionTracks,
       incrementCollectionImagesLoaded,
       playing,
-      playingCollectionNum
+      playingCollectionNum,
+      loadingTrack
     } = this.props;
     const { artwork_url, collection_num } = collection;
 
@@ -97,7 +98,7 @@ class BCWeeklyItem extends React.Component {
           max_width={600}
         />
 
-        <Play show={showPlay} playing={playing && active} />
+        <Play show={showPlay} playing={playing && active} loading={(loadingTrack || loadingCollectionTracks) && active} />
         <BCWeeklyItemText num={collection_num} />
       </BCWeeklyItemWrapper>
     );
