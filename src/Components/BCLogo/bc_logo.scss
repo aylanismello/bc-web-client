@@ -1,16 +1,14 @@
-@import '../../globals.scss';
+@import "../../globals.scss";
 
 .BCLogo {
   // border: 1px solid red;
-  
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
 
   display: flex;
   align-items: center;
- 
-
 
   .BCLogo-svg {
     width: 72px;
@@ -21,16 +19,18 @@
     letter-spacing: 2.1px;
     margin-left: 20px;
   }
+}
 
+.CenterOnMediaQuery {
   @media (max-width: $phone-width) {
     flex-direction: column;
     margin-top: 24px;
-    
+
     .BCLogo-svg {
       width: 64px;
       padding-right: 8px;
     }
-    
+
     .BCLogo-text {
       margin: 0;
       margin-top: 8px;
