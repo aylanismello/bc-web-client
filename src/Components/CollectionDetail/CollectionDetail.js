@@ -63,12 +63,16 @@ class CollectionDetail extends React.Component {
         }
       : {
           ...contentTop,
-          height: '10rem',
-          width: '100%'
+          height: '8rem',
+          padding: '0 2rem',
+          display: 'flex',
+          // -webkit-fill-available
+          // width: '100%'
+          width: '-webkit-fill-available'
         };
     const contentMiddle = isSideMenu
       ? { padding: '0 3rem', marginTop: '10rem' }
-      : { padding: '0 1rem 0 1rem', marginTop: '12rem' };
+      : { padding: '0 1rem 0 1rem', marginTop: '10rem' };
     const contentBottom = isSideMenu
       ? { padding: '0 3rem 2rem 3rem ' }
       : { padding: '0 16px 2rem 16px' };
@@ -111,10 +115,10 @@ class CollectionDetail extends React.Component {
                 isSideMenu
                   ? {}
                   : {
-                      position: 'absolute',
-                      top: '50%',
-                      left: '30%',
-                      transform: 'translate(-50%, -50%)'
+                      // position: 'absolute',
+                      // top: '50%',
+                      // left: '30%',
+                      // transform: 'translate(-50%, -50%)'
                     }
               }
             >
