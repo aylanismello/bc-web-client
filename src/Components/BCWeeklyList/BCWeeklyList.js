@@ -30,6 +30,7 @@ const BCWeeklyList = ({
             activeTrack={activeTrack}
             collection={collection}
             playTrack={playTrack}
+            // match by id
             active={activeCollectionIdx === idx}
             playing={playing}
             showTracklist={showTracklist}

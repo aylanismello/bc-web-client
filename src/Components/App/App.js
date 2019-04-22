@@ -14,7 +14,7 @@ import SideMenu from '../SideMenu';
 import TopNav from '../TopNav';
 import CollectionDetail from '../CollectionDetail';
 // import ShareModal from '../ShareModal';
-import BCWeekly from '../BCWeekly';
+import BCHome from '../BCHome';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
 import './App.scss';
@@ -295,7 +295,7 @@ class App extends Component {
     return window.screen.width < 768;
   }
 
-  // this is called on url change from BCWeekly
+  // this is called on url change from BCHome
   switchToCollection(collectionIdx, collections, playOnLoad = false) {
     const currentCollection = collections[collectionIdx];
 
@@ -619,7 +619,7 @@ class App extends Component {
               exact
               path="/:bc_weekly_num"
               render={() => (
-                <BCWeekly
+                <BCHome
                   playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}
