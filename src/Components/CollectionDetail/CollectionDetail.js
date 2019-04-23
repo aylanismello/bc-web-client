@@ -8,6 +8,7 @@ import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
 
+
 class CollectionDetail extends React.Component {
   state = {
     clickedCopy: false
@@ -82,12 +83,12 @@ class CollectionDetail extends React.Component {
         className="CollectionDetail"
         style={style}
         onClick={e => {
-          if (e.target.className === 'CollectionDetail') this.closeModal();
+          if (e.target.className === "CollectionDetail") this.closeModal();
         }}
       >
         <div
           className="CollectionDetail-content"
-          style={isSideMenu ? { paddingBottom: '10rem' } : {}}
+          style={isSideMenu ? { paddingBottom: "10rem" } : {}}
         >
           <div className="CollectionDetail-content-top" style={contentTop}>
             <div
@@ -95,11 +96,11 @@ class CollectionDetail extends React.Component {
               onClick={() => this.closeModal()}
               style={
                 isSideMenu
-                  ? { marginRight: '2.5rem' }
+                  ? { marginRight: "2.5rem" }
                   : {
-                      right: '0',
-                      top: '50%',
-                      transform: 'translate(-50%, -50%)'
+                      right: "0",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)"
                     }
               }
             >
@@ -132,13 +133,13 @@ class CollectionDetail extends React.Component {
           >
             <div className="CollectionDetail-cover-text">
               <span className="CollectionDetail-cover-text-header">
-                {' '}
-                Week {collectionNum}{' '}
+                {" "}
+                Week {collectionNum}{" "}
               </span>
               <div className="CollectionDetail-line" />
               <span className="CollectionDetail-cover-text-subheader">
-                {' '}
-                Burn Cartel Weekly{' '}
+                {" "}
+                Burn Cartel Weekly{" "}
               </span>
             </div>
             <div className="CollectionDetail-image-container">
@@ -162,6 +163,10 @@ class CollectionDetail extends React.Component {
             className="CollectionDetail-content-bottom"
             style={contentBottom}
           >
+            <div className="CollectionDetail-description">
+              {collection.description}
+            </div>
+
             {!loadingCollectionTracks && (
               <div>
                 <BCWeeklyTracklist
@@ -187,7 +192,9 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-copy">
               <span
                 style={
-                  this.state.clickedCopy ? {} : { textDecoration: 'underline' }
+                  this.state.clickedCopy
+                    ? {}
+                    : { textDecoration: "underline" }
                 }
                 onClick={() => {
                   if (!this.state.clickedCopy) {
@@ -196,7 +203,9 @@ class CollectionDetail extends React.Component {
                   }
                 }}
               >
-                {this.state.clickedCopy ? 'Link copied!' : 'Copy playlist link'}
+                {this.state.clickedCopy
+                  ? "Link copied!"
+                  : "Copy playlist link"}
               </span>
             </div>
           </div>
