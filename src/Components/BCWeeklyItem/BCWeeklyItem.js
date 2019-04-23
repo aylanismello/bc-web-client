@@ -4,6 +4,7 @@ import styled from 'styled-components';
 // import Responsive from 'react-responsive';
 // import LoadingIcon from '../LoadingIcon';
 // import ShareButton from '../ShareButton';
+import { getWeeklyItemTexts } from '../../helpers';
 import Play from './Play';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './BCWeeklyItem.scss';
@@ -17,22 +18,17 @@ const BCWeeklyItemWrapper = styled.div`
   position: relative;
 `;
 
-const BCWeeklyItemText = ({ num }) => (
+const BCWeeklyItemText = (collection) => {
+  const texts = getWeeklyItemTexts(collection.collection);
+  
+  return (
   <div className="BCWeeklyItem-cover-text visible">
-    <div className="BCWeeklyItem-cover-text-title"> Week {num} </div>
-    {/* {(loadingCollectionTracks && active) ?
-            <LoadingIcon width={20} />
-            :
-          } */}
+    <div className="BCWeeklyItem-cover-text-title"> {texts[0]} </div>
     <div className="BCWeeklyItem-line" />
-    <div className="BCWeeklyItem-cover-text-subtitle"> Burn Cartel Weekly </div>
-    {/* <Responsive minDeviceWidth={950}>
-            <ShareButton
-              handleModalOpen={() => handleModalOpen(collection_num)}
-            />
-            </Responsive> */}
+    <div className="BCWeeklyItem-cover-text-subtitle">  {texts[1]} </div>
   </div>
-);
+  );
+};
 
 class BCWeeklyItem extends React.Component {
   state = {
@@ -99,7 +95,7 @@ class BCWeeklyItem extends React.Component {
         />
 
         <Play show={showPlay} playing={playing && active} loading={(loadingTrack || loadingCollectionTracks) && active} />
-        <BCWeeklyItemText num={collection_num} />
+        <BCWeeklyItemText collection={collection} />
       </BCWeeklyItemWrapper>
     );
   }

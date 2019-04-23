@@ -7,6 +7,7 @@ import BCLogo from '../BCLogo';
 import BCWeeklyTracklist from '../BCWeeklyTracklist';
 import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
+import { getWeeklyItemTexts } from '../../helpers';
 
 
 class CollectionDetail extends React.Component {
@@ -78,6 +79,8 @@ class CollectionDetail extends React.Component {
       ? { padding: '0 3rem 2rem 3rem ' }
       : { padding: '0 16px 2rem 16px' };
 
+    const texts = getWeeklyItemTexts(collection);
+
     return (
       <div
         className="CollectionDetail"
@@ -133,13 +136,11 @@ class CollectionDetail extends React.Component {
           >
             <div className="CollectionDetail-cover-text">
               <span className="CollectionDetail-cover-text-header">
-                {" "}
-                Week {collectionNum}{" "}
+                {texts[0]}
               </span>
               <div className="CollectionDetail-line" />
               <span className="CollectionDetail-cover-text-subheader">
-                {" "}
-                Burn Cartel Weekly{" "}
+                {texts[1]}
               </span>
             </div>
             <div className="CollectionDetail-image-container">

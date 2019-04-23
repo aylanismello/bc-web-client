@@ -1,5 +1,10 @@
-import React from 'react';
-import { Label } from 'semantic-ui-react';
+const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
+  const topText = collection_type === 0 ? `Week ${collection_num}` : name;
+  const bottomText =
+    collection_type === 0 ? 'Burn Cartel Weekly' : 'Burn Cartel Rising';
+
+  return [topText, bottomText];
+};
 
 const publisherLocationsToString = location => {
   // TODO move earlier in the chain so it's also in the map.
@@ -24,22 +29,6 @@ const publisherLocationsToString = location => {
   }
 };
 
-const makeTrackTypeBadge = track => {
-  if (track.track_type === 1) {
-    return <Label color="teal"> Remix </Label>;
-  } else if (track.track_type === 2) {
-    return <Label color="pink"> Mix </Label>;
-  }
-  return null;
-};
-
-const makeBCBadge = track => {
-  if (track.episode_track_id) {
-    return <Label color="black"> On BC Radio </Label>;
-  }
-
-  return null;
-};
 
 const formatSoundcloudUserForMap = soundcloudUser => {
   return {
@@ -53,7 +42,6 @@ const formatSoundcloudUserForMap = soundcloudUser => {
 
 export {
   publisherLocationsToString,
-  makeTrackTypeBadge,
-  makeBCBadge,
-  formatSoundcloudUserForMap
+  formatSoundcloudUserForMap,
+  getWeeklyItemTexts
 };
