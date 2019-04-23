@@ -108,10 +108,10 @@ class BCWeeklyTracklist extends React.Component {
         {tracks.map(track => (
           <div>
             {this.showDivider(track) && <Divider />}
-            {track.track_number === 0 && (
+            {track.track_number === 0 && hasMix && (
               <HeaderText>This Week's Mix</HeaderText>
             )}
-            {track.track_number === 1 && (
+            {track.track_number === 1 && hasMix && (
               <HeaderText>This Week's Best Tracks</HeaderText>
             )}
             <div
