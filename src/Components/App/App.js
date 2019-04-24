@@ -14,7 +14,7 @@ import SideMenu from '../SideMenu';
 import TopNav from '../TopNav';
 import CollectionDetail from '../CollectionDetail';
 // import ShareModal from '../ShareModal';
-import BCWeekly from '../BCWeekly';
+import BCHome from '../BCHome';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
 import './App.scss';
@@ -150,8 +150,8 @@ class App extends Component {
     });
   }
 
-  getActiveCollectionIdx(bc_weekly_num, collections = this.props.collections) {
-    let activeCollectionIdx = 0;
+  getActiveCollection(bc_weekly_num, collections = this.props.collections) {
+    let activeCollection = collections[0] || {};
 
     if (App.isValidUrlParam(bc_weekly_num)) {
       const collectionFromWeekNum = App.weekHasBeenReleased(
@@ -159,10 +159,11 @@ class App extends Component {
         bc_weekly_num
       );
       if (collectionFromWeekNum) {
-        activeCollectionIdx = collectionFromWeekNum.idx;
+        activeCollection = collectionFromWeekNum;
       }
     }
-    return activeCollectionIdx;
+
+    return activeCollection;
   }
 
   setInitialCollections(
@@ -295,7 +296,7 @@ class App extends Component {
     return window.screen.width < 768;
   }
 
-  // this is called on url change from BCWeekly
+  // this is called on url change from BCHome
   switchToCollection(collectionIdx, collections, playOnLoad = false) {
     const currentCollection = collections[collectionIdx];
 
@@ -619,7 +620,7 @@ class App extends Component {
               exact
               path="/:bc_weekly_num"
               render={() => (
-                <BCWeekly
+                <BCHome
                   playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}
@@ -632,8 +633,8 @@ class App extends Component {
                       modalOpen: true
                     });
                   }}
-                  getActiveCollectionIdx={(x, y) =>
-                    this.getActiveCollectionIdx(x, y)
+                  getActiveCollection={(x, y) =>
+                    this.getActiveCollection(x, y)
                   }
                   forceReopenCollectionDetail={() =>
                     this.forceReopenCollectionDetail()

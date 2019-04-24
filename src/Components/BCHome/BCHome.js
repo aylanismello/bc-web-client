@@ -3,18 +3,21 @@ import axios from 'axios';
 import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
-import BCWeeklyList from '../BCWeeklyList';
+import PaginationButton from './PaginationButton';
+import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
 import Wrapper from '../Wrapper';
 import { baseUrl } from '../../config';
-import './BCWeekly.scss';
+import './BCHome.scss';
 
 const queryString = require('query-string');
+const STARTING_SIZE = 4;
+const PAGINATION_SIZE = STARTING_SIZE;
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
-class BCWeekly extends React.Component {
+class BCHome extends React.Component {
   constructor(props) {
     super(props);
     this.props.burnCartelPlayer.autoSwitchCollections = (
@@ -28,7 +31,11 @@ class BCWeekly extends React.Component {
 
   state = Object.freeze({
     isFromEmail: false,
-    collectionImagesLoaded: 0
+    collectionImagesLoaded: 0,
+    page: {
+      weekly: STARTING_SIZE,
+      rising: STARTING_SIZE
+    }
   });
 
   componentWillMount() {
@@ -47,10 +54,10 @@ class BCWeekly extends React.Component {
         const { collections, collection_num } = data.data;
 
         this.props.setLoading('collections', false);
-        this.preselectedCollectionIdx = this.props.getActiveCollectionIdx(
+        this.preselectedCollectionIdx = this.props.getActiveCollection(
           `weekly-${collection_num}`,
           collections
-        );
+        ).idx;
 
         const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
 
@@ -74,16 +81,16 @@ class BCWeekly extends React.Component {
       nextProps.match.params.bc_weekly_num
     ) {
       const { bc_weekly_num } = nextProps.match.params;
-      const idx = this.getActiveCollectionIdx(bc_weekly_num);
+      const idx = this.getActiveCollection(bc_weekly_num).idx;
       this.props.switchToCollection(idx, nextProps.collections);
     }
   }
 
-  getActiveCollectionIdx(
+  getActiveCollection(
     bc_weekly_num = this.props.match.params.bc_weekly_num,
     collections = this.props.collections
   ) {
-    return this.props.getActiveCollectionIdx(bc_weekly_num, collections);
+    return this.props.getActiveCollection(bc_weekly_num, collections);
   }
 
   autoSwitchCollections(collectionIdx, collections) {
@@ -103,12 +110,6 @@ class BCWeekly extends React.Component {
     }
   }
 
-  scrollToCollectionOnImagesLoad() {
-    if (this.state.collectionImagesLoaded === this.props.collections.length) {
-      this.props.scrollToCollection(this.getActiveCollectionIdx());
-    }
-  }
-
   updateActiveCollection(collection_num) {
     if (!this.props.loadingCollectionTracks) {
       this.playOnLoadCollectionIfNeeded(collection_num);
@@ -122,11 +123,68 @@ class BCWeekly extends React.Component {
     }
   }
 
-  render() {
-    const { track, pageReadyForFakeModal, contentWidthShrunk, isMobile, contentWidth, playingCollectionNum } = this.props;
-    const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
+  paginate(type) {
+    const newPage = {};
+    newPage[type] = this.state.page[type] + PAGINATION_SIZE;
+    this.setState({ page: { ...this.state.page, ...newPage } });
+  }
+
+  makeCollectionList(collections, showList, type) {
+    let style = {};
+
+    if (!showList) style = { display: 'none' };
+    if (type !== 'weekly') style = { ...style, marginTop: '7rem' };
+
+    const showPagination = this.state.page[type] < collections.length;
+    const paginatedCollections = collections.slice(
+      0,
+      this.state.page[type]
+    );
+
     return (
-      <div className="BCWeekly" style={contentWidthShrunk ? { width: contentWidth } : {} } >
+      <div className="BCHome-collection-container" style={style}>
+        <div className="BCHome-collection-header">Use that helper</div>
+        <CollectionList
+          show={showList}
+          handleModalOpen={this.props.handleModalOpen}
+          collections={collections}
+          playingCollectionNum={this.props.playingCollectionNum}
+          playing={this.props.playing}
+          activeTrack={this.props.track}
+          activeCollectionId={this.getActiveCollection().id}
+          loadingCollectionTracks={this.props.loadingCollectionTracks}
+          loadingTrack={this.props.loading.track}
+          playTrack={this.props.playTrack}
+          showTracklist={this.props.showTracklist}
+          updateActiveCollection={collection_num =>
+            this.updateActiveCollection(collection_num)
+          }
+        />
+        {/* <div className="BCHome-pagination-container">
+          <PaginationButton paginate={() => this.paginate(type)} show={showPagination} />
+        </div> */}
+      </div>
+    );
+  }
+
+  render() {
+    const {
+      pageReadyForFakeModal,
+      contentWidthShrunk,
+      isMobile,
+      contentWidth,
+      collections
+    } = this.props;
+    const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
+
+    const handPickedCollections = collections.filter(c => c.collection_type === 0);
+    const algoPickedCollections = collections.filter(c => c.collection_type === 1);
+
+    return (
+      <div
+        className="BCHome"
+        style={contentWidthShrunk ? { width: contentWidth } : {}}
+      >
         {!showList ? null : (
           <SplashBanner
             isFromEmail={this.state.isFromEmail}
@@ -140,7 +198,7 @@ class BCWeekly extends React.Component {
         {this.props.loading.collections ? (
           <BCLoading />
         ) : (
-          <div className="BCWeekly-content-container">
+          <div className="BCHome-content-container">
             <Wrapper>
               {/* <Responsive minDeviceWidth={950}>
                 <BCSpotlightItem
@@ -167,44 +225,22 @@ class BCWeekly extends React.Component {
                   idx={this.props.idx}
                   activeTrack={this.props.activeTrack}
                   loadingCollectionTracks={this.props.loadingCollectionTracks}
-                  playTrack={(track, collection) =>
-                    this.props.playTrack(track, collection)
+                  playTrack={(currentTrack, collection) =>
+                    this.props.playTrack(currentTrack, collection)
                   }
                 />
               </Responsive>
 
-              <BCWeeklyList
-                show={showList}
-                handleModalOpen={this.props.handleModalOpen}
-                collections={this.props.collections}
-                playingCollectionNum={playingCollectionNum}
-                playing={this.props.playing}
-                activeTrack={track}
-                activeCollectionIdx={this.getActiveCollectionIdx()}
-                loadingCollectionTracks={this.props.loadingCollectionTracks}
-                loadingTrack={this.props.loading.track}
-                playTrack={this.props.playTrack}
-                incrementCollectionImagesLoaded={() =>
-                  this.setState(
-                    {
-                      collectionImagesLoaded:
-                        this.state.collectionImagesLoaded + 1
-                    },
-                    () => {
-                      // console.log(
-                      //   `${this.state.collectionImagesLoaded} / ${
-                      //     this.props.collections.length
-                      //   } done`
-                      // );
-                      // this.scrollToCollectionOnImagesLoad();
-                    }
-                  )
-                }
-                showTracklist={this.props.showTracklist}
-                updateActiveCollection={collection_num =>
-                  this.updateActiveCollection(collection_num)
-                }
-              />
+              {this.makeCollectionList(
+                handPickedCollections,
+                showList,
+                'weekly'
+              )}
+              {this.makeCollectionList(
+                algoPickedCollections,
+                showList,
+                'rising'
+              )}
             </Wrapper>
           </div>
         )}
@@ -213,4 +249,4 @@ class BCWeekly extends React.Component {
   }
 }
 // https://reacttraining.com/react-router/web/api/withRouter
-export default withRouter(BCWeekly);
+export default withRouter(BCHome);
