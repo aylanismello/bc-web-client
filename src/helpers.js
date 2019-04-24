@@ -1,7 +1,9 @@
 const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
-  const topText = collection_type === 0 ? `Week ${collection_num}` : name;
+  const isWeekly = collection_type === 0 || collection_type === 'weekly';
+  
+  const topText = isWeekly ? `Week ${collection_num}` : name;
   const bottomText =
-    collection_type === 0 ? 'Burn Cartel Weekly' : 'Burn Cartel Rising';
+    isWeekly ? 'Burn Cartel Weekly' : 'Burn Cartel Rising';
 
   return [topText, bottomText];
 };

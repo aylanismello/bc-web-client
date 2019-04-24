@@ -3,7 +3,8 @@ import axios from 'axios';
 import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
-import PaginationButton from './PaginationButton';
+import { getWeeklyItemTexts } from '../../helpers';
+// import PaginationButton from './PaginationButton';
 import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
@@ -141,9 +142,11 @@ class BCHome extends React.Component {
       this.state.page[type]
     );
 
+    const headerText = getWeeklyItemTexts({ collection_type: type })[1];
+
     return (
       <div className="BCHome-collection-container" style={style}>
-        <div className="BCHome-collection-header">Use that helper</div>
+        <div className="BCHome-collection-header"> {headerText} </div>
         <CollectionList
           show={showList}
           handleModalOpen={this.props.handleModalOpen}
