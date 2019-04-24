@@ -609,7 +609,7 @@ class App extends Component {
             />
             {this.state.pageReadyForFakeModal ||
             this.state.sideMenuOpen ? null : (
-              <TopNav />
+              <TopNav isMobile={this.state.isMobile} forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()} />
             )}
             <Route
               exact
