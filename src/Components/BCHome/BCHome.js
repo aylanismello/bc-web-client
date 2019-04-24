@@ -47,10 +47,10 @@ class BCHome extends React.Component {
         const { collections, collection_num } = data.data;
 
         this.props.setLoading('collections', false);
-        this.preselectedCollectionIdx = this.props.getActiveCollectionIdx(
+        this.preselectedCollectionIdx = this.props.getActiveCollection(
           `weekly-${collection_num}`,
           collections
-        );
+        ).idx;
 
         const isPreselectedCollection = this.props.location.pathname.includes('weekly-');
 
@@ -74,16 +74,16 @@ class BCHome extends React.Component {
       nextProps.match.params.bc_weekly_num
     ) {
       const { bc_weekly_num } = nextProps.match.params;
-      const idx = this.getActiveCollectionIdx(bc_weekly_num);
+      const idx = this.getActiveCollection(bc_weekly_num).idx;
       this.props.switchToCollection(idx, nextProps.collections);
     }
   }
 
-  getActiveCollectionIdx(
+  getActiveCollection(
     bc_weekly_num = this.props.match.params.bc_weekly_num,
     collections = this.props.collections
   ) {
-    return this.props.getActiveCollectionIdx(bc_weekly_num, collections);
+    return this.props.getActiveCollection(bc_weekly_num, collections);
   }
 
   autoSwitchCollections(collectionIdx, collections) {
@@ -125,7 +125,7 @@ class BCHome extends React.Component {
         playingCollectionNum={this.props.playingCollectionNum}
         playing={this.props.playing}
         activeTrack={this.props.track}
-        activeCollectionIdx={this.getActiveCollectionIdx()}
+        activeCollectionId={this.getActiveCollection().id}
         loadingCollectionTracks={this.props.loadingCollectionTracks}
         loadingTrack={this.props.loading.track}
         playTrack={this.props.playTrack}

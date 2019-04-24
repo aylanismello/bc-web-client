@@ -150,8 +150,8 @@ class App extends Component {
     });
   }
 
-  getActiveCollectionIdx(bc_weekly_num, collections = this.props.collections) {
-    let activeCollectionIdx = 0;
+  getActiveCollection(bc_weekly_num, collections = this.props.collections) {
+    let activeCollection = collections[0] || {};
 
     if (App.isValidUrlParam(bc_weekly_num)) {
       const collectionFromWeekNum = App.weekHasBeenReleased(
@@ -159,10 +159,11 @@ class App extends Component {
         bc_weekly_num
       );
       if (collectionFromWeekNum) {
-        activeCollectionIdx = collectionFromWeekNum.idx;
+        activeCollection = collectionFromWeekNum;
       }
     }
-    return activeCollectionIdx;
+    
+    return activeCollection;
   }
 
   setInitialCollections(
@@ -632,8 +633,8 @@ class App extends Component {
                       modalOpen: true
                     });
                   }}
-                  getActiveCollectionIdx={(x, y) =>
-                    this.getActiveCollectionIdx(x, y)
+                  getActiveCollection={(x, y) =>
+                    this.getActiveCollection(x, y)
                   }
                   forceReopenCollectionDetail={() =>
                     this.forceReopenCollectionDetail()

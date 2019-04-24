@@ -4,7 +4,7 @@ import './BCWeeklyList.scss';
 
 const BCWeeklyList = ({
   collections,
-  activeCollectionIdx,
+  activeCollectionId,
   updateActiveCollection,
   playTrack,
   activeTrack,
@@ -31,7 +31,7 @@ const BCWeeklyList = ({
             collection={collection}
             playTrack={playTrack}
             // match by id
-            active={activeCollectionIdx === idx}
+            active={activeCollectionId === collection.id}
             playing={playing}
             showTracklist={showTracklist}
             key={idx}
