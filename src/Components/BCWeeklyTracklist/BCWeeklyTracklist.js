@@ -106,7 +106,7 @@ class BCWeeklyTracklist extends React.Component {
     return (
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
         {tracks.map(track => (
-          <div>
+          <div key={track.id}>
             {this.showDivider(track) && <Divider />}
             {track.track_number === 0 && (
               <HeaderText>This Week's Mix</HeaderText>

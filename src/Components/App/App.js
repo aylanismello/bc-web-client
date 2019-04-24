@@ -162,7 +162,7 @@ class App extends Component {
         activeCollection = collectionFromWeekNum;
       }
     }
-    
+
     return activeCollection;
   }
 

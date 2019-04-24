@@ -1,8 +1,8 @@
 import React from 'react';
 import BCWeeklyItem from '../BCWeeklyItem';
-import './BCWeeklyList.scss';
+import './CollectionList.scss';
 
-const BCWeeklyList = ({
+const CollectionList = ({
   collections,
   activeCollectionId,
   updateActiveCollection,
@@ -22,8 +22,8 @@ const BCWeeklyList = ({
     style = { display: 'none' };
   }
   return (
-    <div className="BCWeeklyList" style={style}>
-      <div className="BCWeeklyList-grid">
+    <div className="CollectionList" style={style}>
+      <div className="CollectionList-grid">
         {collections.map((collection, idx) => (
           <BCWeeklyItem
             handleModalOpen={handleModalOpen}
@@ -48,4 +48,4 @@ const BCWeeklyList = ({
   );
 };
 
-export default BCWeeklyList;
+export default CollectionList;

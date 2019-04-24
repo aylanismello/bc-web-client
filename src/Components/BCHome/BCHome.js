@@ -3,7 +3,8 @@ import axios from 'axios';
 import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
-import BCWeeklyList from '../BCWeeklyList';
+import PaginationButton from './PaginationButton';
+import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
 import Wrapper from '../Wrapper';
@@ -11,6 +12,8 @@ import { baseUrl } from '../../config';
 import './BCHome.scss';
 
 const queryString = require('query-string');
+const STARTING_SIZE = 4;
+const PAGINATION_SIZE = STARTING_SIZE;
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -28,7 +31,11 @@ class BCHome extends React.Component {
 
   state = Object.freeze({
     isFromEmail: false,
-    collectionImagesLoaded: 0
+    collectionImagesLoaded: 0,
+    page: {
+      weekly: STARTING_SIZE,
+      rising: STARTING_SIZE
+    }
   });
 
   componentWillMount() {
@@ -116,24 +123,47 @@ class BCHome extends React.Component {
     }
   }
 
-  makeCollectionList(collections, showList) {
+  paginate(type) {
+    const newPage = {};
+    newPage[type] = this.state.page[type] + PAGINATION_SIZE;
+    this.setState({ page: { ...this.state.page, ...newPage } });
+  }
+
+  makeCollectionList(collections, showList, type) {
+    let style = {};
+
+    if (!showList) style = { display: 'none' };
+    if (type !== 'weekly') style = { ...style, marginTop: '7rem' };
+
+    const showPagination = this.state.page[type] < collections.length;
+    const paginatedCollections = collections.slice(
+      0,
+      this.state.page[type]
+    );
+
     return (
-      <BCWeeklyList
-        show={showList}
-        handleModalOpen={this.props.handleModalOpen}
-        collections={collections}
-        playingCollectionNum={this.props.playingCollectionNum}
-        playing={this.props.playing}
-        activeTrack={this.props.track}
-        activeCollectionId={this.getActiveCollection().id}
-        loadingCollectionTracks={this.props.loadingCollectionTracks}
-        loadingTrack={this.props.loading.track}
-        playTrack={this.props.playTrack}
-        showTracklist={this.props.showTracklist}
-        updateActiveCollection={collection_num =>
-          this.updateActiveCollection(collection_num)
-        }
-      />
+      <div className="BCHome-collection-container" style={style}>
+        <div className="BCHome-collection-header">Use that helper</div>
+        <CollectionList
+          show={showList}
+          handleModalOpen={this.props.handleModalOpen}
+          collections={collections}
+          playingCollectionNum={this.props.playingCollectionNum}
+          playing={this.props.playing}
+          activeTrack={this.props.track}
+          activeCollectionId={this.getActiveCollection().id}
+          loadingCollectionTracks={this.props.loadingCollectionTracks}
+          loadingTrack={this.props.loading.track}
+          playTrack={this.props.playTrack}
+          showTracklist={this.props.showTracklist}
+          updateActiveCollection={collection_num =>
+            this.updateActiveCollection(collection_num)
+          }
+        />
+        {/* <div className="BCHome-pagination-container">
+          <PaginationButton paginate={() => this.paginate(type)} show={showPagination} />
+        </div> */}
+      </div>
     );
   }
 
@@ -201,9 +231,16 @@ class BCHome extends React.Component {
                 />
               </Responsive>
 
-              {/* {this.makeCollectionList(this.props.collections, showList)} */}
-              {this.makeCollectionList(handPickedCollections, showList)}
-              {this.makeCollectionList(algoPickedCollections, showList)}
+              {this.makeCollectionList(
+                handPickedCollections,
+                showList,
+                'weekly'
+              )}
+              {this.makeCollectionList(
+                algoPickedCollections,
+                showList,
+                'rising'
+              )}
             </Wrapper>
           </div>
         )}

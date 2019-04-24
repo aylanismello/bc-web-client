@@ -6,8 +6,8 @@ $grid-spacing: 2rem;
   $grid-spacing: 4rem;
 }
 
-.BCWeeklyList {
-  .BCWeeklyList-grid {
+.CollectionList {
+  .CollectionList-grid {
     display: grid;
     // grid-template-columns: 1fr 1fr 1fr 1fr;
     // grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -17,7 +17,7 @@ $grid-spacing: 2rem;
     // justify-content: center;
     grid-row-gap: $grid-spacing;
     grid-column-gap: $grid-spacing;
-    
+
     // @media (max-width: $tablet-width) { 
     //   grid-template-columns: 1fr 1fr 1fr;
     // }

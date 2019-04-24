@@ -5,4 +5,18 @@
     display: flex;
     justify-content: center;
   }
+
+  .BCHome-collection-container {
+    .BCHome-collection-header {
+      @include bc-text(600);
+      font-size: 1.6em;
+      padding-bottom: 1.2rem;
+    }
+
+    .BCHome-pagination-container {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 2rem;
+    }
+  }
 }
