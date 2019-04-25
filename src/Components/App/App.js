@@ -367,13 +367,13 @@ class App extends Component {
   }
 
   scrollToCollection() {
-    const { idx } = window;
-    if (idx) {
+    const { tappedCollectionID } = window;
+    if (tappedCollectionID) {
       const viewportHeight = Math.max(
         document.documentElement.clientHeight,
         window.innerHeight || 0
       );
-      document.getElementById(idx).scrollIntoView();
+      document.getElementById(tappedCollectionID).scrollIntoView();
       window.scrollBy(0, -(viewportHeight / 10));
     } else {
       window.scrollTo(0, 0);

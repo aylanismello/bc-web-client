@@ -24,7 +24,7 @@ const CollectionList = ({
   return (
     <div className="CollectionList" style={style}>
       <div className="CollectionList-grid">
-        {collections.map((collection, idx) => (
+        {collections.map((collection) => (
           <BCWeeklyItem
             handleModalOpen={handleModalOpen}
             activeTrack={activeTrack}
@@ -34,9 +34,9 @@ const CollectionList = ({
             active={activeCollectionId === collection.id}
             playing={playing}
             showTracklist={showTracklist}
-            key={idx}
+            key={collection.id}
             playingCollectionNum={playingCollectionNum}
-            idx={idx}
+            id={collection.id}
             incrementCollectionImagesLoaded={incrementCollectionImagesLoaded}
             updateActiveCollection={updateActiveCollection}
             loadingTrack={loadingTrack}

@@ -52,7 +52,7 @@ class BCWeeklyItem extends React.Component {
       collection,
       active,
       updateActiveCollection,
-      idx,
+      id,
       handleModalOpen,
       loadingCollectionTracks,
       incrementCollectionImagesLoaded,
@@ -78,11 +78,11 @@ class BCWeeklyItem extends React.Component {
             !e.target.className.includes('ShareButton') &&
             !e.target.className.includes('title')
           ) {
-            window.idx = idx;
+            window.tappedCollectionID = id;
             updateActiveCollection(collection_num);
           }
         }}
-        id={idx}
+        id={id}
       >
         {/* https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee */}
         {/* https://peter.coffee/how-to-use-css-pseudo-elements-to-add-a-gradient-to-images */}
