@@ -490,7 +490,6 @@ class App extends Component {
   }
 
   playTrack(track, collection) {
-    console.log(`play ${track.name}`)
     this.burnCartelPlayer.playTrack(
       track,
       collection,

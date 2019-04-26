@@ -64,7 +64,9 @@ class BurnCartelPlayer {
     
     // TODO: this is flimsy as balls dont do thingz
     this.trackIdx = track.track_number;
-    this.switchTrack(this.collection.tracks[this.trackIdx]);
+    this.trackId = track.id;
+    this.switchTrack(this.collection.tracks.filter(t => t.id === this.trackId)[0]);
+    // this.switchTrack(this.collection.tracks[this.trackIdx]);
   }
 
   initCollectionIdx() {
