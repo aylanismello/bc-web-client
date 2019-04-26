@@ -61,7 +61,8 @@ class BurnCartelPlayer {
   playTrack(track, collection, collections) {
     this.setPlayingCollectionNum(collection.collection_num);
     this.initCollections(collection, collections);
-    // debugger;
+    
+    // TODO: this is flimsy as balls dont do thingz
     this.trackIdx = track.track_number;
     this.switchTrack(this.collection.tracks[this.trackIdx]);
   }

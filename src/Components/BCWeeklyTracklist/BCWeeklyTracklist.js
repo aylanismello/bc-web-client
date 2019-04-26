@@ -117,7 +117,10 @@ class BCWeeklyTracklist extends React.Component {
             <div
               key={track.id}
               className="BCWeeklyTracklist-item-container"
-              onClick={() => playTrack(track, collection)}
+              onClick={() => {
+                playTrack(track, collection);
+              }
+              }
             >
               <Item style={this.getStyle(track)}>
                 <ImageContainer>
