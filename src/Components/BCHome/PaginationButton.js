@@ -4,9 +4,7 @@ import arrow from './arrow-right.svg';
 
 const PaginationButtonContainer = styled.div`
   display: flex;
-  /* align-items: center; */
   justify-content: space-between;
-  width: 9.5rem;
   height: 2rem;
   padding: 1rem 0 1rem 1rem;
 
@@ -33,15 +31,20 @@ const PaginationButtonIcon = styled.img`
   height: 1.5rem;
   position: relative;
   top: 0.4rem;
+  margin-left: 1rem;
 `;
 
 const PaginationButton = ({ paginate, show }) => {
+  const text = show ? 'Show All' : 'Show Less';
+  const style = {};
+  // const style = show ? {} : { display: 'none' };
+
   return (
     <PaginationButtonContainer
       onClick={paginate}
-      style={show ? {} : { display: 'none' }}
+      style={style}
     >
-      <PaginationButtonText>Show More</PaginationButtonText>
+      <PaginationButtonText>{text}</PaginationButtonText>
       <PaginationButtonIcon src={arrow} draggable={false} />
     </PaginationButtonContainer>
   );

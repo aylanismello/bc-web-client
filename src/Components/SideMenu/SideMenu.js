@@ -9,6 +9,9 @@ const menuStyles = sideMenuOpen => ({
     position: 'fixed',
     height: '100%'
   },
+  bmBurgerButton: {
+    display: 'none'
+  },
   bmItemList: {
     margin: '0px',
     padding: '0px',

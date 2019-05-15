@@ -13,8 +13,8 @@ import { baseUrl } from '../../config';
 import './BCHome.scss';
 
 const queryString = require('query-string');
-const STARTING_SIZE = 4;
-const PAGINATION_SIZE = STARTING_SIZE;
+// const STARTING_SIZE = 4;
+// const PAGINATION_SIZE = STARTING_SIZE;
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -28,16 +28,18 @@ class BCHome extends React.Component {
     ) => this.autoSwitchCollections(collectionIdx, collections, playOnLoad);
 
     this.preselectedCollectionPlayed = false;
+    this.STARTING_SIZE = this.props.isMobile ? 1 : 4;
+    this.state = Object.freeze({
+      isFromEmail: false,
+      collectionImagesLoaded: 0,
+      page: {
+        weekly: this.STARTING_SIZE,
+        rising: this.STARTING_SIZE
+      }
+    });
   }
 
-  state = Object.freeze({
-    isFromEmail: false,
-    collectionImagesLoaded: 0,
-    page: {
-      weekly: STARTING_SIZE,
-      rising: STARTING_SIZE
-    }
-  });
+  
 
   componentWillMount() {
     const { bc_weekly_num } = this.props.match.params;
@@ -124,9 +126,13 @@ class BCHome extends React.Component {
     }
   }
 
-  paginate(type) {
+  paginate(type, showPagination) {
     const newPage = {};
-    newPage[type] = this.state.page[type] + PAGINATION_SIZE;
+    if (showPagination) {
+      newPage[type] = 100;
+    } else {
+      newPage[type] = this.STARTING_SIZE;
+    }
     this.setState({ page: { ...this.state.page, ...newPage } });
   }
 
@@ -164,7 +170,7 @@ class BCHome extends React.Component {
           }
         />
         <div className="BCHome-pagination-container">
-          <PaginationButton paginate={() => this.paginate(type)} show={showPagination} />
+          <PaginationButton paginate={() => this.paginate(type, showPagination)} show={showPagination} />
         </div>
       </div>
     );
