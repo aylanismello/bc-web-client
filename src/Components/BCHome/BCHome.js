@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
 import { getWeeklyItemTexts } from '../../helpers';
-// import PaginationButton from './PaginationButton';
+import PaginationButton from './PaginationButton';
 import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
 import BCLoading from '../BCLoading';
@@ -150,7 +150,7 @@ class BCHome extends React.Component {
         <CollectionList
           show={showList}
           handleModalOpen={this.props.handleModalOpen}
-          collections={collections}
+          collections={paginatedCollections}
           playingCollectionNum={this.props.playingCollectionNum}
           playing={this.props.playing}
           activeTrack={this.props.track}
@@ -163,9 +163,9 @@ class BCHome extends React.Component {
             this.updateActiveCollection(collection_num)
           }
         />
-        {/* <div className="BCHome-pagination-container">
+        <div className="BCHome-pagination-container">
           <PaginationButton paginate={() => this.paginate(type)} show={showPagination} />
-        </div> */}
+        </div>
       </div>
     );
   }
