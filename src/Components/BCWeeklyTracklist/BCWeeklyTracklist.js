@@ -3,6 +3,11 @@ import BCWeeklyTrack from './BCWeeklyTrack';
 import './BCWeeklyTracklist.scss';
 
 class BCWeeklyTracklist extends React.Component {
+  state = {
+    openTrackId: null,
+    open: false
+  }
+
   isActive(track) {
     return track.id === this.props.activeTrack.id;
   }
@@ -33,6 +38,14 @@ class BCWeeklyTracklist extends React.Component {
             active={this.isActive(track)}
             trackLoading={trackLoading}
             playing={playing}
+            open={track.id === this.state.openTrackId && this.state.open}
+            toggleOpen={(trackId) => {
+              if (trackId === this.state.openTrackId) {
+                this.setState({ open: !this.state.open });
+              } else {
+                this.setState({ open: true, openTrackId: trackId });
+              }
+            }}
             track={track}
             playTrack={() => playTrack(track, collection)}
             showDivider={this.showDivider(track)}
