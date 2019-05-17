@@ -19,7 +19,7 @@ const PlayingEqWrapper = styled.div`
 `;
 
 const DetailsText = styled.div`
-  width: 190px;
+  width: 185px;
 `;
 
 const ExpandTrackLink = styled.a`
@@ -190,7 +190,7 @@ class BCWeeklyTrack extends React.Component {
                 href={track.permalink_url}
                 target="_blank"
               >
-              Soundcloud
+              SoundCloud
               </ExpandTrackLink>
             </ExpandTrackDetails>
           </Item>
