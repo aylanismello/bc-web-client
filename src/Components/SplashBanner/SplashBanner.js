@@ -30,6 +30,7 @@ const Form = ({
           onChange={updateEmail}
           onFocus={() => {
             setStyle({ background: '#e54ea3' });
+            window.logEvent('FOCUS_EMAIL');
           }}
           onBlur={() => setStyle({})}
         />
@@ -101,6 +102,7 @@ class SplashBanner extends React.Component {
   hideEmailForm() {
     window.localStorage.setItem('dontShowEmailForm', true);
     this.setState({ submitStatus: SUBMIT_STATES.ALREADY_COMPLETED });
+    window.logEvent('HIDE_EMAIL');
   }
 
   handleSubmit() {
@@ -116,10 +118,18 @@ class SplashBanner extends React.Component {
             submitStatus: SUBMIT_STATES.FAIL,
             errorMessage: message
           });
+
+          window.logEvent('SUBMIT_EMAIL', {
+            status: 'FAIL'
+          });
         } else {
           // successful
           window.localStorage.setItem('dontShowEmailForm', true);
           this.setState({ submitStatus: SUBMIT_STATES.SUCCESS });
+
+          window.logEvent('SUBMIT_EMAIL', {
+            status: 'SUCCESS'
+          });
         }
       })
       .catch(error => {

@@ -22,18 +22,21 @@ import './App.scss';
 const history = createHashHistory();
 const isProd = process.env.NODE_ENV === 'production';
 
+window.logEvent = (name, body = {}) => {
+  if (isProd) {
+    window.amplitude.getInstance().logEvent(name, body);
+  }
+};
+
 const initProdServices = () => {
   // medium.com/alturasoluciones/how-to-set-up-and-use-google-analytics-in-react-apps-fb057d195d13
-  // GOOGLE ANALYTICS
+  // (fuck) GOOGLE ANALYTICS
   // console.log('initializing prod services');
   // ReactGA.initialize('UA-84947411-1');
   const landingPath = window.location.hash.replace('#', '');
   // ReactGA.pageview(landingPath);
 
-  window.amplitude.getInstance().logEvent('LANDED', {
-    landingPath
-  });
-
+  window.logEvent('LANDED', { landingPath });
   // history.listen(location => {
   //   ReactGA.pageview(location.pathname);
   // });
@@ -134,6 +137,22 @@ class App extends Component {
   componentWillUpdate(nextProps, nextState) {
     if (this.state.errors.length !== nextState.errors.length) {
       this.logNewError(nextState.errors.reverse()[0]);
+    }
+
+    if (
+      isProd &&
+      !this.state.playButtonHasBeenPressed &&
+      nextState.playButtonHasBeenPressed
+    ) {
+      window.logEvent('PLAY_BTN_HAS_BEEN_PRESSED');
+    }
+
+    if (
+      isProd &&
+      this.state.loading.collections &&
+      !nextState.loading.collections
+    ) {
+      window.logEvent('INIT_PAGE_COLLECTIONS_LOADED');
     }
   }
 
@@ -609,7 +628,12 @@ class App extends Component {
             />
             {this.state.pageReadyForFakeModal ||
             this.state.sideMenuOpen ? null : (
-              <TopNav isMobile={this.state.isMobile} forceReopenCollectionDetail={() => this.forceReopenCollectionDetail()} />
+              <TopNav
+                isMobile={this.state.isMobile}
+                forceReopenCollectionDetail={() =>
+                  this.forceReopenCollectionDetail()
+                }
+              />
             )}
             <Route
               exact
@@ -633,9 +657,7 @@ class App extends Component {
                       modalOpen: true
                     });
                   }}
-                  getActiveCollection={(x, y) =>
-                    this.getActiveCollection(x, y)
-                  }
+                  getActiveCollection={(x, y) => this.getActiveCollection(x, y)}
                   forceReopenCollectionDetail={() =>
                     this.forceReopenCollectionDetail()
                   }
@@ -731,7 +753,7 @@ class App extends Component {
 }
 
 const mapSizesToProps = ({ width }) => ({
-    currentWidth: width
+  currentWidth: width
 });
 
 export default withSizes(mapSizesToProps)(App);
