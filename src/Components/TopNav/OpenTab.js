@@ -9,7 +9,7 @@ const OpenTabContainer = styled.div`
   background-color: #ffffff;
   display: flex;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   left: 0;
 
   &:hover {
@@ -18,7 +18,10 @@ const OpenTabContainer = styled.div`
 `;
 
 const OpenTab = ({ forceReopenCollectionDetail }) => (
-  <OpenTabContainer onClick={forceReopenCollectionDetail}>
+  <OpenTabContainer
+    className="OpenTabContainer"
+    onClick={forceReopenCollectionDetail}
+  >
     <img src={leftArrow} />
   </OpenTabContainer>
 );
