@@ -3,23 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <title>Burn Cartel</title>
-    <meta id="og-title" property="og:title" content="Burn Cartel">
-
+    <meta id="og-title" property="og:title" content="Burn Cartel" />
 
     <meta
-            property="og:keywords"
-            name="keywords"
-            content="music, electronic, weekly, mixes, playlists, soulection, soundcloud, new music, spotify"
-    >
+      property="og:keywords"
+      name="keywords"
+      content="music, electronic, weekly, mixes, playlists, soulection, soundcloud, new music, spotify"
+    />
     <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <meta name="theme-color" content="#000000" />
     <!--<meta property="og:url"                content="https://burncartel.com" />-->
-    <meta property="og:type"               content="article" />
-    <meta id="og-description" property="og:description" content="Weekly new music playlists, emailed straight to you." />
-    <meta property="og:image" content="https://res.cloudinary.com/burncartel/image/upload/v1561018369/bc_soundcloud_banner_4.jpg" />
+    <meta property="og:type" content="article" />
+    <meta
+      id="og-description"
+      property="og:description"
+      content="Music happens fast - discover our curated tracks right here"
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/burncartel/image/upload/v1561018369/bc_soundcloud_banner_4.jpg"
+    />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
@@ -36,60 +42,125 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <script>
-      if (document.location.href.includes('burncartel')) {
+      if (document.location.href.includes("burncartel")) {
         // HOTJAR TIME
-        (function(h,o,t,j,a,r){
-              h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
-            h._hjSettings={hjid:1172097,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+        (function(h, o, t, j, a, r) {
+          h.hj =
+            h.hj ||
+            function() {
+              (h.hj.q = h.hj.q || []).push(arguments);
+            };
+          h._hjSettings = { hjid: 1172097, hjsv: 6 };
+          a = o.getElementsByTagName("head")[0];
+          r = o.createElement("script");
+          r.async = 1;
+          r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window, document, "https://static.hotjar.com/c/hotjar-", ".js?sv=");
 
-        (function (e, t) {
-          var n = e.amplitude || { _q: [], _iq: {} }; var r = t.createElement("script")
-            ; r.type = "text/javascript"
-            ; r.integrity = "sha384-d/yhnowERvm+7eCU79T/bYjOiMmq4F11ElWYLmt0ktvYEVgqLDazh4+gW9CKMpYW"
-            ; r.crossOrigin = "anonymous"; r.async = true
-            ; r.src = "https://cdn.amplitude.com/libs/amplitude-5.2.2-min.gz.js"
-            ; r.onload = function () {
-              if (!e.amplitude.runQueuedFunctions) {
-                console.log("[Amplitude] Error: could not load SDK")
-              }
+        (function(e, t) {
+          var n = e.amplitude || { _q: [], _iq: {} };
+          var r = t.createElement("script");
+          r.type = "text/javascript";
+          r.integrity =
+            "sha384-d/yhnowERvm+7eCU79T/bYjOiMmq4F11ElWYLmt0ktvYEVgqLDazh4+gW9CKMpYW";
+          r.crossOrigin = "anonymous";
+          r.async = true;
+          r.src = "https://cdn.amplitude.com/libs/amplitude-5.2.2-min.gz.js";
+          r.onload = function() {
+            if (!e.amplitude.runQueuedFunctions) {
+              console.log("[Amplitude] Error: could not load SDK");
             }
-            ; var i = t.getElementsByTagName("script")[0]; i.parentNode.insertBefore(r, i)
-            ; function s(e, t) {
-            e.prototype[t] = function () {
-              this._q.push([t].concat(Array.prototype.slice.call(arguments, 0))); return this
+          };
+          var i = t.getElementsByTagName("script")[0];
+          i.parentNode.insertBefore(r, i);
+          function s(e, t) {
+            e.prototype[t] = function() {
+              this._q.push(
+                [t].concat(Array.prototype.slice.call(arguments, 0))
+              );
+              return this;
+            };
+          }
+          var o = function() {
+            this._q = [];
+            return this;
+          };
+          var a = [
+            "add",
+            "append",
+            "clearAll",
+            "prepend",
+            "set",
+            "setOnce",
+            "unset"
+          ];
+          for (var u = 0; u < a.length; u++) {
+            s(o, a[u]);
+          }
+          n.Identify = o;
+          var c = function() {
+            this._q = [];
+            return this;
+          };
+          var l = [
+            "setProductId",
+            "setQuantity",
+            "setPrice",
+            "setRevenueType",
+            "setEventProperties"
+          ];
+          for (var p = 0; p < l.length; p++) {
+            s(c, l[p]);
+          }
+          n.Revenue = c;
+          var d = [
+            "init",
+            "logEvent",
+            "logRevenue",
+            "setUserId",
+            "setUserProperties",
+            "setOptOut",
+            "setVersionName",
+            "setDomain",
+            "setDeviceId",
+            "setGlobalUserProperties",
+            "identify",
+            "clearUserProperties",
+            "setGroup",
+            "logRevenueV2",
+            "regenerateDeviceId",
+            "groupIdentify",
+            "onInit",
+            "logEventWithTimestamp",
+            "logEventWithGroups",
+            "setSessionId",
+            "resetSessionId"
+          ];
+          function v(e) {
+            function t(t) {
+              e[t] = function() {
+                e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+              };
             }
+            for (var n = 0; n < d.length; n++) {
+              t(d[n]);
             }
-          var o = function () { this._q = []; return this }
-            ; var a = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset"]
-            ; for (var u = 0; u < a.length; u++) { s(o, a[u]) } n.Identify = o; var c = function () {
-            this._q = []
-              ; return this
+          }
+          v(n);
+          n.getInstance = function(e) {
+            e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase();
+            if (!n._iq.hasOwnProperty(e)) {
+              n._iq[e] = { _q: [] };
+              v(n._iq[e]);
             }
-            ; var l = ["setProductId", "setQuantity", "setPrice", "setRevenueType", "setEventProperties"]
-            ; for (var p = 0; p < l.length; p++) { s(c, l[p]) } n.Revenue = c
-            ; var d = ["init", "logEvent", "logRevenue", "setUserId", "setUserProperties", "setOptOut", "setVersionName", "setDomain", "setDeviceId", "setGlobalUserProperties", "identify", "clearUserProperties", "setGroup", "logRevenueV2", "regenerateDeviceId", "groupIdentify", "onInit", "logEventWithTimestamp", "logEventWithGroups", "setSessionId", "resetSessionId"]
-            ; function v(e) {
-              function t(t) {
-              e[t] = function () {
-                e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)))
-              }
-              }
-              for (var n = 0; n < d.length; n++) { t(d[n]) }
-            } v(n); n.getInstance = function (e) {
-              e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase()
-                ; if (!n._iq.hasOwnProperty(e)) { n._iq[e] = { _q: [] }; v(n._iq[e]) } return n._iq[e]
-            }
-            ; e.amplitude = n
+            return n._iq[e];
+          };
+          e.amplitude = n;
         })(window, document);
 
         amplitude.getInstance().init("e68553091e843906620c5adab239e222");
-
-        }
+      }
     </script>
   </head>
   <body>
