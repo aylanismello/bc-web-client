@@ -2,12 +2,12 @@ import React from 'react';
 import logo from './bc_logo_white.svg';
 import './bc_logo.scss';
 
-const BCLogo = ({ centerOnMediaQuery }) => (
+const BCLogo = ({ centerOnMediaQuery, infoText }) => (
   <div className={`BCLogo${centerOnMediaQuery ? ' CenterOnMediaQuery' : ''}`}>
     <div className="BCLogo-svg">
       <img src={logo} className="App-logo" alt="Burn Cartel Logo" draggable={false} />
     </div>
-    <span className="BCLogo-text"> BURN CARTEL </span>
+    <span className="BCLogo-text"> {infoText || 'BURN CARTEL' }</span>
   </div>
 );
 

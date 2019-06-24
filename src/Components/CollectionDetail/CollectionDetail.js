@@ -126,7 +126,7 @@ class CollectionDetail extends React.Component {
                     }
               }
             >
-              <BCLogo />
+              <BCLogo infoText={`[${texts[0]}]`} />
             </div>
           </div>
 
