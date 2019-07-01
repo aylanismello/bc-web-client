@@ -5,9 +5,20 @@ import './bc_logo.scss';
 const BCLogo = ({ centerOnMediaQuery, infoText }) => (
   <div className={`BCLogo${centerOnMediaQuery ? ' CenterOnMediaQuery' : ''}`}>
     <div className="BCLogo-svg">
-      <img src={logo} className="App-logo" alt="Burn Cartel Logo" draggable={false} />
+      <img
+        src={logo}
+        className="App-logo"
+        alt="Burn Cartel Logo"
+        draggable={false}
+      />
     </div>
-    <span className="BCLogo-text"> {infoText || 'BURN CARTEL' }</span>
+    <span
+      className="BCLogo-text"
+      style={infoText ? { fontSize: '1.4rem' } : {}}
+    >
+      {' '}
+      {infoText || 'BURN CARTEL'}
+    </span>
   </div>
 );
 

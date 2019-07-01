@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import arrow from './arrow-right.svg';
 
+
 const PaginationButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -23,8 +24,7 @@ const PaginationButtonText = styled.div`
   -khtml-user-select: none; /* Konqueror HTML */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
-  user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+  user-select: none;
 `;
 const PaginationButtonIcon = styled.img`
   width: 1.5rem;
@@ -32,12 +32,12 @@ const PaginationButtonIcon = styled.img`
   position: relative;
   top: 0.4rem;
   margin-left: 1rem;
+  transform: ${props => props.show ? 'rotate(-90deg)' : 'none'};
 `;
 
 const PaginationButton = ({ paginate, show }) => {
   const text = show ? 'Show All' : 'Show Less';
   const style = {};
-  // const style = show ? {} : { display: 'none' };
 
   return (
     <PaginationButtonContainer
@@ -45,7 +45,7 @@ const PaginationButton = ({ paginate, show }) => {
       style={style}
     >
       <PaginationButtonText>{text}</PaginationButtonText>
-      <PaginationButtonIcon src={arrow} draggable={false} />
+      <PaginationButtonIcon src={arrow} draggable={false} show={!show} />
     </PaginationButtonContainer>
   );
 };
