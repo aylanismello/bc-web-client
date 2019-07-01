@@ -105,11 +105,12 @@
 
         .SplashBanner-email {
           @include bc-text();
+          color: #242a3b;
           border-radius: 20px;
           border: none;
           height: 35px;
           width: 300px;
-          background: #242a3b;
+          
           padding-left: 20px;
 
           @media (max-width: $tiny-width) {
@@ -125,7 +126,8 @@
           padding: 5px;
           width: 20px;
           height: 21px;
-          background: rgba(255, 255, 255, 0.1);
+          // background: rgba(255, 255, 255, 0.1);
+          background: #242a3b;
           border-radius: 50px;
           justify-content: center;
 
