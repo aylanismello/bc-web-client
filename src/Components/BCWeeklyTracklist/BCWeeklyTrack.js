@@ -78,6 +78,7 @@ const ExpandTrackBtnStyle = styled.img`
 const ExpandTrackDetails = styled.div`
   color: #626970;
   font-size: 1.1rem;
+  margin-left: 65px;
 `;
 
 const ExpandTrackBtn = ({ open, toggleOpen }) => (
@@ -145,11 +146,11 @@ class BCWeeklyTrack extends React.Component {
         <div
           key={track.id}
           className="BCWeeklyTracklist-item-container"
-          style={{ paddingBottom: open ? '0px' : '' }}
+          style={{ paddingBottom: open ? "0px" : "" }}
           onClick={e => {
             if (
               e.target.classList &&
-              e.target.classList[0] === 'ExpandTrackBtn'
+              e.target.classList[0] === "ExpandTrackBtn"
             ) {
               return;
             }
@@ -164,9 +165,9 @@ class BCWeeklyTrack extends React.Component {
               <img
                 src={track.artwork_url || track.artist_artwork_url}
                 style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '4px'
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: "4px"
                 }}
               />
             </ImageContainer>
@@ -184,14 +185,13 @@ class BCWeeklyTrack extends React.Component {
         </div>
         {open && (
           <Item style={getStyleBottom(active)}>
-            <ExpandTrackDetails>
-              Source:{' '}
-              <ExpandTrackLink
-                href={track.permalink_url}
-                target="_blank"
-              >
-              SoundCloud
-              </ExpandTrackLink>
+            <ExpandTrackDetails className="ExpandTrackDetail">
+              <div className="ExpandTrackDetail">
+                Source:{" "}
+                <ExpandTrackLink href={track.permalink_url} target="_blank">
+                  SoundCloud
+                </ExpandTrackLink>
+              </div>
             </ExpandTrackDetails>
           </Item>
         )}

@@ -9,7 +9,6 @@ import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
 import { getWeeklyItemTexts } from '../../helpers';
 
-
 class CollectionDetail extends React.Component {
   state = {
     clickedCopy: false
@@ -117,7 +116,9 @@ class CollectionDetail extends React.Component {
               className="CollectionDetail-content-header"
               style={
                 isSideMenu
-                  ? {}
+                  ? {
+                      marginLeft: '20px'
+                    }
                   : {
                       // position: 'absolute',
                       // top: '50%',
@@ -193,9 +194,7 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-copy">
               <span
                 style={
-                  this.state.clickedCopy
-                    ? {}
-                    : { textDecoration: 'underline' }
+                  this.state.clickedCopy ? {} : { textDecoration: 'underline' }
                 }
                 onClick={() => {
                   if (!this.state.clickedCopy) {
@@ -204,9 +203,7 @@ class CollectionDetail extends React.Component {
                   }
                 }}
               >
-                {this.state.clickedCopy
-                  ? 'Link copied!'
-                  : 'Copy playlist link'}
+                {this.state.clickedCopy ? 'Link copied!' : 'Copy playlist link'}
               </span>
             </div>
           </div>

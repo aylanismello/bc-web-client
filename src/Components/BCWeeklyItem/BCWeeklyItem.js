@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 // import styled from 'styled-components';
 // import Responsive from 'react-responsive';
 // import LoadingIcon from '../LoadingIcon';
 // import ShareButton from '../ShareButton';
-import { getWeeklyItemTexts } from "../../helpers";
-import Play from "./Play";
-import BCProgressiveImage from "../BCProgressiveImage";
-import "./BCWeeklyItem.scss";
+import { getWeeklyItemTexts } from '../../helpers';
+import Play from './Play';
+import BCProgressiveImage from '../BCProgressiveImage';
+import './BCWeeklyItem.scss';
 
 // ORGANIZING WITH STYLED COMPONENTSs
 // https://stackoverflow.com/questions/42987939/styled-components-organization
@@ -15,7 +15,7 @@ import "./BCWeeklyItem.scss";
 const BCWeeklyItemWrapper = styled.div`
   border-radius: 4px;
   border: ${props =>
-    props.isPlayingCollection ? "1px solid #e54ea3" : "1px solid transparent"};
+    props.isPlayingCollection ? '1px solid #e54ea3' : '1px solid transparent'};
   position: relative;
 `;
 
@@ -74,7 +74,7 @@ class BCWeeklyItem extends React.Component {
         onMouseEnter={() => this.setState({ hover: true })}
         onMouseLeave={() => this.setState({ hover: false })}
         onClick={e => {
-          window.tappedCollectionID = id;
+          // window.tappedCollectionID = id;
           updateActiveCollection(collection_num);
         }}
         id={id}
