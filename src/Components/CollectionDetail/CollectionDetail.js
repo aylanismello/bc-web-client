@@ -35,6 +35,7 @@ class CollectionDetail extends React.Component {
   }
 
   toggleShowTracklist() {
+    window.logEvent("SHOW_TRACKLIST");
     this.setState({ showTracklist: !this.state.showTracklist });
   }
 
