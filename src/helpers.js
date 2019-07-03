@@ -3,7 +3,7 @@ const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
   
   const topText = isWeekly ? `Week ${collection_num}` : name;
   const bottomText =
-    isWeekly ? 'Burn Cartel Weekly' : 'Burn Cartel Rising';
+    isWeekly ? 'Burn Cartel Curated' : 'Burn Cartel Rising';
 
   return [topText, bottomText];
 };

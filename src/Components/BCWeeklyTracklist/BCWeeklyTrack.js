@@ -140,7 +140,7 @@ class BCWeeklyTrack extends React.Component {
           <HeaderText>This Week's Mix</HeaderText>
         )}
         {track.track_number === 1 && hasMix && (
-          <HeaderText>This Week's Best Tracks</HeaderText>
+          <HeaderText>Tracklist</HeaderText>
         )}
 
         <div

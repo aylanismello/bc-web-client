@@ -1,5 +1,6 @@
 import React from 'react';
 import copy from 'copy-to-clipboard';
+import styled from 'styled-components';
 import PlayButton from '../PlayButton';
 import closeIcon from './i-remove.svg';
 import chevronIcon from './ic_chevron.svg';
@@ -9,14 +10,57 @@ import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
 import { getWeeklyItemTexts } from '../../helpers';
 
+const Tracklist = styled.div`
+  font-weight: normal;
+  color: #dcdcdc;
+  font-size: 1.2em;
+  line-height: 1.5;
+  padding: 0 0.6em 1em 0.6em;
+`;
+
+const TracklistItem = styled.div`
+  font-family: "sofia-pro", sans-serif;
+  padding: 0.5em 0;
+`;
+
 class CollectionDetail extends React.Component {
   state = {
-    clickedCopy: false
+    clickedCopy: false,
+    showTracklist: false
   };
 
   closeModal() {
-    this.setState({ clickedCopy: false });
+    this.setState({ clickedCopy: false, showTracklist: false });
     this.props.closeModal();
+  }
+
+  toggleShowTracklist() {
+    this.setState({ showTracklist: !this.state.showTracklist });
+  }
+
+  renderTracklistOptions() {
+    return (
+      <div className="CollectionDetail-full-tracklist-container">
+        {this.state.showTracklist ? (
+          <Tracklist className="CollectionDetail-tracklist">
+            {this.props.collection.tracklist.split('\n').map(tracklistItem => (
+              <TracklistItem className="TracklistItem">
+                {tracklistItem}
+              </TracklistItem>
+            ))}
+          </Tracklist>
+        ) : (
+          <div className="CollectionDetail-explore-more-container">
+            <button
+              className="CollectionDetail-explore-more"
+              onClick={() => this.toggleShowTracklist()}
+            >
+              VIEW ENTIRE TRACKLIST
+            </button>
+          </div>
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -79,6 +123,8 @@ class CollectionDetail extends React.Component {
       : { padding: '0 16px 2rem 16px' };
 
     const texts = getWeeklyItemTexts(collection);
+    const hasMix = collection.collection_type === 0;
+    const { tracklist } = collection;
 
     return (
       <div
@@ -173,7 +219,7 @@ class CollectionDetail extends React.Component {
               <div>
                 <BCWeeklyTracklist
                   idx={idx}
-                  hasMix={collection.collection_type === 0}
+                  hasMix={hasMix}
                   trackLoading={trackLoading}
                   playing={playingCollection}
                   tracks={collection.tracks}
@@ -183,14 +229,7 @@ class CollectionDetail extends React.Component {
                 />
               </div>
             )}
-            <div className="CollectionDetail-explore-more-container">
-              <button
-                className="CollectionDetail-explore-more"
-                onClick={() => this.closeModal()}
-              >
-                DISCOVER MORE MUSIC
-              </button>
-            </div>
+            {hasMix && tracklist && this.renderTracklistOptions()}
             <div className="CollectionDetail-copy">
               <span
                 style={
