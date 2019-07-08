@@ -36,7 +36,7 @@ const CollectionTabText = styled.div`
   }
 `;
 
-const CollectionTabLine = styled.div`
+const CollectionTabLineHighlight = styled.div`
   display: ${props => (props.selected ? 'block' : 'none')};
   border-radius: 20px;
   width: 100%;
@@ -51,7 +51,7 @@ const CollectionTab = ({ children, selected, onClick }) => (
     <CollectionTabText onClick={onClick} className="CollectionTabText">
       {children}
     </CollectionTabText>
-    <CollectionTabLine selected={selected} className="CollectionTabLine" />
+    <CollectionTabLineHighlight selected={selected} className="CollectionTabLineHighlight" />
   </CollectionTabStyle>
 );
 

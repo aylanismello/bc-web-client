@@ -254,13 +254,17 @@ class BCHome extends React.Component {
                   }
                 />
               </Responsive>
-              <CollectionTabs
-                collectionTypeSelected={this.state.collectionTypeSelected}
-                selectCollectionType={idx => {
-                  window.logEvent('SELECT_COLLECTION_TYPE', { collectionIdx: idx });
-                  this.setState({ collectionTypeSelected: idx });
-                }}
-              />
+              {!showList ? null : (
+                <CollectionTabs
+                  collectionTypeSelected={this.state.collectionTypeSelected}
+                  selectCollectionType={idx => {
+                    window.logEvent('SELECT_COLLECTION_TYPE', {
+                      collectionIdx: idx
+                    });
+                    this.setState({ collectionTypeSelected: idx });
+                  }}
+                />
+              )}
 
               {this.renderCollection(showList)}
             </Wrapper>
