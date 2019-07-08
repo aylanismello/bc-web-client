@@ -18,6 +18,7 @@
     "no-confusing-arrow": 0,
     "camelcase": 0,
     "arrow-parens": 0,
+    "eol-last": 0,
     'arrow-body-style': 0,
     'no-plusplus': 0,
     "no-case-declarations": 0,

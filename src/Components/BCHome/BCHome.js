@@ -7,6 +7,7 @@ import { getWeeklyItemTexts } from '../../helpers';
 import PaginationButton from './PaginationButton';
 import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
+import CollectionTabs from './CollectionTabs';
 import BCLoading from '../BCLoading';
 import Wrapper from '../Wrapper';
 import { baseUrl } from '../../config';
@@ -28,18 +29,17 @@ class BCHome extends React.Component {
     ) => this.autoSwitchCollections(collectionIdx, collections, playOnLoad);
 
     this.preselectedCollectionPlayed = false;
-    this.STARTING_SIZE = this.props.isMobile ? 1 : 4;
+    this.STARTING_SIZE = this.props.isMobile ? 2 : 5;
     this.state = Object.freeze({
       isFromEmail: false,
       collectionImagesLoaded: 0,
+      collectionTypeSelected: 0,
       page: {
         weekly: this.STARTING_SIZE,
         rising: this.STARTING_SIZE
       }
     });
   }
-
-  
 
   componentWillMount() {
     const { bc_weekly_num } = this.props.match.params;
@@ -137,16 +137,13 @@ class BCHome extends React.Component {
   }
 
   makeCollectionList(collections, showList, type) {
-    let style = {};
+    let style = { marginTop: '3rem' };
 
-    if (!showList) style = { display: 'none' };
-    if (type !== 'weekly') style = { ...style, marginTop: '7rem' };
+    if (!showList) style = { ...style, display: 'none' };
+    // if (type !== 'weekly') style = { ...style, marginTop: '7rem' };
 
     const showPagination = this.state.page[type] < collections.length;
-    const paginatedCollections = collections.slice(
-      0,
-      this.state.page[type]
-    );
+    const paginatedCollections = collections.slice(0, this.state.page[type]);
 
     const headerText = getWeeklyItemTexts({ collection_type: type })[1];
 
@@ -170,10 +167,28 @@ class BCHome extends React.Component {
           }
         />
         <div className="BCHome-pagination-container">
-          <PaginationButton paginate={() => this.paginate(type, showPagination)} show={showPagination} />
+          <PaginationButton
+            paginate={() => {
+              this.paginate(type, showPagination);
+              window.logEvent('PAGINATION', { type });
+            }}
+            show={showPagination}
+          />
         </div>
       </div>
     );
+  }
+
+  renderCollection(showList) {
+    const { collections } = this.props;
+    const handPickedCollections = collections.filter(c => c.collection_type === 0);
+    const algoPickedCollections = collections.filter(c => c.collection_type === 1);
+
+    if (this.state.collectionTypeSelected === 0) {
+      return this.makeCollectionList(handPickedCollections, showList, 'weekly');
+    } else {
+      return this.makeCollectionList(algoPickedCollections, showList, 'rising');
+    }
   }
 
   render() {
@@ -239,17 +254,14 @@ class BCHome extends React.Component {
                   }
                 />
               </Responsive>
+              <CollectionTabs
+                collectionTypeSelected={this.state.collectionTypeSelected}
+                selectCollectionType={idx => {
+                  this.setState({ collectionTypeSelected: idx });
+                }}
+              />
 
-              {this.makeCollectionList(
-                handPickedCollections,
-                showList,
-                'weekly'
-              )}
-              {this.makeCollectionList(
-                algoPickedCollections,
-                showList,
-                'rising'
-              )}
+              {this.renderCollection(showList)}
             </Wrapper>
           </div>
         )}
