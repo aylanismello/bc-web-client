@@ -21,8 +21,8 @@ const CollectionLine = styled.div`
 
 const CollectionTabStyle = styled.div`
   margin-right: 2rem;
-  color: ${props => (props.selected ? 'white' : '#626970')};
-  font-family: "Sofia Pro";
+  color: ${props => (props.selected ? "white" : "#626970")};
+  font-family: "sofia-pro", sans-serif;
   font-size: 16px;
   font-weight: 600;
   position: relative;

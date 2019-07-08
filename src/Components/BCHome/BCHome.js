@@ -257,6 +257,7 @@ class BCHome extends React.Component {
               <CollectionTabs
                 collectionTypeSelected={this.state.collectionTypeSelected}
                 selectCollectionType={idx => {
+                  window.logEvent('SELECT_COLLECTION_TYPE', { collectionIdx: idx });
                   this.setState({ collectionTypeSelected: idx });
                 }}
               />
