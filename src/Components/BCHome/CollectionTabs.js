@@ -43,7 +43,7 @@ const CollectionTabLine = styled.div`
   height: ${tabLineHeight};
   background: #6255ff;
   position: absolute;
-  top: ${`${tabLineMargin + 26}px`};
+  top: ${`${tabLineMargin + 33}px`};
 `;
 
 const CollectionTab = ({ children, selected, onClick }) => (
