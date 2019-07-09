@@ -16,8 +16,8 @@ import './BCHome.scss';
 
 const queryString = require('query-string');
 const BCHomeMainContent = styled.div`
+  display: ${props => (props.show ? 'grid' : 'none')};
   margin-top: 3rem;
-  display: grid;
   grid-template-columns: minmax(30%, 200px) auto;
   grid-gap: 3rem;
 
@@ -263,7 +263,6 @@ class BCHome extends React.Component {
                   playTrack={this.props.playTrack}
                 />
               </Responsive> */}
-
               <Responsive maxDeviceWidth={767}>
                 <CollectionDetail
                   show={pageReadyForFakeModal}
@@ -281,19 +280,17 @@ class BCHome extends React.Component {
                   }
                 />
               </Responsive>
-              {!showList ? null : (
-                <CollectionTabs
-                  collectionTypeSelected={this.state.collectionTypeSelected}
-                  selectCollectionType={idx => {
-                    window.logEvent('SELECT_COLLECTION_TYPE', {
-                      collectionIdx: idx
-                    });
-                    this.setState({ collectionTypeSelected: idx });
-                  }}
-                />
-              )}
-
-              <BCHomeMainContent className="BCHomeMainContent">
+              <CollectionTabs
+                show={showList}
+                collectionTypeSelected={this.state.collectionTypeSelected}
+                selectCollectionType={idx => {
+                  window.logEvent('SELECT_COLLECTION_TYPE', {
+                    collectionIdx: idx
+                  });
+                  this.setState({ collectionTypeSelected: idx });
+                }}
+              />
+              <BCHomeMainContent className="BCHomeMainContent" show={showList}>
                 <BCHomeCollectionInfo>
                   <div className="BCHome-collection-header"> {headerText} </div>
                   <BCHomeCollectionDescription className="BCHomeCollectionDescription">

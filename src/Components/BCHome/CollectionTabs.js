@@ -4,7 +4,10 @@ import React from 'react';
 const tabLineMargin = 15;
 const tabLineHeight = '2px';
 
-const CollectionTabs = styled.div``;
+const CollectionTabs = styled.div`
+  display: ${props => props.show ? 'block' : 'none'};
+`;
+
 const CollectionTabsStyle = styled.div`
   display: flex;
   @media (max-width: 768px) {
@@ -55,8 +58,8 @@ const CollectionTab = ({ children, selected, onClick }) => (
   </CollectionTabStyle>
 );
 
-export default ({ selectCollectionType, collectionTypeSelected }) => (
-  <CollectionTabs className="CollectionTabs">
+export default ({ selectCollectionType, collectionTypeSelected, show }) => (
+  <CollectionTabs className="CollectionTabs" show={show}>
     <CollectionTabsStyle className="CollectionTabsStyle">
       <CollectionTab
         onClick={() => selectCollectionType(0)}
