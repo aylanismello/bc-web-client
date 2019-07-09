@@ -124,17 +124,29 @@ const getStyleBottom = active => {
     : {};
 };
 
-const formatReleaseDate = ({ created_at }) => {
+const formatReleaseDate = ({ created_at_external }) => {
   const today = dayjs();
-  const formattedDate = dayjs(created_at);
+  const formattedDate = dayjs(created_at_external);
   const daysAgo = today.diff(formattedDate, 'day');
 
   if (daysAgo === 0) {
     return 'a few hours ago';
   } else if (daysAgo === 1) {
     return `${daysAgo} day ago`;
-  } else {
+  } else if (daysAgo > 1 && daysAgo < 7) {
     return `${daysAgo} days ago`;
+  } else if (daysAgo >= 7 && daysAgo < 14) {
+    return 'a week ago';
+  } else if (daysAgo >= 14 && daysAgo < 30) {
+    return 'a few weeks ago';
+  } else if (daysAgo >= 30 && daysAgo < 60) {
+    return 'a month ago';
+  } else if (daysAgo >= 60 && daysAgo < 365) {
+    return 'a few months ago';
+  } else if (daysAgo >= 365 && daysAgo < (365 * 2)) {
+    return 'a year ago';
+  } else {
+    return `${today.diff(formattedDate, 'year')} years ago`;
   }
 };
 
