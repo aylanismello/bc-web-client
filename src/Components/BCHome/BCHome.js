@@ -201,9 +201,6 @@ class BCHome extends React.Component {
     } = this.props;
     const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
 
-    const handPickedCollections = collections.filter(c => c.collection_type === 0);
-    const algoPickedCollections = collections.filter(c => c.collection_type === 1);
-
     return (
       <div
         className="BCHome"

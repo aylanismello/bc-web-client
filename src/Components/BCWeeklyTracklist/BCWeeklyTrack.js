@@ -40,7 +40,7 @@ const Title = styled.div`
   font-weight: 500;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: ${props => props.open ? 0 : 2};
   -moz-box-orient: vertical; /* Mozilla 8*/
   -webkit-box-orient: vertical; /* WebKit */
   box-orient: vertical !important;
@@ -69,7 +69,7 @@ const Divider = styled.div`
 const ExpandTrackBtnStyle = styled.img`
   padding: 10px;
   position: absolute;
-  right: 0;
+  right: 5px;
   &:hover {
     cursor: pointer;
   }
@@ -171,8 +171,8 @@ class BCWeeklyTrack extends React.Component {
                 }}
               />
             </ImageContainer>
-            <DetailsText>
-              <Title>{track.name}</Title>
+            <DetailsText className="DetailsText">
+              <Title open={open} className="TrackTitle" >{track.name}</Title>
               <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
                 {track.artist_name}
               </div>
