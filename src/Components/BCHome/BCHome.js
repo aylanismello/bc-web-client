@@ -19,8 +19,8 @@ const BCHomeMainContent = styled.div`
   margin-top: 3rem;
   display: grid;
   grid-template-columns: minmax(30%, 200px) auto;
-  /* grid-column-gap: 3rem; */
   grid-gap: 3rem;
+
   @media (max-width: 768px) {
     grid-template-columns: auto;
     grid-template-rows: auto auto;
@@ -36,7 +36,10 @@ const BCHomeCollectionDescription = styled.div`
   line-height: 1.5;
   width: 80%;
   margin-top: 2rem;
-  font-family: 'sofia-pro', sans-serif;
+  font-family: "sofia-pro", sans-serif;
+  @media (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 // check out our contentz
@@ -272,9 +275,7 @@ class BCHome extends React.Component {
                   collection={this.props.collection}
                   idx={this.props.idx}
                   activeTrack={this.props.activeTrack}
-                  loadingCollectionTracks={
-                    this.props.loadingCollectionTracks
-                  }
+                  loadingCollectionTracks={this.props.loadingCollectionTracks}
                   playTrack={(currentTrack, collection) =>
                     this.props.playTrack(currentTrack, collection)
                   }
@@ -284,7 +285,7 @@ class BCHome extends React.Component {
                 <CollectionTabs
                   collectionTypeSelected={this.state.collectionTypeSelected}
                   selectCollectionType={idx => {
-                    window.logEvent("SELECT_COLLECTION_TYPE", {
+                    window.logEvent('SELECT_COLLECTION_TYPE', {
                       collectionIdx: idx
                     });
                     this.setState({ collectionTypeSelected: idx });
@@ -294,10 +295,7 @@ class BCHome extends React.Component {
 
               <BCHomeMainContent className="BCHomeMainContent">
                 <BCHomeCollectionInfo>
-                  <div className="BCHome-collection-header">
-                    {" "}
-                    {headerText}{" "}
-                  </div>
+                  <div className="BCHome-collection-header"> {headerText} </div>
                   <BCHomeCollectionDescription className="BCHomeCollectionDescription">
                     {description}
                   </BCHomeCollectionDescription>
