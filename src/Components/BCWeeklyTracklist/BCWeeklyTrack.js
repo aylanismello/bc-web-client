@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import up from './chevron-up.svg';
@@ -40,7 +41,7 @@ const Title = styled.div`
   font-weight: 500;
 
   display: -webkit-box;
-  -webkit-line-clamp: ${props => props.open ? 0 : 2};
+  -webkit-line-clamp: ${props => (props.open ? 0 : 2)};
   -moz-box-orient: vertical; /* Mozilla 8*/
   -webkit-box-orient: vertical; /* WebKit */
   box-orient: vertical !important;
@@ -79,6 +80,10 @@ const ExpandTrackDetails = styled.div`
   color: #626970;
   font-size: 1.1rem;
   margin-left: 65px;
+
+  .ExpandTrackDetail:not(:last-child) {
+    padding-bottom: 1rem;  
+  }
 `;
 
 const ExpandTrackBtn = ({ open, toggleOpen }) => (
@@ -119,6 +124,20 @@ const getStyleBottom = active => {
     : {};
 };
 
+const formatReleaseDate = ({ created_at }) => {
+  const today = dayjs();
+  const formattedDate = dayjs(created_at);
+  const daysAgo = today.diff(formattedDate, 'day');
+
+  if (daysAgo === 0) {
+    return 'a few hours ago';
+  } else if (daysAgo === 1) {
+    return `${daysAgo} day ago`;
+  } else {
+    return `${daysAgo} days ago`;
+  }
+};
+
 class BCWeeklyTrack extends React.Component {
   render() {
     const {
@@ -146,11 +165,11 @@ class BCWeeklyTrack extends React.Component {
         <div
           key={track.id}
           className="BCWeeklyTracklist-item-container"
-          style={{ paddingBottom: open ? "0px" : "" }}
+          style={{ paddingBottom: open ? '0px' : '' }}
           onClick={e => {
             if (
               e.target.classList &&
-              e.target.classList[0] === "ExpandTrackBtn"
+              e.target.classList[0] === 'ExpandTrackBtn'
             ) {
               return;
             }
@@ -165,14 +184,16 @@ class BCWeeklyTrack extends React.Component {
               <img
                 src={track.artwork_url || track.artist_artwork_url}
                 style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "4px"
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '4px'
                 }}
               />
             </ImageContainer>
             <DetailsText className="DetailsText">
-              <Title open={open} className="TrackTitle" >{track.name}</Title>
+              <Title open={open} className="TrackTitle">
+                {track.name}
+              </Title>
               <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
                 {track.artist_name}
               </div>
@@ -187,10 +208,13 @@ class BCWeeklyTrack extends React.Component {
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               <div className="ExpandTrackDetail">
-                Source:{" "}
+                Source:{' '}
                 <ExpandTrackLink href={track.permalink_url} target="_blank">
                   SoundCloud
                 </ExpandTrackLink>
+              </div>
+              <div className="ExpandTrackDetail">
+                Released: {formatReleaseDate(track)}
               </div>
             </ExpandTrackDetails>
           </Item>
