@@ -1,20 +1,18 @@
 @import "../../globals.scss";
 
 .BCHome {
+  .BCHome-collection-header {
+    @include bc-text(600);
+    font-size: 1.5em;
+    // padding-bottom: 2rem;
+    // padding-left: 0.2rem;
+  }
   .BCHome-content-container {
     display: flex;
     justify-content: center;
   }
 
   .BCHome-collection-container {
-    .BCHome-collection-header {
-      @include bc-text(600);
-      font-size: 2em;
-      padding-bottom: 2.0rem;
-      padding-left: .2rem;
-      
-    }
-
     .BCHome-pagination-container {
       display: flex;
       justify-content: flex-end;

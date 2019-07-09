@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import { withRouter } from 'react-router';
 import Responsive from 'react-responsive';
 import SplashBanner from '../SplashBanner';
@@ -14,8 +15,29 @@ import { baseUrl } from '../../config';
 import './BCHome.scss';
 
 const queryString = require('query-string');
-// const STARTING_SIZE = 4;
-// const PAGINATION_SIZE = STARTING_SIZE;
+const BCHomeMainContent = styled.div`
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: minmax(30%, 200px) auto;
+  /* grid-column-gap: 3rem; */
+  grid-gap: 3rem;
+  @media (max-width: 768px) {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+  }
+`;
+
+const BCHomeCollectionInfo = styled.div`
+  font-size: 14px;
+  color: #dcdcdc;
+`;
+
+const BCHomeCollectionDescription = styled.div`
+  line-height: 1.5;
+  width: 80%;
+  margin-top: 2rem;
+  font-family: 'sofia-pro', sans-serif;
+`;
 
 // check out our contentz
 // https://console.aws.amazon.com/s3/buckets/burn-cartel-content/?region=us-west-2&tab=overview
@@ -137,10 +159,9 @@ class BCHome extends React.Component {
   }
 
   makeCollectionList(collections, showList, type) {
-    let style = { marginTop: '3rem' };
+    let style = {};
 
     if (!showList) style = { ...style, display: 'none' };
-    // if (type !== 'weekly') style = { ...style, marginTop: '7rem' };
 
     const showPagination = this.state.page[type] < collections.length;
     const paginatedCollections = collections.slice(0, this.state.page[type]);
@@ -149,7 +170,7 @@ class BCHome extends React.Component {
 
     return (
       <div className="BCHome-collection-container" style={style}>
-        <div className="BCHome-collection-header"> {headerText} </div>
+        {/* <div className="BCHome-collection-header"> {headerText} </div> */}
         <CollectionList
           show={showList}
           handleModalOpen={this.props.handleModalOpen}
@@ -199,7 +220,13 @@ class BCHome extends React.Component {
       contentWidth,
       collections
     } = this.props;
+
+    const { collectionTypeSelected } = this.state;
     const showList = !isMobile || (isMobile && !pageReadyForFakeModal);
+
+    const [topText, headerText, description] = getWeeklyItemTexts({
+      collection_type: collectionTypeSelected
+    });
 
     return (
       <div
@@ -245,7 +272,9 @@ class BCHome extends React.Component {
                   collection={this.props.collection}
                   idx={this.props.idx}
                   activeTrack={this.props.activeTrack}
-                  loadingCollectionTracks={this.props.loadingCollectionTracks}
+                  loadingCollectionTracks={
+                    this.props.loadingCollectionTracks
+                  }
                   playTrack={(currentTrack, collection) =>
                     this.props.playTrack(currentTrack, collection)
                   }
@@ -255,7 +284,7 @@ class BCHome extends React.Component {
                 <CollectionTabs
                   collectionTypeSelected={this.state.collectionTypeSelected}
                   selectCollectionType={idx => {
-                    window.logEvent('SELECT_COLLECTION_TYPE', {
+                    window.logEvent("SELECT_COLLECTION_TYPE", {
                       collectionIdx: idx
                     });
                     this.setState({ collectionTypeSelected: idx });
@@ -263,7 +292,18 @@ class BCHome extends React.Component {
                 />
               )}
 
-              {this.renderCollection(showList)}
+              <BCHomeMainContent className="BCHomeMainContent">
+                <BCHomeCollectionInfo>
+                  <div className="BCHome-collection-header">
+                    {" "}
+                    {headerText}{" "}
+                  </div>
+                  <BCHomeCollectionDescription className="BCHomeCollectionDescription">
+                    {description}
+                  </BCHomeCollectionDescription>
+                </BCHomeCollectionInfo>
+                {this.renderCollection(showList)}
+              </BCHomeMainContent>
             </Wrapper>
           </div>
         )}
