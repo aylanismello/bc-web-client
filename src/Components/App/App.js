@@ -387,6 +387,7 @@ class App extends Component {
 
   scrollToCollection() {
     const { tappedCollectionID } = window;
+
     if (tappedCollectionID) {
       const viewportHeight = Math.max(
         document.documentElement.clientHeight,
@@ -757,4 +758,3 @@ const mapSizesToProps = ({ width }) => ({
 });
 
 export default withSizes(mapSizesToProps)(App);
-// export default App;

@@ -74,7 +74,7 @@ class BCWeeklyItem extends React.Component {
         onMouseEnter={() => this.setState({ hover: true })}
         onMouseLeave={() => this.setState({ hover: false })}
         onClick={e => {
-          // window.tappedCollectionID = id;
+          window.tappedCollectionID = id;
           window.logEvent('SELECT_COLLECTION', { collection_num });
           updateActiveCollection(collection_num);
         }}

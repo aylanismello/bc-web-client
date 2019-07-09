@@ -36,6 +36,7 @@ class BCWeeklyTracklist extends React.Component {
         {tracks.map(track => (
           <BCWeeklyTrack
             active={this.isActive(track)}
+            key={track.id}
             trackLoading={trackLoading}
             playing={playing}
             open={track.id === this.state.openTrackId && this.state.open}
