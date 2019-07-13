@@ -92,7 +92,7 @@ class BCWeeklyItem extends React.Component {
 
         <Play
           show={showPlay}
-          playing={playing && active}
+          playing={playing}
           loading={(loadingTrack || loadingCollectionTracks) && active}
         />
         <BCWeeklyItemText collection={collection} />

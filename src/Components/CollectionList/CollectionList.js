@@ -24,7 +24,7 @@ const CollectionList = ({
   return (
     <div className="CollectionList" style={style}>
       <div className="CollectionList-grid">
-        {collections.map((collection) => (
+        {collections.map(collection => (
           <BCWeeklyItem
             handleModalOpen={handleModalOpen}
             activeTrack={activeTrack}
@@ -32,7 +32,9 @@ const CollectionList = ({
             playTrack={playTrack}
             // match by id
             active={activeCollectionId === collection.id}
-            playing={playing}
+            playing={
+              playing && collection.collection_num === playingCollectionNum
+            }
             showTracklist={showTracklist}
             key={collection.id}
             playingCollectionNum={playingCollectionNum}
