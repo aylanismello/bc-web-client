@@ -203,7 +203,7 @@ class BCWeeklyTrack extends React.Component {
               />
             </ImageContainer>
             <DetailsText className="DetailsText">
-              <Title open={open} className="TrackTitle">
+              <Title open={open} className="TrackTitle" id={track.id}>
                 {track.name}
               </Title>
               <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
