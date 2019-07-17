@@ -9,7 +9,7 @@ import down from './chevron-down.svg';
 const Item = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.8rem 1rem;
+  padding: 0.8rem 0.6rem;
 `;
 
 const PlayingEqWrapper = styled.div`
@@ -82,7 +82,7 @@ const ExpandTrackDetails = styled.div`
   margin-left: 65px;
 
   .ExpandTrackDetail:not(:last-child) {
-    padding-bottom: 1rem;  
+    padding-bottom: 1rem;
   }
 `;
 
@@ -143,7 +143,7 @@ const formatReleaseDate = ({ created_at_external }) => {
     return 'a month ago';
   } else if (daysAgo >= 60 && daysAgo < 365) {
     return 'a few months ago';
-  } else if (daysAgo >= 365 && daysAgo < (365 * 2)) {
+  } else if (daysAgo >= 365 && daysAgo < 365 * 2) {
     return 'a year ago';
   } else {
     return `${today.diff(formattedDate, 'year')} years ago`;
@@ -188,7 +188,10 @@ class BCWeeklyTrack extends React.Component {
             playTrack(track);
           }}
         >
-          <Item style={getStyle(active, open)}>
+          <Item
+            className="BCWeeklyTracklist-item"
+            style={getStyle(active, open)}
+          >
             <ImageContainer>
               <PlayingEqWrapper>
                 {getPlayOverlay(active, trackLoading, playing)}
