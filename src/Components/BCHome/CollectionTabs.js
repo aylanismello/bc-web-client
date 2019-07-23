@@ -5,7 +5,7 @@ const tabLineMargin = 15;
 const tabLineHeight = '2px';
 
 const CollectionTabs = styled.div`
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => (props.show ? 'block' : 'none')};
 `;
 
 const CollectionTabsStyle = styled.div`
@@ -24,7 +24,7 @@ const CollectionLine = styled.div`
 
 const CollectionTabStyle = styled.div`
   margin-right: 2rem;
-  color: ${props => (props.selected ? "white" : "#626970")};
+  color: ${props => (props.selected ? 'white' : '#626970')};
   font-family: "sofia-pro", sans-serif;
   font-size: 16px;
   font-weight: 600;
@@ -33,7 +33,7 @@ const CollectionTabStyle = styled.div`
 
 const CollectionTabText = styled.div`
   padding: 5px 5px 5px 0;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -49,12 +49,29 @@ const CollectionTabLineHighlight = styled.div`
   top: ${`${tabLineMargin + 33}px`};
 `;
 
-const CollectionTab = ({ children, selected, onClick }) => (
+const CollectionTabNotify = styled.div`
+  display: ${props => (props.show ? 'block' : 'none')};
+  position: absolute;
+  top: 10px;
+  right: -7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9px;
+  background-color: #f34b4b;
+`;
+
+const CollectionTab = ({
+ children, selected, onClick, isNew 
+}) => (
   <CollectionTabStyle selected={selected}>
+    <CollectionTabNotify show={isNew} className="CollectionTabNotify" />
     <CollectionTabText onClick={onClick} className="CollectionTabText">
       {children}
     </CollectionTabText>
-    <CollectionTabLineHighlight selected={selected} className="CollectionTabLineHighlight" />
+    <CollectionTabLineHighlight
+      selected={selected}
+      className="CollectionTabLineHighlight"
+    />
   </CollectionTabStyle>
 );
 
@@ -71,6 +88,7 @@ export default ({ selectCollectionType, collectionTypeSelected, show }) => (
       <CollectionTab
         onClick={() => selectCollectionType(1)}
         selected={collectionTypeSelected === 1}
+        isNew
       >
         {' '}
         Rising{' '}
