@@ -36,18 +36,18 @@ $border-radius: 300px;
     border-radius: $border-radius;
 
   }
-  
+
   progress::-webkit-progress-bar {
     @include progress-bar();
   }
   progress::-webkit-progress-value {
     @include progress-bar-value();
   }
-  
+
   progress::-moz-progress-bar {
     @include progress-bar-value();
   }
-  
+
   progress::-moz-progress-value {
     @include progress-bar();
   }

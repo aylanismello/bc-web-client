@@ -6,6 +6,14 @@ import styled from 'styled-components';
 const SeekBarStyle = styled.div`
   text-align: center;
   width: 100%;
+  
+  .scrubber {
+    padding: 17px 0;
+    :hover {
+      cursor: pointer;
+      background-color: rgba(230, 230, 216, 0.2);
+    }
+  }
 
   progress,
   progress[role] {
