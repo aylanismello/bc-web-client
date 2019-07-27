@@ -83,6 +83,9 @@ class App extends Component {
   }
 
   componentWillMount() {
+    if (window.localStorage.getItem('newFeatureClicked')) {
+      this.setState({ newFeatureClicked: true });
+    }
     this.setState({ isMobile: this.isMobile() });
   }
 
@@ -105,6 +108,7 @@ class App extends Component {
       before: '',
       after: ''
     },
+    newFeatureClicked: false,
     openCollection: {
       idx: 0,
       num: null
@@ -567,7 +571,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <div
-          className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}
+          className={`App ${this.state.playerOpen ? "shift-up" : ""}`}
           id="outer-container"
         >
           {/* <Responsive minDeviceWidth={768}>
@@ -609,7 +613,9 @@ class App extends Component {
                 }
                 idx={this.state.openCollection.idx}
                 activeTrack={this.state.track}
-                loadingCollectionTracks={this.state.loading.collectionTracks}
+                loadingCollectionTracks={
+                  this.state.loading.collectionTracks
+                }
                 playTrack={(track, collection) =>
                   this.playTrack(track, collection)
                 }
@@ -647,9 +653,19 @@ class App extends Component {
               path="/:bc_weekly_num"
               render={() => (
                 <BCHome
-                  playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
+                  playButtonHasBeenPressed={
+                    this.state.playButtonHasBeenPressed
+                  }
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}
+                  newFeatureClicked={this.state.newFeatureClicked}
+                  setNewFeatureClicked={() => {
+                    if (!this.state.newFeatureClicked) {
+                      this.setState({ newFeatureClicked: true }, () => {
+                        window.localStorage.setItem('newFeatureClicked', true);
+                      });
+                    }
+                  }}
                   contentWidth={contentWidth}
                   isMobile={this.state.isMobile}
                   pageReadyForFakeModal={this.state.pageReadyForFakeModal}
@@ -659,7 +675,9 @@ class App extends Component {
                       modalOpen: true
                     });
                   }}
-                  getActiveCollection={(x, y) => this.getActiveCollection(x, y)}
+                  getActiveCollection={(x, y) =>
+                    this.getActiveCollection(x, y)
+                  }
                   forceReopenCollectionDetail={() =>
                     this.forceReopenCollectionDetail()
                   }
@@ -702,7 +720,9 @@ class App extends Component {
                   burnCartelPlayer={this.burnCartelPlayer}
                   playing={this.state.playing}
                   playingCollection={this.playingCollection()}
-                  loadingCollectionTracks={this.state.loading.collectionTracks}
+                  loadingCollectionTracks={
+                    this.state.loading.collectionTracks
+                  }
                   togglePlay={this.toggleFromCollectionDetail}
                   playerOpen={this.state.playerOpen}
                   collections={this.state.collections}
@@ -722,7 +742,7 @@ class App extends Component {
             this.state.loading.collections ? null : (
               <Footer
                 loadingCollections={this.state.loading.collections}
-                width={this.state.contentWidthShrunk ? '70%' : ''}
+                width={this.state.contentWidthShrunk ? "70%" : ""}
               />
             )}
           </div>
@@ -741,7 +761,9 @@ class App extends Component {
                 this.togglePlay();
               }}
               playingCollectionNum={this.state.playingCollectionNum}
-              goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
+              goToTrack={whichOne =>
+                this.burnCartelPlayer.goToTrack(whichOne)
+              }
               toggleRepeat={() => this.toggleRepeat()}
               repeat={this.state.repeat}
               visualize={this.state.visualize}

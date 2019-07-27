@@ -75,25 +75,36 @@ const CollectionTab = ({
   </CollectionTabStyle>
 );
 
-export default ({ selectCollectionType, collectionTypeSelected, show }) => (
-  <CollectionTabs className="CollectionTabs" show={show}>
-    <CollectionTabsStyle className="CollectionTabsStyle">
-      <CollectionTab
-        onClick={() => selectCollectionType(0)}
-        selected={collectionTypeSelected === 0}
-      >
-        {' '}
-        Curated{' '}
-      </CollectionTab>
-      <CollectionTab
-        onClick={() => selectCollectionType(1)}
-        selected={collectionTypeSelected === 1}
-        isNew
-      >
-        {' '}
-        Rising{' '}
-      </CollectionTab>
-    </CollectionTabsStyle>
-    <CollectionLine className="CollectionTabsLine" />
-  </CollectionTabs>
-);
+export default ({
+  collectionTypeSelected,
+  show,
+  setNewFeatureClicked,
+  selectCollectionType,
+  newFeatureClicked
+}) => {
+  return (
+    <CollectionTabs className="CollectionTabs" show={show}>
+      <CollectionTabsStyle className="CollectionTabsStyle">
+        <CollectionTab
+          onClick={() => selectCollectionType(0)}
+          selected={collectionTypeSelected === 0}
+        >
+          {' '}
+          Curated{' '}
+        </CollectionTab>
+        <CollectionTab
+          onClick={() => {
+            setNewFeatureClicked();
+            selectCollectionType(1);
+          }}
+          selected={collectionTypeSelected === 1}
+          isNew={!newFeatureClicked}
+        >
+          {' '}
+          Rising{' '}
+        </CollectionTab>
+      </CollectionTabsStyle>
+      <CollectionLine className="CollectionTabsLine" />
+    </CollectionTabs>
+  );
+};

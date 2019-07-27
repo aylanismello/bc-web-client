@@ -283,6 +283,8 @@ class BCHome extends React.Component {
               <CollectionTabs
                 show={showList}
                 collectionTypeSelected={this.state.collectionTypeSelected}
+                setNewFeatureClicked={() => this.props.setNewFeatureClicked()}
+                newFeatureClicked={this.props.newFeatureClicked}
                 selectCollectionType={idx => {
                   window.logEvent('SELECT_COLLECTION_TYPE', {
                     collectionIdx: idx

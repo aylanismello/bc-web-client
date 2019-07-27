@@ -112,7 +112,7 @@ class CollectionDetail extends React.Component {
           height: '8rem',
           padding: '0 2rem',
           display: 'flex',
-          // -webkit-fill-available
+
           // width: '100%'
           width: '-webkit-fill-available'
         };
@@ -126,7 +126,7 @@ class CollectionDetail extends React.Component {
     const texts = getWeeklyItemTexts(collection);
     const hasMix = collection.collection_type === 0;
     const { tracklist } = collection;
-
+    
     return (
       <div
         className="CollectionDetail"
