@@ -150,6 +150,36 @@ const formatReleaseDate = ({ created_at_external }) => {
   }
 };
 
+const releaseDate = track => {
+  if (!track.created_at_external) {
+    return null;
+  }
+  return (
+    <div className="ExpandTrackDetail">
+      Released: {formatReleaseDate(track)}
+    </div>
+  );
+};
+
+const formatSourceLink = ({ permalink_url, streaming_platform }) => {
+  let linkText;
+  if (streaming_platform === 0) {
+    linkText = 'SoundCloud';
+  } else if (streaming_platform === 1) {
+    linkText = 'YouTube';
+  } else if (streaming_platform === 2) {
+    linkText = 'Bandcamp';
+  } else {
+    linkText = 'unknown';
+  }
+
+  return (
+    <ExpandTrackLink href={permalink_url} target="_blank">
+      {linkText}
+    </ExpandTrackLink>
+  );
+};
+
 class BCWeeklyTrack extends React.Component {
   render() {
     const {
@@ -185,7 +215,9 @@ class BCWeeklyTrack extends React.Component {
             ) {
               return;
             }
-            playTrack(track);
+            if (track.stream_url) {
+              playTrack(track);
+            }
           }}
         >
           <Item
@@ -197,7 +229,11 @@ class BCWeeklyTrack extends React.Component {
                 {getPlayOverlay(active, trackLoading, playing)}
               </PlayingEqWrapper>
               <img
-                src={track.artwork_url || track.artist_artwork_url}
+                src={
+                  track.artwork_url ||
+                  track.artist_artwork_url ||
+                  'https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png'
+                }
                 style={{
                   width: '100%',
                   height: 'auto',
@@ -210,7 +246,7 @@ class BCWeeklyTrack extends React.Component {
                 {track.name}
               </Title>
               <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">
-                {track.artist_name}
+                {track.real_artist_name || track.artist_name}
               </div>
             </DetailsText>
             <ExpandTrackBtn
@@ -223,14 +259,13 @@ class BCWeeklyTrack extends React.Component {
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               <div className="ExpandTrackDetail">
-                Source:{' '}
-                <ExpandTrackLink href={track.permalink_url} target="_blank">
-                  SoundCloud
-                </ExpandTrackLink>
+                Source: {formatSourceLink(track)}
               </div>
-              <div className="ExpandTrackDetail">
+
+              {releaseDate(track)}
+              {/* <div className="ExpandTrackDetail">
                 Released: {formatReleaseDate(track)}
-              </div>
+              </div> */}
             </ExpandTrackDetails>
           </Item>
         )}

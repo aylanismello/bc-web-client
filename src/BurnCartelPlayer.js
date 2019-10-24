@@ -61,7 +61,7 @@ class BurnCartelPlayer {
   playTrack(track, collection, collections) {
     this.setPlayingCollectionNum(collection.collection_num);
     this.initCollections(collection, collections);
-    
+
     // TODO: this is flimsy as balls dont do thingz
     this.trackIdx = track.track_number;
     this.trackId = track.id;
@@ -80,7 +80,9 @@ class BurnCartelPlayer {
   }
 
   resume() {
-    this.sc.play({ streamUrl: this.collection.tracks[this.trackIdx].stream_url });
+    this.sc.play({
+      streamUrl: this.collection.tracks[this.trackIdx].stream_url
+    });
   }
 
   goToTrack(whichTrack) {
@@ -116,14 +118,25 @@ class BurnCartelPlayer {
       this.restartTrack();
     } else if (this.trackIdx !== 0) {
       this.trackIdx--;
-      this.switchTrack(this.collection.tracks[this.trackIdx]);
+      const prevTrack = this.collection.tracks[this.trackIdx];
+
+      if (!prevTrack.stream_url) {
+        this.goToPrevTrack();
+      } else {
+        this.switchTrack(prevTrack);
+      }
     }
   }
 
   goToNextTrack() {
     this.trackIdx++;
     if (this.trackIdx < this.collection.tracks.length) {
-      this.switchTrack(this.collection.tracks[this.trackIdx]);
+      const nextTrack = this.collection.tracks[this.trackIdx];
+      if (!nextTrack.stream_url) {
+        this.goToNextTrack();
+      } else {
+        this.switchTrack(nextTrack);
+      }
     } else {
       this.goToNextCollection();
     }
