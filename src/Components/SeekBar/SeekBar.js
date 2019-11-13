@@ -24,35 +24,32 @@ const SeekBarStyle = styled.div`
     width: 100%;
     border: none;
     height: 0.5rem;
-    border-radius: ${(props) => props.showTopSeekBar ? '0px' : '300px'};
-
+    border-radius: ${props => (props.showTopSeekBar ? '0px' : '300px')};
 
     /* more */
-    
-    position: ${(props) => props.showTopSeekBar ? 'absolute' : ''};
-    left: ${(props) => props.showTopSeekBar ? '0' : ''}; 
-    right: ${(props) => props.showTopSeekBar ? '0' : ''};
+
+    position: ${props => (props.showTopSeekBar ? 'absolute' : '')};
+    left: ${props => (props.showTopSeekBar ? '0' : '')};
+    right: ${props => (props.showTopSeekBar ? '0' : '')};
   }
 
   progress::-webkit-progress-bar {
     background: #626970;
-    border-radius: ${(props) => props.showTopSeekBar ? '0px' : '300px'};
-    
+    border-radius: ${props => (props.showTopSeekBar ? '0px' : '300px')};
   }
   progress::-webkit-progress-value {
     background: #e54ea3;
-    border-radius: ${(props) => props.showTopSeekBar ? '0px' : '300px'};
+    border-radius: ${props => (props.showTopSeekBar ? '0px' : '300px')};
   }
 
   progress::-moz-progress-bar {
     background: #e54ea3;
-    border-radius: ${(props) => props.showTopSeekBar ? '0px' : '300px'};
+    border-radius: ${props => (props.showTopSeekBar ? '0px' : '300px')};
   }
 
   progress::-moz-progress-value {
     background: #626970;
-    border-radius: ${(props) => props.showTopSeekBar ? '0px' : '300px'};
-    
+    border-radius: ${props => (props.showTopSeekBar ? '0px' : '300px')};
   }
 
   progress:hover {
@@ -74,7 +71,13 @@ class SeekBar extends React.Component {
       const { offsetWidth } = event.target;
       const { offsetX } = event;
       const percent = offsetX / offsetWidth;
-      window.sc.setTime(percent * window.sc.audio.duration);
+      const timeCode = percent * window.sc.audio.duration;
+      // TODO: we ONLY do this if we're dealing with an episode
+      if (this.props.hasMix) {
+        this.props.setEpisodeTrack(timeCode);
+      } else {
+        window.sc.setTime(timeCode);
+      }
     });
   }
 
@@ -86,11 +89,13 @@ class SeekBar extends React.Component {
     const { currentTime } = this.props;
     const value = currentTime / window.sc.audio.duration;
     return (
-      <SeekBarStyle style={this.getStyle()} showTopSeekBar={this.props.showTopSeekBar}>
+      <SeekBarStyle
+        style={this.getStyle()}
+        showTopSeekBar={this.props.showTopSeekBar}
+      >
         <div className="player-controls scrubber">
           <progress id="seek-obj" value={value || 0} max="1" />
         </div>
-
       </SeekBarStyle>
     );
   }

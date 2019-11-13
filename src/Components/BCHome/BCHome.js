@@ -221,7 +221,8 @@ class BCHome extends React.Component {
       contentWidthShrunk,
       isMobile,
       contentWidth,
-      collections
+      collections,
+      setEpisodeTrack
     } = this.props;
 
     const { collectionTypeSelected } = this.state;
@@ -265,6 +266,7 @@ class BCHome extends React.Component {
               </Responsive> */}
               <Responsive maxDeviceWidth={767}>
                 <CollectionDetail
+                  setEpisodeTrack={setEpisodeTrack}
                   show={pageReadyForFakeModal}
                   playingCollection={this.props.playingCollection}
                   togglePlay={() => this.props.togglePlay(true)}

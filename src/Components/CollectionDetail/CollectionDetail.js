@@ -76,7 +76,8 @@ class CollectionDetail extends React.Component {
       trackLoading,
       togglePlay,
       playingCollection,
-      isSideMenu
+      isSideMenu,
+      setEpisodeTrack
     } = this.props;
 
     if (!(collection && collection.tracks)) return null;
@@ -219,6 +220,7 @@ class CollectionDetail extends React.Component {
             {!loadingCollectionTracks && (
               <div>
                 <BCWeeklyTracklist
+                  setEpisodeTrack={setEpisodeTrack}
                   idx={idx}
                   hasMix={hasMix}
                   trackLoading={trackLoading}

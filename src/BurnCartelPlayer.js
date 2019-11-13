@@ -25,7 +25,8 @@ class BurnCartelPlayer {
     setTrackLoading,
     setError,
     setCurrentTime,
-    setPlayingCollectionNum
+    setPlayingCollectionNum,
+    setEpisodeTrack
   ) {
     this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
     // for debugging purposes
@@ -36,12 +37,15 @@ class BurnCartelPlayer {
     this.setPlaying = setPlaying;
     this.setCurrentTime = setCurrentTime;
     this.setPlayingCollectionNum = setPlayingCollectionNum;
+    this.setEpisodeTrack = setEpisodeTrack;
 
     this.collections = [];
     this.collectionIdx = undefined;
     this.trackIdx = undefined;
     this.collection = undefined;
     this.repeat = undefined;
+
+    this.prevTime = 0;
   }
 
   playCollection(collection, collections) {
@@ -66,7 +70,6 @@ class BurnCartelPlayer {
     this.trackIdx = track.track_number;
     this.trackId = track.id;
     this.switchTrack(this.collection.tracks.filter(t => t.id === this.trackId)[0]);
-    // this.switchTrack(this.collection.tracks[this.trackIdx]);
   }
 
   initCollectionIdx() {
@@ -181,6 +184,14 @@ class BurnCartelPlayer {
       const { currentTime } = e.target;
       if (currentTime) this.setTrackLoading(false);
 
+      // const timeDelta = currentTime - this.prevTime;
+
+        this.prevTime = currentTime;
+        // TODO: this logic is all fucked and
+        // leads to weird conditions based on track also upadting when clicked on
+        this.setEpisodeTrack(currentTime + 1, false);
+      // }
+
       this.updateAllTimes(currentTime);
     });
   }
@@ -208,9 +219,17 @@ class BurnCartelPlayer {
 
     this.setActiveTrack(track);
 
-    this.sc.play({ streamUrl: stream_url }).catch(err => {
-      console.log(`Error playing track at ${stream_url}: ${err}`);
-    });
+    this.sc
+      .play({ streamUrl: stream_url })
+      .then(() => {
+        if (window.forceSeekAfterEpisodeLoad) {
+          window.forceGoToEpisodeTrack();
+          window.forceSeekAfterEpisodeLoad = false;
+        }
+      })
+      .catch(err => {
+        console.log(`Error playing track at ${stream_url}: ${err}`);
+      });
   }
 }
 

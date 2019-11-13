@@ -191,7 +191,8 @@ class BCWeeklyTrack extends React.Component {
       showDivider,
       hasMix,
       open,
-      toggleOpen
+      toggleOpen,
+      setEpisodeTrack
     } = this.props;
 
     return (
@@ -215,7 +216,14 @@ class BCWeeklyTrack extends React.Component {
             ) {
               return;
             }
-            if (track.stream_url) {
+            // TODO: make this take into account if you're in an episode.
+            const trackIsNotMix = track.track_type !== 2;
+            if (hasMix && trackIsNotMix) {
+              // also can't be the mix itself..
+              setEpisodeTrack(track);
+              // window.sc.setTime(track.time_code);
+              // we are seeking
+            } else if (track.stream_url) {
               playTrack(track);
             }
           }}

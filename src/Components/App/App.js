@@ -78,7 +78,10 @@ class App extends Component {
       loading => this.setLoading('track', loading),
       error => this.setError(error),
       currentTime => this.setCurrentTime(currentTime),
-      playingCollectionNum => this.setPlayingCollectionNum(playingCollectionNum)
+      playingCollectionNum =>
+        this.setPlayingCollectionNum(playingCollectionNum),
+      (currentTime, notCheckingForNextTrack) =>
+        this.setEpisodeTrack(currentTime, notCheckingForNextTrack)
     );
   }
 
@@ -224,6 +227,72 @@ class App extends Component {
     this.setState({ track, playButtonHasBeenPressed: true }, () => {
       this.updateTrackPlay(track.id);
     });
+  }
+
+  getTrackFromTimeCode(timeCode) {
+    // grab all collection tracks.
+    const currentTracklist = this.burnCartelPlayer.collection.tracks;
+
+    for (let idx = 1; idx < currentTracklist.length; idx++) {
+      const currentTrack = currentTracklist[idx];
+      const nextTrack = currentTracklist[idx + 1];
+      // we want teh FIRST instance of the currentTimeCode being greating than or equal to any track's time code
+
+      if (!nextTrack) {
+        return currentTracklist[currentTracklist.length - 1];
+      } else if (
+        timeCode >= currentTrack.time_code &&
+        timeCode <= nextTrack.time_code
+      ) {
+        return currentTrack;
+      }
+    }
+
+    // something went wrong, just go to first track.
+    return currentTracklist[1];
+  }
+  // accepts a track, or a time_code from seek bar
+  setEpisodeTrack(trackOrTimeCode, notCheckingForNextTrack = true) {
+    if (!this.hasMix()) return;
+
+    let track;
+
+    if (trackOrTimeCode.id) {
+      track = trackOrTimeCode;
+      this.playEpisodeFromTracklist(track);
+    } else {
+      track = this.getTrackFromTimeCode(trackOrTimeCode);
+
+      if (notCheckingForNextTrack) {
+        window.sc.setTime(trackOrTimeCode);
+      }
+
+      if (track.id !== this.state.track.id) {
+        this.setState({ track });
+      }
+    }
+  }
+
+  playEpisodeFromTracklist(track) {
+    const openCollection = this.getOpenCollection();
+
+    if (
+      openCollection &&
+      this.state.openCollection.num !== this.state.playingCollectionNum
+    ) {
+      // always just play the episode
+      this.playTrack(openCollection.tracks[0], openCollection);
+      window.forceGoToEpisodeTrack = () => {
+        // this.setState({ track });
+        console.log('force seeking to track!');
+        window.sc.setTime(track.time_code + 1);
+      };
+      window.forceSeekAfterEpisodeLoad = true;
+    } else {
+      //  track = trackOrTimeCode;
+      this.setState({ track });
+      window.sc.setTime(track.time_code);
+    }
   }
 
   updateTrackPlay(id) {
@@ -392,7 +461,7 @@ class App extends Component {
   scrollToCollection() {
     const { tappedCollectionID } = window;
     const tappedElement = document.getElementById(tappedCollectionID);
-    
+
     if (tappedElement) {
       const viewportHeight = Math.max(
         document.documentElement.clientHeight,
@@ -504,6 +573,13 @@ class App extends Component {
     }
   }
 
+  hasMix() {
+    const openCollection = this.state.collections[
+      this.state.openCollection.idx
+    ];
+    return openCollection && openCollection.collection_type === 0;
+  }
+
   toggleRepeat() {
     this.setState({ repeat: !this.state.repeat }, () => {
       if (this.state.repeat) {
@@ -521,6 +597,10 @@ class App extends Component {
       this.state.collections,
       this.state.setPlaying
     );
+  }
+
+  getOpenCollection() {
+    return this.state.collections[this.state.openCollection.idx];
   }
 
   toggleVisualize() {
@@ -571,7 +651,7 @@ class App extends Component {
     return (
       <Router history={history}>
         <div
-          className={`App ${this.state.playerOpen ? "shift-up" : ""}`}
+          className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}
           id="outer-container"
         >
           {/* <Responsive minDeviceWidth={768}>
@@ -598,6 +678,9 @@ class App extends Component {
               <CollectionDetail
                 show
                 isSideMenu
+                setEpisodeTrack={episodeTrack =>
+                  this.setEpisodeTrack(episodeTrack)
+                }
                 playingCollection={this.playingCollection()}
                 togglePlay={this.toggleFromCollectionDetail}
                 collectionNum={this.state.openCollection.num}
@@ -613,9 +696,7 @@ class App extends Component {
                 }
                 idx={this.state.openCollection.idx}
                 activeTrack={this.state.track}
-                loadingCollectionTracks={
-                  this.state.loading.collectionTracks
-                }
+                loadingCollectionTracks={this.state.loading.collectionTracks}
                 playTrack={(track, collection) =>
                   this.playTrack(track, collection)
                 }
@@ -653,9 +734,10 @@ class App extends Component {
               path="/:bc_weekly_num"
               render={() => (
                 <BCHome
-                  playButtonHasBeenPressed={
-                    this.state.playButtonHasBeenPressed
+                  setEpisodeTrack={episodeTrack =>
+                    this.setEpisodeTrack(episodeTrack)
                   }
+                  playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}
                   newFeatureClicked={this.state.newFeatureClicked}
@@ -675,9 +757,7 @@ class App extends Component {
                       modalOpen: true
                     });
                   }}
-                  getActiveCollection={(x, y) =>
-                    this.getActiveCollection(x, y)
-                  }
+                  getActiveCollection={(x, y) => this.getActiveCollection(x, y)}
                   forceReopenCollectionDetail={() =>
                     this.forceReopenCollectionDetail()
                   }
@@ -720,9 +800,7 @@ class App extends Component {
                   burnCartelPlayer={this.burnCartelPlayer}
                   playing={this.state.playing}
                   playingCollection={this.playingCollection()}
-                  loadingCollectionTracks={
-                    this.state.loading.collectionTracks
-                  }
+                  loadingCollectionTracks={this.state.loading.collectionTracks}
                   togglePlay={this.toggleFromCollectionDetail}
                   playerOpen={this.state.playerOpen}
                   collections={this.state.collections}
@@ -742,13 +820,15 @@ class App extends Component {
             this.state.loading.collections ? null : (
               <Footer
                 loadingCollections={this.state.loading.collections}
-                width={this.state.contentWidthShrunk ? "70%" : ""}
+                width={this.state.contentWidthShrunk ? '70%' : ''}
               />
             )}
           </div>
           {playerOpen && (
             <BottomNav
               track={track}
+              hasMix={this.hasMix()}
+              setEpisodeTrack={timeCode => this.setEpisodeTrack(timeCode)}
               playing={playing}
               defaultCollectionNum={this.state.openCollection.num}
               forceReopenCollectionDetail={() =>
@@ -761,9 +841,7 @@ class App extends Component {
                 this.togglePlay();
               }}
               playingCollectionNum={this.state.playingCollectionNum}
-              goToTrack={whichOne =>
-                this.burnCartelPlayer.goToTrack(whichOne)
-              }
+              goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
               toggleRepeat={() => this.toggleRepeat()}
               repeat={this.state.repeat}
               visualize={this.state.visualize}

@@ -6,7 +6,7 @@ class BCWeeklyTracklist extends React.Component {
   state = {
     openTrackId: null,
     open: false
-  }
+  };
 
   isActive(track) {
     return track.id === this.props.activeTrack.id;
@@ -27,20 +27,21 @@ class BCWeeklyTracklist extends React.Component {
       playing,
       trackLoading,
       spotlight,
-      hasMix
+      hasMix,
+      setEpisodeTrack
     } = this.props;
 
     return (
-
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
         {tracks.map(track => (
           <BCWeeklyTrack
+            setEpisodeTrack={setEpisodeTrack}
             active={this.isActive(track)}
             key={track.id}
             trackLoading={trackLoading}
             playing={playing}
             open={track.id === this.state.openTrackId && this.state.open}
-            toggleOpen={(trackId) => {
+            toggleOpen={trackId => {
               if (trackId === this.state.openTrackId) {
                 this.setState({ open: !this.state.open });
               } else {

@@ -19,7 +19,9 @@ const BottomNav = ({
   currentTime,
   playingCollectionNum,
   forceReopenCollectionDetail,
-  defaultCollectionNum
+  defaultCollectionNum,
+  setEpisodeTrack,
+  hasMix
 }) => {
   let collectionLink;
   if (playingCollectionNum) {
@@ -50,7 +52,7 @@ const BottomNav = ({
                 src={
                   track.artwork_url ||
                   track.artist_artwork_url ||
-                  blankImg
+                  'https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png'
                 }
                 className="Bottom-track-info-artwork"
                 alt="track-artwork"
@@ -69,8 +71,10 @@ const BottomNav = ({
         </Link>
 
         <PlayerControls
+          hasMix={hasMix}
           playing={playing}
           trackLoading={trackLoading}
+          setEpisodeTrack={setEpisodeTrack}
           goToTrack={goToTrack}
           togglePlay={togglePlay}
           repeat={repeat}

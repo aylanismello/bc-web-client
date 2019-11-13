@@ -49,7 +49,9 @@ class PlayerControls extends React.Component {
       toggleRepeat,
       toggleVisualize,
       trackLoading,
-      currentTime
+      currentTime,
+      setEpisodeTrack,
+      hasMix
     } = this.props;
     return (
       <div className="PlayerControls">
@@ -138,7 +140,7 @@ class PlayerControls extends React.Component {
           </div>
           <div className="PlayerControls-time-and-seek">
             <span className="PlayerControls-time">{currentTime.before}</span>
-            <SeekBar currentTime={currentTime.raw} />
+            <SeekBar hasMix={hasMix} currentTime={currentTime.raw} setEpisodeTrack={setEpisodeTrack} />
             <span className="PlayerControls-time">{currentTime.after}</span>
           </div>
         </Responsive>
