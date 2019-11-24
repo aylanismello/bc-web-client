@@ -216,14 +216,14 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-description">
               {collection.description}
             </div>
-            <div className="CollectionDetail-cover-art-info CollectionDetail-description ">
+            {/* <div className="CollectionDetail-cover-art-info CollectionDetail-description ">
               <span className="before-handle">Cover Art by: </span>
               <span className="CollectionDetail-cover-art-handle">
                 <a href="https://instagram.com/alexontrails" target="_blank">
                   @alex_on_trails
                 </a>
               </span>
-            </div>
+            </div> */}
 
             {!loadingCollectionTracks && (
               <div>

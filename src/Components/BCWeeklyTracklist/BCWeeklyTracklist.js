@@ -31,7 +31,7 @@ class BCWeeklyTracklist extends React.Component {
       setEpisodeTrack
     } = this.props;
 
-    let finalTracks;
+    let finalTracks = tracks;
     // const tracklists = tracks;
     if (hasMix) finalTracks = tracks.slice(1, tracks.length);
     
