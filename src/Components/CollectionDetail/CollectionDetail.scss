@@ -15,6 +15,19 @@
   background-color: $bc-black-1;
   position: relative;
 
+  .before-handle {
+    color: $bc-gray;
+  }
+
+  .CollectionDetail-cover-art-handle {
+    a {
+      color: $bc-purple;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
   .CollectionDetail-content {
     background-color: $bc-black-1;
     border-radius: 3px;
@@ -29,13 +42,10 @@
       padding: 0 0.6em 1em 0.6em;
     }
 
-
     .CollectionDetail-explore-more-container {
       display: flex;
       justify-content: center;
       margin: 2rem 0 2rem 0;
-
-
 
       .CollectionDetail-explore-more {
         width: 280px;

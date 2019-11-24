@@ -31,9 +31,13 @@ class BCWeeklyTracklist extends React.Component {
       setEpisodeTrack
     } = this.props;
 
+    let finalTracks;
+    // const tracklists = tracks;
+    if (hasMix) finalTracks = tracks.slice(1, tracks.length);
+    
     return (
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
-        {tracks.map(track => (
+        {finalTracks.map(track => (
           <BCWeeklyTrack
             setEpisodeTrack={setEpisodeTrack}
             active={this.isActive(track)}

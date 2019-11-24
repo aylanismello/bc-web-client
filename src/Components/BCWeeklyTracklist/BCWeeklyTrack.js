@@ -36,6 +36,17 @@ const ImageContainer = styled.div`
   position: relative;
 `;
 
+const PlayingText = styled.span`
+  font-family: "sofia-pro", sans-serif;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #e54ea3;
+`;
+
 const Title = styled.div`
   font-size: 16px;
   font-weight: 500;
@@ -197,18 +208,18 @@ class BCWeeklyTrack extends React.Component {
 
     return (
       <div key={track.id}>
-        {showDivider && <Divider />}
+        {/* {showDivider && <Divider />}
         {track.track_number === 0 && hasMix && (
           <HeaderText>This Week's Mix</HeaderText>
         )}
         {track.track_number === 1 && hasMix && (
           <HeaderText>Tracklist</HeaderText>
-        )}
+        )} */}
 
         <div
           key={track.id}
           className="BCWeeklyTracklist-item-container"
-          style={{ paddingBottom: open ? '0px' : '' }}
+          style={{ paddingBottom: (active) ? '0px' : '' }}
           onClick={e => {
             if (
               e.target.classList &&
@@ -263,6 +274,8 @@ class BCWeeklyTrack extends React.Component {
             />
           </Item>
         </div>
+       
+
         {open && (
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
@@ -271,10 +284,13 @@ class BCWeeklyTrack extends React.Component {
               </div>
 
               {releaseDate(track)}
-              {/* <div className="ExpandTrackDetail">
-                Released: {formatReleaseDate(track)}
-              </div> */}
             </ExpandTrackDetails>
+          </Item>
+        )}
+
+         {active && (
+          <Item style={(getStyleBottom(active))}>
+            <PlayingText>CURRENTLY PLAYING</PlayingText>
           </Item>
         )}
       </div>
