@@ -266,6 +266,7 @@ class BCHome extends React.Component {
               </Responsive> */}
               <Responsive maxDeviceWidth={767}>
                 <CollectionDetail
+                  guests={this.props.guests}
                   setEpisodeTrack={setEpisodeTrack}
                   show={pageReadyForFakeModal}
                   playingCollection={this.props.playingCollection}

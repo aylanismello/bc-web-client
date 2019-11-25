@@ -111,6 +111,7 @@ class App extends Component {
       before: '',
       after: ''
     },
+    guests: {},
     newFeatureClicked: false,
     openCollection: {
       idx: 0,
@@ -218,7 +219,11 @@ class App extends Component {
         });
       }
     });
+    const collection = collections[initialCollectionIdx];
+
+    this.fetchGuests(collection.tracks, collection);
   }
+
   setCurrentTime(currentTime) {
     this.setState({ currentTime });
   }
@@ -423,11 +428,44 @@ class App extends Component {
     }
   }
 
+  fetchGuests(tracks, collection) {
+    // only get guests if we are dealing with curated collections
+    if (collection.collection_type !== 0) return;
+
+    const uniqDJs = new Set(tracks.map(track => track.dj_id));
+
+    uniqDJs.forEach(djID => {
+      if (this.state.guests[djID]) {
+        console.log(`already fetched ${djID}`);
+        return;
+      }
+
+      console.log(`fetching ${djID}`);
+      axios
+        .get(`${baseUrl}/soundcloud_users/${djID}`)
+        .then(({ data }) => {
+          const { soundcloud_user } = data.data;
+          const newGuest = {};
+          newGuest[soundcloud_user.id] = soundcloud_user;
+          this.setState({
+            guests: {
+              ...this.state.guests,
+              ...newGuest
+            }
+          });
+        })
+        .catch(error => {
+          this.setError(error.message);
+        });
+    });
+  }
+
   fetchCollectionTracks(collectionIdx, collections, playOnLoad) {
     this.setLoading('collectionTracks', true);
 
+    const collection = collections[collectionIdx];
     axios
-      .get(`${baseUrl}/collections/${collections[collectionIdx].id}/tracks`)
+      .get(`${baseUrl}/collections/${collection.id}/tracks`)
       .then(({ data }) => {
         const { tracks } = data.data.collection;
 
@@ -455,6 +493,8 @@ class App extends Component {
               this.setState({ pageReadyForFakeModal: true });
               window.scrollTo(0, 0);
             }
+
+            this.fetchGuests(tracks, collection);
           }
         );
       })
@@ -655,7 +695,7 @@ class App extends Component {
     const track = this.getCurrentTrack();
     // TODO:
     // what's the diff between current track and this.state.track?
-    const { playerOpen, playing } = this.state;
+    const { playerOpen, playing, guests } = this.state;
     // const { menuShouldBeFixed } = this.props;
     // const menuShouldBeFixed = true;
     // const menuWidth = menuShouldBeFixed ? '320px' : '30%';
@@ -694,6 +734,7 @@ class App extends Component {
               <CollectionDetail
                 show
                 isSideMenu
+                guests={guests}
                 setEpisodeTrack={episodeTrack =>
                   this.setEpisodeTrack(episodeTrack)
                 }
@@ -753,6 +794,7 @@ class App extends Component {
                   setEpisodeTrack={episodeTrack =>
                     this.setEpisodeTrack(episodeTrack)
                   }
+                  guests={guests}
                   playButtonHasBeenPressed={this.state.playButtonHasBeenPressed}
                   contentWidthShrunk={this.state.contentWidthShrunk}
                   playingCollectionNum={this.state.playingCollectionNum}

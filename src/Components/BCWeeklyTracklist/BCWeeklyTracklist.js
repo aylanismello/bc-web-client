@@ -1,6 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import BCWeeklyTrack from './BCWeeklyTrack';
 import './BCWeeklyTracklist.scss';
+import GuestHeader from '../GuestHeader';
+
+const Divider = styled.div`
+  width: auto;
+  border: solid 1px #262632;
+  margin: 1.5rem 0 1.5rem 0;
+`;
 
 class BCWeeklyTracklist extends React.Component {
   state = {
@@ -21,43 +29,47 @@ class BCWeeklyTracklist extends React.Component {
 
   render() {
     const {
-      tracks,
       playTrack,
       collection,
       playing,
       trackLoading,
       spotlight,
       hasMix,
-      setEpisodeTrack
+      setEpisodeTrack,
+      tracklists
     } = this.props;
 
-    let finalTracks = tracks;
-    // const tracklists = tracks;
-    if (hasMix) finalTracks = tracks.slice(1, tracks.length);
-    
+    // TODO: maybe treat this data and add xtra info so we can intelligently split into tracklists
+
     return (
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
-        {finalTracks.map(track => (
-          <BCWeeklyTrack
-            setEpisodeTrack={setEpisodeTrack}
-            active={this.isActive(track)}
-            key={track.id}
-            trackLoading={trackLoading}
-            playing={playing}
-            open={track.id === this.state.openTrackId && this.state.open}
-            toggleOpen={trackId => {
-              if (trackId === this.state.openTrackId) {
-                this.setState({ open: !this.state.open });
-              } else {
-                this.setState({ open: true, openTrackId: trackId });
-              }
-            }}
-            track={track}
-            playTrack={() => playTrack(track, collection)}
-            showDivider={this.showDivider(track)}
-            hasMix={hasMix}
-          />
-        ))}
+        {/* tracklists.map?? */}
+        {tracklists.map(tracklist =>
+          tracklist.tracks.map((track, idx) => (
+            <div>
+              {hasMix && idx === 0 && <Divider />}
+              {hasMix && idx === 0 && <GuestHeader guest={tracklist.guest} />}
+              <BCWeeklyTrack
+                setEpisodeTrack={setEpisodeTrack}
+                active={this.isActive(track)}
+                key={track.id}
+                trackLoading={trackLoading}
+                playing={playing}
+                open={track.id === this.state.openTrackId && this.state.open}
+                toggleOpen={trackId => {
+                  if (trackId === this.state.openTrackId) {
+                    this.setState({ open: !this.state.open });
+                  } else {
+                    this.setState({ open: true, openTrackId: trackId });
+                  }
+                }}
+                track={track}
+                playTrack={() => playTrack(track, collection)}
+                showDivider={this.showDivider(track)}
+                hasMix={hasMix}
+              />
+            </div>
+          )))}
       </div>
     );
   }
