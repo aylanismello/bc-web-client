@@ -307,7 +307,13 @@ class App extends Component {
   }
 
   setPlayingCollectionNum(playingCollectionNum) {
-    this.setState({ playingCollectionNum });
+    this.setState({ playingCollectionNum }, () => {
+      if (this.playingCollectionHasMix()) {
+        window.isPlayingCuratedCollection = true;
+      } else {
+        window.isPlayingCuratedCollection = false;
+      }
+    });
   }
 
   setError(error) {
@@ -578,6 +584,16 @@ class App extends Component {
       this.state.openCollection.idx
     ];
     return openCollection && openCollection.collection_type === 0;
+  }
+
+  playingCollectionHasMix() {
+    const { collections, playingCollectionNum } = this.state;
+
+    const playingCollection =
+      collections &&
+      collections.filter(collection => collection.collection_num === playingCollectionNum)[0];
+
+    return playingCollection && playingCollection.collection_type === 0;
   }
 
   toggleRepeat() {

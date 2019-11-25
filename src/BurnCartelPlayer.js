@@ -132,6 +132,16 @@ class BurnCartelPlayer {
   }
 
   goToNextTrack() {
+    // here we run a check if we're coming from a mix or not
+    if (window.isPlayingCuratedCollection) {
+      this.goToNextCollection();
+      console.log('GO TO NEXT EPISODE');
+      return;
+    }
+     
+    console.log('GO TO NEXT TRACK');
+    
+    
     this.trackIdx++;
     if (this.trackIdx < this.collection.tracks.length) {
       const nextTrack = this.collection.tracks[this.trackIdx];
@@ -146,9 +156,7 @@ class BurnCartelPlayer {
   }
 
   goToNextCollection() {
-    if (!this.collectionIdx) {
-      this.initCollectionIdx();
-    }
+    this.initCollectionIdx();
     this.collectionIdx++;
 
     if (this.collectionIdx < this.collections.length) {
