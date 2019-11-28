@@ -5,7 +5,7 @@ import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import up from './chevron-up.svg';
 import down from './chevron-down.svg';
-import BurnCartelPlayer from "../../BurnCartelPlayer";
+import BurnCartelPlayer from '../../BurnCartelPlayer';
 
 const Item = styled.div`
   display: flex;
@@ -204,6 +204,10 @@ const formatSourceLink = ({ permalink_url, streaming_platform }) => {
   );
 };
 
+const showTrackDetails = (open, active) => {
+  return open || active;
+};
+
 class BCWeeklyTrack extends React.Component {
   render() {
     const {
@@ -232,7 +236,7 @@ class BCWeeklyTrack extends React.Component {
         <div
           key={track.id}
           className="BCWeeklyTracklist-item-container"
-          style={{ paddingBottom: (active) ? '0px' : '' }}
+          style={{ paddingBottom: active ? '0px' : '' }}
           onClick={e => {
             if (
               e.target.classList &&
@@ -281,15 +285,16 @@ class BCWeeklyTrack extends React.Component {
                 {track.real_artist_name || track.artist_name}
               </div>
             </DetailsText>
-            <ExpandTrackBtn
-              toggleOpen={() => toggleOpen(track.id)}
-              open={open}
-            />
+            {active ? null : (
+              <ExpandTrackBtn
+                toggleOpen={() => toggleOpen(track.id)}
+                open={open}
+              />
+            )}
           </Item>
         </div>
-       
 
-        {open && (
+        {showTrackDetails(open, active) && (
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               {timePlayed(track)}
@@ -301,8 +306,8 @@ class BCWeeklyTrack extends React.Component {
           </Item>
         )}
 
-         {active && (
-          <Item style={(getStyleBottom(active))}>
+        {active && (
+          <Item style={getStyleBottom(active)}>
             <PlayingText>CURRENTLY PLAYING</PlayingText>
           </Item>
         )}
