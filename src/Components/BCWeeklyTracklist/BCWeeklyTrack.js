@@ -5,6 +5,7 @@ import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import up from './chevron-up.svg';
 import down from './chevron-down.svg';
+import BurnCartelPlayer from "../../BurnCartelPlayer";
 
 const Item = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ const ExpandTrackBtnStyle = styled.img`
 
 const ExpandTrackDetails = styled.div`
   color: #626970;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-left: 65px;
 
   .ExpandTrackDetail:not(:last-child) {
@@ -168,6 +169,18 @@ const releaseDate = track => {
   return (
     <div className="ExpandTrackDetail">
       Released: {formatReleaseDate(track)}
+    </div>
+  );
+};
+
+const timePlayed = track => {
+  const { time_code } = track;
+  if (time_code !== 0 && !time_code) {
+    return null;
+  }
+  return (
+    <div className="ExpandTrackDetail">
+      Played at: {BurnCartelPlayer.timeFormat(time_code)}
     </div>
   );
 };
@@ -279,10 +292,10 @@ class BCWeeklyTrack extends React.Component {
         {open && (
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
+              {timePlayed(track)}
               <div className="ExpandTrackDetail">
                 Source: {formatSourceLink(track)}
               </div>
-
               {releaseDate(track)}
             </ExpandTrackDetails>
           </Item>

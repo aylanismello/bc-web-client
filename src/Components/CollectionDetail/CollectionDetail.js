@@ -10,6 +10,12 @@ import BCProgressiveImage from '../BCProgressiveImage';
 import './CollectionDetail.scss';
 import { getWeeklyItemTexts } from '../../helpers';
 
+const Divider = styled.div`
+  width: auto;
+  border: solid 1px #262632;
+  margin: 1.5rem 0 1.5rem 0;
+`;
+
 const Tracklist = styled.div`
   font-weight: normal;
   color: #dcdcdc;
@@ -200,12 +206,7 @@ class CollectionDetail extends React.Component {
                   ? {
                       marginLeft: '20px'
                     }
-                  : {
-                      // position: 'absolute',
-                      // top: '50%',
-                      // left: '30%',
-                      // transform: 'translate(-50%, -50%)'
-                    }
+                  : {}
               }
             >
               <BCLogo infoText={`[${texts[0]}]`} />
@@ -249,6 +250,13 @@ class CollectionDetail extends React.Component {
             <div className="CollectionDetail-description">
               {collection.description}
             </div>
+
+            {/* <Divider />
+            <div className="CollectionDetail-description">
+              <h3>
+                Tracklist
+              </h3>
+            </div> */}
             {/* <div className="CollectionDetail-cover-art-info CollectionDetail-description ">
               <span className="before-handle">Cover Art by: </span>
               <span className="CollectionDetail-cover-art-handle">

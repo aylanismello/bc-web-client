@@ -43,7 +43,6 @@ class BCWeeklyTracklist extends React.Component {
 
     return (
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
-        {/* tracklists.map?? */}
         {tracklists.map(tracklist =>
           tracklist.tracks.map((track, idx) => (
             <div>
