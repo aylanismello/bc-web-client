@@ -90,7 +90,7 @@ export default ({
           selected={collectionTypeSelected === 0}
         >
           {' '}
-          Curated{' '}
+          Radio{' '}
         </CollectionTab>
         <CollectionTab
           onClick={() => {
