@@ -162,6 +162,10 @@ class App extends Component {
     ) {
       window.logEvent('INIT_PAGE_COLLECTIONS_LOADED');
     }
+
+    if (this.state.track.id !== nextState.track.id && nextState.track.track_num !== 1) {
+      this.scrollToTrack(nextState.track.id);
+    }
   }
 
   logNewError(newError) {
@@ -504,6 +508,19 @@ class App extends Component {
       });
   }
 
+  scrollToTrack(id) {
+    const sideBar = document.getElementsByClassName('bm-menu')[0];
+    const tappedTrack = document.getElementById(id);
+
+    if (sideBar && tappedTrack) {
+      tappedTrack.scrollIntoView({ behavior: 'smooth', block: 'center'});
+    }
+  }
+
+  // THIS ONLY HAPPENS ON THE HOME PAGE WHEN CLOSING A COLLECTION TO REMEMBER WHERE THE USER
+  // WAS.
+
+  // IT WILL BE THE SAME LOGIC FOR TRACKS
   scrollToCollection() {
     const { tappedCollectionID } = window;
     const tappedElement = document.getElementById(tappedCollectionID);

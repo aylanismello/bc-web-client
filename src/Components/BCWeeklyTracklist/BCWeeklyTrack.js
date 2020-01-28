@@ -224,7 +224,7 @@ class BCWeeklyTrack extends React.Component {
     } = this.props;
 
     return (
-      <div key={track.id}>
+      <div key={track.id} id={track.id}>
         {/* {showDivider && <Divider />}
         {track.track_number === 0 && hasMix && (
           <HeaderText>This Week's Mix</HeaderText>
@@ -278,7 +278,7 @@ class BCWeeklyTrack extends React.Component {
               />
             </ImageContainer>
             <DetailsText className="DetailsText">
-              <Title open={open || active} className="TrackTitle" id={track.id}>
+              <Title open={open || active} className="TrackTitle">
                 {track.name}
               </Title>
               <div className="BCWeeklyTracklist-artist BCWeeklyTracklist-track-info">

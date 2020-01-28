@@ -33,6 +33,12 @@ const CollectionTabStyle = styled.div`
 
 const CollectionTabText = styled.div`
   padding: 5px 5px 5px 0;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: safe;
+  justify-content: space-between;
+  width: 68px;
 
   &:hover {
     cursor: pointer;
@@ -60,13 +66,25 @@ const CollectionTabNotify = styled.div`
   background-color: #f34b4b;
 `;
 
+const CollectionTabIcon = ({ idx }) => {
+  switch (idx) {
+    case 0:
+      return <span>📻</span>;
+    case 1:
+      return <span>📈</span>;
+    default:
+      return <span />;
+  }
+};
+
 const CollectionTab = ({
- children, selected, onClick, isNew 
+ children, selected, onClick, isNew, idx
 }) => (
   <CollectionTabStyle selected={selected}>
     <CollectionTabNotify show={isNew} className="CollectionTabNotify" />
     <CollectionTabText onClick={onClick} className="CollectionTabText">
-      {children}
+      <CollectionTabIcon idx={idx} />
+      <span>{children}</span>
     </CollectionTabText>
     <CollectionTabLineHighlight
       selected={selected}
@@ -88,9 +106,10 @@ export default ({
         <CollectionTab
           onClick={() => selectCollectionType(0)}
           selected={collectionTypeSelected === 0}
+          idx={0}
         >
           {' '}
-          📻 Radio{' '}
+          Radio{' '}
         </CollectionTab>
         <CollectionTab
           onClick={() => {
@@ -99,9 +118,9 @@ export default ({
           }}
           selected={collectionTypeSelected === 1}
           isNew={!newFeatureClicked}
+          idx={1}
         >
           {' '}
-          📈
           Rising{' '}
         </CollectionTab>
       </CollectionTabsStyle>
