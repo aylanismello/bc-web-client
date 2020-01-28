@@ -46,7 +46,7 @@ const CollectionTabLineHighlight = styled.div`
   height: ${tabLineHeight};
   background: #6255ff;
   position: absolute;
-  top: ${`${tabLineMargin + 33}px`};
+  top: ${`${tabLineMargin + 36}px`};
 `;
 
 const CollectionTabNotify = styled.div`
@@ -90,7 +90,7 @@ export default ({
           selected={collectionTypeSelected === 0}
         >
           {' '}
-          Radio{' '}
+          📻 Radio{' '}
         </CollectionTab>
         <CollectionTab
           onClick={() => {
@@ -101,6 +101,7 @@ export default ({
           isNew={!newFeatureClicked}
         >
           {' '}
+          📈
           Rising{' '}
         </CollectionTab>
       </CollectionTabsStyle>
