@@ -163,7 +163,17 @@ class App extends Component {
       window.logEvent('INIT_PAGE_COLLECTIONS_LOADED');
     }
 
-    if (this.state.track.id !== nextState.track.id && nextState.track.track_num !== 1) {
+    if (
+      this.state.track.id !== nextState.track.id &&
+      nextState.track.track_number !== 0
+    ) {
+
+      const cannotScrollToFirstTrack =
+        !this.state.isMobile && this.state.track.track_number === 0 && nextState.track.track_number === 1;
+        
+      if (cannotScrollToFirstTrack) {
+        return;
+      }
       this.scrollToTrack(nextState.track.id);
     }
   }
@@ -512,8 +522,9 @@ class App extends Component {
     const sideBar = document.getElementsByClassName('bm-menu')[0];
     const tappedTrack = document.getElementById(id);
 
-    if (sideBar && tappedTrack) {
-      tappedTrack.scrollIntoView({ behavior: 'smooth', block: 'center'});
+    // if ((sideBar || this.state.isMobile) && tappedTrack) {
+    if (tappedTrack) {
+      tappedTrack.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 
