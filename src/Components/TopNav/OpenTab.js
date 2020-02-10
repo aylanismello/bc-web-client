@@ -11,6 +11,7 @@ const OpenTabContainer = styled.div`
   justify-content: center;
   position: fixed;
   left: 0;
+  top: 20px;
 
   &:hover {
     cursor: pointer;

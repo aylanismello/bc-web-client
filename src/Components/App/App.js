@@ -7,6 +7,7 @@ import createHashHistory from 'history/createHashHistory';
 // import ReactGA from 'react-ga';
 import withSizes from 'react-sizes';
 import * as Sentry from '@sentry/browser';
+import { auth, provider } from '../../firebase';
 
 import { baseUrl } from '../../config';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
@@ -72,6 +73,8 @@ class App extends Component {
     this.setInitialCollections = this.setInitialCollections.bind(this);
     this.toggleFromCollectionDetail = this.toggleFromCollectionDetail.bind(this);
     this.playingCollection = this.playingCollection.bind(this);
+    this.logout = this.logout.bind(this);
+    this.login = this.login.bind(this);
     this.burnCartelPlayer = new BurnCartelPlayer(
       track => this.setTrack(track),
       play => this.setPlaying(play),
@@ -94,6 +97,12 @@ class App extends Component {
 
   componentDidMount() {
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/transitionend_event
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+      }
+    });
+
     document
       .getElementById('page-wrap')
       .addEventListener('transitionend', () => {
@@ -104,6 +113,8 @@ class App extends Component {
   }
 
   state = Object.freeze({
+    user: null,
+    username: '',
     track: {},
     collections: [],
     currentTime: {
@@ -167,10 +178,11 @@ class App extends Component {
       this.state.track.id !== nextState.track.id &&
       nextState.track.track_number !== 0
     ) {
-
       const cannotScrollToFirstTrack =
-        !this.state.isMobile && this.state.track.track_number === 0 && nextState.track.track_number === 1;
-        
+        !this.state.isMobile &&
+        this.state.track.track_number === 0 &&
+        nextState.track.track_number === 1;
+
       if (cannotScrollToFirstTrack) {
         return;
       }
@@ -719,11 +731,28 @@ class App extends Component {
     );
   }
 
+  login() {
+    auth.signInWithPopup(provider).then(result => {
+      const user = result.user;
+      this.setState({ user });
+    });
+  }
+
+  logout() {
+    auth.signOut().then(() => {
+      this.setState({
+        user: null
+      });
+    });
+  }
+
   render() {
     const track = this.getCurrentTrack();
     // TODO:
     // what's the diff between current track and this.state.track?
-    const { playerOpen, playing, guests } = this.state;
+    const {
+ playerOpen, playing, guests, user
+} = this.state;
     // const { menuShouldBeFixed } = this.props;
     // const menuShouldBeFixed = true;
     // const menuWidth = menuShouldBeFixed ? '320px' : '30%';
@@ -800,15 +829,18 @@ class App extends Component {
               draggable
               pauseOnHover
             />
-            {this.state.pageReadyForFakeModal ||
-            this.state.sideMenuOpen ? null : (
-              <TopNav
-                isMobile={this.state.isMobile}
-                forceReopenCollectionDetail={() =>
-                  this.forceReopenCollectionDetail()
-                }
-              />
-            )}
+            <TopNav
+              hideLogo={
+                this.state.pageReadyForFakeModal || this.state.sideMenuOpen
+              }
+              user={user}
+              logout={() => this.logout()}
+              login={() => this.login()}
+              isMobile={this.state.isMobile}
+              forceReopenCollectionDetail={() =>
+                this.forceReopenCollectionDetail()
+              }
+            />
             <Route
               exact
               path="/"

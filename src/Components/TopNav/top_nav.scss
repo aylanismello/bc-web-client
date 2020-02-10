@@ -1,17 +1,22 @@
-@import '../../globals.scss';
+@import "../../globals.scss";
 
 .TopNav {
   display: flex;
-  justify-content: left;
+  justify-content: space-between;
   align-items: center;
-  height: 80px;
+  height: 40px;
+  padding: 20px 35px;
   position: absolute;
   z-index: 1;
   // margin: 15px 25px;
-  width: 100%;
+  width: 95%;
 
   @media (max-width: $phone-width) {
     // margin: 0;
     justify-content: center;
+  }
+
+  .TopNav-RightSide {
+    // margin-right: 100px;
   }
 }
