@@ -38,7 +38,7 @@ const CollectionTabText = styled.div`
   align-content: center;
   justify-content: safe;
   justify-content: space-between;
-  width: 68px;
+  width: 70px;
 
   &:hover {
     cursor: pointer;
@@ -48,7 +48,7 @@ const CollectionTabText = styled.div`
 const CollectionTabLineHighlight = styled.div`
   display: ${props => (props.selected ? 'block' : 'none')};
   border-radius: 20px;
-  width: 100%;
+  width: 110%;
   height: ${tabLineHeight};
   background: #6255ff;
   position: absolute;
@@ -69,7 +69,7 @@ const CollectionTabNotify = styled.div`
 const CollectionTabIcon = ({ idx }) => {
   switch (idx) {
     case 0:
-      return <span>📻</span>;
+      return <span>🔥</span>;
     case 1:
       return <span>📈</span>;
     default:
@@ -109,7 +109,7 @@ export default ({
           idx={0}
         >
           {' '}
-          Radio{' '}
+          Curated{' '}
         </CollectionTab>
         <CollectionTab
           onClick={() => {
