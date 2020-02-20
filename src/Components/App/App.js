@@ -163,14 +163,16 @@ class App extends Component {
       window.logEvent('INIT_PAGE_COLLECTIONS_LOADED');
     }
 
+    // FOLLOW TRACK AROUND AS EPISODE OR PLAYLIST PROGRESSES
     if (
       this.state.track.id !== nextState.track.id &&
       nextState.track.track_number !== 0
     ) {
-
       const cannotScrollToFirstTrack =
-        !this.state.isMobile && this.state.track.track_number === 0 && nextState.track.track_number === 1;
-        
+        !this.state.isMobile &&
+        this.state.track.track_number === 0 &&
+        nextState.track.track_number === 1;
+
       if (cannotScrollToFirstTrack) {
         return;
       }
@@ -382,10 +384,16 @@ class App extends Component {
 
   forceReopenCollectionDetail() {
     if (this.state.isMobile) {
-      this.setState({ pageReadyForFakeModal: true });
-      window.scrollTo(0, 0);
+      this.setState({ pageReadyForFakeModal: true }, () => {
+        // have to wait to possibly load
+        // bug where this doesn't work on first click on mobile
+        // since we're not force reopening - we're actually switching collections
+        this.scrollToTrack();
+      });
     } else {
-      this.setState({ sideMenuOpen: true });
+      this.setState({ sideMenuOpen: true }, () => {
+        this.scrollToTrack();
+      });
     }
   }
 
@@ -518,8 +526,8 @@ class App extends Component {
       });
   }
 
-  scrollToTrack(id) {
-    const sideBar = document.getElementsByClassName('bm-menu')[0];
+  scrollToTrack(id = this.state.track.id) {
+    // const sideBar = document.getElementsByClassName('bm-menu')[0];
     const tappedTrack = document.getElementById(id);
 
     // if ((sideBar || this.state.isMobile) && tappedTrack) {

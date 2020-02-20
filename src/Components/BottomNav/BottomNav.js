@@ -64,7 +64,8 @@ const BottomNav = ({
                 {track.name}
               </span>
               <span className="BottomNav-track-info-detail BottomNav-track-info-artist">
-                {track.artist_name}
+                {/* this logic is replicated, merge into helper function */}
+                {track.real_artist_name || track.artist_name}
               </span>
             </div>
           </div>
