@@ -2680,6 +2680,11 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.0.5, cosmiconfig@^5.0.6:
     js-yaml "^3.9.0"
     parse-json "^4.0.0"
 
+country-emoji@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/country-emoji/-/country-emoji-1.5.0.tgz#5140f82fea49ed7e5c65c6e336c5a7fb878f2a87"
+  integrity sha512-aLAFkrOR0mp1+Moi/G282smnAm3hybQOkhnu5e3NR1pj/LclN2qaJlcQ1zK0K6pQmRBdkddgVboeEa5UIU/Wcg==
+
 create-ecdh@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/create-ecdh/-/create-ecdh-4.0.0.tgz#888c723596cdf7612f6498233eebd7a35301737d"

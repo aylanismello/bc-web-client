@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
+import { flag } from 'country-emoji';
 import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import up from './chevron-up.svg';
@@ -60,6 +61,11 @@ const Title = styled.div`
   box-orient: vertical !important;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+
+const FlagEmoji = styled.span`
+  padding-left: 0.6rem;
+  font-size: 20px;
 `;
 
 const HeaderText = styled.span`
@@ -213,10 +219,10 @@ const showTrackDetails = (open, active) => {
 };
 
 const renderLocation = ({ artist_country, artist_city }) => {
-  if(!artist_country && !artist_city) {
+  if (!artist_country && !artist_city) {
     return null;
   }
-  
+
   let location = '';
   if (artist_city) location += artist_city;
 
@@ -227,8 +233,14 @@ const renderLocation = ({ artist_country, artist_city }) => {
   }
 
   return (
-    <div className="ExpandTrackDetail">
-      <span style={{ color: 'white' }}> {location}</span>
+    <div
+      className="ExpandTrackDetail"
+      style={{ display: 'flex', alignItems: 'center' }}
+    >
+      <span style={{ color: 'white' }}> {location} </span>
+      <FlagEmoji className="FlagEmoji">
+        {artist_country && flag(artist_country)}{' '}
+      </FlagEmoji>{' '}
     </div>
   );
 };
