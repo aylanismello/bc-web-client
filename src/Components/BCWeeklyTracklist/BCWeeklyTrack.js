@@ -95,7 +95,7 @@ const ExpandTrackDetails = styled.div`
   margin-left: 65px;
 
   .ExpandTrackDetail:not(:last-child) {
-    padding-bottom: 1rem;
+    padding-bottom: 0.8rem;
   }
 `;
 
@@ -163,13 +163,14 @@ const formatReleaseDate = ({ created_at_external }) => {
   }
 };
 
-const releaseDate = track => {
+const renderReleaseDate = track => {
   if (!track.created_at_external) {
     return null;
   }
   return (
     <div className="ExpandTrackDetail">
-      Released: {formatReleaseDate(track)}
+      Released:{' '}
+      <span style={{ color: 'white' }}> {formatReleaseDate(track)} </span>
     </div>
   );
 };
@@ -209,6 +210,27 @@ const formatSourceLink = ({ permalink_url, streaming_platform }) => {
 
 const showTrackDetails = (open, active) => {
   return open || active;
+};
+
+const renderLocation = ({ artist_country, artist_city }) => {
+  if(!artist_country && !artist_city) {
+    return null;
+  }
+  
+  let location = '';
+  if (artist_city) location += artist_city;
+
+  if (artist_country && location) {
+    location += `, ${artist_country}`;
+  } else if (artist_country) {
+    location = artist_country;
+  }
+
+  return (
+    <div className="ExpandTrackDetail">
+      <span style={{ color: 'white' }}> {location}</span>
+    </div>
+  );
 };
 
 class BCWeeklyTrack extends React.Component {
@@ -305,10 +327,14 @@ class BCWeeklyTrack extends React.Component {
               <div className="ExpandTrackDetail">
                 Source: {formatSourceLink(track)}
               </div>
-              {releaseDate(track)}
+              {renderReleaseDate(track)}
+              {renderLocation(track)}
+
               <div className="ExpandTrackDetail">
                 <div className="Wrapperz" onClick={openModal}>
-                  <TextHighlight fontSize="1.4rem">why was this track chosen?</TextHighlight>
+                  <TextHighlight fontSize="1.4rem">
+                    why was this track chosen?
+                  </TextHighlight>
                 </div>
               </div>
             </ExpandTrackDetails>
