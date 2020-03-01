@@ -308,7 +308,7 @@ class BCWeeklyTrack extends React.Component {
               {releaseDate(track)}
               <div className="ExpandTrackDetail">
                 <div className="Wrapperz" onClick={openModal}>
-                  <TextHighlight>why was this track chosen?</TextHighlight>
+                  <TextHighlight fontSize="1.4rem">why was this track chosen?</TextHighlight>
                 </div>
               </div>
             </ExpandTrackDetails>
