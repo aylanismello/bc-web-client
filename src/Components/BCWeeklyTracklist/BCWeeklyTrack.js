@@ -5,6 +5,7 @@ import LoadingIcon from '../LoadingIcon';
 import EQIcon from '../EQIcon';
 import up from './chevron-up.svg';
 import down from './chevron-down.svg';
+import { TextHighlight } from '../MarakuyaComponents';
 import BurnCartelPlayer from '../../BurnCartelPlayer';
 
 const Item = styled.div`
@@ -198,9 +199,11 @@ const formatSourceLink = ({ permalink_url, streaming_platform }) => {
   }
 
   return (
-    <ExpandTrackLink href={permalink_url} target="_blank">
-      {linkText}
-    </ExpandTrackLink>
+    <TextHighlight href={permalink_url}> {linkText} </TextHighlight>
+
+    // <ExpandTrackLink href={permalink_url} target="_blank">
+    //   {linkText}
+    // </ExpandTrackLink>
   );
 };
 
@@ -305,7 +308,7 @@ class BCWeeklyTrack extends React.Component {
               {releaseDate(track)}
               <div className="ExpandTrackDetail">
                 <div className="Wrapperz" onClick={openModal}>
-                  <ExpandTrackLink>why was this track chosen</ExpandTrackLink>
+                  <TextHighlight>why was this track chosen?</TextHighlight>
                 </div>
               </div>
             </ExpandTrackDetails>

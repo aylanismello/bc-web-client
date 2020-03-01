@@ -71,6 +71,7 @@ class App extends Component {
     super(props);
     this.setInitialCollections = this.setInitialCollections.bind(this);
     this.toggleFromCollectionDetail = this.toggleFromCollectionDetail.bind(this);
+    this.handleOpenWhyTrackChosenModal = this.handleOpenWhyTrackChosenModal.bind(this);
     this.playingCollection = this.playingCollection.bind(this);
     this.burnCartelPlayer = new BurnCartelPlayer(
       track => this.setTrack(track),
@@ -131,6 +132,7 @@ class App extends Component {
     modalOpen: false,
     modalEpisode: undefined,
     modalDJ: undefined,
+    modalTrack: {},
     // didCopy: false,
     collectionNum: null,
     copiedEpisodeNum: null,
@@ -138,6 +140,7 @@ class App extends Component {
     loading: {
       collections: true,
       track: false,
+      modalTrack: false,
       // set to false initally because the API sends you back your first tracks in the /collections endpoint!
       collectionTracks: false
     },
@@ -452,6 +455,24 @@ class App extends Component {
     }
   }
 
+  // assings to modalTrack
+  fetchTrack(id) {
+    axios
+      .get(`${baseUrl}/tracks/${id}`)
+      .then(({ data }) => {
+        const { data: track } = data;
+        const newLoading = { modalTrack: false };
+
+        this.setState({
+          modalTrack: track.track,
+          loading: { ...this.state.loading, ...newLoading }
+        });
+      })
+      .catch(error => {
+        this.setError(error.message);
+      });
+  }
+
   fetchGuests(tracks, collection) {
     // only get guests if we are dealing with curated collections
     if (collection.collection_type !== 0) return;
@@ -729,14 +750,30 @@ class App extends Component {
     );
   }
 
-  handleOpenWhyTrackChosenModal(dj, episodeNum) {
+  handleOpenWhyTrackChosenModal(dj, episodeNum, trackId) {
     // in the event that this is from rising or elsewhere, we'll have to hit the API.
     // and write that endpoint.
     this.setState({
       modalOpen: true,
-      modalDJ: (dj && dj.name),
-      modalEpisode: episodeNum
+      modalDJ: undefined,
+      modalTrack: {},
+      modalEpisode: undefined
     });
+    
+    if (dj) {
+      this.setState({
+        modalDJ: dj && dj.name,
+        modalEpisode: episodeNum
+      });
+    } else {
+      // debugger;
+      const newLoading = { modalTrack: true };
+      this.setState({
+        modalOpen: true,
+        loading: { ...this.state.loading, ...newLoading }
+      });
+      this.fetchTrack(trackId);
+    }
   }
 
   render() {
@@ -759,6 +796,8 @@ class App extends Component {
           id="outer-container"
         >
           <BCModal
+            loading={this.state.loading.modalTrack}
+            track={this.state.modalTrack}
             modalOpen={this.state.modalOpen}
             episode={this.state.modalEpisode}
             dj={this.state.modalDJ}
@@ -777,9 +816,7 @@ class App extends Component {
                 setEpisodeTrack={episodeTrack =>
                   this.setEpisodeTrack(episodeTrack)
                 }
-                openModal={(dj, episodeNum) =>
-                  this.handleOpenWhyTrackChosenModal(dj, episodeNum)
-                }
+                openModal={this.handleOpenWhyTrackChosenModal}
                 playingCollection={this.playingCollection()}
                 togglePlay={this.toggleFromCollectionDetail}
                 collectionNum={this.state.openCollection.num}
@@ -897,9 +934,7 @@ class App extends Component {
                   playTrack={(playingTrack, collection) =>
                     this.playTrack(playingTrack, collection)
                   }
-                  openModal={(dj, episodeNum) =>
-                    this.handleOpenWhyTrackChosenModal(dj, episodeNum)
-                  }
+                  openModal={this.handleOpenWhyTrackChosenModal}
                   burnCartelPlayer={this.burnCartelPlayer}
                   playing={this.state.playing}
                   playingCollection={this.playingCollection()}

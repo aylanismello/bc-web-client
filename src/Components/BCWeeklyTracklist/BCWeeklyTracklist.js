@@ -64,7 +64,7 @@ class BCWeeklyTracklist extends React.Component {
                     this.setState({ open: true, openTrackId: trackId });
                   }
                 }}
-                openModal={() => openModal(tracklist.guest, collection.collection_num)}
+                openModal={() => openModal(tracklist.guest, collection.collection_num, track.id)}
                 track={track}
                 playTrack={() => playTrack(track, collection)}
                 showDivider={this.showDivider(track)}
