@@ -73,6 +73,7 @@ class CollectionDetail extends React.Component {
   render() {
     const {
       collectionNum,
+      openModal,
       activeTrack,
       playTrack,
       collection,
@@ -271,6 +272,7 @@ class CollectionDetail extends React.Component {
                 <BCWeeklyTracklist
                   setEpisodeTrack={setEpisodeTrack}
                   idx={idx}
+                  openModal={openModal}
                   hasMix={hasMix}
                   trackLoading={trackLoading}
                   playing={playingCollection}

@@ -13,7 +13,7 @@ import BurnCartelPlayer from '../../BurnCartelPlayer';
 import SideMenu from '../SideMenu';
 import TopNav from '../TopNav';
 import CollectionDetail from '../CollectionDetail';
-// import ShareModal from '../ShareModal';
+import BCModal from '../BCModal';
 import BCHome from '../BCHome';
 import BottomNav from '../BottomNav';
 import Footer from '../Footer';
@@ -129,7 +129,9 @@ class App extends Component {
     isMobile: undefined,
     visualize: false,
     modalOpen: false,
-    didCopy: false,
+    modalEpisode: undefined,
+    modalDJ: undefined,
+    // didCopy: false,
     collectionNum: null,
     copiedEpisodeNum: null,
     showTracklist: false,
@@ -727,6 +729,16 @@ class App extends Component {
     );
   }
 
+  handleOpenWhyTrackChosenModal(dj, episodeNum) {
+    // in the event that this is from rising or elsewhere, we'll have to hit the API.
+    // and write that endpoint.
+    this.setState({
+      modalOpen: true,
+      modalDJ: (dj && dj.name),
+      modalEpisode: episodeNum
+    });
+  }
+
   render() {
     const track = this.getCurrentTrack();
     // TODO:
@@ -746,21 +758,12 @@ class App extends Component {
           className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}
           id="outer-container"
         >
-          {/* <Responsive minDeviceWidth={768}>
-            <ShareModal
-              modalOpen={this.state.modalOpen}
-              copiedEpisodeNum={this.state.copiedEpisodeNum}
-              closeModal={() =>
-                this.setState({ modalOpen: false, didCopy: false })
-              }
-              setDidCopy={() =>
-                this.setState({
-                  didCopy: true
-                })
-              }
-              didCopy={this.state.didCopy}
-            />
-          </Responsive> */}
+          <BCModal
+            modalOpen={this.state.modalOpen}
+            episode={this.state.modalEpisode}
+            dj={this.state.modalDJ}
+            closeModal={() => this.setState({ modalOpen: false })}
+          />
           <Responsive minDeviceWidth={768}>
             <SideMenu
               sideMenuOpen={this.state.sideMenuOpen}
@@ -773,6 +776,9 @@ class App extends Component {
                 guests={guests}
                 setEpisodeTrack={episodeTrack =>
                   this.setEpisodeTrack(episodeTrack)
+                }
+                openModal={(dj, episodeNum) =>
+                  this.handleOpenWhyTrackChosenModal(dj, episodeNum)
                 }
                 playingCollection={this.playingCollection()}
                 togglePlay={this.toggleFromCollectionDetail}
@@ -890,6 +896,9 @@ class App extends Component {
                   scrollToCollection={idx => this.scrollToCollection(idx)}
                   playTrack={(playingTrack, collection) =>
                     this.playTrack(playingTrack, collection)
+                  }
+                  openModal={(dj, episodeNum) =>
+                    this.handleOpenWhyTrackChosenModal(dj, episodeNum)
                   }
                   burnCartelPlayer={this.burnCartelPlayer}
                   playing={this.state.playing}

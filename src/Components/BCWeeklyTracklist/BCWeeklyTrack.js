@@ -220,7 +220,8 @@ class BCWeeklyTrack extends React.Component {
       hasMix,
       open,
       toggleOpen,
-      setEpisodeTrack
+      setEpisodeTrack,
+      openModal
     } = this.props;
 
     return (
@@ -302,6 +303,11 @@ class BCWeeklyTrack extends React.Component {
                 Source: {formatSourceLink(track)}
               </div>
               {releaseDate(track)}
+              <div className="ExpandTrackDetail">
+                <div className="Wrapperz" onClick={openModal}>
+                  <ExpandTrackLink>why was this track chosen</ExpandTrackLink>
+                </div>
+              </div>
             </ExpandTrackDetails>
           </Item>
         )}

@@ -36,10 +36,12 @@ class BCWeeklyTracklist extends React.Component {
       spotlight,
       hasMix,
       setEpisodeTrack,
-      tracklists
+      tracklists,
+      openModal
     } = this.props;
 
     // TODO: maybe treat this data and add xtra info so we can intelligently split into tracklists
+
 
     return (
       <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
@@ -62,6 +64,7 @@ class BCWeeklyTracklist extends React.Component {
                     this.setState({ open: true, openTrackId: trackId });
                   }
                 }}
+                openModal={() => openModal(tracklist.guest, collection.collection_num)}
                 track={track}
                 playTrack={() => playTrack(track, collection)}
                 showDivider={this.showDivider(track)}

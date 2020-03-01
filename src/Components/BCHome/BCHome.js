@@ -273,6 +273,7 @@ class BCHome extends React.Component {
                   togglePlay={() => this.props.togglePlay(true)}
                   collectionNum={this.props.collectionNum}
                   trackLoading={this.props.trackLoadingInCollectionDetail}
+                  openModal={this.props.openModal}
                   closeModal={this.props.closeModal}
                   collection={this.props.collection}
                   idx={this.props.idx}
