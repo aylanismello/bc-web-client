@@ -26,11 +26,6 @@ const DetailsText = styled.div`
   width: 185px;
 `;
 
-const ExpandTrackLink = styled.a`
-  color: #6255ff;
-  text-decoration: underline;
-`;
-
 const ImageContainer = styled.div`
   width: 50px;
   min-width: 50px;
@@ -66,6 +61,7 @@ const Title = styled.div`
 const FlagEmoji = styled.span`
   padding-left: 0.6rem;
   font-size: 20px;
+  margin: -5rem 0;
 `;
 
 const HeaderText = styled.span`
@@ -103,6 +99,10 @@ const ExpandTrackDetails = styled.div`
   .ExpandTrackDetail:not(:last-child) {
     padding-bottom: 0.8rem;
   }
+`;
+
+const ExpandTrackDetail = styled.div`
+  
 `;
 
 const ExpandTrackBtn = ({ open, toggleOpen }) => (
@@ -193,7 +193,7 @@ const timePlayed = track => {
   );
 };
 
-const formatSourceLink = ({ permalink_url, streaming_platform }) => {
+const renderSource = ({ permalink_url, streaming_platform }) => {
   let linkText;
   if (streaming_platform === 0) {
     linkText = 'SoundCloud';
@@ -206,11 +206,13 @@ const formatSourceLink = ({ permalink_url, streaming_platform }) => {
   }
 
   return (
-    <TextHighlight href={permalink_url}> {linkText} </TextHighlight>
-
-    // <ExpandTrackLink href={permalink_url} target="_blank">
-    //   {linkText}
-    // </ExpandTrackLink>
+    <div className="ExpandTrackDetail">
+      Source:{' '}
+      <TextHighlight href={permalink_url} icon="EXTERNAL_LINK">
+        {' '}
+        {linkText}{' '}
+      </TextHighlight>
+    </div>
   );
 };
 
@@ -235,7 +237,11 @@ const renderLocation = ({ artist_country, artist_city }) => {
   return (
     <div
       className="ExpandTrackDetail"
-      style={{ display: 'flex', alignItems: 'center' }}
+      hasFlag={artist_country}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center'
+      }}
     >
       <span style={{ color: 'white' }}> {location} </span>
       <FlagEmoji className="FlagEmoji">
@@ -336,16 +342,16 @@ class BCWeeklyTrack extends React.Component {
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               {timePlayed(track)}
-              <div className="ExpandTrackDetail">
-                Source: {formatSourceLink(track)}
-              </div>
+              {/* <div className="ExpandTrackDetail"> */}
+              {renderSource(track)}
+              {/* </div> */}
               {renderReleaseDate(track)}
               {renderLocation(track)}
 
               <div className="ExpandTrackDetail">
                 <div className="Wrapperz" onClick={openModal}>
-                  <TextHighlight fontSize="1.4rem">
-                    why was this track chosen?
+                  <TextHighlight fontSize="1.4rem" icon="QUESTION">
+                    why was this track chosen
                   </TextHighlight>
                 </div>
               </div>
