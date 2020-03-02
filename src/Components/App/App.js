@@ -762,7 +762,7 @@ class App extends Component {
     
     if (dj) {
       this.setState({
-        modalDJ: dj && dj.name,
+        modalDJ: dj,
         modalEpisode: episodeNum
       });
     } else {

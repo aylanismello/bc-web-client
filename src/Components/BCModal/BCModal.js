@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button } from '../MarakuyaComponents';
+import { Button, TextHighlight } from '../MarakuyaComponents';
 import './BCModal.scss';
 import LoadingIcon from '../LoadingIcon';
 
@@ -13,12 +13,6 @@ const CuratedWhyText = styled.div`
   /* padding: 0 0.6em 1em 0.6em; */
 `;
 
-const Highlight = styled.span`
-  color: #6255ff;
-  font-weight: 600;
-  font-size: ${props => (props.fontSize ? props.fontSize : "inherit")};
-`;
-
 const WhyExtraInfo = styled.div`
   min-height: 100px;
 `;
@@ -27,9 +21,12 @@ const CuratedWhy = ({ dj, episode }) => (
   <div className="BCModal-CuratedWhy">
     {dj && (
       <CuratedWhyText>
-        It was selected by
-        <Highlight> {dj} </Highlight> on episode {episode} of Burn Cartel
-        Curated.
+        It was selected by{' '}
+        <TextHighlight bold underline href={dj.permalink_url}>
+          {' '}
+          {dj.name}{' '}
+        </TextHighlight>{' '}
+        on episode {episode} of Burn Cartel Curated.
       </CuratedWhyText>
     )}
   </div>
@@ -45,9 +42,19 @@ const RisingWhy = ({ curators, loading }) => (
         <LoadingIcon width={35} />
       ) : (
         <div className="Curators-list">
-          {curators.map(curator => (
-            <Highlight fontSize="1.4rem">{curator.name}</Highlight>
-          ))}
+          
+          {curators.map(curator => {
+            return (
+            <TextHighlight
+              underline
+              href={curator.permalink_url}
+              fontSize="1.4rem"
+              bold
+              id={curator.id}
+            >
+              {curator.name}
+            </TextHighlight>
+          )})}
         </div>
       )}
     </WhyExtraInfo>

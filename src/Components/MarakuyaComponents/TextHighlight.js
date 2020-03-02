@@ -6,10 +6,10 @@ import question from './assets/question.svg';
 const TextHighlight = styled.a`
   color: #6255ff;
   display: inline-flex;
-  font-weight: ${props => (props.bold ? 'bold' : 'normal')};
+  font-weight: ${props => (props.bold ? '600' : 'inherit')};
   font-family: "sofia-pro", sans-serif;
-  text-decoration: none;
-  font-size: ${props => (props.fontSize ? props.fontSize : '1.2rem')};
+  text-decoration: ${props => (props.underline ? 'underline' : 'none')};
+  font-size: ${props => (props.fontSize ? props.fontSize : 'inherit')};
   display: inline-flex;
 
   &:hover {
@@ -28,14 +28,21 @@ const icons = {
 };
 
 export default ({
- children, href, bold, fontSize, icon
+ children, href, bold, fontSize, icon, underline, id
 }) => {
   const iconSrc = icons[icon];
 
   return (
-      <TextHighlight target="_blank" href={href} bold={bold} fontSize={fontSize}>
-        {children}
-        {iconSrc && <Icon className="Icon" src={iconSrc} />}
-      </TextHighlight>
+    <TextHighlight
+      target="_blank"
+      href={href}
+      bold={bold}
+      underline={underline}
+      fontSize={fontSize}
+      id={id}
+    >
+      {children}
+      {iconSrc && <Icon className="Icon" src={iconSrc} />}
+    </TextHighlight>
   );
 };
