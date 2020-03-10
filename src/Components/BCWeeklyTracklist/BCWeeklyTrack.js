@@ -101,9 +101,7 @@ const ExpandTrackDetails = styled.div`
   }
 `;
 
-const ExpandTrackDetail = styled.div`
-  
-`;
+const ExpandTrackDetail = styled.div``;
 
 const ExpandTrackBtn = ({ open, toggleOpen }) => (
   <ExpandTrackBtnStyle
@@ -201,6 +199,8 @@ const renderSource = ({ permalink_url, streaming_platform }) => {
     linkText = 'YouTube';
   } else if (streaming_platform === 2) {
     linkText = 'Bandcamp';
+  } else if (streaming_platform === 3) {
+    linkText = 'Spotify';
   } else {
     linkText = 'unknown';
   }
