@@ -28,7 +28,7 @@ class BurnCartelPlayer {
     setPlayingCollectionNum,
     setEpisodeTrack
   ) {
-    this.sc = new SoundCloudAudio('caf73ef1e709f839664ab82bef40fa96');
+    this.sc = new SoundCloudAudio('75cc654872dfaced4ebfa68148c9981c');
     // for debugging purposes
     window.sc = this.sc;
     this.setActiveTrack = setActiveTrack;
