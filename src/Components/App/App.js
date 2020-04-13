@@ -251,6 +251,8 @@ class App extends Component {
 
   setTrack(track) {
     this.setState({ track, playButtonHasBeenPressed: true }, () => {
+      const formattedTitle = `${track.name} by ${track.artist_name} | Curated by Burn Cartel`;
+      document.title = formattedTitle;
       this.updateTrackPlay(track.id);
     });
   }
