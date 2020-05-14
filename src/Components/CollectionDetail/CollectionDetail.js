@@ -228,14 +228,14 @@ class CollectionDetail extends React.Component {
                 {collection.description}
               </div>}
 
-            {hasMix && <ExternalCuratedSourcesContainer>
+            {/* {hasMix && <ExternalCuratedSourcesContainer>
                 <div>also on:</div>
                 <IconContainer>
                   <a href={tracks[0].permalink_url} target="_blank">
                     <IconImage src="https://res.cloudinary.com/burncartel/image/upload/e_grayscale/v1589415562/soundcloud_icon_3.webp" />
                   </a>
                 </IconContainer>
-              </ExternalCuratedSourcesContainer>}
+              </ExternalCuratedSourcesContainer>} */}
 
             {/* <Divider />
             <div className="CollectionDetail-description">
