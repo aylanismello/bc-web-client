@@ -1,7 +1,7 @@
-{
+module.exports = {
   // I want to use babel-eslint for parsing!
-  "parser": "babel-eslint",
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "env": {
     // I write for browser
     "browser": true,
@@ -45,11 +45,11 @@
     "one-var": 0,
     "comma-dangle": ["error", "never"],
     "indent": 0,
-    # "indent": ["error", "tab", { "SwitchCase": 1 }],
     "react/jsx-indent": [0, 'tab'],
     "react/prefer-stateless-function": 0,
     "import/no-extraneous-dependencies": 0,
     "no-underscore-dangle": 0,
     "react/prop-types": [0]
   }
-}
+
+};
