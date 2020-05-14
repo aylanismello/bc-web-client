@@ -167,6 +167,8 @@ class BCHome extends React.Component {
     if (!showList) style = { ...style, display: 'none' };
 
     const showPagination = this.state.page[type] < collections.length;
+    // WHERE THE PAGINATION HAPPENENS
+    
     const paginatedCollections = collections.slice(0, this.state.page[type]);
 
     const headerText = getWeeklyItemTexts({ collection_type: type })[1];
