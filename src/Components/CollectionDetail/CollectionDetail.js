@@ -1,6 +1,9 @@
 import React from "react";
 import copy from "copy-to-clipboard";
 import styled from "styled-components";
+import { Icon } from "@iconify/react";
+import soundcloudIcon from "@iconify/icons-entypo-social/soundcloud";
+
 import PlayButton from "../PlayButton";
 import closeIcon from "./i-remove.svg";
 import chevronIcon from "./ic_chevron.svg";
@@ -35,16 +38,10 @@ const IconImage = styled.img`
 `;
 
 const ExternalCuratedSourcesContainer = styled.div`
-  ${({ theme: { mixins } }) => mixins.text};
-  font-size: 1.5rem;
-  justify-content: center;
   display: flex;
-  align-items: center;
-  flex-direction: column;
 `;
 
 const IconContainer = styled.div`
-  width: 40px;
   &:hover {
     cursor: pointer;
   }
@@ -193,49 +190,98 @@ class CollectionDetail extends React.Component {
       tracklists = [{ tracks }];
     }
 
-    return <div className="CollectionDetail" style={style} onClick={(e) => {
+    return (
+      <div
+        className="CollectionDetail"
+        style={style}
+        onClick={(e) => {
           if (e.target.className === "CollectionDetail") this.closeModal();
-        }}>
-        <div className="CollectionDetail-content" style={isSideMenu ? { paddingBottom: "10rem" } : {}}>
+        }}
+      >
+        <div
+          className="CollectionDetail-content"
+          style={isSideMenu ? { paddingBottom: "10rem" } : {}}
+        >
           <div className="CollectionDetail-content-top" style={contentTop}>
-            <div className="CollectionDetail-close-icon-container" onClick={() => this.closeModal()} style={isSideMenu ? { marginRight: "2.5rem" } : { right: "0", top: "50%", transform: "translate(-50%, -50%)" }}>
-              <img src={isSideMenu ? chevronIcon : closeIcon} alt="CloseIcon" className="CollectionDetail-close-icon" />
+            <div
+              className="CollectionDetail-close-icon-container"
+              onClick={() => this.closeModal()}
+              style={
+                isSideMenu
+                  ? { marginRight: "2.5rem" }
+                  : {
+                      right: "0",
+                      top: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }
+              }
+            >
+              <img
+                src={isSideMenu ? chevronIcon : closeIcon}
+                alt="CloseIcon"
+                className="CollectionDetail-close-icon"
+              />
             </div>
-            <div className="CollectionDetail-content-header" style={isSideMenu ? { marginLeft: "20px" } : {}}>
+            <div
+              className="CollectionDetail-content-header"
+              style={isSideMenu ? { marginLeft: "20px" } : {}}
+            >
               <BCLogo infoText={`[${texts[0]}]`} />
             </div>
           </div>
 
-          <div className="CollectionDetail-content-middle" style={contentMiddle}>
+          <div
+            className="CollectionDetail-content-middle"
+            style={contentMiddle}
+          >
+            <div className="CollectionDetail-image-container">
+              <BCProgressiveImage
+                isCollectionItem
+                isVisible={show}
+                artwork_url={collection.artwork_url}
+                max_width={600}
+              />
+              <div className="CollectionDetail-play-button-container">
+                <PlayButton
+                  playing={playingCollection}
+                  togglePlay={togglePlay}
+                  loading={trackLoading}
+                  width={60}
+                />
+              </div>
+            </div>
+
             <div className="CollectionDetail-cover-text">
               <span className="CollectionDetail-cover-text-header">
                 {texts[0]}
               </span>
               <div className="CollectionDetail-line" />
-              <span className="CollectionDetail-cover-text-subheader">
-                {texts[1]}
-              </span>
-            </div>
-            <div className="CollectionDetail-image-container">
-              <BCProgressiveImage isCollectionItem isVisible={show} artwork_url={collection.artwork_url} max_width={600} />
-              <div className="CollectionDetail-play-button-container">
-                <PlayButton playing={playingCollection} togglePlay={togglePlay} loading={trackLoading} width={60} />
-              </div>
+
+              {hasMix ? (
+                <ExternalCuratedSourcesContainer>
+                  <IconContainer>
+                    <a href={tracks[0].permalink_url} target="_blank">
+                      <Icon icon={soundcloudIcon} color="#6255FF" fontSize="35px" />
+                    </a>
+                  </IconContainer>
+                </ExternalCuratedSourcesContainer>
+              ) : (
+                <span className="CollectionDetail-cover-text-subheader">
+                  {texts[1]}
+                </span>
+              )}
             </div>
           </div>
-          <div className="CollectionDetail-content-bottom" style={contentBottom}>
-            {collection.description && <div className="CollectionDetail-description">
-                {collection.description}
-              </div>}
 
-            {/* {hasMix && <ExternalCuratedSourcesContainer>
-                <div>also on:</div>
-                <IconContainer>
-                  <a href={tracks[0].permalink_url} target="_blank">
-                    <IconImage src="https://res.cloudinary.com/burncartel/image/upload/e_grayscale/v1589415562/soundcloud_icon_3.webp" />
-                  </a>
-                </IconContainer>
-              </ExternalCuratedSourcesContainer>} */}
+          <div
+            className="CollectionDetail-content-bottom"
+            style={contentBottom}
+          >
+            {collection.description && (
+              <div className="CollectionDetail-description">
+                {collection.description}
+              </div>
+            )}
 
             {/* <Divider />
             <div className="CollectionDetail-description">
@@ -252,23 +298,43 @@ class CollectionDetail extends React.Component {
               </span>
             </div> */}
 
-            {!loadingCollectionTracks && <div>
-                <BCWeeklyTracklist setEpisodeTrack={setEpisodeTrack} idx={idx} openModal={openModal} hasMix={hasMix} trackLoading={trackLoading} playing={playingCollection} tracks={collection.tracks} tracklists={tracklists} activeTrack={activeTrack} playTrack={playTrack} collection={collection} />
-              </div>}
+            {!loadingCollectionTracks && (
+              <div>
+                <BCWeeklyTracklist
+                  setEpisodeTrack={setEpisodeTrack}
+                  idx={idx}
+                  openModal={openModal}
+                  hasMix={hasMix}
+                  trackLoading={trackLoading}
+                  playing={playingCollection}
+                  tracks={collection.tracks}
+                  tracklists={tracklists}
+                  activeTrack={activeTrack}
+                  playTrack={playTrack}
+                  collection={collection}
+                />
+              </div>
+            )}
             {hasMix && tracks && this.renderTracklistOptions()}
             <div className="CollectionDetail-copy">
-              <span style={this.state.clickedCopy ? {} : { textDecoration: "underline" }} onClick={() => {
+              <span
+                style={
+                  this.state.clickedCopy ? {} : { textDecoration: "underline" }
+                }
+                onClick={() => {
                   if (!this.state.clickedCopy) {
                     copy(url);
                     this.setState({ clickedCopy: true });
                   }
-                }}>
+                }}
+              >
                 {this.state.clickedCopy ? "Link copied!" : "Copy playlist link"}
               </span>
             </div>
           </div>
         </div>
-      </div>;
+      </div>
+    );
   }
 }
 
