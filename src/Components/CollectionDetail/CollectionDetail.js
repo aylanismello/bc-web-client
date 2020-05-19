@@ -150,7 +150,7 @@ class CollectionDetail extends React.Component {
       ? { padding: "0 3rem", marginTop: "10rem" }
       : { padding: "0 1rem 0 1rem", marginTop: "10rem" };
     const contentBottom = isSideMenu
-      ? { padding: "0 3rem 2rem 3rem " }
+      ? { padding: "2rem 3rem" }
       : { paddingBottom: "16px" };
 
     const texts = getWeeklyItemTexts(collection);
