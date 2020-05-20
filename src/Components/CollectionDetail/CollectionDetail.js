@@ -145,7 +145,9 @@ class CollectionDetail extends React.Component {
           padding: "1.5rem 1.2rem",
           display: "flex",
           // setting the width like this is a bit janky
-          width: "325px",
+          // width: "325px",
+          // WHAT UP - TO FIX SCROLLBAR
+          width: "326px",
         }
       : {
           ...contentTop,
