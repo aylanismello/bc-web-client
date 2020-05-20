@@ -161,7 +161,7 @@ class CollectionDetail extends React.Component {
       : { padding: "0 1rem 0 1rem", marginTop: "10rem" };
     const contentBottom = isSideMenu
       ? { padding: "2rem 3rem" }
-      : { padding: "1rem 0 16px 0"};
+      : { padding: "1rem 0 16px 0" };
 
     const texts = getWeeklyItemTexts(collection);
     const hasMix = collection.collection_type === 0;
@@ -261,7 +261,10 @@ class CollectionDetail extends React.Component {
               </div>
             </div>
 
-            <div className="CollectionDetail-cover-text">
+            <div
+              className="CollectionDetail-cover-text"
+              style={isSideMenu ? { paddingLeft: "2rem" } : {}}
+            >
               <span className="CollectionDetail-cover-text-header">
                 {texts[0]}
               </span>
