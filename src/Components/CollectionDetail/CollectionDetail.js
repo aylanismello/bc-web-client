@@ -19,6 +19,16 @@ const Divider = styled.div`
   margin: 1.5rem 0 1.5rem 0;
 `;
 
+const CollectionDetailDescription = styled.div`
+  /* color: $bc-white; */
+  /* @include bc-text(); */
+  ${({ theme: { mixins } }) =>
+    mixins.text} /* color: #dcdcdc; */
+  font-size: 1.1em;
+  line-height: 1.5;
+  padding: 2rem 1rem 0 1rem;
+`;
+
 const Tracklist = styled.div`
   font-weight: normal;
   color: #dcdcdc;
@@ -151,7 +161,7 @@ class CollectionDetail extends React.Component {
       : { padding: "0 1rem 0 1rem", marginTop: "10rem" };
     const contentBottom = isSideMenu
       ? { padding: "2rem 3rem" }
-      : { paddingBottom: "16px" };
+      : { padding: "1rem 0 16px 0"};
 
     const texts = getWeeklyItemTexts(collection);
     const hasMix = collection.collection_type === 0;
@@ -261,7 +271,11 @@ class CollectionDetail extends React.Component {
                 <ExternalCuratedSourcesContainer>
                   <IconContainer>
                     <a href={tracks[0].permalink_url} target="_blank">
-                      <Icon icon={soundcloudIcon} color="#6255FF" fontSize="35px" />
+                      <Icon
+                        icon={soundcloudIcon}
+                        color="#6255FF"
+                        fontSize="35px"
+                      />
                     </a>
                   </IconContainer>
                 </ExternalCuratedSourcesContainer>
@@ -271,18 +285,18 @@ class CollectionDetail extends React.Component {
                 </span>
               )}
             </div>
+
+            {collection.description && (
+              <CollectionDetailDescription>
+                {collection.description}
+              </CollectionDetailDescription>
+            )}
           </div>
 
           <div
             className="CollectionDetail-content-bottom"
             style={contentBottom}
           >
-            {collection.description && (
-              <div className="CollectionDetail-description">
-                {collection.description}
-              </div>
-            )}
-
             {/* <Divider />
             <div className="CollectionDetail-description">
               <h3>

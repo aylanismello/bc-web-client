@@ -48,7 +48,7 @@ class BCWeeklyTracklist extends React.Component {
         {tracklists.map(tracklist =>
           tracklist.tracks.map((track, idx) => (
             <div>
-              {hasMix && idx === 0 && <Divider />}
+              {/* {hasMix && idx === 0 && <Divider />} */}
               {hasMix && idx === 0 && <GuestHeader guest={tracklist.guest} />}
               <BCWeeklyTrack
                 setEpisodeTrack={setEpisodeTrack}

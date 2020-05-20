@@ -33,14 +33,7 @@
     border-radius: 3px;
     margin: 0px;
 
-    .CollectionDetail-description {
-      color: $bc-white;
-      @include bc-text();
-      color: #dcdcdc;
-      font-size: 1.2em;
-      line-height: 1.5;
-      padding: 0 0.6em 1em 0.6em;
-    }
+  
 
     .CollectionDetail-explore-more-container {
       display: flex;
