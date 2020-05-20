@@ -6,13 +6,11 @@ const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
 
   const collectionDescription = isWeekly
     ? `
-    Our flagship mix show is a labor of love - we hand select our favorites tracks and invite some of our favorite DJs and producers
-    from around the world to join us for the mix. Listen to all episodes here, along with interactive goodies such as being able to play
-    the individual tracks from within the show.
+    Our flagship mix show  - we hand select our favorites tracks and invite some of our favorite DJs
+    from around the world 🌏 to join us for the mix.
   `
     : ` 
-      Our algorithms are hard at work finding the latest uncovered gems, as well as trending tracks from artists featured on Burn Cartel radio. 
-      Be sure to pick up on the latest trending mixes as well.
+      Daily updated playlists with the  latest uncovered gems, as well as trending tracks from artists featured on Burn Cartel radio. 
     `;
 
   return [topText, bottomText, collectionDescription];

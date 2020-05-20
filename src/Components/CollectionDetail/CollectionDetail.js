@@ -24,7 +24,7 @@ const CollectionDetailDescription = styled.div`
   /* @include bc-text(); */
   ${({ theme: { mixins } }) =>
     mixins.text} /* color: #dcdcdc; */
-  font-size: 1.1em;
+  font-size: 1.4rem;
   line-height: 1.5;
   padding: 2rem 1rem 0 1rem;
 `;
@@ -286,11 +286,11 @@ class CollectionDetail extends React.Component {
               )}
             </div>
 
-            {collection.description && (
+            {/* {collection.description && (
               <CollectionDetailDescription>
                 {collection.description}
               </CollectionDetailDescription>
-            )}
+            )} */}
           </div>
 
           <div
