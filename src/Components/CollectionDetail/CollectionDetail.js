@@ -13,11 +13,11 @@ import BCProgressiveImage from "../BCProgressiveImage";
 import "./CollectionDetail.scss";
 import { getWeeklyItemTexts } from "../../helpers";
 
-const Divider = styled.div`
-  width: auto;
-  border: solid 1px #262632;
-  margin: 1.5rem 0 1.5rem 0;
-`;
+// const Divider = styled.div`
+//   width: auto;
+//   border: solid 1px #262632;
+//   margin: 1.5rem 0 1.5rem 0;
+// `;
 
 const CollectionDetailDescription = styled.div`
   /* color: $bc-white; */

@@ -10,7 +10,7 @@ const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
     from around the world 🌏 to join us for the mix.
   `
     : ` 
-      Daily updated playlists with the  latest uncovered gems, as well as trending tracks from artists featured on Burn Cartel radio. 
+      Daily updated playlists with the  latest uncovered gems, as well as trending tracks from artists featured on Burn Cartel Curated. 
     `;
 
   return [topText, bottomText, collectionDescription];
