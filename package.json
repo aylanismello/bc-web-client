@@ -2,6 +2,7 @@
   "name": "bc-web-client",
   "version": "0.1.0",
   "private": true,
+
   "dependencies": {
     "@apollo/client": "^3.0.0-beta.50",
     "@iconify/icons-entypo-social": "^1.0.5",
@@ -46,5 +47,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "engines": {
+    "node": "12.13.x"
+  }
 }
