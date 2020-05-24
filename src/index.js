@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import MyThemeProvider from "./Components/global/MyThemeProvider";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
-import App from "./Components/App/";
+import AppHooks from "./Components/AppHooks/";
 import {
   ApolloClient,
   ApolloProvider,
@@ -16,11 +16,12 @@ const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:8000";
 
 const cache = new InMemoryCache();
 
-const COLLECTIONS = gql`
+const INIT_CACHE_QUERY = gql`
   {
     collections {
       name
     }
+    
   }
 `;
 
@@ -30,7 +31,7 @@ const client = new ApolloClient({
 });
 
 cache.writeQuery({
-  query: COLLECTIONS,
+  query: INIT_CACHE_QUERY,
   data: {
     collections: [],
   },
@@ -39,7 +40,7 @@ cache.writeQuery({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <MyThemeProvider>
-      <App />
+      <AppHooks />
     </MyThemeProvider>
   </ApolloProvider>,
   document.getElementById("root")

@@ -5,8 +5,6 @@ import "./BottomNav.scss";
 import blankImg from "./assets/blank_img.svg";
 import PlayerControls from "./PlayerControls";
 import SeekBar from "../SeekBar";
-import useCollectionsQuery from "../../Hooks/useCollectionsQuery";
-
 
 const BottomNav = ({
   track,
@@ -32,12 +30,6 @@ const BottomNav = ({
     collectionLink = `/weekly-${defaultCollectionNum}`;
   } else {
     collectionLink = `/${window.location.hash.split("?")[0]}`;
-  }
-
-  const { data, loading, error } = useCollectionsQuery();
-
-  if (!loading) {
-    console.log(data);
   }
 
   return (

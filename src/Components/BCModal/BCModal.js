@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button, TextHighlight } from '../MarakuyaComponents';
 import './BCModal.scss';
 import LoadingIcon from '../LoadingIcon';
+import useTrackQuery from '../../Hooks/useTrackQuery';
 
 const CuratedWhyText = styled.div`
   font-family: "sofia-pro", sans-serif;
@@ -62,13 +63,19 @@ const RisingWhy = ({ curators, loading }) => (
 );
 
 const BCModal = ({
- modalOpen, closeModal, dj, episode, track, loading
+ modalOpen, closeModal, dj, episode, trackId
 }) => {
   if (!modalOpen) {
     return null;
   }
 
-  const { curators } = track;
+  // const { curators } = track;
+
+  const { loading, data } = useTrackQuery(trackId);
+
+  const track = (loading || !data) ? {} : data.getTrack;
+  const curators = track.curators || [];
+
 
   return (
     <div
@@ -86,7 +93,7 @@ const BCModal = ({
             {dj ? (
               <CuratedWhy dj={dj} episode={episode} />
             ) : (
-              <RisingWhy curators={curators || []} loading={loading} />
+              <RisingWhy curators={curators} loading={loading} />
             )}
             <div className="BCModal-close-button-container">
               <Button

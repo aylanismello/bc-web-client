@@ -118,6 +118,7 @@ class App extends Component {
       idx: 0,
       num: null
     },
+    modalTrackId: null,
     sideMenuOpen: false,
     contentWidthShrunk: false,
     playingCollectionNum: null,
@@ -132,7 +133,6 @@ class App extends Component {
     modalOpen: false,
     modalEpisode: undefined,
     modalDJ: undefined,
-    modalTrack: {},
     // didCopy: false,
     collectionNum: null,
     copiedEpisodeNum: null,
@@ -140,7 +140,6 @@ class App extends Component {
     loading: {
       collections: true,
       track: false,
-      modalTrack: false,
       // set to false initally because the API sends you back your first tracks in the /collections endpoint!
       collectionTracks: false
     },
@@ -459,20 +458,7 @@ class App extends Component {
 
   // assings to modalTrack
   fetchTrack(id) {
-    axios
-      .get(`${baseUrl}/tracks/${id}`)
-      .then(({ data }) => {
-        const { data: track } = data;
-        const newLoading = { modalTrack: false };
-
-        this.setState({
-          modalTrack: track.track,
-          loading: { ...this.state.loading, ...newLoading }
-        });
-      })
-      .catch(error => {
-        this.setError(error.message);
-      });
+    this.setState({ modalTrackId: id });
   }
 
   fetchGuests(tracks, collection) {
@@ -758,7 +744,6 @@ class App extends Component {
     this.setState({
       modalOpen: true,
       modalDJ: undefined,
-      modalTrack: {},
       modalEpisode: undefined
     });
     
@@ -769,16 +754,20 @@ class App extends Component {
       });
     } else {
       // debugger;
-      const newLoading = { modalTrack: true };
+      
       this.setState({
-        modalOpen: true,
-        loading: { ...this.state.loading, ...newLoading }
+        modalOpen: true
       });
       this.fetchTrack(trackId);
     }
   }
 
   render() {
+    const { graphqlCollections } = this.props;
+    // console.log('GRAPHQL: ');
+    // console.log(graphqlCollections);
+    // console.log('REST: ');
+    // console.log(this.state.collections);
     const track = this.getCurrentTrack();
     // TODO:
     // what's the diff between current track and this.state.track?
@@ -798,11 +787,10 @@ class App extends Component {
           id="outer-container"
         >
           <BCModal
-            loading={this.state.loading.modalTrack}
-            track={this.state.modalTrack}
             modalOpen={this.state.modalOpen}
             episode={this.state.modalEpisode}
             dj={this.state.modalDJ}
+            trackId={this.state.modalTrackId}
             closeModal={() => this.setState({ modalOpen: false })}
           />
           <Responsive minDeviceWidth={768}>
