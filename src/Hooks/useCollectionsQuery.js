@@ -34,8 +34,6 @@ function useCollectionsQuery(options = { fetchPolicy: "" }) {
     fetchPolicy: "network-only",
   });
 
-  // console.log(`query: ${COLLECTIONS_STR}`);
-
   return { data, loading, error };
 }
 

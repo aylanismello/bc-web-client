@@ -14,17 +14,14 @@ const SEARCH_TRACK = gql`
   }
 `;
 
-function useTrackQuery(id = 0) {
-  console.log(`getting track by ${id}`);
+function useTrackQuery(id) {
+  if(!id) {
+    return { loading: true, data: null };
+  }
 
   const { error, data, loading } = useQuery(SEARCH_TRACK, {
     variables: { id },
   } );
-
-
-  if (error) {
-    console.log(error);
-  }
 
   return { data, error, loading };
 }
