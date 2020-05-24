@@ -1,10 +1,12 @@
-import React from 'react';
-import Responsive from 'react-responsive';
-import { Link } from 'react-router-dom';
-import './BottomNav.scss';
-import blankImg from './assets/blank_img.svg';
-import PlayerControls from './PlayerControls';
-import SeekBar from '../SeekBar';
+import React from "react";
+import Responsive from "react-responsive";
+import { Link } from "react-router-dom";
+import "./BottomNav.scss";
+import blankImg from "./assets/blank_img.svg";
+import PlayerControls from "./PlayerControls";
+import SeekBar from "../SeekBar";
+import useCollectionsQuery from "../../Hooks/useCollectionsQuery";
+
 
 const BottomNav = ({
   track,
@@ -21,15 +23,21 @@ const BottomNav = ({
   forceReopenCollectionDetail,
   defaultCollectionNum,
   setEpisodeTrack,
-  hasMix
+  hasMix,
 }) => {
   let collectionLink;
   if (playingCollectionNum) {
     collectionLink = `/weekly-${playingCollectionNum}`;
-  } else if (window.location.hash === '#/weekly') {
+  } else if (window.location.hash === "#/weekly") {
     collectionLink = `/weekly-${defaultCollectionNum}`;
   } else {
-    collectionLink = `/${window.location.hash.split('?')[0]}`;
+    collectionLink = `/${window.location.hash.split("?")[0]}`;
+  }
+
+  const { data, loading, error } = useCollectionsQuery();
+
+  if (!loading) {
+    console.log(data);
   }
 
   return (
@@ -52,7 +60,7 @@ const BottomNav = ({
                 src={
                   track.artwork_url ||
                   track.artist_artwork_url ||
-                  'https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png'
+                  "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"
                 }
                 className="Bottom-track-info-artwork"
                 alt="track-artwork"
