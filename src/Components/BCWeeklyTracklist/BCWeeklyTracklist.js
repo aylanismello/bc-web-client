@@ -43,37 +43,50 @@ class BCWeeklyTracklist extends React.Component {
     // TODO: maybe treat this data and add xtra info so we can intelligently split into tracklists
 
 
-    return (
-      <div className={`BCWeeklyTracklist ${spotlight && 'spotlight'}`}>
-        {tracklists.map(tracklist =>
+    return <div className={`BCWeeklyTracklist ${spotlight && "spotlight"}`}>
+        {tracklists.map((tracklist, tracklistIdx) =>
           tracklist.tracks.map((track, idx) => (
             <div key={idx}>
-              {/* {hasMix && idx === 0 && <Divider />} */}
-              {hasMix && idx === 0 && <GuestHeader guest={tracklist.guest} />}
+              {hasMix && idx === 0 && tracklistIdx > 0 && <Divider />}
+              {hasMix &&
+                idx === 0 && (
+                  <GuestHeader
+                    guest={tracklist.guest}
+                    tracklistIdx={tracklistIdx}
+                  />
+                )}
               <BCWeeklyTrack
                 setEpisodeTrack={setEpisodeTrack}
                 active={this.isActive(track)}
                 key={track.id}
                 trackLoading={trackLoading}
                 playing={playing}
-                open={track.id === this.state.openTrackId && this.state.open}
-                toggleOpen={trackId => {
+                open={
+                  track.id === this.state.openTrackId && this.state.open
+                }
+                toggleOpen={(trackId) => {
                   if (trackId === this.state.openTrackId) {
                     this.setState({ open: !this.state.open });
                   } else {
                     this.setState({ open: true, openTrackId: trackId });
                   }
                 }}
-                openModal={() => openModal(tracklist.guest, collection.collection_num, track.id)}
+                openModal={() =>
+                  openModal(
+                    tracklist.guest,
+                    collection.collection_num,
+                    track.id
+                  )
+                }
                 track={track}
                 playTrack={() => playTrack(track, collection)}
                 showDivider={this.showDivider(track)}
                 hasMix={hasMix}
               />
             </div>
-          )))}
-      </div>
-    );
+          ))
+        )}
+      </div>;
   }
 }
 

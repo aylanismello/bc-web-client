@@ -6,7 +6,8 @@ const GuestHeader = styled.div`
   display: flex;
   align-content: center;
   align-items: center;
-  padding: 0.8rem 0.6rem;
+  padding: 0.8rem 0.6rem 2.2rem 0.6rem;
+  margin-top: ${({hasTopMargin}) => hasTopMargin ? '2rem' : ''};
 `;
 
 const GuestImageAvatarContainer = styled.div`
@@ -43,8 +44,8 @@ const GuestHeaderText = styled.div`
   }
 `;
 
-export default ({ guest }) => (
-  <GuestHeader className="GuestHeader">
+export default ({ guest, tracklistIdx }) => (
+  <GuestHeader className="GuestHeader" hasTopMargin={tracklistIdx !== 0}>
     <GuestImageAvatarContainer className="GuestImageAvatarContainer">
       <img
         className="GuestImageAvatar"
