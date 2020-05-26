@@ -202,7 +202,7 @@ const renderSource = ({ permalink_url, streaming_platform }) => {
   } else if (streaming_platform === 3) {
     linkText = 'Spotify';
   } else {
-    linkText = 'unknown';
+    return null;
   }
 
   return (

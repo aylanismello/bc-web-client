@@ -254,18 +254,6 @@ class BCHome extends React.Component {
         ) : (
           <div className="BCHome-content-container">
             <Wrapper>
-              {/* <Responsive minDeviceWidth={950}>
-                <BCSpotlightItem
-                  collection={
-                    this.props.collections[this.getActiveCollectionIdx()]
-                  }
-                  playing={this.props.playing}
-                  trackLoading={this.props.trackLoading}
-                  width={450}
-                  track={track}
-                  playTrack={this.props.playTrack}
-                />
-              </Responsive> */}
               <Responsive maxDeviceWidth={767}>
                 <CollectionDetail
                   guests={this.props.guests}
