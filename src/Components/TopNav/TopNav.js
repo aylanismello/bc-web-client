@@ -21,7 +21,9 @@ const TopNavStyle = styled.div`
 const TopNav = ({ isMobile, forceReopenCollectionDetail }) => {
   return (
     <TopNavStyle class="TopNavStyle">
-      <OpenTab forceReopenCollectionDetail={forceReopenCollectionDetail} />
+      {isMobile ? null : (
+        <OpenTab forceReopenCollectionDetail={forceReopenCollectionDetail} />
+      )}
       <ContentWrapper>
         <div className="TopNavLogo">
           <BCLogo />
