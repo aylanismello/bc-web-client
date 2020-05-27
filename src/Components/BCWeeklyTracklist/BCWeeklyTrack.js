@@ -12,6 +12,7 @@ import BurnCartelPlayer from '../../BurnCartelPlayer';
 const Item = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   /* justify-content: space-evenly; */
   padding: 0.8rem 0.6rem;
 `;

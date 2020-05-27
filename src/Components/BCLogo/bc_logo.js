@@ -19,8 +19,6 @@ const BCLogoText = styled.span`
 `;
 
 const BCLogo = ({ centerOnMediaQuery, infoText, sideMenuOpen }) => {
-  console.log(`side menu open is ${sideMenuOpen}`);
-  // debugger;
   if (sideMenuOpen) {
     return null;
   } else {
