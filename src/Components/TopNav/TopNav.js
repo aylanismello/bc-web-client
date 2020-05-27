@@ -8,7 +8,7 @@ const TopNav = ({ isMobile, forceReopenCollectionDetail }) => {
 
   return (
     <div className="TopNav">
-      {!isMobile && (
+      {(
         <OpenTab forceReopenCollectionDetail={forceReopenCollectionDetail} />
       )}
       {/* <Link to="/#"> */}
