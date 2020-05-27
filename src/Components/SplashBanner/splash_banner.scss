@@ -50,6 +50,7 @@
       }
       @media (max-width: $phone-width) {
         justify-content: initial;
+        // margin-top: 4rem;
         height: 80px;
 
         .SplashBanner-message-header {

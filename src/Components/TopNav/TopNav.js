@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Button, ContentWrapper } from "../MarakuyaComponents";
 import BCLogo from "../BCLogo";
 import OpenTab from "./OpenTab";
-// import {ContentWrapper} from
+/* height: ${({isMobile}) => isMobile ? '40px' : '72px'}; */
 
 const TopNavStyle = styled.div`
   background: ${({ theme }) => theme.colors.gray_2};
@@ -16,11 +16,13 @@ const TopNavStyle = styled.div`
   top: 0;
   z-index: 1;
   width: 100%;
+
+
 `;
 
 const TopNav = ({ isMobile, forceReopenCollectionDetail }) => {
   return (
-    <TopNavStyle class="TopNavStyle">
+    <TopNavStyle isMobile={isMobile} class="TopNavStyle">
       {isMobile ? null : (
         <OpenTab forceReopenCollectionDetail={forceReopenCollectionDetail} />
       )}
