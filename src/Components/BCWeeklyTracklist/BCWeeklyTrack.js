@@ -1,20 +1,22 @@
-import React from 'react';
-import styled from 'styled-components';
-import dayjs from 'dayjs';
-import { flag } from 'country-emoji';
-import LoadingIcon from '../LoadingIcon';
-import EQIcon from '../EQIcon';
-import up from './chevron-up.svg';
-import down from './chevron-down.svg';
-import { TextHighlight } from '../MarakuyaComponents';
-import BurnCartelPlayer from '../../BurnCartelPlayer';
+import React from "react";
+import styled from "styled-components";
+import dayjs from "dayjs";
+import { flag } from "country-emoji";
+import LoadingIcon from "../LoadingIcon";
+import EQIcon from "../EQIcon";
+import up from "./chevron-up.svg";
+import down from "./chevron-down.svg";
+import { TextHighlight } from "../MarakuyaComponents";
+import BurnCartelPlayer from "../../BurnCartelPlayer";
 
 const Item = styled.div`
   display: flex;
   align-items: center;
   /* justify-content: center; */
-  justify-content: space-around;
+  /* justify-content: center;*/
   padding: 0.8rem 0.6rem;
+
+  /* display: grid; */
 `;
 
 const PlayingEqWrapper = styled.div`
@@ -47,12 +49,15 @@ const PlayingText = styled.span`
   color: #e54ea3;
 `;
 
+const TrackContainer = styled.div`
+`;
+
 const Title = styled.div`
   font-size: 16px;
   font-weight: 500;
 
   display: -webkit-box;
-  -webkit-line-clamp: ${props => (props.open ? 0 : 2)};
+  -webkit-line-clamp: ${(props) => (props.open ? 0 : 2)};
   -moz-box-orient: vertical; /* Mozilla 8*/
   -webkit-box-orient: vertical; /* WebKit */
   box-orient: vertical !important;
@@ -64,6 +69,12 @@ const FlagEmoji = styled.span`
   padding-left: 0.6rem;
   font-size: 20px;
   margin: -5rem 0;
+`;
+
+const MoreDetailsButtonContainer = styled.div`
+  width: 20%;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 const HeaderText = styled.span`
@@ -126,19 +137,19 @@ const getPlayOverlay = (isActive, trackLoading, playing) => {
 const getStyle = (active, open) => {
   return active
     ? {
-        color: '#e54ea3',
-        borderRadius: open ? '4px 4px 0 0' : '4px',
-        background: '#262632'
+        color: "#e54ea3",
+        borderRadius: open ? "4px 4px 0 0" : "4px",
+        background: "#262632",
       }
     : {};
 };
 
-const getStyleBottom = active => {
+const getStyleBottom = (active) => {
   return active
     ? {
-        color: '#e54ea3',
-        borderRadius: '0 0 4px 4px',
-        background: '#262632'
+        color: "#e54ea3",
+        borderRadius: "0 0 4px 4px",
+        background: "#262632",
       }
     : {};
 };
@@ -146,42 +157,42 @@ const getStyleBottom = active => {
 const formatReleaseDate = ({ created_at_external }) => {
   const today = dayjs();
   const formattedDate = dayjs(created_at_external);
-  const daysAgo = today.diff(formattedDate, 'day');
+  const daysAgo = today.diff(formattedDate, "day");
 
   if (daysAgo === 0) {
-    return 'a few hours ago';
+    return "a few hours ago";
   } else if (daysAgo === 1) {
     return `${daysAgo} day ago`;
   } else if (daysAgo > 1 && daysAgo < 7) {
     return `${daysAgo} days ago`;
   } else if (daysAgo >= 7 && daysAgo < 14) {
-    return 'a week ago';
+    return "a week ago";
   } else if (daysAgo >= 14 && daysAgo < 30) {
-    return 'a few weeks ago';
+    return "a few weeks ago";
   } else if (daysAgo >= 30 && daysAgo < 60) {
-    return 'a month ago';
+    return "a month ago";
   } else if (daysAgo >= 60 && daysAgo < 365) {
-    return 'a few months ago';
+    return "a few months ago";
   } else if (daysAgo >= 365 && daysAgo < 365 * 2) {
-    return 'a year ago';
+    return "a year ago";
   } else {
-    return `${today.diff(formattedDate, 'year')} years ago`;
+    return `${today.diff(formattedDate, "year")} years ago`;
   }
 };
 
-const renderReleaseDate = track => {
+const renderReleaseDate = (track) => {
   if (!track.created_at_external) {
     return null;
   }
   return (
     <div className="ExpandTrackDetail">
-      Released:{' '}
-      <span style={{ color: 'white' }}> {formatReleaseDate(track)} </span>
+      Released:{" "}
+      <span style={{ color: "white" }}> {formatReleaseDate(track)} </span>
     </div>
   );
 };
 
-const timePlayed = track => {
+const timePlayed = (track) => {
   const { time_code } = track;
   if (time_code !== 0 && !time_code) {
     return null;
@@ -196,23 +207,23 @@ const timePlayed = track => {
 const renderSource = ({ permalink_url, streaming_platform }) => {
   let linkText;
   if (streaming_platform === 0) {
-    linkText = 'SoundCloud';
+    linkText = "SoundCloud";
   } else if (streaming_platform === 1) {
-    linkText = 'YouTube';
+    linkText = "YouTube";
   } else if (streaming_platform === 2) {
-    linkText = 'Bandcamp';
+    linkText = "Bandcamp";
   } else if (streaming_platform === 3) {
-    linkText = 'Spotify';
+    linkText = "Spotify";
   } else {
     return null;
   }
 
   return (
     <div className="ExpandTrackDetail">
-      Source:{' '}
+      Source:{" "}
       <TextHighlight href={permalink_url} icon="EXTERNAL_LINK">
-        {' '}
-        {linkText}{' '}
+        {" "}
+        {linkText}{" "}
       </TextHighlight>
     </div>
   );
@@ -227,7 +238,7 @@ const renderLocation = ({ artist_country, artist_city }) => {
     return null;
   }
 
-  let location = '';
+  let location = "";
   if (artist_city) location += artist_city;
 
   if (artist_country && location) {
@@ -241,14 +252,14 @@ const renderLocation = ({ artist_country, artist_city }) => {
       className="ExpandTrackDetail"
       hasFlag={artist_country}
       style={{
-        display: 'inline-flex',
-        alignItems: 'center'
+        display: "inline-flex",
+        alignItems: "center",
       }}
     >
-      <span style={{ color: 'white' }}> {location} </span>
+      <span style={{ color: "white" }}> {location} </span>
       <FlagEmoji className="FlagEmoji">
-        {artist_country && flag(artist_country)}{' '}
-      </FlagEmoji>{' '}
+        {artist_country && flag(artist_country)}{" "}
+      </FlagEmoji>{" "}
     </div>
   );
 };
@@ -266,10 +277,11 @@ class BCWeeklyTrack extends React.Component {
       open,
       toggleOpen,
       setEpisodeTrack,
-      openModal
+      openModal,
     } = this.props;
 
-    return <div key={track.id} id={track.id}>
+    return (
+      <TrackContainer key={track.id} id={track.id}>
         {/* {showDivider && <Divider />}
         {track.track_number === 0 && hasMix && (
           <HeaderText>This Week's Mix</HeaderText>
@@ -278,8 +290,15 @@ class BCWeeklyTrack extends React.Component {
           <HeaderText>Tracklist</HeaderText>
         )} */}
 
-        <div key={track.id} className="BCWeeklyTracklist-item-container" style={{ paddingBottom: active ? "0px" : "" }} onClick={(e) => {
-            if (e.target.classList && e.target.classList[0] === "ExpandTrackBtn") {
+        <div
+          key={track.id}
+          className="BCWeeklyTracklist-item-container"
+          style={{ paddingBottom: active ? "0px" : "" }}
+          onClick={(e) => {
+            if (
+              e.target.classList &&
+              e.target.classList[0] === "ExpandTrackBtn"
+            ) {
               return;
             }
             // TODO: make this take into account if you're in an episode.
@@ -287,18 +306,27 @@ class BCWeeklyTrack extends React.Component {
             if (hasMix && trackIsNotMix) {
               // also can't be the mix itself..
               setEpisodeTrack(track);
-              // window.sc.setTime(track.time_code);
-              // we are seeking
             } else if (track.stream_url) {
               playTrack(track);
             }
-          }}>
-          <Item className="BCWeeklyTracklist-item" style={getStyle(active, open)}>
+          }}
+        >
+          <Item
+            className="BCWeeklyTracklist-item"
+            style={getStyle(active, open)}
+          >
             <ImageContainer>
               <PlayingEqWrapper>
                 {getPlayOverlay(active, trackLoading, playing)}
               </PlayingEqWrapper>
-              <img src={track.artwork_url || track.artist_artwork_url || "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"} style={{ width: "100%", height: "auto", borderRadius: "4px" }} />
+              <img
+                src={
+                  track.artwork_url ||
+                  track.artist_artwork_url ||
+                  "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"
+                }
+                style={{ width: "100%", height: "auto", borderRadius: "4px" }}
+              />
             </ImageContainer>
             <DetailsText className="DetailsText">
               <Title open={open || active} className="TrackTitle">
@@ -308,18 +336,19 @@ class BCWeeklyTrack extends React.Component {
                 {track.real_artist_name || track.artist_name}
               </div>
             </DetailsText>
-            <div className="MoreDetailsContainer">
+            <MoreDetailsButtonContainer>
               {active ? null : (
                 <ExpandTrackBtn
                   toggleOpen={() => toggleOpen(track.id)}
                   open={open}
                 />
               )}
-            </div>
+            </MoreDetailsButtonContainer>
           </Item>
         </div>
 
-        {showTrackDetails(open, active) && <Item style={getStyleBottom(active)}>
+        {showTrackDetails(open, active) && (
+          <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               {timePlayed(track)}
               {/* <div className="ExpandTrackDetail"> */}
@@ -336,12 +365,16 @@ class BCWeeklyTrack extends React.Component {
                 </div>
               </div>
             </ExpandTrackDetails>
-          </Item>}
+          </Item>
+        )}
 
-        {active && <Item style={getStyleBottom(active)}>
+        {active && (
+          <Item style={getStyleBottom(active)}>
             <PlayingText>CURRENTLY PLAYING</PlayingText>
-          </Item>}
-      </div>;
+          </Item>
+        )}
+      </TrackContainer>
+    );
   }
 }
 
