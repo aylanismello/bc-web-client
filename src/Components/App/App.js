@@ -87,6 +87,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    document.addEventListener("keydown", (e) => this.handleSpaceKey(e));
     if (window.localStorage.getItem('newFeatureClicked')) {
       this.setState({ newFeatureClicked: true });
     }
@@ -146,9 +147,7 @@ class App extends Component {
     errors: []
   });
 
-  componentWillMount() {
-    document.addEventListener("keydown", (e) => this.handleSpaceKey(e));
-  }
+ 
   componentWillUnmount() {
     document.removeEventListener("keydown", (e) => this.handleSpaceKey(e));
   }

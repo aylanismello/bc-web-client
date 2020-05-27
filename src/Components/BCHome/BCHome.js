@@ -21,7 +21,7 @@ const BCHomeMainContent = styled.div`
   grid-template-columns: minmax(30%, 200px) auto;
   grid-gap: 3rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1150px) {
     grid-template-columns: auto;
     grid-template-rows: auto auto;
   }
@@ -34,11 +34,13 @@ const BCHomeCollectionInfo = styled.div`
 
 const BCHomeCollectionDescription = styled.div`
   line-height: 1.5;
-  width: 80%;
+  width: 100%;
+  max-width: 250px;
   margin-top: 2rem;
   font-family: "sofia-pro", sans-serif;
-  @media (max-width: 768px) {
+  @media (max-width: 1150px) {
     width: auto;
+    max-width: inherit;
   }
 `;
 
