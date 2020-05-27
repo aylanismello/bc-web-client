@@ -14,10 +14,8 @@ const TopNavStyle = styled.div`
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 1;
+  z-index: ${({ theme }) => theme.zIndex.top};
   width: 100%;
-
-
 `;
 
 const TopNav = ({ isMobile, forceReopenCollectionDetail, sideMenuOpen }) => {
@@ -27,7 +25,7 @@ const TopNav = ({ isMobile, forceReopenCollectionDetail, sideMenuOpen }) => {
         <OpenTab forceReopenCollectionDetail={forceReopenCollectionDetail} />
       )}
       <ContentWrapper>
-          <BCLogo sideMenuOpen={sideMenuOpen}/>
+        <BCLogo sideMenuOpen={sideMenuOpen} />
       </ContentWrapper>
     </TopNavStyle>
   );
