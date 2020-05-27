@@ -21,6 +21,12 @@ let theme = {
     font1: "'sofia-pro', sans-serif",
   },
   topNavHeight: "70px",
+  breakpoints: {
+    desktopWidth: '1280px',
+    tabletWidth: '1150px',
+    phoneWidth: '768px',
+    tinyWidth: '350px',
+  }
 };
 
 theme.mixins = {

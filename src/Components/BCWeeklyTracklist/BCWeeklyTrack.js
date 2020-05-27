@@ -12,6 +12,7 @@ import BurnCartelPlayer from '../../BurnCartelPlayer';
 const Item = styled.div`
   display: flex;
   align-items: center;
+  /* justify-content: space-evenly; */
   padding: 0.8rem 0.6rem;
 `;
 
@@ -84,7 +85,7 @@ const Divider = styled.div`
 
 const ExpandTrackBtnStyle = styled.img`
   padding: 10px;
-  position: absolute;
+  /* position: absolute; */
   right: 5px;
   &:hover {
     cursor: pointer;
@@ -267,8 +268,7 @@ class BCWeeklyTrack extends React.Component {
       openModal
     } = this.props;
 
-    return (
-      <div key={track.id} id={track.id}>
+    return <div key={track.id} id={track.id}>
         {/* {showDivider && <Divider />}
         {track.track_number === 0 && hasMix && (
           <HeaderText>This Week's Mix</HeaderText>
@@ -277,15 +277,8 @@ class BCWeeklyTrack extends React.Component {
           <HeaderText>Tracklist</HeaderText>
         )} */}
 
-        <div
-          key={track.id}
-          className="BCWeeklyTracklist-item-container"
-          style={{ paddingBottom: active ? '0px' : '' }}
-          onClick={e => {
-            if (
-              e.target.classList &&
-              e.target.classList[0] === 'ExpandTrackBtn'
-            ) {
+        <div key={track.id} className="BCWeeklyTracklist-item-container" style={{ paddingBottom: active ? "0px" : "" }} onClick={(e) => {
+            if (e.target.classList && e.target.classList[0] === "ExpandTrackBtn") {
               return;
             }
             // TODO: make this take into account if you're in an episode.
@@ -298,28 +291,13 @@ class BCWeeklyTrack extends React.Component {
             } else if (track.stream_url) {
               playTrack(track);
             }
-          }}
-        >
-          <Item
-            className="BCWeeklyTracklist-item"
-            style={getStyle(active, open)}
-          >
+          }}>
+          <Item className="BCWeeklyTracklist-item" style={getStyle(active, open)}>
             <ImageContainer>
               <PlayingEqWrapper>
                 {getPlayOverlay(active, trackLoading, playing)}
               </PlayingEqWrapper>
-              <img
-                src={
-                  track.artwork_url ||
-                  track.artist_artwork_url ||
-                  'https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png'
-                }
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '4px'
-                }}
-              />
+              <img src={track.artwork_url || track.artist_artwork_url || "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"} style={{ width: "100%", height: "auto", borderRadius: "4px" }} />
             </ImageContainer>
             <DetailsText className="DetailsText">
               <Title open={open || active} className="TrackTitle">
@@ -329,17 +307,18 @@ class BCWeeklyTrack extends React.Component {
                 {track.real_artist_name || track.artist_name}
               </div>
             </DetailsText>
-            {active ? null : (
-              <ExpandTrackBtn
-                toggleOpen={() => toggleOpen(track.id)}
-                open={open}
-              />
-            )}
+            <div className="MoreDetailsContainer">
+              {active ? null : (
+                <ExpandTrackBtn
+                  toggleOpen={() => toggleOpen(track.id)}
+                  open={open}
+                />
+              )}
+            </div>
           </Item>
         </div>
 
-        {showTrackDetails(open, active) && (
-          <Item style={getStyleBottom(active)}>
+        {showTrackDetails(open, active) && <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               {timePlayed(track)}
               {/* <div className="ExpandTrackDetail"> */}
@@ -356,16 +335,12 @@ class BCWeeklyTrack extends React.Component {
                 </div>
               </div>
             </ExpandTrackDetails>
-          </Item>
-        )}
+          </Item>}
 
-        {active && (
-          <Item style={getStyleBottom(active)}>
+        {active && <Item style={getStyleBottom(active)}>
             <PlayingText>CURRENTLY PLAYING</PlayingText>
-          </Item>
-        )}
-      </div>
-    );
+          </Item>}
+      </div>;
   }
 }
 
