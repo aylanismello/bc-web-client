@@ -12,13 +12,13 @@ const BCLogo = ({ centerOnMediaQuery, infoText }) => (
         draggable={false}
       />
     </div>
-    <span
+    {/* <span
       className="BCLogo-text"
       style={infoText ? { fontSize: '1.4rem' } : {}}
     >
       {' '}
       {infoText || 'BURN CARTEL'}
-    </span>
+    </span> */}
   </div>
 );
 
