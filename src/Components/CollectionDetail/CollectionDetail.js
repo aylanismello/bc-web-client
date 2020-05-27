@@ -136,25 +136,23 @@ class CollectionDetail extends React.Component {
       left: 0,
       zIndex: "1000000",
       background: "#191925",
+      height: "48px",
+      padding: "12px 12px",
     };
 
     contentTop = isSideMenu
       ? {
           ...contentTop,
-          height: "5rem",
-          padding: "1.5rem 1.2rem",
-          display: "flex",
-          // setting the width like this is a bit janky
+          display: "flex", // setting the width like this is a bit janky
           // width: "325px",
           // WHAT UP - TO FIX SCROLLBAR
           width: "326px",
         }
       : {
-          ...contentTop,
-          height: "8rem",
-          padding: "0 2rem",
+          ...contentTop, // height: "8rem",
+          // padding: "0 2rem",
+          padding: "12px 20px",
           display: "flex",
-
           // width: '100%'
           width: "-webkit-fill-available",
         };
