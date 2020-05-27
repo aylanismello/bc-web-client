@@ -146,6 +146,13 @@ class App extends Component {
     errors: []
   });
 
+  componentWillMount() {
+    document.addEventListener("keydown", (e) => this.handleSpaceKey(e));
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", (e) => this.handleSpaceKey(e));
+  }
+
   componentWillUpdate(nextProps, nextState) {
     if (this.state.errors.length !== nextState.errors.length) {
       this.logNewError(nextState.errors.reverse()[0]);
@@ -211,6 +218,13 @@ class App extends Component {
     }
 
     return activeCollection;
+  }
+
+  handleSpaceKey(event) {
+    if (event.keyCode === 32) {
+      event.preventDefault();
+      this.togglePlay();
+    }
   }
 
   setInitialCollections(
