@@ -97,8 +97,9 @@ const Divider = styled.div`
 
 const ExpandTrackBtnStyle = styled.img`
   padding: 10px;
-  /* position: absolute; */
+  position: absolute;
   right: 5px;
+  top: 17px;
   &:hover {
     cursor: pointer;
   }
