@@ -2,6 +2,7 @@
 
 .SplashBanner {
   position: relative;
+  margin-top: 72px;
 
   .SplashBanner-next-action-msg {
     color: $bc-pink;
@@ -13,25 +14,13 @@
     }
   }
   // https://css-tricks.com/tinted-images-multiple-backgrounds/
-  .SplashBanner-image-container {
-    max-height: 400px;
-    min-height: 300px;
 
-    .SplashBanner-image {
-      width: 100%;
-      height: auto;
-      max-height: 300px;
-      // MAKE THIS NOT LOOK ALL SQUISHED
-    }
-  }
 
   .SplashBanner-content {
-    position: absolute;
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
-    top: 50px;
     flex-direction: column;
 
     @media (max-width: $phone-width) {
@@ -61,7 +50,6 @@
       }
       @media (max-width: $phone-width) {
         justify-content: initial;
-        margin-top: 4rem;
         height: 80px;
 
         .SplashBanner-message-header {

@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
-import Responsive from 'react-responsive';
-import axios from 'axios';
-import createHashHistory from 'history/createHashHistory';
+import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { HashRouter as Router, Route, Redirect } from "react-router-dom";
+import Responsive from "react-responsive";
+import axios from "axios";
+import createHashHistory from "history/createHashHistory";
 // import ReactGA from 'react-ga';
-import withSizes from 'react-sizes';
-import * as Sentry from '@sentry/browser';
+import withSizes from "react-sizes";
+import * as Sentry from "@sentry/browser";
 
-import { baseUrl } from '../../config';
-import BurnCartelPlayer from '../../BurnCartelPlayer';
-import SideMenu from '../SideMenu';
-import TopNav from '../TopNav';
-import CollectionDetail from '../CollectionDetail';
-import BCModal from '../BCModal';
-import BCHome from '../BCHome';
-import BottomNav from '../BottomNav';
-import Footer from '../Footer';
-import './App.scss';
+import { baseUrl } from "../../config";
+import BurnCartelPlayer from "../../BurnCartelPlayer";
+import SideMenu from "../SideMenu";
+import TopNav from "../TopNav";
+import CollectionDetail from "../CollectionDetail";
+import BCModal from "../BCModal";
+import BCHome from "../BCHome";
+import BottomNav from "../BottomNav";
+import Footer from "../Footer";
+import "./App.scss";
 
 const history = createHashHistory();
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = process.env.NODE_ENV === "production";
 
 window.logEvent = (name, body = {}) => {
   if (isProd) {
@@ -33,17 +33,17 @@ const initProdServices = () => {
   // (fuck) GOOGLE ANALYTICS
   // console.log('initializing prod services');
   // ReactGA.initialize('UA-84947411-1');
-  const landingPath = window.location.hash.replace('#', '');
+  const landingPath = window.location.hash.replace("#", "");
   // ReactGA.pageview(landingPath);
 
-  window.logEvent('LANDED', { landingPath });
+  window.logEvent("LANDED", { landingPath });
   // history.listen(location => {
   //   ReactGA.pageview(location.pathname);
   // });
 
   // SENTRY BUG TRACKING
   Sentry.init({
-    dsn: 'https://26268e6a955e474095d156b1cc6069ab@sentry.io/1384208'
+    dsn: "https://26268e6a955e474095d156b1cc6069ab@sentry.io/1384208",
   });
 };
 
@@ -55,7 +55,7 @@ class App extends Component {
   }
 
   static weekHasBeenReleased(collections, bc_weekly_num) {
-    const weekNum = parseInt(bc_weekly_num.split('-')[1], 10);
+    const weekNum = parseInt(bc_weekly_num.split("-")[1], 10);
     return App.collectionAsHash(collections)[weekNum];
   }
 
@@ -70,16 +70,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.setInitialCollections = this.setInitialCollections.bind(this);
-    this.toggleFromCollectionDetail = this.toggleFromCollectionDetail.bind(this);
-    this.handleOpenWhyTrackChosenModal = this.handleOpenWhyTrackChosenModal.bind(this);
+    this.toggleFromCollectionDetail = this.toggleFromCollectionDetail.bind(
+      this
+    );
+    this.handleOpenWhyTrackChosenModal = this.handleOpenWhyTrackChosenModal.bind(
+      this
+    );
     this.playingCollection = this.playingCollection.bind(this);
     this.burnCartelPlayer = new BurnCartelPlayer(
-      track => this.setTrack(track),
-      play => this.setPlaying(play),
-      loading => this.setLoading('track', loading),
-      error => this.setError(error),
-      currentTime => this.setCurrentTime(currentTime),
-      playingCollectionNum =>
+      (track) => this.setTrack(track),
+      (play) => this.setPlaying(play),
+      (loading) => this.setLoading("track", loading),
+      (error) => this.setError(error),
+      (currentTime) => this.setCurrentTime(currentTime),
+      (playingCollectionNum) =>
         this.setPlayingCollectionNum(playingCollectionNum),
       (currentTime, notCheckingForNextTrack) =>
         this.setEpisodeTrack(currentTime, notCheckingForNextTrack)
@@ -88,7 +92,7 @@ class App extends Component {
 
   componentWillMount() {
     document.addEventListener("keydown", (e) => this.handleSpaceKey(e));
-    if (window.localStorage.getItem('newFeatureClicked')) {
+    if (window.localStorage.getItem("newFeatureClicked")) {
       this.setState({ newFeatureClicked: true });
     }
     this.setState({ isMobile: this.isMobile() });
@@ -97,8 +101,8 @@ class App extends Component {
   componentDidMount() {
     // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/transitionend_event
     document
-      .getElementById('page-wrap')
-      .addEventListener('transitionend', () => {
+      .getElementById("page-wrap")
+      .addEventListener("transitionend", () => {
         if (this.state.sideMenuOpen) {
           this.setState({ contentWidthShrunk: true });
         }
@@ -110,14 +114,14 @@ class App extends Component {
     collections: [],
     currentTime: {
       raw: 0,
-      before: '',
-      after: ''
+      before: "",
+      after: "",
     },
     guests: {},
     newFeatureClicked: false,
     openCollection: {
       idx: 0,
-      num: null
+      num: null,
     },
     modalTrackId: null,
     sideMenuOpen: false,
@@ -142,12 +146,11 @@ class App extends Component {
       collections: true,
       track: false,
       // set to false initally because the API sends you back your first tracks in the /collections endpoint!
-      collectionTracks: false
+      collectionTracks: false,
     },
-    errors: []
+    errors: [],
   });
 
- 
   componentWillUnmount() {
     document.removeEventListener("keydown", (e) => this.handleSpaceKey(e));
   }
@@ -162,7 +165,7 @@ class App extends Component {
       !this.state.playButtonHasBeenPressed &&
       nextState.playButtonHasBeenPressed
     ) {
-      window.logEvent('PLAY_BTN_HAS_BEEN_PRESSED');
+      window.logEvent("PLAY_BTN_HAS_BEEN_PRESSED");
     }
 
     if (
@@ -170,7 +173,7 @@ class App extends Component {
       this.state.loading.collections &&
       !nextState.loading.collections
     ) {
-      window.logEvent('INIT_PAGE_COLLECTIONS_LOADED');
+      window.logEvent("INIT_PAGE_COLLECTIONS_LOADED");
     }
 
     // FOLLOW TRACK AROUND AS EPISODE OR PLAYLIST PROGRESSES
@@ -194,12 +197,12 @@ class App extends Component {
     if (isProd) Sentry.captureMessage(newError);
 
     toast(newError, {
-      position: 'top-right',
+      position: "top-right",
       autoClose: 10000,
       hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
-      draggable: false
+      draggable: false,
     });
   }
 
@@ -237,18 +240,18 @@ class App extends Component {
         this.setState({
           initialCollectionIdx,
           openCollection: { idx: initialCollectionIdx, num: collectionNum },
-          pageReadyForFakeModal: true
+          pageReadyForFakeModal: true,
         });
       } else if (isPreselectedCollection) {
         this.setState({
           initialCollectionIdx,
           openCollection: { idx: initialCollectionIdx, num: collectionNum },
-          sideMenuOpen: true
+          sideMenuOpen: true,
         });
       } else {
         this.setState({
           initialCollectionIdx,
-          openCollection: { idx: initialCollectionIdx, num: collectionNum }
+          openCollection: { idx: initialCollectionIdx, num: collectionNum },
         });
       }
     });
@@ -263,7 +266,9 @@ class App extends Component {
 
   setTrack(track) {
     this.setState({ track, playButtonHasBeenPressed: true }, () => {
-      const formattedTitle = `${track.name} by ${track.artist_name} | Curated by Burn Cartel`;
+      const formattedTitle = `${track.name} by ${
+        track.artist_name
+      } | Curated by Burn Cartel`;
       document.title = formattedTitle;
       this.updateTrackPlay(track.id);
     });
@@ -324,7 +329,7 @@ class App extends Component {
       this.playTrack(openCollection.tracks[0], openCollection);
       window.forceGoToEpisodeTrack = () => {
         // this.setState({ track });
-        console.log('force seeking to track!');
+        console.log("force seeking to track!");
         window.sc.setTime(track.time_code + 1);
       };
       window.forceSeekAfterEpisodeLoad = true;
@@ -338,10 +343,10 @@ class App extends Component {
   updateTrackPlay(id) {
     axios
       .post(`${baseUrl}/tracks/play`, { id })
-      .then(results => {
+      .then((results) => {
         // this.setState({ loadingUpdatePlayCount: false });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setError(error.message);
       });
   }
@@ -369,7 +374,9 @@ class App extends Component {
 
   setLoading(resource, state) {
     if (!Object.keys(this.state.loading).includes(resource)) {
-      throw Error(`Cannot set loading state to a non-existent resouce of: ${resource}!`);
+      throw Error(
+        `Cannot set loading state to a non-existent resouce of: ${resource}!`
+      );
     }
 
     const newResouceLoadingState = {};
@@ -377,7 +384,7 @@ class App extends Component {
     const newLoading = { ...this.state.loading, ...newResouceLoadingState };
 
     this.setState({
-      loading: newLoading
+      loading: newLoading,
     });
   }
 
@@ -417,7 +424,7 @@ class App extends Component {
   }
 
   scrollSideMenu() {
-    const sideMenu = document.getElementsByClassName('bm-item-list')[0];
+    const sideMenu = document.getElementsByClassName("bm-item-list")[0];
     // TODO: need to scroll up just a bit more
     if (sideMenu) sideMenu.scrollIntoView();
   }
@@ -450,7 +457,7 @@ class App extends Component {
       return;
     } else {
       this.setState({
-        openCollection: { idx: collectionIdx, num: collectionNum }
+        openCollection: { idx: collectionIdx, num: collectionNum },
       });
     }
 
@@ -464,7 +471,7 @@ class App extends Component {
     } else {
       this.switchCollectionDesktop(collectionNum, collectionIdx, collections);
       this.setState({
-        playButtonHasBeenPressed: true
+        playButtonHasBeenPressed: true,
       });
     }
   }
@@ -478,9 +485,9 @@ class App extends Component {
     // only get guests if we are dealing with curated collections
     if (collection.collection_type !== 0) return;
 
-    const uniqDJs = new Set(tracks.map(track => track.dj_id));
+    const uniqDJs = new Set(tracks.map((track) => track.dj_id));
 
-    uniqDJs.forEach(djID => {
+    uniqDJs.forEach((djID) => {
       if (this.state.guests[djID]) {
         console.log(`already fetched ${djID}`);
         return;
@@ -496,18 +503,18 @@ class App extends Component {
           this.setState({
             guests: {
               ...this.state.guests,
-              ...newGuest
-            }
+              ...newGuest,
+            },
           });
         })
-        .catch(error => {
+        .catch((error) => {
           this.setError(error.message);
         });
     });
   }
 
   fetchCollectionTracks(collectionIdx, collections, playOnLoad) {
-    this.setLoading('collectionTracks', true);
+    this.setLoading("collectionTracks", true);
 
     const collection = collections[collectionIdx];
     axios
@@ -517,7 +524,7 @@ class App extends Component {
 
         const newCollection = {
           ...this.state.collections[collectionIdx],
-          tracks
+          tracks,
         };
 
         if (playOnLoad) {
@@ -530,11 +537,11 @@ class App extends Component {
             collections: [
               ...oldCollections.slice(0, collectionIdx),
               newCollection,
-              ...oldCollections.slice(collectionIdx + 1, oldCollections.length)
-            ]
+              ...oldCollections.slice(collectionIdx + 1, oldCollections.length),
+            ],
           },
           () => {
-            this.setLoading('collectionTracks', false);
+            this.setLoading("collectionTracks", false);
             if (this.state.isMobile) {
               this.setState({ pageReadyForFakeModal: true });
               window.scrollTo(0, 0);
@@ -544,9 +551,9 @@ class App extends Component {
           }
         );
       })
-      .catch(error => {
+      .catch((error) => {
         this.setError(error.message);
-        this.setLoading('collectionTracks', false);
+        this.setLoading("collectionTracks", false);
       });
   }
 
@@ -556,7 +563,7 @@ class App extends Component {
 
     // if ((sideBar || this.state.isMobile) && tappedTrack) {
     if (tappedTrack) {
-      tappedTrack.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      tappedTrack.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }
 
@@ -691,7 +698,9 @@ class App extends Component {
 
     const playingCollection =
       collections &&
-      collections.filter(collection => collection.collection_num === playingCollectionNum)[0];
+      collections.filter(
+        (collection) => collection.collection_num === playingCollectionNum
+      )[0];
 
     return playingCollection && playingCollection.collection_type === 0;
   }
@@ -757,19 +766,19 @@ class App extends Component {
     this.setState({
       modalOpen: true,
       modalDJ: undefined,
-      modalEpisode: undefined
+      modalEpisode: undefined,
     });
-    
+
     if (dj) {
       this.setState({
         modalDJ: dj,
-        modalEpisode: episodeNum
+        modalEpisode: episodeNum,
       });
     } else {
       // debugger;
-      
+
       this.setState({
-        modalOpen: true
+        modalOpen: true,
       });
       this.fetchTrack(trackId);
     }
@@ -796,9 +805,15 @@ class App extends Component {
     return (
       <Router history={history}>
         <div
-          className={`App ${this.state.playerOpen ? 'shift-up' : ''}`}
+          className={`App ${this.state.playerOpen ? "shift-up" : ""}`}
           id="outer-container"
         >
+          <TopNav
+            isMobile={this.state.isMobile}
+            forceReopenCollectionDetail={() =>
+              this.forceReopenCollectionDetail()
+            }
+          />
           <BCModal
             modalOpen={this.state.modalOpen}
             episode={this.state.modalEpisode}
@@ -816,7 +831,7 @@ class App extends Component {
                 show
                 isSideMenu
                 guests={guests}
-                setEpisodeTrack={episodeTrack =>
+                setEpisodeTrack={(episodeTrack) =>
                   this.setEpisodeTrack(episodeTrack)
                 }
                 openModal={this.handleOpenWhyTrackChosenModal}
@@ -827,7 +842,7 @@ class App extends Component {
                 closeModal={() =>
                   this.setState({
                     sideMenuOpen: false,
-                    contentWidthShrunk: false
+                    contentWidthShrunk: false,
                   })
                 }
                 collection={
@@ -854,7 +869,7 @@ class App extends Component {
               draggable
               pauseOnHover
             />
-            {this.state.pageReadyForFakeModal ||
+            {/* {this.state.pageReadyForFakeModal ||
             this.state.sideMenuOpen ? null : (
               <TopNav
                 isMobile={this.state.isMobile}
@@ -862,7 +877,8 @@ class App extends Component {
                   this.forceReopenCollectionDetail()
                 }
               />
-            )}
+            )} */}
+
             <Route
               exact
               path="/"
@@ -873,7 +889,7 @@ class App extends Component {
               path="/:bc_weekly_num"
               render={() => (
                 <BCHome
-                  setEpisodeTrack={episodeTrack =>
+                  setEpisodeTrack={(episodeTrack) =>
                     this.setEpisodeTrack(episodeTrack)
                   }
                   guests={guests}
@@ -884,17 +900,17 @@ class App extends Component {
                   setNewFeatureClicked={() => {
                     if (!this.state.newFeatureClicked) {
                       this.setState({ newFeatureClicked: true }, () => {
-                        window.localStorage.setItem('newFeatureClicked', true);
+                        window.localStorage.setItem("newFeatureClicked", true);
                       });
                     }
                   }}
                   contentWidth={contentWidth}
                   isMobile={this.state.isMobile}
                   pageReadyForFakeModal={this.state.pageReadyForFakeModal}
-                  handleModalOpen={episodeNum => {
+                  handleModalOpen={(episodeNum) => {
                     this.setState({
                       copiedEpisodeNum: episodeNum,
-                      modalOpen: true
+                      modalOpen: true,
                     });
                   }}
                   getActiveCollection={(x, y) => this.getActiveCollection(x, y)}
@@ -909,7 +925,7 @@ class App extends Component {
                   closeModal={() => {
                     this.setState(
                       {
-                        pageReadyForFakeModal: false
+                        pageReadyForFakeModal: false,
                       },
                       () => {
                         this.scrollToCollection();
@@ -932,8 +948,8 @@ class App extends Component {
                   }
                   activeTrack={this.state.track}
                   showTracklist={this.state.showTracklist}
-                  setError={error => this.setError(error)}
-                  scrollToCollection={idx => this.scrollToCollection(idx)}
+                  setError={(error) => this.setError(error)}
+                  scrollToCollection={(idx) => this.scrollToCollection(idx)}
                   playTrack={(playingTrack, collection) =>
                     this.playTrack(playingTrack, collection)
                   }
@@ -961,7 +977,7 @@ class App extends Component {
             this.state.loading.collections ? null : (
               <Footer
                 loadingCollections={this.state.loading.collections}
-                width={this.state.contentWidthShrunk ? '70%' : ''}
+                width={this.state.contentWidthShrunk ? "70%" : ""}
               />
             )}
           </div>
@@ -969,7 +985,7 @@ class App extends Component {
             <BottomNav
               track={track}
               hasMix={this.hasMix()}
-              setEpisodeTrack={timeCode => this.setEpisodeTrack(timeCode)}
+              setEpisodeTrack={(timeCode) => this.setEpisodeTrack(timeCode)}
               playing={playing}
               defaultCollectionNum={this.state.openCollection.num}
               forceReopenCollectionDetail={() =>
@@ -982,7 +998,9 @@ class App extends Component {
                 this.togglePlay();
               }}
               playingCollectionNum={this.state.playingCollectionNum}
-              goToTrack={whichOne => this.burnCartelPlayer.goToTrack(whichOne)}
+              goToTrack={(whichOne) =>
+                this.burnCartelPlayer.goToTrack(whichOne)
+              }
               toggleRepeat={() => this.toggleRepeat()}
               repeat={this.state.repeat}
               visualize={this.state.visualize}
@@ -996,7 +1014,7 @@ class App extends Component {
 }
 
 const mapSizesToProps = ({ width }) => ({
-  currentWidth: width
+  currentWidth: width,
 });
 
 export default withSizes(mapSizesToProps)(App);
