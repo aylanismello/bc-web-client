@@ -810,6 +810,7 @@ class App extends Component {
         >
           <TopNav
             isMobile={this.state.isMobile}
+            sideMenuOpen={this.state.sideMenuOpen}
             forceReopenCollectionDetail={() =>
               this.forceReopenCollectionDetail()
             }
@@ -869,16 +870,6 @@ class App extends Component {
               draggable
               pauseOnHover
             />
-            {/* {this.state.pageReadyForFakeModal ||
-            this.state.sideMenuOpen ? null : (
-              <TopNav
-                isMobile={this.state.isMobile}
-                forceReopenCollectionDetail={() =>
-                  this.forceReopenCollectionDetail()
-                }
-              />
-            )} */}
-
             <Route
               exact
               path="/"

@@ -69,8 +69,6 @@ const BCModal = ({
     return null;
   }
 
-  // const { curators } = track;
-
   const { loading, data } = useTrackQuery(trackId);
 
   const track = (loading || !data) ? {} : data.getTrack;
