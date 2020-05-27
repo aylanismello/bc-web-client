@@ -10,7 +10,7 @@ import CollectionList from '../CollectionList';
 import CollectionDetail from '../CollectionDetail';
 import CollectionTabs from './CollectionTabs';
 import BCLoading from '../BCLoading';
-import Wrapper from '../Wrapper';
+import { ContentWrapper } from '../MarakuyaComponents';
 import { baseUrl } from '../../config';
 import './BCHome.scss';
 
@@ -255,7 +255,7 @@ class BCHome extends React.Component {
           <BCLoading />
         ) : (
           <div className="BCHome-content-container">
-            <Wrapper>
+            <ContentWrapper isMainContent>
               <Responsive maxDeviceWidth={767}>
                 <CollectionDetail
                   guests={this.props.guests}
@@ -297,7 +297,7 @@ class BCHome extends React.Component {
                 </BCHomeCollectionInfo>
                 {this.renderCollection(showList)}
               </BCHomeMainContent>
-            </Wrapper>
+            </ContentWrapper>
           </div>
         )}
       </div>
