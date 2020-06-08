@@ -367,7 +367,7 @@ class BCWeeklyTrack extends React.Component {
                     </TextHighlight>
                   </div>
                 )}
-                {window.debugMode && (
+                {(window.localStorage.getItem('debug') === 'true') && (
                   <div className="Wrapperz" onClick={openModal}>
                     <TextHighlight fontSize="1.4rem" icon="QUESTION">
                       why was this track chosen
