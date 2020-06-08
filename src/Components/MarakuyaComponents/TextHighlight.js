@@ -30,7 +30,6 @@ const renderIcon = (iconSrc) => {
 
   switch (iconSrc) {
     case "BUY_MUSIC":
-      console.log('yee');
       return <Icon icon={shoppingMusic} fontSize="20px" style={{ color: "#6255FF", padding: "0 0 0 5px" }} />;
     default:
       return <MyIcon className="Icon" src={iconSrc} />;

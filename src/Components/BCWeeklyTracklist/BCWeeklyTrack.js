@@ -351,9 +351,7 @@ class BCWeeklyTrack extends React.Component {
           <Item style={getStyleBottom(active)}>
             <ExpandTrackDetails className="ExpandTrackDetail">
               {timePlayed(track)}
-              {/* <div className="ExpandTrackDetail"> */}
               {renderSource(track)}
-              {/* </div> */}
               {renderReleaseDate(track)}
               {renderLocation(track)}
 
@@ -365,15 +363,17 @@ class BCWeeklyTrack extends React.Component {
                       icon="BUY_MUSIC"
                       href={track.purchase_url}
                     >
-                      buy now
+                      buy track
                     </TextHighlight>
                   </div>
                 )}
-                {/* <div className="Wrapperz" onClick={openModal}>
-                  <TextHighlight fontSize="1.4rem" icon="QUESTION">
-                    why was this track chosen
-                  </TextHighlight>
-                </div> */}
+                {window.debugMode && (
+                  <div className="Wrapperz" onClick={openModal}>
+                    <TextHighlight fontSize="1.4rem" icon="QUESTION">
+                      why was this track chosen
+                    </TextHighlight>
+                  </div>
+                )}
               </div>
             </ExpandTrackDetails>
           </Item>
