@@ -49,8 +49,7 @@ const PlayingText = styled.span`
   color: #e54ea3;
 `;
 
-const TrackContainer = styled.div`
-`;
+const TrackContainer = styled.div``;
 
 const Title = styled.div`
   font-size: 16px;
@@ -221,7 +220,7 @@ const renderSource = ({ permalink_url, streaming_platform }) => {
 
   return (
     <div className="ExpandTrackDetail">
-      Source:{" "}
+      From:{" "}
       <TextHighlight href={permalink_url} icon="EXTERNAL_LINK">
         {" "}
         {linkText}{" "}
@@ -359,11 +358,22 @@ class BCWeeklyTrack extends React.Component {
               {renderLocation(track)}
 
               <div className="ExpandTrackDetail">
-                <div className="Wrapperz" onClick={openModal}>
+                {track.purchase_url && (
+                  <div className="Wrapperz">
+                    <TextHighlight
+                      fontSize="1.4rem"
+                      icon="BUY_MUSIC"
+                      href={track.purchase_url}
+                    >
+                      buy now
+                    </TextHighlight>
+                  </div>
+                )}
+                {/* <div className="Wrapperz" onClick={openModal}>
                   <TextHighlight fontSize="1.4rem" icon="QUESTION">
                     why was this track chosen
                   </TextHighlight>
-                </div>
+                </div> */}
               </div>
             </ExpandTrackDetails>
           </Item>

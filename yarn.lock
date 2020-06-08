@@ -897,6 +897,11 @@
   resolved "https://registry.yarnpkg.com/@iconify/icons-entypo-social/-/icons-entypo-social-1.0.5.tgz#eae68e923eebb7854092f6e47131a74893deef87"
   integrity sha512-6QWm+r+89h3JTUfuKqIc0k60iCHJHIIPWyKX43hX6G/OWvEgrBV4PdxrOQIFacxzbG+jdfKd5n2DwQNZHyr2MQ==
 
+"@iconify/icons-mdi@^1.0.109":
+  version "1.0.109"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.0.109.tgz#cb95045b416291870b8a2815d40d8007be941ca5"
+  integrity sha512-S8sfyKGi4PrH0rW9mb8EZL00xdrkO0NHhraZKEhGVGwe2N+u4L1VCZ3+RHy1/W06NhbOD9tnCFBRfi3M98+CEw==
+
 "@iconify/react@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@iconify/react/-/react-1.1.3.tgz#ebe4d3e5f5dea23cd6a9634acd7a0a25c7414a59"
