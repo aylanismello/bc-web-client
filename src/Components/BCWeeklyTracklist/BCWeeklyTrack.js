@@ -363,7 +363,7 @@ class BCWeeklyTrack extends React.Component {
                       icon="BUY_MUSIC"
                       href={track.purchase_url}
                     >
-                      buy track
+                      buy track / support
                     </TextHighlight>
                   </div>
                 )}
