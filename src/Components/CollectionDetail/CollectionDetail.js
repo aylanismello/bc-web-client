@@ -198,6 +198,9 @@ class CollectionDetail extends React.Component {
 
     if (!hasMix) {
       tracklists = [{ tracks }];
+      window.currentMixImg = null;
+    } else {
+      window.currentMixImg = `https://res.cloudinary.com/burncartel/image/upload/c_scale,w_100/v1595040893/${collection.artwork_url}`;
     }
 
     return (
@@ -329,6 +332,7 @@ class CollectionDetail extends React.Component {
                   activeTrack={activeTrack}
                   playTrack={playTrack}
                   collection={collection}
+                  collectionArtworkUrl={window.currentMixImg}
                 />
               </div>
             )}

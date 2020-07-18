@@ -52,6 +52,7 @@ const BottomNav = ({
                 src={
                   track.artwork_url ||
                   track.artist_artwork_url ||
+                  window.currentMixImg ||
                   "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"
                 }
                 className="Bottom-track-info-artwork"

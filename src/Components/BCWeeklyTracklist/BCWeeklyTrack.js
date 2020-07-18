@@ -278,6 +278,7 @@ class BCWeeklyTrack extends React.Component {
       toggleOpen,
       setEpisodeTrack,
       openModal,
+      collectionArtworkUrl,
     } = this.props;
 
     return (
@@ -323,6 +324,7 @@ class BCWeeklyTrack extends React.Component {
                 src={
                   track.artwork_url ||
                   track.artist_artwork_url ||
+                  collectionArtworkUrl ||
                   "https://res.cloudinary.com/burncartel/image/upload/v1571949497/bc_stickers_2_b_pink.png"
                 }
                 style={{ width: "100%", height: "auto", borderRadius: "4px" }}

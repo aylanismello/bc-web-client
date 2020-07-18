@@ -37,33 +37,33 @@ class BCWeeklyTracklist extends React.Component {
       hasMix,
       setEpisodeTrack,
       tracklists,
-      openModal
+      openModal,
+      collectionArtworkUrl,
     } = this.props;
 
     // TODO: maybe treat this data and add xtra info so we can intelligently split into tracklists
 
 
-    return <div className={`BCWeeklyTracklist ${spotlight && "spotlight"}`}>
+    return (
+      <div className={`BCWeeklyTracklist ${spotlight && "spotlight"}`}>
         {tracklists.map((tracklist, tracklistIdx) =>
           tracklist.tracks.map((track, idx) => (
             <div key={idx}>
               {hasMix && idx === 0 && tracklistIdx > 0 && <Divider />}
-              {hasMix &&
-                idx === 0 && (
-                  <GuestHeader
-                    guest={tracklist.guest}
-                    tracklistIdx={tracklistIdx}
-                  />
-                )}
+              {hasMix && idx === 0 && (
+                <GuestHeader
+                  guest={tracklist.guest}
+                  tracklistIdx={tracklistIdx}
+                />
+              )}
               <BCWeeklyTrack
                 setEpisodeTrack={setEpisodeTrack}
                 active={this.isActive(track)}
                 key={track.id}
                 trackLoading={trackLoading}
                 playing={playing}
-                open={
-                  track.id === this.state.openTrackId && this.state.open
-                }
+                collectionArtworkUrl={collectionArtworkUrl}
+                open={track.id === this.state.openTrackId && this.state.open}
                 toggleOpen={(trackId) => {
                   if (trackId === this.state.openTrackId) {
                     this.setState({ open: !this.state.open });
@@ -86,7 +86,8 @@ class BCWeeklyTracklist extends React.Component {
             </div>
           ))
         )}
-      </div>;
+      </div>
+    );
   }
 }
 
