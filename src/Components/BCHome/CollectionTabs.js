@@ -134,7 +134,7 @@ export default ({
           {' '}
           Curators{' '}
         </CollectionTab>
-        <CollectionTab
+        {/* <CollectionTab
           onClick={() => {
             // setNewFeatureClicked(); i get this but not necessary rn
             selectCollectionType(3);
@@ -144,8 +144,8 @@ export default ({
           idx={3}
         >
           {' '}
-          Featured Artists{' '}
-        </CollectionTab>
+          Featured{' '}
+        </CollectionTab> */}
       </CollectionTabsStyle>
       <CollectionLine className="CollectionTabsLine" />
     </CollectionTabs>
