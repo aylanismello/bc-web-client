@@ -62,7 +62,7 @@ class BCHome extends React.Component {
       collectionImagesLoaded: 0,
       collectionTypeSelected: 0,
       page: {
-        weekly: this.STARTING_SIZE,
+        curated: this.STARTING_SIZE,
         rising: this.STARTING_SIZE
       }
     });
@@ -209,13 +209,17 @@ class BCHome extends React.Component {
 
   renderCollection(showList) {
     const { collections } = this.props;
-    const handPickedCollections = collections.filter(c => c.collection_type === 0);
-    const algoPickedCollections = collections.filter(c => c.collection_type === 1);
+    const { collectionTypeSelected } = this.state
+    const curatedCollections = collections.filter(c => c.collection_type === 0);
+    const risingCollections = collections.filter(c => c.collection_type === 1);
+    const curatorCollections = collections.filter(c => c.collection_type === 2);
 
-    if (this.state.collectionTypeSelected === 0) {
-      return this.makeCollectionList(handPickedCollections, showList, 'weekly');
+    if (collectionTypeSelected === 0) {
+      return this.makeCollectionList(curatedCollections, showList, 'curated');
+    } else if(collectionTypeSelected === 1){
+      return this.makeCollectionList(risingCollections, showList, 'rising');
     } else {
-      return this.makeCollectionList(algoPickedCollections, showList, 'rising');
+      return this.makeCollectionList(curatorCollections, showList, 'curators');
     }
   }
 

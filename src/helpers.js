@@ -1,19 +1,34 @@
 const getWeeklyItemTexts = ({ collection_type, name, collection_num }) => {
-  const isWeekly = collection_type === 0 || collection_type === 'weekly';
-
-  const topText = isWeekly ? `Episode ${collection_num}` : name;
-  const bottomText = isWeekly ? 'Burn Cartel Curated' : 'Burn Cartel Rising';
-
-  const collectionDescription = isWeekly
-    ? `
+  switch (collection_type) {
+    case 0:
+      return [
+        `Episode ${collection_num}`,
+        'Burn Cartel Curated',
+        `
     Our flagship mix show  - we hand select our favorites tracks and invite some of our favorite DJs
     from around the world 🌏 to join us for the mix.
-  `
-    : ` 
+  `,
+      ];
+    case 1:
+      return [
+        name,
+        'Burn Cartel Rising',
+        ` 
       Daily updated playlists with the  latest uncovered gems, as well as trending tracks from artists featured on Burn Cartel Curated. 
-    `;
+    `,
+      ];
+    case 2:
+      return [
+        name,
+        'Our Curators',
+        ` 
+      A look at our curators that set the mood hurr 
+    `,
+      ];
 
-  return [topText, bottomText, collectionDescription];
+    default:
+      return ['', '', ''];
+  }
 };
 
 const publisherLocationsToString = location => {
@@ -44,13 +59,9 @@ const formatSoundcloudUserForMap = soundcloudUser => {
     ...soundcloudUser,
     location: {
       ...soundcloudUser.location,
-      position: [soundcloudUser.location.lng, soundcloudUser.location.lat]
-    }
+      position: [soundcloudUser.location.lng, soundcloudUser.location.lat],
+    },
   };
 };
 
-export {
-  publisherLocationsToString,
-  formatSoundcloudUserForMap,
-  getWeeklyItemTexts
-};
+export { publisherLocationsToString, formatSoundcloudUserForMap, getWeeklyItemTexts };

@@ -1,17 +1,17 @@
-import React from "react";
-import copy from "copy-to-clipboard";
-import styled from "styled-components";
-import { Icon } from "@iconify/react";
-import soundcloudIcon from "@iconify/icons-entypo-social/soundcloud";
+import React from 'react';
+import copy from 'copy-to-clipboard';
+import styled from 'styled-components';
+import { Icon } from '@iconify/react';
+import soundcloudIcon from '@iconify/icons-entypo-social/soundcloud';
 
-import PlayButton from "../PlayButton";
-import closeIcon from "./i-remove.svg";
-import chevronIcon from "./ic_chevron.svg";
-import BCLogo from "../BCLogo";
-import BCWeeklyTracklist from "../BCWeeklyTracklist";
-import BCProgressiveImage from "../BCProgressiveImage";
-import "./CollectionDetail.scss";
-import { getWeeklyItemTexts } from "../../helpers";
+import PlayButton from '../PlayButton';
+import closeIcon from './i-remove.svg';
+import chevronIcon from './ic_chevron.svg';
+import BCLogo from '../BCLogo';
+import BCWeeklyTracklist from '../BCWeeklyTracklist';
+import BCProgressiveImage from '../BCProgressiveImage';
+import './CollectionDetail.scss';
+import { getWeeklyItemTexts } from '../../helpers';
 
 // const Divider = styled.div`
 //   width: auto;
@@ -22,8 +22,7 @@ import { getWeeklyItemTexts } from "../../helpers";
 const CollectionDetailDescription = styled.div`
   /* color: $bc-white; */
   /* @include bc-text(); */
-  ${({ theme: { mixins } }) =>
-    mixins.text} /* color: #dcdcdc; */
+  ${({ theme: { mixins } }) => mixins.text} /* color: #dcdcdc; */
   font-size: 1.4rem;
   line-height: 1.5;
   padding: 2rem 1rem 0 1rem;
@@ -69,7 +68,7 @@ class CollectionDetail extends React.Component {
   }
 
   toggleShowTracklist() {
-    window.logEvent("SHOW_TRACKLIST");
+    window.logEvent('SHOW_TRACKLIST');
     this.setState({ showTracklist: !this.state.showTracklist });
   }
 
@@ -78,13 +77,9 @@ class CollectionDetail extends React.Component {
       <div className="CollectionDetail-full-tracklist-container">
         {this.state.showTracklist ? (
           <Tracklist className="CollectionDetail-tracklist">
-            {this.props.collection.tracklist
-              .split("\n")
-              .map((tracklistItem) => (
-                <TracklistItem className="TracklistItem">
-                  {tracklistItem}
-                </TracklistItem>
-              ))}
+            {this.props.collection.tracklist.split('\n').map(tracklistItem => (
+              <TracklistItem className="TracklistItem">{tracklistItem}</TracklistItem>
+            ))}
           </Tracklist>
         ) : (
           <div className="CollectionDetail-explore-more-container">
@@ -121,47 +116,45 @@ class CollectionDetail extends React.Component {
     // TODO: change this to not have it be totally blank
     if (!(collection && collection.tracks)) return null;
 
-    const style = show ? {} : { display: "none" };
+    const style = show ? {} : { display: 'none' };
 
-    let hostname = "www.burncartel.com";
-    if (!window.location.hostname.includes("burncartel")) {
-      hostname = "localhost:3000";
+    let hostname = 'www.burncartel.com';
+    if (!window.location.hostname.includes('burncartel')) {
+      hostname = 'localhost:3000';
     }
 
     const url = `${hostname}/#/weekly-${collectionNum}?from=link`;
     let contentTop = {
-      boxShadow: "0 2px 20px 0 rgba(0, 0, 0, 0.2)",
-      position: "fixed",
+      boxShadow: '0 2px 20px 0 rgba(0, 0, 0, 0.2)',
+      position: 'fixed',
       top: 0,
       left: 0,
-      zIndex: "1000000",
-      background: "#191925",
-      height: "48px",
-      padding: "12px 12px",
+      zIndex: '1000000',
+      background: '#191925',
+      height: '48px',
+      padding: '12px 12px',
     };
 
     contentTop = isSideMenu
       ? {
           ...contentTop,
-          display: "flex", // setting the width like this is a bit janky
+          display: 'flex', // setting the width like this is a bit janky
           // width: "325px",
           // WHAT UP - TO FIX SCROLLBAR
-          width: "326px",
+          width: '326px',
         }
       : {
           ...contentTop, // height: "8rem",
           // padding: "0 2rem",
-          padding: "12px 20px",
-          display: "flex",
+          padding: '12px 20px',
+          display: 'flex',
           // width: '100%'
-          width: "-webkit-fill-available",
+          width: '-webkit-fill-available',
         };
     const contentMiddle = isSideMenu
-      ? { padding: "0 3rem", marginTop: "10rem" }
-      : { padding: "0 1rem 0 1rem", marginTop: "10rem" };
-    const contentBottom = isSideMenu
-      ? { padding: "2rem 3rem" }
-      : { padding: "1rem 0 16px 0" };
+      ? { padding: '0 3rem', marginTop: '10rem' }
+      : { padding: '0 1rem 0 1rem', marginTop: '10rem' };
+    const contentBottom = isSideMenu ? { padding: '2rem 3rem' } : { padding: '1rem 0 16px 0' };
 
     const texts = getWeeklyItemTexts(collection);
     const hasMix = collection.collection_type === 0;
@@ -173,12 +166,10 @@ class CollectionDetail extends React.Component {
       // leave out mix itself
       const finalTracks = tracks.slice(1, tracks.length);
 
-      finalTracks.forEach((track) => {
+      finalTracks.forEach(track => {
         const { dj_id } = track;
 
-        const tracklistIdx = tracklists.findIndex(
-          (tracklist) => tracklist.dj_id === track.dj_id
-        );
+        const tracklistIdx = tracklists.findIndex(tracklist => tracklist.dj_id === track.dj_id);
         if (tracklistIdx === -1) {
           // INITALIZE TRACKLIST
 
@@ -203,17 +194,18 @@ class CollectionDetail extends React.Component {
       window.currentMixImg = `https://res.cloudinary.com/burncartel/image/upload/c_scale,w_100/v1595040893/${collection.artwork_url}`;
     }
 
+    console.log(collection);
     return (
       <div
         className="CollectionDetail"
         style={style}
-        onClick={(e) => {
-          if (e.target.className === "CollectionDetail") this.closeModal();
+        onClick={e => {
+          if (e.target.className === 'CollectionDetail') this.closeModal();
         }}
       >
         <div
           className="CollectionDetail-content"
-          style={isSideMenu ? { paddingBottom: "10rem" } : {}}
+          style={isSideMenu ? { paddingBottom: '10rem' } : {}}
         >
           <div className="CollectionDetail-content-top" style={contentTop}>
             <div
@@ -221,11 +213,11 @@ class CollectionDetail extends React.Component {
               onClick={() => this.closeModal()}
               style={
                 isSideMenu
-                  ? { marginRight: "2.5rem" }
+                  ? { marginRight: '2.5rem' }
                   : {
-                      right: "0",
-                      top: "50%",
-                      transform: "translate(-50%, -50%)",
+                      right: '0',
+                      top: '50%',
+                      transform: 'translate(-50%, -50%)',
                     }
               }
             >
@@ -237,21 +229,18 @@ class CollectionDetail extends React.Component {
             </div>
             <div
               className="CollectionDetail-content-header"
-              style={isSideMenu ? { marginLeft: "20px" } : {}}
+              style={isSideMenu ? { marginLeft: '20px' } : {}}
             >
               <BCLogo infoText={`[${texts[0]}]`} />
             </div>
           </div>
 
-          <div
-            className="CollectionDetail-content-middle"
-            style={contentMiddle}
-          >
+          <div className="CollectionDetail-content-middle" style={contentMiddle}>
             <div className="CollectionDetail-image-container">
               <BCProgressiveImage
                 isCollectionItem
                 isVisible={show}
-                artwork_url={collection.artwork_url}
+                artwork_url={collection.artwork_url || collection.creator_avatar_url}
                 max_width={600}
               />
               <div className="CollectionDetail-play-button-container">
@@ -266,43 +255,34 @@ class CollectionDetail extends React.Component {
 
             <div
               className="CollectionDetail-cover-text"
-              style={isSideMenu ? { paddingLeft: "2rem" } : {}}
+              style={isSideMenu ? { paddingLeft: '2rem' } : {}}
             >
-              <span className="CollectionDetail-cover-text-header">
-                {texts[0]}
-              </span>
+              <span className="CollectionDetail-cover-text-header">{texts[0]}</span>
               <div className="CollectionDetail-line" />
+              {/* only do not show soundcloud link if it is rising, aka collection_type 1 */}
 
-              {hasMix ? (
+              {collection.collection_type !== 1 ? (
                 <ExternalCuratedSourcesContainer>
                   <IconContainer>
-                    <a href={tracks[0].permalink_url} target="_blank">
-                      <Icon
-                        icon={soundcloudIcon}
-                        color="#6255FF"
-                        fontSize="35px"
-                      />
+                    <a
+                      href={hasMix ? tracks[0].permalink_url : collection.creator_soundcloud_url}
+                      target="_blank"
+                    >
+                      <Icon icon={soundcloudIcon} color="#6255FF" fontSize="35px" />
                     </a>
                   </IconContainer>
                 </ExternalCuratedSourcesContainer>
               ) : (
-                <span className="CollectionDetail-cover-text-subheader">
-                  {texts[1]}
-                </span>
+                <span className="CollectionDetail-cover-text-subheader">{texts[1]}</span>
               )}
             </div>
 
-            {/* {collection.description && (
-              <CollectionDetailDescription>
-                {collection.description}
-              </CollectionDetailDescription>
-            )} */}
+            {collection.description && (
+              <CollectionDetailDescription>{collection.description}</CollectionDetailDescription>
+            )}
           </div>
 
-          <div
-            className="CollectionDetail-content-bottom"
-            style={contentBottom}
-          >
+          <div className="CollectionDetail-content-bottom" style={contentBottom}>
             {/* <Divider />
             <div className="CollectionDetail-description">
               <h3>
@@ -339,9 +319,7 @@ class CollectionDetail extends React.Component {
             {hasMix && tracks && this.renderTracklistOptions()}
             <div className="CollectionDetail-copy">
               <span
-                style={
-                  this.state.clickedCopy ? {} : { textDecoration: "underline" }
-                }
+                style={this.state.clickedCopy ? {} : { textDecoration: 'underline' }}
                 onClick={() => {
                   if (!this.state.clickedCopy) {
                     copy(url);
@@ -349,7 +327,7 @@ class CollectionDetail extends React.Component {
                   }
                 }}
               >
-                {this.state.clickedCopy ? "Link copied!" : "Copy playlist link"}
+                {this.state.clickedCopy ? 'Link copied!' : 'Copy playlist link'}
               </span>
             </div>
           </div>

@@ -25,7 +25,7 @@ const CollectionLine = styled.div`
 const CollectionTabStyle = styled.div`
   margin-right: 2rem;
   color: ${props => (props.selected ? 'white' : '#626970')};
-  font-family: "sofia-pro", sans-serif;
+  font-family: 'sofia-pro', sans-serif;
   font-size: 16px;
   font-weight: 600;
   position: relative;
@@ -72,24 +72,23 @@ const CollectionTabIcon = ({ idx }) => {
       return <span>🔥</span>;
     case 1:
       return <span>📈</span>;
+    case 2:
+      return <span>🎧</span>;
+    case 3:
+      return <span>💯</span>;
     default:
       return <span />;
   }
 };
 
-const CollectionTab = ({
- children, selected, onClick, isNew, idx
-}) => (
+const CollectionTab = ({ children, selected, onClick, isNew, idx }) => (
   <CollectionTabStyle selected={selected}>
     <CollectionTabNotify show={isNew} className="CollectionTabNotify" />
     <CollectionTabText onClick={onClick} className="CollectionTabText">
       <CollectionTabIcon idx={idx} />
       <span>{children}</span>
     </CollectionTabText>
-    <CollectionTabLineHighlight
-      selected={selected}
-      className="CollectionTabLineHighlight"
-    />
+    <CollectionTabLineHighlight selected={selected} className="CollectionTabLineHighlight" />
   </CollectionTabStyle>
 );
 
@@ -98,19 +97,11 @@ export default ({
   show,
   setNewFeatureClicked,
   selectCollectionType,
-  newFeatureClicked
+  newFeatureClicked,
 }) => {
   return (
     <CollectionTabs className="CollectionTabs" show={show}>
       <CollectionTabsStyle className="CollectionTabsStyle">
-        <CollectionTab
-          onClick={() => selectCollectionType(0)}
-          selected={collectionTypeSelected === 0}
-          idx={0}
-        >
-          {' '}
-          Curated{' '}
-        </CollectionTab>
         <CollectionTab
           onClick={() => {
             setNewFeatureClicked();
@@ -122,6 +113,38 @@ export default ({
         >
           {' '}
           Rising{' '}
+        </CollectionTab>
+        <CollectionTab
+          onClick={() => selectCollectionType(0)}
+          selected={collectionTypeSelected === 0}
+          idx={0}
+        >
+          {' '}
+          Curated{' '}
+        </CollectionTab>
+        <CollectionTab
+          onClick={() => {
+            // setNewFeatureClicked(); i get this but not necessary rn
+            selectCollectionType(2);
+          }}
+          selected={collectionTypeSelected === 2}
+          isNew={!newFeatureClicked}
+          idx={2}
+        >
+          {' '}
+          Curators{' '}
+        </CollectionTab>
+        <CollectionTab
+          onClick={() => {
+            // setNewFeatureClicked(); i get this but not necessary rn
+            selectCollectionType(3);
+          }}
+          selected={collectionTypeSelected === 3}
+          isNew={!newFeatureClicked}
+          idx={3}
+        >
+          {' '}
+          Featured Artists{' '}
         </CollectionTab>
       </CollectionTabsStyle>
       <CollectionLine className="CollectionTabsLine" />
