@@ -27,19 +27,18 @@ class BCProgressiveImage extends React.Component {
     const { loaded } = this.state;
     const opaque = showOpaqueLayer ? 'opaque' : '';
 
-
     const q = 70;
-    const src = `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_${q},w_${max_width}/${artwork_url}`;
-  
+    const src = artwork_url.includes('http')
+      ? artwork_url
+      : `https://res.cloudinary.com/burncartel/image/upload/c_fit,q_${q},w_${max_width}/${artwork_url}`;
+
     // https://itnext.io/stable-image-component-with-placeholder-in-react-7c837b1ebee
     return (
       <div>
         {!loaded ? (
           <img
             className={`BCProgressiveImage ${opaque} ${
-              isCollectionItem
-                ? 'BCWeeklyItem-cover-image'
-                : 'BCSplotlightItem-cover-image'
+              isCollectionItem ? 'BCWeeklyItem-cover-image' : 'BCSplotlightItem-cover-image'
             }`}
             onLoad={() => {
               incrementCollectionImagesLoaded();
@@ -53,9 +52,7 @@ class BCProgressiveImage extends React.Component {
         <LazyLoad height="auto" offset={200} once>
           <img
             className={`BCProgressiveImage ${opaque} ${
-              isCollectionItem
-                ? 'BCWeeklyItem-cover-image'
-                : 'BCSplotlightItem-cover-image'
+              isCollectionItem ? 'BCWeeklyItem-cover-image' : 'BCSplotlightItem-cover-image'
             }`}
             alt={artwork_url}
             style={loaded ? {} : { visibility: 'hidden' }}
