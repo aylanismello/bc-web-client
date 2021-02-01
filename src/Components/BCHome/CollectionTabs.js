@@ -97,12 +97,12 @@ export default ({
   show,
   setNewFeatureClicked,
   selectCollectionType,
-  newFeatureClicked,
+  newFeatureClicked
 }) => {
   return (
     <CollectionTabs className="CollectionTabs" show={show}>
       <CollectionTabsStyle className="CollectionTabsStyle">
-        <CollectionTab
+        {/* <CollectionTab
           onClick={() => {
             setNewFeatureClicked();
             selectCollectionType(1);
@@ -113,7 +113,7 @@ export default ({
         >
           {' '}
           Rising{' '}
-        </CollectionTab>
+        </CollectionTab> */}
         <CollectionTab
           onClick={() => selectCollectionType(0)}
           selected={collectionTypeSelected === 0}
@@ -122,7 +122,7 @@ export default ({
           {' '}
           Curated{' '}
         </CollectionTab>
-        <CollectionTab
+        {/* <CollectionTab
           onClick={() => {
             // setNewFeatureClicked(); i get this but not necessary rn
             selectCollectionType(2);
@@ -133,7 +133,7 @@ export default ({
         >
           {' '}
           Curators{' '}
-        </CollectionTab>
+        </CollectionTab> */}
         {/* <CollectionTab
           onClick={() => {
             // setNewFeatureClicked(); i get this but not necessary rn
