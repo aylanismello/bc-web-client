@@ -9,6 +9,7 @@ const OpenTabContainer = styled.div`
   background-color: #ffffff;
   display: flex;
   justify-content: center;
+  align-items: center;
   position: fixed;
   left: 0;
 
@@ -17,12 +18,14 @@ const OpenTabContainer = styled.div`
   }
 `;
 
+const TabIcon = styled.img`
+  width: 24px;
+  height: 20px;
+`;
+
 const OpenTab = ({ forceReopenCollectionDetail }) => (
-  <OpenTabContainer
-    className="OpenTabContainer"
-    onClick={forceReopenCollectionDetail}
-  >
-    <img src={leftArrow} />
+  <OpenTabContainer className="OpenTabContainer" onClick={forceReopenCollectionDetail}>
+    <TabIcon src={leftArrow} />
   </OpenTabContainer>
 );
 
